@@ -6,6 +6,8 @@ services:
       dockerfile: ./Dockerfile
     depends_on:
       - webdriver
+    volumes:
+      - ./downloads:/usr/src/downloads
   webdriver:
     build:
       context: ./webdriver
@@ -14,4 +16,5 @@ services:
       - 4444:4444
     volumes: 
       - /dev/shm:/dev/shm
+      - ./downloads:/home/seluser/Downloads
 

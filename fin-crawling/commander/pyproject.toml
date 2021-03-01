@@ -6,10 +6,12 @@ authors = ["tldrd0117 <tldrd0117@gmail.com>"]
 
 [tool.poetry.scripts]
 app = 'fin_crawling.app:run'
+observeTest = 'fin_crawling.observer.FileObserver:observe'
 
 [tool.poetry.dependencies]
 python = "^3.7"
 selenium = "^3.141.0"
+watchdog = "^1.0.2"
 
 [tool.poetry.dev-dependencies]
 pytest = "^5.2"

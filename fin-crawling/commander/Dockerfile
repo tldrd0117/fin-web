@@ -13,6 +13,8 @@ COPY poetry.lock ./
 
 ENV PATH="${PATH}:/root/.local/bin"
 
+ENV IS_DOCKER_RUN Yes
+
 RUN pip install --upgrade pip
 
 RUN pip install --user poetry
