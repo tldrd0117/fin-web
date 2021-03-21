@@ -2,12 +2,15 @@ version: '3.1'
 services:
   commander:
     build:
-      context: ./commander
+      context: ./app
       dockerfile: ./Dockerfile
     depends_on:
       - webdriver
+    ports:
+      - 5000:5000
     volumes:
       - ./downloads:/usr/src/downloads
+      - ./fin_crawling:/usr/src/fin_crawling
   webdriver:
     build:
       context: ./webdriver

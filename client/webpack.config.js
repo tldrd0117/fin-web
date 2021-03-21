@@ -69,7 +69,8 @@ module.exports = (env, argv) => {
     if(argv.mode == "development"){
         return {
             ...config,
-            devtool: "eval"
+            devtool: "eval",
+            watch: true
         }
     } else if(argv.mode == "production"){
         return {

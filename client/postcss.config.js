@@ -1,8 +1,12 @@
 
+const purgecss = require('@fullhuman/postcss-purgecss')
 module.exports ={
     plugins: [
-        // require('postcss-nested'),
+        require('postcss-nested'),
         require('tailwindcss'),
-        require('autoprefixer')
+        require('autoprefixer'),
+        // purgecss({
+        //     content: ['./**/*.html','./**/*.css','./**/*.js','./**/*.jsx','./**/*.tsx']
+        // })
     ]
 };
