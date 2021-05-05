@@ -5,7 +5,7 @@ export default (props) => {
     return <>
         <style jsx>{`
         `}</style>
-        <button onClick={onClick} className={`bg-blue-300 ${props.className?props.className : ""}`}>
+        <button onClick={onClick} className={`focus:outline-none text-white text-sm py-2.5 px-5 rounded-md bg-blue-500 hover:bg-blue-600 hover:shadow-lg ${props.className?props.className : ""}`}>
             {children}
         </button>
     </>

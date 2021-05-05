@@ -1,0 +1,58 @@
+version: '3.1'
+services:
+  commander:
+    build:
+      context: ./fin-crawling/app
+      dockerfile: ./Dockerfile
+    depends_on:
+      - webdriver
+    ports:
+      - 5000:5000
+    volumes:
+      - ./fin-crawling/downloads:/usr/src/downloads
+      - ./fin-crawling/app:/usr/src/app
+
+  webdriver:
+    build:
+      context: ./fin-crawling/webdriver
+      dockerfile: ./Dockerfile
+    ports:
+      - 4444:4444
+    volumes: 
+      - /dev/shm:/dev/shm
+      - ./fin-crawling/downloads:/home/seluser/Downloads
+
+  mongo:
+    build:
+      context: ./fin-db/db
+      dockerfile: ./Dockerfile
+    image: mongo
+    restart: always
+    ports:
+      - 8082:27017
+    volumes: 
+      - ./fin-db/db/data:/data/db
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: example
+
+  mongo-express:
+    build:
+      context: ./fin-db/express
+      dockerfile: ./Dockerfile
+    image: mongo-express
+    restart: always
+    ports:
+      - 8081:8081
+    environment:
+      ME_CONFIG_MONGODB_ADMINUSERNAME: root
+      ME_CONFIG_MONGODB_ADMINPASSWORD: example
+      
+  nginx:
+    build:
+      context: ./fin-crawling/nginx
+      dockerfile: ./Dockerfile
+    ports:
+      - "8083:80"
+    volumes:
+      - ./fin-crawling/nginx/nginx.conf:/etc/nginx/nginx.conf

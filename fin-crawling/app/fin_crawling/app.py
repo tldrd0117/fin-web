@@ -1,22 +1,15 @@
-from flask import Flask, render_template
-from fin_crawling.controllers.CrawlingController import CrawlingController
-from fin_crawling.controllers.FrontController import FrontController
-from flask_socketio import SocketIO
+from flask import Flask
+from .app_setup import app_setup
+from fin_crawling.controllers.CrawlingController import setupCrawlingController
+from fin_crawling.controllers.FrontController import setupFrontController
 
-app = Flask(__name__,static_folder='dist',template_folder='dist')
+app = Flask(__name__, static_folder='dist', template_folder='dist')
 app.config['SECRET_KEY'] = 'secret!'
-socketio = SocketIO(app, cors_allowed_origins="*")
 
-def run():
-    setupController(app, socketio)
-    app.run("0.0.0.0")
-    socketio.run(app)
-    print("run")
-
-def setupController(app, socketio):
-    crawlingController = CrawlingController(app, socketio)
-    frontController = FrontController(app)
-
-run()
+app, socketio = app_setup(app)
+setupCrawlingController(socketio)
+setupFrontController(app)
 
 
+if __name__ == '__main__':
+    app.run(host="0.0.0.0", debug=True)

@@ -5,7 +5,7 @@ export default (props) => {
     return <>
         <style jsx>{`
         `}</style>
-        <div className={`shadow-sm ${props.className?props.className : ""}`}>
+        <div className={`bg-white rounded-lg shadow block p-8 ${props.className?props.className : ""}`}>
             {children}
         </div>
     </>

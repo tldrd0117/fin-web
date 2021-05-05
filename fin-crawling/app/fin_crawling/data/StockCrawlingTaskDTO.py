@@ -1,50 +1,101 @@
 from collections import deque
-from datetime import date, timedelta, datetime
+from datetime import timedelta, datetime
+from .base.DTO import DTO
 
-class StockCrawlingTaskDTO:
-    count = 0
-    successCount = 0
-    failCount = 0
-    restCount = 0
-    restTasks = deque()
-    failTasks = deque()
-    currentTask = ""
+SUCCESS = 1
+FAIL = 2
+WAIT = 0
 
-    def __init__(self):
-        pass
 
-    def setTasks(self, startDateStr, endDateStr):
-        startDate = datetime.strptime(startDateStr,"%Y%m%d")
-        endDate = datetime.strptime(endDateStr,"%Y%m%d")
-        tasks = [startDate + timedelta(days=x) for x in range((endDate-startDate).days + 1)]
+class StockCrawlingTaskDTO(DTO):
+
+    def __init__(self) -> None:
+        self.count = 0
+        self.successCount = 0
+        self.failCount = 0
+        self.restCount = 0
+        self.failTasks: deque = deque()
+        self.state = "stop"
+        self.tasks: deque = deque()
+        self.tasksRet: deque = deque()
+        self.index = 0
+        self.market = ""
+        self.startDateStr = ""
+        self.endDateStr = ""
+        self.taskUniqueId = ""
+        self.percent = 0.0
+
+    def setTasks(self, startDateStr: str, endDateStr: str, market: str, taskId: str, taskUniqueId: str) -> None:
+        self.startDateStr = startDateStr
+        self.endDateStr = endDateStr
+        self.taskId = taskId
+        self.market = market
+        self.taskUniqueId = taskUniqueId
+        startDate = datetime.strptime(startDateStr, "%Y%m%d")
+        endDate = datetime.strptime(endDateStr, "%Y%m%d")
+        tasks = [(startDate + timedelta(days=x)).strftime("%Y%m%d") for x in range((endDate - startDate).days + 1)]
         self.count = len(tasks)
         self.successCount = 0
         self.restCount = len(tasks)
-        self.restTasks = deque(tasks)
         self.failCount = 0
+        self.state = "running"
+        self.tasks = deque(tasks)
+        self.index = 0
+        self.tasksRet = deque(([0]*len(tasks)))
+        self.percent = 0.0
     
-    def reset(self):
-        count = 0
-        successCount = 0
-        restCount = 0
-        restTasks = deque()
-        currentTask = ""
+    def reset(self) -> None:
+        self.count = 0
+        self.successCount = 0
+        self.restCount = 0
+        self.failTasks = deque()
+        self.failCount = 0
+        self.state = "stop"
+        self.tasks = deque()
+        self.index = 0
+        self.tasksRet = deque()
+        self.startDateStr = ""
+        self.endDateStr = ""
+        self.percent = 0.0
+    
+    def setState(self, state: str) -> None:
+        self.state = state
 
-    def success(self, count):
+    def success(self, count: int) -> None:
         self.successCount = self.successCount + count
         self.restCount = self.restCount - count
+        i = 0
         for _ in range(count):
-            self.restTasks.popleft()
-    
-    def fail(self, count):
+            self.tasksRet[self.index + i] = SUCCESS
+            i = i+1
+        self.index = self.index + count
+        self.percent = (self.successCount+self.failCount)/self.count * 100
+        if self.restCount <= 0:
+            self.state = "success"
+        else:
+            self.state = "waiting next task"
+
+    def fail(self, count: int) -> None:
         self.failCount = self.failCount + count
         self.restCount = self.restCount - count
+        i = 0
         for _ in range(count):
-            left = self.restTasks.popleft()
+            left = self.tasks[self.index + i]
             self.failTasks.append(left)
-    
-    def __str__(self):
-        return f'count: {self.count}, successCount: {self.successCount}, restCount: {self.restCount}, failCount: {self.failCount}'
-    
-    def toDict(self):
-        return {"count":self.count,"successCount":self.successCount, "restCount":self.restCount, "failCount":self.failCount}
+            self.tasksRet[self.index + i] = FAIL
+            i = i+1
+        self.index = self.index + count
+        self.percent = (self.successCount+self.failCount)/self.count * 100
+        if self.restCount <= 0:
+            self.state = "fail"
+        else:
+            self.state = "waiting next task"
+
+    # def toDict(self):
+    #     return {"count": self.count,
+    #             "successCount": self.successCount,
+    #             "restCount": self.restCount,
+    #             "failCount": self.failCount,
+    #             "state": self.state,
+    #             "taskId": self.taskId
+    #             }

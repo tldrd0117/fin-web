@@ -3,18 +3,26 @@ import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 // https://reactdatepicker.com/
 
-export default (props) => {
-    const [startDate, setStartDate] = useState(new Date());
+interface DatePickerProps{
+    onChange: Function
+    selected: Date
+    className?: string
+}
+
+export default (props: DatePickerProps) => {
+    const { onChange, selected, className} = props;
     return <>
         <style jsx global>{`
             .datepicker{
-                width: 120px;
+                width: 125px;
             }
         `}</style>
         <DatePicker 
-            className={`border-solid border border-light-blue-500 px-4 h-10 datepicker ${props.className?props.className : ""}`}
-            dateFormat="yyyy/MM/dd"
-            selected={startDate} 
-            onChange={date => setStartDate(date)} />
+            className={`datepicker border border-gray-200 pl-4 pr-4 py-3 leading-none 
+            rounded-lg shadow-sm focus:outline-none focus:shadow-outline 
+            text-gray-600 font-medium ${className?className : ""}`}
+            dateFormat="yyyy-MM-dd"
+            selected={selected} 
+            onChange={onChange} />
     </>
 }

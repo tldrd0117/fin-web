@@ -10,7 +10,8 @@
                         "compileEnv": "worker"
                     }]
                 ]
-            }
+            },
+            "regenerator-transform"
         ]
     ]
 }

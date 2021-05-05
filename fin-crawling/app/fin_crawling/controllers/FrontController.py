@@ -1,16 +1,10 @@
-from flask import Flask, render_template
+from flask import render_template
+from flask.app import Flask
+from typing import Any
 
-class FrontController:
-    def __init__(self, app):
-        self.app = app
-        self.createRoutes(app)
 
-    def createRoutes(self, app):
-        @app.route('/')
-        def sendIndex():
-            return render_template("index.html")
+def setupFrontController(app: Flask) -> None:
 
-        @app.route('/<path:path>')
-        def sendStatic(path):
-            return app.send_static_file(path)
-        
+    @app.route('/')
+    def sendIndex() -> Any:
+        return render_template("index.html")

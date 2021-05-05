@@ -1,6 +1,6 @@
 import React from 'react';
 import AppBar from '../containers/AppBar';
-import DateMarcap from '../containers/DateMarcap';
+import CrawlingBoard from '../containers/CrawlingBoard';
 import Menu from '../containers/Menu';
 
 export default () => {
@@ -22,7 +22,7 @@ export default () => {
             </AppBar>
             <div className={"menu-layout"}>
                 <Menu menus={["일자별 주식 및 시가총액"]}/>
-                <DateMarcap/>
+                <CrawlingBoard/>
             </div>
         </div>
     </>

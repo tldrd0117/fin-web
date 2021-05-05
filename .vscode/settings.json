@@ -1,5 +1,18 @@
 {
     "python.pythonPath": "/Users/iseongjae/.pyenv/versions/fin-crawling-3.7.3/bin/python",
-    "python.linting.pylintEnabled": true,
-    "python.linting.enabled": true
+    "python.linting.pylintEnabled": false,
+    "python.linting.enabled": true,
+    "python.linting.flake8Enabled": true,
+    "python.linting.mypyEnabled": true,
+    "python.linting.mypyArgs": [
+        "--disallow-untyped-calls",
+        "--disallow-untyped-defs",
+        "--disallow-incomplete-defs",
+        "--check-untyped-defs",
+        // "--disallow-untyped-decorators",
+        "--ignore-missing-imports"
+    ],
+    "python.linting.flake8Args": [
+        "--max-line-length=250",
+    ],
 }

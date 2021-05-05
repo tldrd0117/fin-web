@@ -1,0 +1,36 @@
+version: '3.1'
+
+services:
+  mongo:
+    build:
+      context: ./db
+      dockerfile: ./Dockerfile
+    image: mongo
+    restart: always
+    volumes: 
+      - ./db/data:/data/db
+    ports:
+      - 8082:27017
+    networks: 
+      - mongo-server
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: example
+
+  mongo-express:
+    build:
+      context: ./express
+      dockerfile: ./Dockerfile
+    image: mongo-express
+    restart: always
+    ports:
+      - 8081:8081
+    networks: 
+      - mongo-server
+    environment:
+      ME_CONFIG_MONGODB_ADMINUSERNAME: root
+      ME_CONFIG_MONGODB_ADMINPASSWORD: example
+networks: 
+  mongo-server:
+    name: mongo-server
+  

@@ -1,19 +1,18 @@
 
-from watchdog.events import FileSystemEventHandler
-import os
-import asyncio
+from watchdog.events import FileSystemEventHandler, FileSystemEvent, FileMovedEvent, FileCreatedEvent, FileDeletedEvent, FileModifiedEvent
+from fin_crawling.data.StockCrawlingDownloadTaskDTO import StockCrawlingDownloadTaskDTO
+from pymitter import EventEmitter
+
 
 class CmdFileSystemEventHandler(FileSystemEventHandler):
-    def __init__(self):
-        pass
 
-    def setQueue(self, queue):
-        self.queue = queue
+    def __init__(self, ee: EventEmitter) -> None:
+        self.ee = ee
     
-    def setCreatedCallback(self, callback):
-        self.callback = callback
+    def setDownloadTask(self, downloadTask: StockCrawlingDownloadTaskDTO) -> None:
+        self.downloadTask = downloadTask
 
-    def on_any_event(self, event):
+    def on_any_event(self, event: FileSystemEvent) -> None:
         """Catch-all event handler.
         :param event:
             The event object representing the file system event.
@@ -21,7 +20,7 @@ class CmdFileSystemEventHandler(FileSystemEventHandler):
             :class:`FileSystemEvent`
         """
 
-    def on_moved(self, event):
+    def on_moved(self, event: FileMovedEvent) -> None:
         """Called when a file or a directory is moved or renamed.
         :param event:
             Event representing file/directory movement.
@@ -29,22 +28,22 @@ class CmdFileSystemEventHandler(FileSystemEventHandler):
             :class:`DirMovedEvent` or :class:`FileMovedEvent`
         """
 
-    def on_created(self, event):
+    def on_created(self, event: FileCreatedEvent) -> None:
         """Called when a file or directory is created.
         :param event:
             Event representing file/directory creation.
         :type event:
             :class:`DirCreatedEvent` or :class:`FileCreatedEvent`
         """
-        if self.queue.empty():
-            print("####empty")
-            return
+        # if self.queue.empty():
+        #     print("####empty")
+        #     return
         if not event.src_path.endswith(".csv"):
             print("####not exist")
             return
-        asyncio.run(self.callback(event))
+        self.ee.emit("observer/downloadComplete", event, self.downloadTask)
 
-    def on_deleted(self, event):
+    def on_deleted(self, event: FileDeletedEvent) -> None:
         """Called when a file or directory is deleted.
         :param event:
             Event representing file/directory deletion.
@@ -52,7 +51,7 @@ class CmdFileSystemEventHandler(FileSystemEventHandler):
             :class:`DirDeletedEvent` or :class:`FileDeletedEvent`
         """
 
-    def on_modified(self, event):
+    def on_modified(self, event: FileModifiedEvent) -> None:
         """Called when a file or directory is modified.
         :param event:
             Event representing file/directory modification.
@@ -60,11 +59,3 @@ class CmdFileSystemEventHandler(FileSystemEventHandler):
             :class:`DirModifiedEvent` or :class:`FileModifiedEvent`
         """
         # print("modified")
-
-    def on_closed(self, event):
-        """Called when a file opened for writing is closed.
-        :param event:
-            Event representing file closing.
-        :type event:
-            :class:`FileClosedEvent`
-        """

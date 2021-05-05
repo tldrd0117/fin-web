@@ -25,5 +25,7 @@ COPY ./ .
 
 # ENTRYPOINT [ "sh", "./wait-for-grid.sh" ]
 
-CMD ["poetry","run","uwsgi","uwsgi.ini"]
+# CMD ["poetry","run","uwsgi","uwsgi.ini"]
 # CMD ["poetry","run","app"]
+# CMD ["uwsgi","--ini","uwsgi.ini"]
+CMD ["poetry","run","uwsgi","--ini","uwsgi.ini"]

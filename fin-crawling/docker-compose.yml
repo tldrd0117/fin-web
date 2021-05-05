@@ -10,7 +10,10 @@ services:
       - 5000:5000
     volumes:
       - ./downloads:/usr/src/downloads
-      - ./fin_crawling:/usr/src/fin_crawling
+      - ./app:/usr/src/app
+      - ./log:/usr/src/app/log
+    networks:
+      - database
   webdriver:
     build:
       context: ./webdriver
@@ -20,4 +23,21 @@ services:
     volumes: 
       - /dev/shm:/dev/shm
       - ./downloads:/home/seluser/Downloads
-
+    networks:
+      - database
+  nginx:
+    build:
+      context: ./nginx
+      dockerfile: ./Dockerfile
+    depends_on:
+      - commander
+    ports:
+      - "8083:80"
+    volumes:
+      - ./nginx/nginx.conf:/etc/nginx/nginx.conf
+    networks:
+      - database
+networks: 
+  database:
+    name: mongo-server
+    external: true
