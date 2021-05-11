@@ -21,7 +21,7 @@ class StockCrawlingDataSource:
     def getStockData(self, dto: StockCrawlingRunCrawlingDTO) -> None:
         task = StockCrawlingTaskDTO()
         crawler = MarcapCrawler.create(self.ee)
-        crawler.crawling()
+        crawler.crawling(dto)
 
         @self.ee.on("marcapCrawler/onConnectingWebdriver")
         def onConnectWebdriver() -> None:
