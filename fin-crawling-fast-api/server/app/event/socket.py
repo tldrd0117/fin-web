@@ -3,6 +3,7 @@ from app.model.model import StockCrawlingRunCrawling
 from pymitter import EventEmitter
 from app.event.manager import manager
 
+
 ee = EventEmitter()
 
 

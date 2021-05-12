@@ -15,4 +15,5 @@
     "python.linting.flake8Args": [
         "--max-line-length=250",
     ],
+    "python.analysis.extraPaths": ["fin-crawling-fast-api/server"]
 }
