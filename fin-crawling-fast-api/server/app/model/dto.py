@@ -12,8 +12,11 @@ class StockCrawlingRunCrawlingDTO(BaseModel):
 
 
 class StockCrawlingDownloadTaskDTO(BaseModel):
+    uuid: str
     market: str
     dateStr: str
+    taskId: str
+    taskUniqueId: str
 
 
 class StockCrawlingTaskDTO(BaseModel):
@@ -31,6 +34,7 @@ class StockCrawlingTaskDTO(BaseModel):
     endDateStr: str = ""
     taskUniqueId: str = ""
     percent: float = 0.0
+    taskId: str = ""
 
 
 class StockCrawlingTasksDTO(BaseModel):
@@ -61,7 +65,9 @@ class StockMarketCapitalDTO(BaseModel):
 class StockMarketCapitalResultDTO(BaseModel):
     data: deque = deque()
     date: str = ""
+    market: str = ""
     result: str = "fail"
+    errorMsg: str = ""
 
 
 
