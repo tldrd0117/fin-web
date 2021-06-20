@@ -1,29 +1,14 @@
 import React from 'react';
-import {
-    BrowserRouter as Router,
-    Switch,
-    Route,
-    Link
-} from "react-router-dom";
 import store from './store'
-import Login from './pages/Login'
-import Main from './pages/Main';
-import {Provider} from 'react-redux'
+import Router from './Router'
+import {Provider, useSelector} from 'react-redux'
+import { ConnectedRouter } from 'connected-react-router';
+import {history, RootState} from "./data/root/rootReducer"
 
 export default () => {
-    const hello : string = "HELLO2";
     return <>
         <Provider store={store}>
-            <Router>
-                <Switch>
-                <Route path="/" exact>
-                    <Main />
-                </Route>
-                <Route path="/main">
-                    <Login />
-                </Route>
-                </Switch>
-            </Router>
+            <Router/>
         </Provider>
     </>
 }

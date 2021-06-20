@@ -1,6 +1,12 @@
-import React from 'react';
+import React, { MouseEventHandler } from 'react';
 
-export default (props) => {
+interface ButtonProps{
+    children?: React.ReactNode
+    onClick?: MouseEventHandler
+    className?: string
+}
+
+export default (props: ButtonProps) => {
     const {children, onClick} = props;
     return <>
         <style jsx>{`

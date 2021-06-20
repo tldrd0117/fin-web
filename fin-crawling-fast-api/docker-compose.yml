@@ -1,0 +1,48 @@
+version: '3.1'
+services:
+  server:
+    build:
+      context: ./server
+      dockerfile: ./Dockerfile
+    depends_on:
+      - webdriver
+    ports:
+      - 8000:8000
+    volumes:
+      - ./downloads:/usr/src/downloads
+      - ./server:/usr/src/app
+      - ./log:/usr/src/app/log
+    networks:
+      - database
+  webdriver:
+    build:
+      context: ./webdriver
+      dockerfile: ./Dockerfile
+    environment:
+      - SE_NODE_MAX_SESSIONS=10
+      - SE_NODE_OVERRIDE_MAX_SESSIONS=true
+    ports:
+      - 4444:4444
+    volumes: 
+      - /dev/shm:/dev/shm
+      - ./downloads:/home/seluser/Downloads
+    networks:
+      - database
+  nginx:
+    build:
+      context: ./nginx
+      dockerfile: ./Dockerfile
+    depends_on:
+      - server
+    ports:
+      - "8083:80"
+    volumes:
+      - ./nginx/nginx.conf:/etc/nginx/nginx.conf
+      - ./nginx/client:/usr/src/client
+      - ./server/sock:/usr/src/
+    networks:
+      - database
+networks: 
+  database:
+    name: mongo-server
+    external: true

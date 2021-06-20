@@ -15,14 +15,14 @@ export default (props) => {
     return <>
             <div className={"relative mt-4"}>
                 <div>
-                    <span>{`전체: ${count}`}</span>
-                    <span className={"text-green-400 ml-2"}>{`성공: ${successCount}`}</span>
-                    <span className={"text-red-400 ml-2"}>{`실패: ${failCount}`}</span>
+                    <span>{`전체: ${count||"0"}`}</span>
+                    <span className={"text-green-400 ml-2"}>{`성공: ${successCount||"0"}`}</span>
+                    <span className={"text-red-400 ml-2"}>{`실패: ${failCount||"0"}`}</span>
                 </div>
                 <div className={"flex justify-between mt-2"}>
-                    <span>{`${percent} %`}</span>
+                    <span>{`${percent||"0"} %`}</span>
                     <span className={"ml-2"}>
-                        <span className={"text-blue-400"}>{successCount+failCount}</span>/<span>{count}</span>
+                        <span className={"text-blue-400"}>{(successCount+failCount)||"0"}</span>/<span>{count||"0"}</span>
                     </span>
                 </div>
                 <LinearProgressBar percent={percent} className={"w-full"}/>
@@ -34,7 +34,7 @@ export default (props) => {
                     text-xs font-bold 
                     px-2 md:px-4 py-1 
                     opacity-90 hover:opacity-100 absolute top-0 right-0`}>
-                    {state}
+                    {state||""}
                 </span>
             </div>
         </>

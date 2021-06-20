@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import Breadcrumb from '../components/Breadcrumb';
-import { getTaskHistory } from '../data/crawling/crawlingSlice';
+import { fetchCompletedTask } from '../data/crawling/crawlingHistorySlice';
 import { RootState } from '../data/root/rootReducer';
 import CrawlingList from './CrawlingList';
 
@@ -10,7 +10,7 @@ export default (props) => {
     const dispatch = useDispatch()
     useEffect(()=>{
         if(isConnected){
-            dispatch(getTaskHistory({}))
+            dispatch(fetchCompletedTask({}))
         }
     },[isConnected])
     
@@ -18,6 +18,7 @@ export default (props) => {
         <style jsx>{`
             .container{
                 @apply flex flex-col p-4 bg-gray-100;
+                @apply overflow-auto;
             }
             :global(.playButton){
                 top:30px;

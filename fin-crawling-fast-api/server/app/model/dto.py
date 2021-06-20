@@ -1,5 +1,10 @@
+from typing import List
 from pydantic import BaseModel
-from collections import deque
+
+
+class SocketResponse(BaseModel):
+    event: str
+    payload: dict
 
 
 class StockCrawlingRunCrawlingDTO(BaseModel):
@@ -24,10 +29,10 @@ class StockCrawlingTaskDTO(BaseModel):
     successCount: int = 0
     failCount: int = 0
     restCount: int = 0
-    failTasks: deque = deque()
+    failTasks: List[str] = []
     state: str = "stop"
-    tasks: deque = deque()
-    tasksRet: deque = deque()
+    tasks: List[str] = []
+    tasksRet: List[int] = []
     index: int = 0
     market: str = ""
     startDateStr: str = ""
@@ -39,7 +44,12 @@ class StockCrawlingTaskDTO(BaseModel):
 
 class StockCrawlingTasksDTO(BaseModel):
     tasks: dict = dict()
-    taskIds: deque = deque()
+    taskIds: List[str] = []
+
+
+class StockCrawlingCompletedTasksDTO(BaseModel):
+    history: dict = dict()
+    historyIds: List[str] = []
 
 
 class StockMarketCapitalDTO(BaseModel):
@@ -58,12 +68,10 @@ class StockMarketCapitalDTO(BaseModel):
     price: str
     marcap: str
     number: str
-    createdAt: str
-    updatedAt: str
 
 
 class StockMarketCapitalResultDTO(BaseModel):
-    data: deque = deque()
+    data: List[str] = []
     date: str = ""
     market: str = ""
     result: str = "fail"

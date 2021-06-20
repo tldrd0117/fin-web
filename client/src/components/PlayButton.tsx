@@ -13,7 +13,7 @@ export default (props) => {
             <svg width="11px" height="14px" viewBox="0 0 11 14" >
                 <title>play_arrow</title>
                 <desc>Created with Sketch.</desc>
-                <g id="Icons" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+                <g id="Icons" stroke="none" strokeWidth="1" fill="none" fillRule="evenodd">
                     <g id="Rounded" transform="translate(-753.000000, -955.000000)">
                         <g id="AV" transform="translate(100.000000, 852.000000)">
                             <g id="-Round-/-AV-/-play_arrow" transform="translate(646.000000, 98.000000)">

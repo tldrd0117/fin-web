@@ -1,7 +1,8 @@
 import { createAction } from '@reduxjs/toolkit'
 import { all, put, takeEvery } from 'redux-saga/effects'
-import { watchOnMessage, watchRunCrawling } from './socket/socketSagas'
+import { watchEmitData, watchOnSocket } from './socket/socketSagas'
 import { addTodo } from './todos/todosSlice'
+import { watchOnToken } from './user/userSagas'
 
 export const incrementAsync = createAction("INCREMENT_ASYNC")
 
@@ -24,7 +25,8 @@ export default function* rootSaga(){
     yield all([
         helloSaga,
         watchIncrementAsync(),
-        watchOnMessage(),
-        watchRunCrawling()
+        watchOnSocket(),
+        watchEmitData(),
+        watchOnToken()
     ])
 }

@@ -1,28 +1,35 @@
 from fastapi import WebSocket
 from app.model.model import StockCrawlingRunCrawling
-from pymitter import EventEmitter
-from app.event.manager import manager
+from app.module.locator import Locator
+from app.service.CrawlingService import CrawlingService
+from app.event.manager import ConnectionManager
+from uvicorn.config import logger
+
+REQ_SOCKET_CRAWLING_FETCH_COMPLETED_TASK = "crawling/fetchCompletedTask"
+REQ_SOCKET_CRAWLING_FETCH_TASKS = "crawling/fetchTasks"
+REQ_SOCKET_CRAWLING_RUN_CRAWLING = "crawling/runCrawling"
+
+manager: ConnectionManager = Locator.getInstance().get(ConnectionManager)
+crawlingService: CrawlingService = Locator.getInstance().get(CrawlingService)
 
 
-ee = EventEmitter()
-
-
-@ee.on("connect")
+@manager.ee.on("connect")
 def connect(data: dict, websocket: WebSocket) -> None:
     print("connect")
 
 
-@ee.on("message")
+@manager.ee.on("message")
 def message(data: dict, websocket: WebSocket) -> None:
     print(data)
 
 
-@ee.on("crawling/checkDoingCrawling")
-def checkDoingCrawling(data: dict, websocket: WebSocket) -> None:
-    ee.emit("crawlingService/checkDoingCrawling")
+@manager.ee.on(REQ_SOCKET_CRAWLING_FETCH_TASKS)
+def fetchTasks(data: dict, websocket: WebSocket) -> None:
+    print("fetchTasks!!")
+    crawlingService.fetchTasks(websocket)
 
 
-@ee.on("crawling/runCrawling")
+@manager.ee.on(REQ_SOCKET_CRAWLING_RUN_CRAWLING)
 def runCrawling(data: dict, websocket: WebSocket) -> None:
     dto = StockCrawlingRunCrawling(**{
         "driverAddr": "http://webdriver:4444",
@@ -32,30 +39,9 @@ def runCrawling(data: dict, websocket: WebSocket) -> None:
         "taskId": data["taskId"],
         "taskUniqueId": data["id"]
     })
-    print(dto.dict())
-    manager.send("fake", dto.dict(), websocket)
-    # ee.emit("crawlingService/runCrawling", dto)
+    crawlingService.runCrawling(dto)
 
 
-@ee.on("crawling/getTaskHistory")
-def getTaskHistory(data: dict, websocket: WebSocket) -> None:
-    print("getTaskHistory")
-    print(data)
-    ee.emit("crawlingService/getCompletedTask")
-
-
-# @ee.on("crawling/updateTasks")
-# def updateTasks(tasks: StockCrawlingTasksDTO) -> None:
-#     socketio.emit("crawling/updateTasks", tasks.toDict(), broadcast=True)
-
-# @ee.on("crawling/crawlingComplete")
-# def crawlingComplete(data: StockCrawlingTaskDTO) -> None:
-#     socketio.emit("crawling/crawlingComplete", data.toDict(), broadcast=True)
-
-# @ee.on("crawling/crawlingStart")
-# def crawlingStart(data: StockCrawlingTaskDTO) -> None:
-#     socketio.emit("crawling/crawlingStart", data.toDict(), broadcast=True)
-
-# @ee.on("crawling/updateTaskHistory")
-# def updateTaskHistory(data: list, broadcast: bool = True) -> None:
-#     socketio.emit("crawling/updateTaskHistory", data, broadcast=broadcast)
+@manager.ee.on(REQ_SOCKET_CRAWLING_FETCH_COMPLETED_TASK)
+def fetchCompletedTask(data: dict, websocket: WebSocket) -> None:
+    crawlingService.fetchCompletedTask(websocket)

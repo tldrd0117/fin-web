@@ -8,11 +8,11 @@ import { useSelector } from 'react-redux'
 export default (props) => {
     const { taskId } = props
     const { tasks } = useSelector((state: RootState) => state.crawling)
-    if(tasks[taskId]){
+    if(tasks && tasks[taskId]){
         const { ids, list } = tasks[taskId]
         return <div className={"relative"}>
             {
-                ids?ids.map(val=><CrawlingProgressListItem data={list[val]} />):null
+                ids?ids.map(val=><CrawlingProgressListItem key={val} data={list[val]} />):null
             }
         </div>
     } else {

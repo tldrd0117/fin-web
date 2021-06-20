@@ -4,7 +4,7 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 let config = {
     entry: './src/index.tsx',
     output: {
-        filename: 'main.js',
+        filename: 'main.[contenthash].js',
         path: path.resolve(__dirname, 'dist'),
     },
     module:{
@@ -62,6 +62,9 @@ let config = {
             "@": path.resolve(__dirname, "src")
         },
         extensions: ['.tsx', '.ts', '.js'],
+    },
+    devServer: {
+        historyApiFallback: true
     }
 };
 

@@ -6,14 +6,14 @@ export default (props) => {
     return <>
         <style jsx>{`
             .menu{
-                width: 224px;
+                width: 300px;
                 height: 100%;
                 overflow: auto;
                 padding-top: 20px;
             }
         `}</style>
         <div className={"menu shadow bg-gray-700 flex flex-col"}>
-            {menus.map(v=><MenuItem>{v}</MenuItem>)}
+            {menus.map(v=><MenuItem key={v}>{v}</MenuItem>)}
         </div>
     </>
 }
