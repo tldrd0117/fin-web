@@ -14,6 +14,6 @@ export default (props) => {
                 }
             }
         `}</style>
-        <span className={"text-white"}>{props.children}</span>
+        <span onClick={props.onClick} className={"text-white"}>{props.children}</span>
     </>
 }

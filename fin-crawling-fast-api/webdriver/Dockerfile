@@ -1,1 +1,2 @@
-FROM selenium/standalone-chrome:4.0.0-beta-3-prerelease-20210422
+FROM selenium/standalone-chrome:4.0.0-rc-1-prerelease-20210618
+

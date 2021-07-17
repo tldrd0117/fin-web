@@ -58,6 +58,7 @@ class MarcapCrawler(object):
         uuid = self.createUUID()
         logger.info(uuid)
         self.ee.emit(EVENT_MARCAP_CRAWLING_ON_CONNECTING_WEBDRIVER, dto)
+        downloadObserver = None
         try:
             driver = self.connectWebDriver(dto.driverAddr, uuid)
             driver.get("http://data.krx.co.kr/contents/MDC/MDI/mdiLoader/index.cmd?menuId=MDC0201020101")
@@ -91,7 +92,8 @@ class MarcapCrawler(object):
         except Exception as e:
             logger.error(f"error: {str(e)}")
         finally:
-            downloadObserver.stopObserver()
+            if downloadObserver:
+                downloadObserver.stopObserver()
             if driver:
                 driver.quit()
     
@@ -143,7 +145,7 @@ class MarcapCrawler(object):
         lines = []
         with open(path, "r", encoding="utf-8") as f:
             p = Path(f.name)
-            dto.date = p.stem
+            # dto.date = p.stem
             lines = f.readlines()
         
         for i in range(1, len(lines)):
@@ -189,7 +191,7 @@ class MarcapCrawler(object):
                 return
             print("created: " + date)
             await asyncio.sleep(0.5)
-            dest_path = f'{os.path.dirname(event.src_path)}/{date}.csv'
+            dest_path = f'{os.path.dirname(event.src_path)}/{market+"-"+date}.csv'
             if os.path.isfile(dest_path):
                 return
             self.changeCharSet(event.src_path)

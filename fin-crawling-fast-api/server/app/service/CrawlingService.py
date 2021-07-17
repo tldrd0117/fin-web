@@ -1,12 +1,13 @@
 from __future__ import annotations
 import asyncio
+from typing import List
 from app.repo.CrawlerRepository import CrawlerRepository
 from app.repo.TasksRepository import EVENT_TASK_REPO_TASK_COMPLETE, TasksRepository, EVENT_TASK_REPO_UPDATE_TASKS
-from app.module.task import Task
+from app.module.task import Pool, Task, TaskPool
 from app.model.dto import StockCrawlingCompletedTasksDTO, StockCrawlingRunCrawlingDTO, StockCrawlingTasksDTO
 from app.crawler.MarcapCrawler import MarcapCrawler
 from fastapi import WebSocket
-from app.event.manager import ConnectionManager
+from app.module.socket.manager import ConnectionManager
 from uvicorn.config import logger
 
 RES_SOCKET_CRAWLING_FETCH_COMPLETED_TASK = "crawling/fetchCompletedTaskRes"
@@ -21,15 +22,18 @@ class CrawlingService:
         self.manager = manager
         self.createTaskRepositoryListener()
 
-    def runCrawling(self, dto: StockCrawlingRunCrawlingDTO) -> None:
-        if dto.taskId == "marcap":
-            async def taskWorker() -> None:
-                marcapCrawler = MarcapCrawler()
-                self.tasksRepository.createListners(marcapCrawler.ee)
-                self.crawlerRepository.createListener(marcapCrawler.ee)
-                await asyncio.create_task(marcapCrawler.crawling(dto))
-            task = Task(taskWorker)
-            self.tasksRepository.runMarcapTask(task, dto)
+    def runCrawling(self, dtoList: List[StockCrawlingRunCrawlingDTO]) -> None:
+        for dto in dtoList:
+            if dto.taskId == "marcap":
+                async def taskWorker(runDto: StockCrawlingRunCrawlingDTO, pool: Pool, taskPool: TaskPool) -> None:
+                    marcapCrawler = MarcapCrawler()
+                    self.tasksRepository.createListners(marcapCrawler.ee)
+                    self.crawlerRepository.createListener(marcapCrawler.ee)
+                    logger.info(f"taskWorker:{runDto.taskUniqueId}")
+                    await asyncio.create_task(marcapCrawler.crawling(runDto))
+                    taskPool.removeTaskPool(pool)
+                task = Task(taskWorker, {"runDto": dto})
+                self.tasksRepository.runMarcapTask(task, dto)
 
     def fetchTasks(self, webSocket: WebSocket) -> None:
         self.manager.send(RES_SOCKET_CRAWLING_FETCH_TASKS, self.tasksRepository.tasksdto.dict(), webSocket)
@@ -47,6 +51,6 @@ class CrawlingService:
         logger.info("tasks:"+tasks.json())
         self.manager.sendBroadCast(RES_SOCKET_CRAWLING_RUN_CRAWLING, tasks.dict())
     
-    def completeTask(self) -> None:
+    def completeTask(self, marcap: str) -> None:
         tasks: StockCrawlingCompletedTasksDTO = self.tasksRepository.getCompletedTask()
         self.manager.sendBroadCast(RES_SOCKET_CRAWLING_FETCH_COMPLETED_TASK, tasks.dict())

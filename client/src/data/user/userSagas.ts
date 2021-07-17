@@ -13,7 +13,7 @@ export function* watchOnFetchToken(action){
         }))
         yield put(push("/"))
     } else {
-        yield put(fetchTokenFail({error}))
+        yield put(fetchTokenFail({response, error}))
     }
 }
 

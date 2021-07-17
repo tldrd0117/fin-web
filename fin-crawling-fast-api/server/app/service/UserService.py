@@ -26,7 +26,7 @@ class UserService:
         return user
     
     def check_token(self, token: str) -> bool:
-        return self.get_user(fake_users_db, token) != None
+        return self.get_user(fake_users_db, token) is not None
 
     async def get_current_user(self, token: str = Depends(oauth2_scheme)) -> UserInDB:
         user = self.fake_decode_token(token)

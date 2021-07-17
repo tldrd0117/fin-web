@@ -5,17 +5,18 @@ from app.crawler.MarcapCrawler import EVENT_MARCAP_CRAWLING_ON_CONNECTING_WEBDRI
     EVENT_MARCAP_CRAWLING_ON_PARSING_COMPLETE, \
     EVENT_MARCAP_CRAWLING_ON_START_CRAWLING
 from app.model.dto import StockCrawlingDownloadTaskDTO, StockCrawlingRunCrawlingDTO, StockMarketCapitalResultDTO
-from app.datasource.StockMongoDataSource import mongod
+from app.datasource.StockMongoDataSource import StockMongoDataSource
 from pymitter import EventEmitter
-from uvicorn.config import logger
+# from uvicorn.config import logger
 
 
 EVENT_CRAWLING_REPO_ON_CRAWLING_COMPLETE: Final = "crawlingRepo/onCrawlingComplete"
 
 
 class CrawlerRepository(object):
-    def __init__(self) -> None:
+    def __init__(self, mongod: StockMongoDataSource) -> None:
         super().__init__()
+        self.mongod = mongod
 
     def createListener(self, ee: EventEmitter) -> None:
         ee.on(EVENT_MARCAP_CRAWLING_ON_CONNECTING_WEBDRIVER, self.onConnectingWebDriver)
@@ -37,8 +38,9 @@ class CrawlerRepository(object):
         pass
 
     def onParsingComplete(self, isSuccess: bool, retdto: StockMarketCapitalResultDTO, dto: StockCrawlingDownloadTaskDTO) -> None:
+        pass
         # logger.info("mongod:"+retdto.json())
-        mongod.insertMarcap(retdto.dict())
+        # self.mongod.insertMarcap(retdto.dict())
     
     
 

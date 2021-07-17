@@ -18,6 +18,7 @@ pymongo = "^3.11.4"
 selenium = "^3.141.0"
 websockets = "^9.1"
 python-multipart = "^0.0.5"
+APScheduler = "^3.7.0"
 
 [tool.poetry.dev-dependencies]
 pytest = "^5.2"

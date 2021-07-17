@@ -12,49 +12,25 @@ export default (props) => {
             state,
             percent,
             startDateStr,
-            endDateStr
+            endDateStr,
+            market
         }
     } = props
     return <>
             <style jsx>{`
-                .date{
-                    @apply border;
-                    @apply px-2;
-                    @apply py-2;
-                    @apply leading-none rounded-lg shadow-sm;
-                    @apply focus:outline-none;
-                    @apply focus:ring;
-                    @apply text-gray-600;
-                    @apply font-normal;
-                    @apply text-sm;
-                    @apply mx-1;
+                .w-p{
+                    width: 14.2%;
+                    text-align: right;
                 }
             `}</style>
-            <div className={"relative mt-4"}>
-                <div className={"mb-3"}>
-                    <span className={"date"}>{getDateHipen(startDateStr)}</span>~<span className={"date"}>{getDateHipen(endDateStr)}</span>
-                </div>
-                <div>
-                    <span>{`전체: ${count||"0"}`}</span>
-                    <span className={"text-green-400 ml-2"}>{`성공: ${successCount||"0"}`}</span>
-                    <span className={"text-red-400 ml-2"}>{`실패: ${failCount||"0"}`}</span>
-                </div>
-                <div className={"flex justify-between mt-2"}>
-                    <span>{`${percent||"0"} %`}</span>
-                    <span className={"ml-2"}>
-                        <span className={"text-blue-400"}>{(successCount+failCount)||"0"}</span>/<span>{count||"0"}</span>
-                    </span>
-                </div>
-                <span className={`inline-block rounded-full text-white
-                    ${state=="running"?'bg-green-400 hover:bg-green-500':
-                    state=="pending"?"bg-yellow-500 hover:bg-yellow-600":
-                    state=="stop"?'bg-yellow-400 hover:bg-yellow-500':"bg-red-400 hover:bg-red-500"}
-                        duration-300 
-                    text-xs font-bold 
-                    px-2 md:px-4 py-1 
-                    opacity-90 hover:opacity-100 absolute top-0 right-0`}>
-                    {state||""}
-                </span>
+            <div className={"flex mt-4 h-10 items-center justify-between h-auto flex-wrap"}>
+                <span className={'w-p'}>{startDateStr}</span>
+                <span className={'w-p'}>{endDateStr}</span>
+                <span className={'w-p'}>{market}</span>
+                <span className={'w-p'}>{count}</span>
+                <span className={'w-p'}>{successCount}</span>
+                <span className={'w-p'}>{failCount}</span>
+                <span className={'w-p'}>{percent}</span>
             </div>
         </>
 }

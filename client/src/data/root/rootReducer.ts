@@ -4,6 +4,8 @@ import crawlingReducer from "../crawling/crawlingSlice";
 import crawlingHistoryReducer from "../crawling/crawlingHistorySlice";
 import socketReducer from "../socket/socketSlice"
 import userReducer from "../user/userSlice"
+import taskReducer from "../task/taskSlice"
+import taskScheduleReducer from '../task/taskScheduleSlice'
 import { connectRouter } from 'connected-react-router'
 import { createBrowserHistory } from 'history'
 
@@ -15,7 +17,9 @@ const rootReducer = combineReducers({
     crawlingHistory: crawlingHistoryReducer,
     socket: socketReducer,
     user: userReducer,
-    router: connectRouter(history)
+    router: connectRouter(history),
+    task: taskReducer,
+    taskSchedule: taskScheduleReducer
 })
 
 export default rootReducer

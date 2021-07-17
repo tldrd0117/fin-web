@@ -3,6 +3,7 @@ import { all, put, takeEvery } from 'redux-saga/effects'
 import { watchEmitData, watchOnSocket } from './socket/socketSagas'
 import { addTodo } from './todos/todosSlice'
 import { watchOnToken } from './user/userSagas'
+import { watchFetchTaskState, watchTaskSchedule } from './task/taskSagas'
 
 export const incrementAsync = createAction("INCREMENT_ASYNC")
 
@@ -27,6 +28,8 @@ export default function* rootSaga(){
         watchIncrementAsync(),
         watchOnSocket(),
         watchEmitData(),
-        watchOnToken()
+        watchOnToken(),
+        watchFetchTaskState(),
+        watchTaskSchedule()
     ])
 }

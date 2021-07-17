@@ -1,8 +1,9 @@
 from fastapi import FastAPI
+from app.module.locator import Locator
 from app.setup_instance import locator
-from app.router.socket import router as socketRouter
+from app.router.socketEndpoint import router as socketRouter
 from app.router.user import router as userRouter
-from app.repo.TasksRepository import TasksRepository
+from app.scheduler.TaskScheduler import TaskScheduler
 from fastapi.middleware.cors import CORSMiddleware
 import asyncio
 
@@ -34,7 +35,9 @@ loop = None
 
 @app.on_event("startup")
 async def startup() -> None:
-    pass
+    taskScheduler: TaskScheduler = Locator.getInstance().get(TaskScheduler)
+    taskScheduler.start()
     # loop = asyncio.get_event_loop()
     # TasksRepository().createTaskRunner(loop)
+
     

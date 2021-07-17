@@ -1,10 +1,29 @@
-from typing import List
+from typing import Dict, List
 from pydantic import BaseModel
 
 
 class SocketResponse(BaseModel):
     event: str
     payload: dict
+
+
+class StockTaskState(BaseModel):
+    stocks: List
+    years: Dict
+
+
+class StockTaskSchedule(BaseModel):
+    id: str = ""
+    year: str
+    month: str
+    day: str
+    hour: str
+    minute: str
+    second: str
+
+
+class StockTaskScheduleList(BaseModel):
+    list: List[StockTaskSchedule]
 
 
 class StockCrawlingRunCrawlingDTO(BaseModel):
@@ -71,11 +90,8 @@ class StockMarketCapitalDTO(BaseModel):
 
 
 class StockMarketCapitalResultDTO(BaseModel):
-    data: List[str] = []
+    data: List[StockMarketCapitalDTO] = []
     date: str = ""
     market: str = ""
     result: str = "fail"
     errorMsg: str = ""
-
-
-

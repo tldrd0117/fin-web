@@ -14,11 +14,10 @@ export default (props: DatePickerProps) => {
     return <>
         <style jsx global>{`
             .datepicker{
-                width: 125px;
             }
         `}</style>
         <DatePicker 
-            className={`datepicker border border-gray-200 pl-4 pr-4 py-3 leading-none 
+            className={`datepicker border border-gray-200 text-center py-3 leading-none 
             rounded-lg shadow-sm focus:outline-none focus:shadow-outline 
             text-gray-600 font-medium ${className?className : ""}`}
             dateFormat="yyyy-MM-dd"

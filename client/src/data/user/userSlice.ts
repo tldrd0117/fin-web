@@ -6,14 +6,16 @@ const userSlice = createSlice({
     initialState: {
         token: "TOKEN",
         username: "",
+        errorMsg: ""
     },
     reducers:{
         fetchTokenSuccess: (state, action) => {
-            const { payload } = action
-            state.token = payload.token
+            const { payload } = action;
+            state.token = payload.token;
         },
         fetchTokenFail: (state, action) => {
-
+            const { payload } = action;
+            state.errorMsg = payload.response.detail;
         }
     }
 })

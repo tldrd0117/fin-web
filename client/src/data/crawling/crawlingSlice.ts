@@ -30,9 +30,8 @@ const crawlingSlice = createSlice({
         },
         runCrawling: (state, action) => {
             const { payload } = action
-            const { market, startDate, endDate, taskId } = payload
-            const id = taskId + market + startDate + endDate + Math.floor(Date.now() * Math.random())
-            payload.id = id
+            const { taskId } = payload
+            const id = Math.floor(Date.now() * Math.random())
             if(!state.tasks[taskId]){
                 state.tasks[taskId] = {}
             }
@@ -60,8 +59,15 @@ const crawlingSlice = createSlice({
     },
 })
 
+interface RunCrawlingPayload{
+    taskId: string
+    market: Array<string>
+    startDate: string
+    endDate: string
+}
+
 const { actions, reducer } = crawlingSlice
 export const { runCrawling, fetchTasksRes, reset } = actions
-export const fetchTasks = createAction<any>("crawling/fetchTasks")
+export const fetchTasks = createAction<RunCrawlingPayload>("crawling/fetchTasks")
 
 export default reducer

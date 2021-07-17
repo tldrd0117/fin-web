@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { Component, useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import AppBar from '../containers/AppBar';
 import CrawlingBoard from '../containers/CrawlingBoard';
@@ -6,7 +6,7 @@ import Menu from '../containers/Menu';
 import { RootState } from '../data/root/rootReducer'
 import { endConnection, startConnection } from '../data/socket/socketSlice';
 
-export default () => {
+export default ( {SubComponent = null}) => {
     const { isConnected } = useSelector((state: RootState)=>state.socket)
     const dispatch = useDispatch()
     useEffect(() => {
@@ -15,8 +15,8 @@ export default () => {
             dispatch(endConnection({}))
         }
     },[])
+    const [isMenuOpen, setMenuOpen] = useState(false)
     return <>
-    
         <style jsx global>{`
             .appbar{
                 height: 60px;
@@ -36,9 +36,15 @@ export default () => {
             .connect{
                 @apply absolute right-2;
             }
+            .menu-layout-2{
+                margin-top: 60px;
+            }
         `}</style>
         <div className={"top-down-layout"}>
-            <AppBar className={"w-full appbar"} title={"Fin Crawling App"}>
+            <AppBar
+                onMenuIconClick={()=>setMenuOpen(!isMenuOpen)}
+                className={"w-full appbar"} 
+                title={"Fin Crawling App"}>
                 {
                     isConnected?<div className={"connect text-green-500"}>연결</div>:
                     <div className={"connect text-red-500"}>연결끊김</div>
@@ -46,9 +52,16 @@ export default () => {
                 
             </AppBar>
             <div className={"menu-layout"}>
-                <Menu menus={["일자별 주식 및 시가총액"]}/>
-                <CrawlingBoard/>
+                <Menu className={"hidden sm:block"} menus={["일자별 주식 및 시가총액"]}/>
+                 {SubComponent? <SubComponent/>:null}
             </div>
+            {
+                isMenuOpen?<div className={"sm:hidden fixed z-50 w-full h-full menu-layout-2"}>
+                    <Menu onClick={()=>setMenuOpen(!isMenuOpen)} menus={["일자별 주식 및 시가총액"]}/>
+                </div>:null
+            }
+            
+
         </div>
     </>
 }

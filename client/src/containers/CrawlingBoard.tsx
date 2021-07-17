@@ -3,6 +3,8 @@ import { useDispatch, useSelector } from 'react-redux';
 import Breadcrumb from '../components/Breadcrumb';
 import { fetchCompletedTask } from '../data/crawling/crawlingHistorySlice';
 import { RootState } from '../data/root/rootReducer';
+import { fetchTaskSchedule } from '../data/task/taskScheduleSlice';
+import { fetchTaskState } from '../data/task/taskSlice';
 import CrawlingList from './CrawlingList';
 
 export default (props) => {
@@ -11,6 +13,8 @@ export default (props) => {
     useEffect(()=>{
         if(isConnected){
             dispatch(fetchCompletedTask({}))
+            dispatch(fetchTaskState({ taskId: "marcap"}))
+            dispatch(fetchTaskSchedule({}))
         }
     },[isConnected])
     

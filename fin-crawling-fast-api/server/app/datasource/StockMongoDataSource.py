@@ -8,6 +8,7 @@ from pymongo.monitoring import (CommandFailedEvent, CommandStartedEvent,
                                 CommandSucceededEvent)
 
 from uvicorn.config import logger
+from app.model.dto import StockMarketCapitalDTO
 from app.util.DateUtils import getNow
 
 log = logging.getLogger("mongo")
@@ -44,7 +45,7 @@ class StockMongoDataSource:
         self.task = self.getCollection("task")
         print(self.marcap.index_information())
         try:
-            self.marcap.create_index([("date", ASCENDING), ("code", ASCENDING)], unique=True, name="marcapIndex")
+            self.marcap.create_index([("date", ASCENDING), ("code", ASCENDING), ("market", ASCENDING)], unique=True, name="marcapIndex")
             self.task.create_index([("taskUniqueId", ASCENDING)], unique=True, name="taskIndex")
         except Exception as e:
             print(e)
@@ -66,18 +67,21 @@ class StockMongoDataSource:
             newdata.append(one)
         return newdata
 
-    def insertMarcap(self, data: dict) -> None:
+    def insertMarcap(self, li: list[StockMarketCapitalDTO]) -> None:
         try:
             if not self.isSetupMarcap():
                 self.setupMarcap()
-            data["updatedAt"] = getNow()
-            self.task.update_one({
-                "code": data["code"],
-                "date": data["date"],
-            }, {
-                "$set": data,
-                "$setOnInsert": {"createdAt": getNow()}
-            }, upsert=True)
+            for one in li:
+                data = one.dict()
+                data["updatedAt"] = getNow()
+                self.marcap.update_one({
+                    "code": data["code"],
+                    "date": data["date"],
+                    "market": data["market"]
+                }, {
+                    "$set": data,
+                    "$setOnInsert": {"createdAt": getNow()}
+                }, upsert=True)
         except Exception as e:
             print(e)
 
@@ -85,6 +89,17 @@ class StockMongoDataSource:
         try:
             cursor = self.task.find({"$or": [{"state": "success"}, {"state": "fail"}]}).sort("createdAt", pymongo.DESCENDING)
             return self.exceptId(list(cursor))
+        except Exception as e:
+            print(e)
+        return []
+    
+    def getAllTaskState(self, taskId: str) -> list:
+        try:
+            cursor = self.task.find({
+                "taskId": taskId,
+                "$or": [{"state": "success"}, {"state": "fail"}]
+            }, projection=["tasks", "tasksRet"])
+            return list(cursor)
         except Exception as e:
             print(e)
         return []
@@ -102,6 +117,3 @@ class StockMongoDataSource:
         except Exception as e:
             logger.error(str(e))
             print(e)
-
-
-mongod = StockMongoDataSource()

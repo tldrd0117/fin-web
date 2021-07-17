@@ -5,15 +5,20 @@ interface OutLineTextFieldProps{
     value?: string
     onChange?: ChangeEventHandler<HTMLInputElement>,
     label?: string
+    left?: number
 }
 
 export default (props: OutLineTextFieldProps) => {
     let height = 40;
     let top = height/2-11;
     let fontSize = 16;
-    if(props.value.length> 0){
+    let left = 20;
+    if(props.value && props.value.length> 0){
         top = -5
         fontSize = 5
+    }
+    if(props.left){
+        left = props.left
     }
     return <>
         <style jsx>{`
@@ -23,17 +28,18 @@ export default (props: OutLineTextFieldProps) => {
                 @apply px-3;
             }
             label{
-                left: 20px;
+                left: ${left}px;
                 top: ${top}px;
                 background-color: white;
                 transition: 0.3s;
                 padding: 3px;
                 box-sizing: border-box;
                 font-size: ${fontSize}px;
+                pointer-events: none;
             }
            
             input:focus + label{
-                left: 20px;
+                left: ${left}px;
                 top: -5px;
                 font-size: 5px;
                 @apply text-blue-500;
