@@ -23,14 +23,17 @@ export default (props) => {
                     text-align: right;
                 }
             `}</style>
+            
             <div className={"flex mt-4 h-10 items-center justify-between h-auto flex-wrap"}>
-                <span className={'w-p'}>{startDateStr}</span>
-                <span className={'w-p'}>{endDateStr}</span>
-                <span className={'w-p'}>{market}</span>
-                <span className={'w-p'}>{count}</span>
-                <span className={'w-p'}>{successCount}</span>
-                <span className={'w-p'}>{failCount}</span>
-                <span className={'w-p'}>{percent}</span>
+                <div className={'w-p flex-grow'}>
+                    <div>{startDateStr}</div>
+                    <div>{endDateStr}</div>
+                </div>
+                <div className={'w-p'}>{market}</div>
+                <div className={'w-p'}>{count}</div>
+                <div className={'w-p'}>{successCount}</div>
+                <div className={'w-p'}>{failCount}</div>
+                <div className={'w-p'}>{percent}</div>
             </div>
         </>
 }

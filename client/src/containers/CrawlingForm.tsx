@@ -23,7 +23,7 @@ export default (props) => {
     const [day, setDay] = useState("*")
     const [hour, setHour] = useState("*")
     const [minute, setMinute] = useState("*")
-    const [second, setSecond] = useState("*")
+    const [second, setSecond] = useState("0")
 
     const [market, setMarket] = useState(["kospi"])
     const [reservedMarket, setReservedMarket] = useState(["kospi"])
@@ -66,6 +66,45 @@ export default (props) => {
 
     const handleMarketChangeOnReserved = (arr) => {
         setReservedMarket(arr.map(v=>v.value))
+    }
+
+    const handleDateTextField = (value, type) => {
+        const checkTarget = ["year", "month", "day", "hour", "minute", "second"];
+        const checkMap = {
+            year:[year, setYear], 
+            month:[month, setMonth], 
+            day:[day, setDay], 
+            hour:[hour, setHour], 
+            minute:[minute, setMinute], 
+            second:[second, setSecond]
+        }
+        // const curIndex = checkTarget.indexOf(type);
+        // const replacedValue = value.replace(/[^0-9*]/g, "").replace(/0+/, "0").replace(/0(?=\d)/,"")
+        checkMap[type][1](value)
+        //전부다 *이면 초는 0으로
+        if(checkTarget.every(v=>checkMap[v][0]=="*")){
+            setSecond("0")
+        }
+    }
+
+    const handleTextFieldBlurEvent = (value, type) => {
+        const checkTarget = ["year", "month", "day", "hour", "minute", "second"];
+        const checkMap = {
+            year:[year, setYear], 
+            month:[month, setMonth], 
+            day:[day, setDay], 
+            hour:[hour, setHour], 
+            minute:[minute, setMinute], 
+            second:[second, setSecond]
+        }
+        if(value.length==0){
+            checkMap[type][1]("0")
+        }
+        //전부다 *이면 초는 0으로
+        if(checkTarget.every(v=>checkMap[v][0]=="*")){
+            setSecond("0")
+        }
+
     }
     
     return <>
@@ -136,7 +175,7 @@ export default (props) => {
             <label className="block text-gray-400 text-sm font-bold mb-2" >
                 일자
             </label>
-            <CheckBox checked={isReservedDateFix} onCheck={hanldeReservedDateCheck} className={"mb-2"} label={"예약일자로 고정"} />
+            <CheckBox checked={isReservedDateFix} onCheck={hanldeReservedDateCheck} className={"mb-2"} label={"실행일자로 고정"} />
             {
                 isReservedDateFix?null:
                 <div className={"flex items-center mb-4"}>
@@ -158,12 +197,48 @@ export default (props) => {
             예약일자
         </label>
         <div className={"flex items-center flex-wrap"}>
-            <OutLineTextField value={year} onChange={(e)=>setYear(e.target.value)} className={"mr-1 w-24"} left={10} label={"년"}/>
-            <OutLineTextField value={month} onChange={(e)=>setMonth(e.target.value)} className={"mx-1 w-14"} left={10} label={"월"}/>
-            <OutLineTextField value={day} onChange={(e)=>setDay(e.target.value)} className={"mx-1 w-14"} left={10} label={"일"}/>
-            <OutLineTextField value={hour} onChange={(e)=>setHour(e.target.value)} className={"mx-1 w-14"} left={10} label={"시"}/>
-            <OutLineTextField value={minute} onChange={(e)=>setMinute(e.target.value)} className={"mx-1 w-14"} left={10} label={"분"}/>
-            <OutLineTextField value={second} onChange={(e)=>setSecond(e.target.value)} className={"ml-1 w-14"} left={10} label={"초"}/>
+            <OutLineTextField 
+                onChange={(e)=>handleDateTextField(e.target.value, "year")} 
+                onBlur={(e)=>handleTextFieldBlurEvent(e.target.value, "year")} 
+                value={year} 
+                className={"mr-1 w-24"} 
+                left={10} 
+                label={"년"}/>
+            <OutLineTextField 
+                onChange={(e)=>handleDateTextField(e.target.value, "month")} 
+                onBlur={(e)=>handleTextFieldBlurEvent(e.target.value, "month")} 
+                value={month} 
+                className={"mx-1 w-14"} 
+                left={10} 
+                label={"월"}/>
+            <OutLineTextField 
+                onChange={(e)=>handleDateTextField(e.target.value, "day")} 
+                onBlur={(e)=>handleTextFieldBlurEvent(e.target.value, "day")} 
+                value={day} 
+                className={"mx-1 w-14"} 
+                left={10} 
+                label={"일"}/>
+            <OutLineTextField 
+                onChange={(e)=>handleDateTextField(e.target.value, "hour")} 
+                onBlur={(e)=>handleTextFieldBlurEvent(e.target.value, "hour")} 
+                value={hour} 
+                className={"mx-1 w-14"} 
+                left={10} 
+                label={"시"}/>
+            <OutLineTextField 
+                onChange={(e)=>handleDateTextField(e.target.value, "minute")} 
+                onBlur={(e)=>handleTextFieldBlurEvent(e.target.value, "minute")} 
+                value={minute} 
+                className={"mx-1 w-14"} 
+                left={10} 
+                label={"분"}/>
+            <OutLineTextField 
+                onChange={(e)=>handleDateTextField(e.target.value, "second")} 
+                onBlur={(e)=>handleTextFieldBlurEvent(e.target.value, "second")} 
+                value={second} 
+                className={"ml-1 w-14"} 
+                left={10} 
+                label={"초"}/>
         </div>
     </>
 }

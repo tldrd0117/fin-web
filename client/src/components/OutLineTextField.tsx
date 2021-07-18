@@ -1,9 +1,10 @@
-import React, { ChangeEvent, ChangeEventHandler, useState } from 'react';
+import React, { ChangeEvent, ChangeEventHandler, useState, FocusEventHandler } from 'react';
 
 interface OutLineTextFieldProps{
     className?: string
     value?: string
     onChange?: ChangeEventHandler<HTMLInputElement>,
+    onBlur?: FocusEventHandler<HTMLInputElement>
     label?: string
     left?: number
 }
@@ -47,7 +48,11 @@ export default (props: OutLineTextFieldProps) => {
             
         `}</style>
         <div className={`relative ${props.className?props.className : ""}`}>
-            <input value={props.value} onChange={props.onChange} type={"text"} className={`border-solid border border-light-blue-500 w-full`}/>
+            <input value={props.value}
+                onBlur={props.onBlur}
+                onChange={props.onChange} 
+                type={"text"} 
+                className={`border-solid border border-light-blue-500 w-full`}/>
             <label className={"label absolute text-gray-400"}>{props.label}</label>
         </div>
     </>

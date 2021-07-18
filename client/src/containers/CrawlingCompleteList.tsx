@@ -17,8 +17,10 @@ export default (props) => {
                 }
             `}</style>
             <div className={"flex mt-4 h-10 items-center justify-between h-auto flex-wrap"}>
-                <span className={'w-p'}>시작날짜</span>
-                <span className={'w-p'}>종료날짜</span>
+                <div className={'w-p flex-grow'}>
+                    <div>시작날짜</div>
+                    <div>종료날짜</div>
+                </div>
                 <span className={'w-p'}>시장</span>
                 <span className={'w-p'}>전체</span>
                 <span className={'w-p'}>성공</span>
