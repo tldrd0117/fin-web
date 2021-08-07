@@ -12,7 +12,7 @@ import { push } from 'connected-react-router'
 //     transports: ["websocket"]
 // })
 
-const socketUrl = process.env.NODE_ENV=="production"?"ws://"+location.host+"/ws/":"ws://localhost:8083/ws/"
+const socketUrl = process.env.NODE_ENV=="production"?"ws://"+location.host+"/ws/":"ws://localhost:30003/ws/"
 
 function createSocketConnection(token) {
     return eventChannel(emit => {

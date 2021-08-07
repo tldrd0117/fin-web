@@ -11,7 +11,8 @@ const taskScheduleSlice = createSlice({
             day: "*",
             hour: "*",
             minute: "*",
-            second: "0"
+            second: "0",
+            taskList: []
         }]
     },
     reducers:{

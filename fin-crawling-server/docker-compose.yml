@@ -11,6 +11,7 @@ services:
     volumes:
       - ./downloads:/usr/src/downloads
       - ./server:/usr/src/app
+      - ./sock/tmp:/tmp/
       - ./log:/usr/src/app/log
     networks:
       - database
@@ -39,7 +40,7 @@ services:
     volumes:
       - ./nginx/nginx.conf:/etc/nginx/nginx.conf
       - ./nginx/client:/usr/src/client
-      - ./server/sock:/usr/src/
+      - ./sock/tmp:/usr/src/tmp
     networks:
       - database
 networks: 

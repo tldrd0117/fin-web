@@ -35,9 +35,15 @@ class StockMongoDataSource:
         self.port = port
         self.userName = "root"
         self.password = "example"
-        self.client = MongoClient(f'mongodb://{self.userName}:{self.password}@{self.host}:{self.port}')
-        self.client.server_info()
-        self.setupMarcap()
+        self.path = f'mongodb://{self.userName}:{self.password}@{self.host}:{self.port}'
+        logger.info(f"db connecting... {self.path}")
+        try:
+            self.client = MongoClient(self.path)
+            self.client.server_info()
+            self.setupMarcap()
+            logger.info("db connection seccess")
+        except Exception as e:
+            logger.info(e)
 
     def setupMarcap(self) -> None:
         self.stock = self.client["stock"]

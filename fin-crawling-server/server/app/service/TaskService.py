@@ -1,6 +1,6 @@
 
 from typing import List
-from app.model.dto import StockCrawlingRunCrawlingDTO, StockTaskSchedule, StockTaskScheduleList, StockTaskState
+from app.model.dto import StockCrawlingRunCrawlingDTO, StockTaskSchedule, StockTaskScheduleList, StockTaskState, StockTaskScheduleInfo
 from app.model.task import TaskPoolInfo
 from app.module.locator import Locator
 from app.repo.TasksRepository import TasksRepository, EVENT_TASK_REPO_TASK_COMPLETE, EVENT_TASK_REPO_UPDATE_POOL_INFO
@@ -42,7 +42,8 @@ class TaskService:
         for i in range(len(jobs)):
             fields = jobs[i].trigger.fields
             id = jobs[i].id
-            stockTaskScheduleList.list.append(StockTaskSchedule(**{
+            logger.info(f"jobargs: {str(jobs[i].args[0])}")
+            stockTaskScheduleList.list.append(StockTaskScheduleInfo(**{
                 "id": id,
                 "year": str(fields[0]),
                 "month": str(fields[1]),
@@ -50,6 +51,7 @@ class TaskService:
                 "hour": str(fields[5]),
                 "minute": str(fields[6]),
                 "second": str(fields[7]),
+                "taskList": list(jobs[i].args[0])
             }))
         if isBroadCast:
             self.manager.sendBroadCast(RES_SOCKET_TASK_FETCH_TASK_SCHEDULE, stockTaskScheduleList.dict())

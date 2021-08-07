@@ -6,11 +6,15 @@ from app.router.user import router as userRouter
 from app.scheduler.TaskScheduler import TaskScheduler
 from fastapi.middleware.cors import CORSMiddleware
 import asyncio
+from uvicorn.config import logger
+import sys
 
 origins = [
     "http://localhost",
     "http://localhost:8080",
     "http://localhost:8083",
+    "http://localhost:31111",
+    "http://localhost:8000"
 ]
 
 app = FastAPI()
@@ -23,6 +27,13 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
+logger.info("initiate app")
+
+# def my_excepthook(type, value, traceback):
+#     logger.error('Unhandled error:', str(type), str(value), str(traceback))
+
+# sys.excepthook = my_excepthook
 
 
 @app.get("/hello")

@@ -12,6 +12,15 @@ class StockTaskState(BaseModel):
     years: Dict
 
 
+class StockCrawlingRunCrawlingDTO(BaseModel):
+    driverAddr: str
+    market: str
+    startDateStr: str
+    endDateStr: str
+    taskId: str
+    taskUniqueId: str
+
+
 class StockTaskSchedule(BaseModel):
     id: str = ""
     year: str
@@ -22,17 +31,19 @@ class StockTaskSchedule(BaseModel):
     second: str
 
 
+class StockTaskScheduleInfo(BaseModel):
+    id: str = ""
+    year: str
+    month: str
+    day: str
+    hour: str
+    minute: str
+    second: str
+    taskList: List[StockCrawlingRunCrawlingDTO] = []
+
+
 class StockTaskScheduleList(BaseModel):
     list: List[StockTaskSchedule]
-
-
-class StockCrawlingRunCrawlingDTO(BaseModel):
-    driverAddr: str
-    market: str
-    startDateStr: str
-    endDateStr: str
-    taskId: str
-    taskUniqueId: str
 
 
 class StockCrawlingDownloadTaskDTO(BaseModel):

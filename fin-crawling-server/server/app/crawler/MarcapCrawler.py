@@ -28,6 +28,8 @@ EVENT_MARCAP_CRAWLING_ON_START_CRAWLING: Final = "marcapCrawler/onStartCrawling"
 EVENT_MARCAP_CRAWLING_ON_DOWNLOAD_START: Final = "marcapCrawler/onDownloadStart"
 EVENT_MARCAP_CRAWLING_ON_DOWNLOAD_COMPLETE: Final = "marcapCrawler/onDownloadComplete"
 EVENT_MARCAP_CRAWLING_ON_PARSING_COMPLETE: Final = "marcapCrawler/onParsingComplete"
+EVENT_MARCAP_CRAWLING_ON_CANCEL: Final = "marcapCrawler/cancel"
+EVENT_MARCAP_CRAWLING_ON_ERROR: Final = "marcapCrawler/error"
 
 
 class MarcapCrawler(object):
@@ -36,6 +38,7 @@ class MarcapCrawler(object):
         super().__init__()
         self.ee = EventEmitter()
         self.isLock = False
+        self.isCancelled = False
 
     def createUUID(self) -> str:
         return str(uuid.uuid4())
@@ -75,6 +78,8 @@ class MarcapCrawler(object):
             endDate = datetime.strptime(dto.endDateStr, "%Y%m%d")
             downloadObserver = DownloadObserver()
             downloadObserver.startObserver(uuid, self.ee)
+            if self.isCancelled:
+                raise Exception(f"#@@ {dto.taskUniqueId} cancelled")
 
             while date <= endDate:
                 dateStr = date.strftime("%Y%m%d")
@@ -89,7 +94,13 @@ class MarcapCrawler(object):
                 self.ee.emit(EVENT_MARCAP_CRAWLING_ON_DOWNLOAD_START, downloadTask)
                 await self.downloadData(downloadTask, downloadObserver, driver)
                 date = date + timedelta(days=1)
+                if self.isCancelled:
+                    raise Exception(f"#@@ {dto.taskUniqueId} cancelled")
         except Exception as e:
+            if str(e).startswith("#@@"):
+                self.ee.emit(EVENT_MARCAP_CRAWLING_ON_CANCEL, dto)
+            else:
+                self.ee.emit(EVENT_MARCAP_CRAWLING_ON_ERROR, dto)
             logger.error(f"error: {str(e)}")
         finally:
             if downloadObserver:

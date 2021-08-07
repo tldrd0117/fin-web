@@ -1,4 +1,4 @@
-from typing import Callable
+from typing import Callable, List
 from apscheduler.schedulers.asyncio import AsyncIOScheduler
 from apscheduler.jobstores.mongodb import MongoDBJobStore
 from apscheduler.triggers.cron import CronTrigger
@@ -15,7 +15,7 @@ class TaskScheduler(object):
         self.jobs: list = []
         self.jobLengthMax = 0
     
-    def addJob(self, job: Callable, year: str, month: str, day: str, hour: str, minute: str, second: str, target: str, args=None) -> Job:
+    def addJob(self, job: Callable, year: str, month: str, day: str, hour: str, minute: str, second: str, target: str, args: List = None) -> Job:
         trigger = CronTrigger(year=year, month=month, day=day, hour=hour, minute=minute, second=second)
         try:
             nextLength = self.jobLengthMax + 1

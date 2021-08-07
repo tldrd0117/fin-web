@@ -34,4 +34,5 @@ COPY ./ .
 # CMD ["poetry","run","uwsgi","uwsgi.ini"]
 # CMD ["poetry","run","app"]
 # CMD ["uwsgi","--ini","uwsgi.ini"]
-CMD ["poetry","run","uvicorn","app.main:app", "--uds", "/usr/src/app/sock/bind.sock"]
+CMD ["poetry","run","uvicorn","app.main:app", "--reload", "--host=0.0.0.0", "--port=8000"]
+# CMD ["poetry","run","uvicorn","app.main:app", "--uds", "/usr/src/app/sock/bind.sock"]

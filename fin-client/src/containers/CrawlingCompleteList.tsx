@@ -2,6 +2,7 @@ import React from 'react'
 import { RootState } from '../data/root/rootReducer'
 import { useSelector } from 'react-redux'
 import CrawlingCompleteListItem from './CrawlingCompleteListItem'
+import HeaderTable from '../components/HeaderTable'
 
 
 export default (props) => {
@@ -16,20 +17,22 @@ export default (props) => {
                     text-align: center;
                 }
             `}</style>
-            <div className={"flex mt-4 h-10 items-center justify-between h-auto flex-wrap"}>
-                <div className={'w-p flex-grow'}>
-                    <div>시작날짜</div>
-                    <div>종료날짜</div>
-                </div>
-                <span className={'w-p'}>시장</span>
-                <span className={'w-p'}>전체</span>
-                <span className={'w-p'}>성공</span>
-                <span className={'w-p'}>실패</span>
-                <span className={'w-p'}>퍼센트</span>
-            </div>
-            {
-                ids?ids.map(val=><CrawlingCompleteListItem key={val} data={list[val]} />):null
-            }
+            <HeaderTable
+                header={[["시작일자 ~ 종료일자","시장","전체","성공","실패","퍼센트"]]}
+                body={[...ids.map(val=>{
+                    const {
+                        startDateStr,
+                        endDateStr,
+                        market,
+                        count,
+                        successCount,
+                        failCount,
+                        percent
+                    } = list[val];
+                    return [
+                    `${startDateStr} ~ ${endDateStr}`, market, count, successCount, failCount, percent
+                ]})]}
+            />
         </div>
     } else {
         return <div></div>

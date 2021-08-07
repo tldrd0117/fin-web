@@ -1,0 +1,50 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: mongo
+  namespace: fin-crawling
+spec:
+  type: NodePort
+  selector:
+    app: mongo
+  ports:
+  - name: mongo
+    port: 27017
+    nodePort: 30001
+
+---
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: mongo
+  namespace: fin-crawling
+spec:
+  replicas: 1
+  serviceName: "mongo"
+  selector:
+    matchLabels:
+      app: mongo
+  template:
+    metadata:
+      labels:
+        app: mongo
+    spec:
+      terminationGracePeriodSeconds: 60
+      containers:
+      - name: fin-db-mongo
+        image: mongo
+        volumeMounts:
+        - name: dbdata
+          mountPath: /data/db
+        env:
+        - name: MONGO_INITDB_ROOT_USERNAME
+          value: root
+        - name: MONGO_INITDB_ROOT_PASSWORD
+          value: example
+      volumes:
+      - name: dbdata
+        hostPath: 
+          path: /Users/iseongjae/Documents/PersonalProjects/fin-web/fin-db/db/data
+          type: DirectoryOrCreate
+
+

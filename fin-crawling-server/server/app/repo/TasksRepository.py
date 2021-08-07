@@ -7,7 +7,9 @@ from app.crawler.MarcapCrawler import EVENT_MARCAP_CRAWLING_ON_CONNECTING_WEBDRI
     EVENT_MARCAP_CRAWLING_ON_DOWNLOAD_COMPLETE, \
     EVENT_MARCAP_CRAWLING_ON_DOWNLOAD_START, \
     EVENT_MARCAP_CRAWLING_ON_PARSING_COMPLETE, \
-    EVENT_MARCAP_CRAWLING_ON_START_CRAWLING
+    EVENT_MARCAP_CRAWLING_ON_START_CRAWLING, \
+    EVENT_MARCAP_CRAWLING_ON_ERROR, \
+    EVENT_MARCAP_CRAWLING_ON_CANCEL
 from app.datasource.StockMongoDataSource import StockMongoDataSource
 from app.model.dto import StockCrawlingCompletedTasksDTO, StockCrawlingDownloadTaskDTO, StockCrawlingRunCrawlingDTO, StockCrawlingTasksDTO, StockMarketCapitalResultDTO, StockCrawlingTaskDTO, StockTaskState
 from app.model.task import TaskPoolInfo
@@ -181,6 +183,8 @@ class TasksRepository(object):
         ee.on(EVENT_MARCAP_CRAWLING_ON_DOWNLOAD_START, self.onDownloadStart)
         ee.on(EVENT_MARCAP_CRAWLING_ON_DOWNLOAD_COMPLETE, self.onDownloadComplete)
         ee.on(EVENT_MARCAP_CRAWLING_ON_PARSING_COMPLETE, self.onParsingComplete)
+        ee.on(EVENT_MARCAP_CRAWLING_ON_ERROR, self.onError)
+        ee.on(EVENT_MARCAP_CRAWLING_ON_CANCEL, self.onCancelled)
     
     def onConnectingWebDriver(self, dto: StockCrawlingRunCrawlingDTO) -> None:
         task = self.getTask(dto.taskId, dto.taskUniqueId)
@@ -227,4 +231,20 @@ class TasksRepository(object):
         self.mongod.upsertTask(task.dict())
         self.mongod.insertMarcap(retdto.data)
         self.taskEventEmitter.emit(EVENT_TASK_REPO_TASK_COMPLETE, "marcap")
+    
+    def onCancelled(self, dto: StockCrawlingRunCrawlingDTO) -> None:
+        task = self.getTask(dto.taskId, dto.taskUniqueId)
+        self.fail(task, task.restCount)
+        task.state = "cancelled"
+        self.updateTask(task)
+        self.taskEventEmitter.emit(EVENT_TASK_REPO_UPDATE_TASKS, self.tasksdto)
+        self.mongod.upsertTask(task.dict())
+    
+    def onError(self, dto: StockCrawlingRunCrawlingDTO) -> None:
+        task = self.getTask(dto.taskId, dto.taskUniqueId)
+        self.fail(task, task.restCount)
+        task.state = "error"
+        self.updateTask(task)
+        self.taskEventEmitter.emit(EVENT_TASK_REPO_UPDATE_TASKS, self.tasksdto)
+        self.mongod.upsertTask(task.dict())
 

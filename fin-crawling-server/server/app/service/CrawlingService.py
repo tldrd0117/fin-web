@@ -1,6 +1,6 @@
 from __future__ import annotations
 import asyncio
-from typing import List
+from typing import Dict, List
 from app.repo.CrawlerRepository import CrawlerRepository
 from app.repo.TasksRepository import EVENT_TASK_REPO_TASK_COMPLETE, TasksRepository, EVENT_TASK_REPO_UPDATE_TASKS
 from app.module.task import Pool, Task, TaskPool
@@ -20,6 +20,7 @@ class CrawlingService:
         self.tasksRepository = tasksRepository
         self.crawlerRepository = crawlerRepository
         self.manager = manager
+        self.crawlers: Dict = {}
         self.createTaskRepositoryListener()
 
     def runCrawling(self, dtoList: List[StockCrawlingRunCrawlingDTO]) -> None:
@@ -27,6 +28,7 @@ class CrawlingService:
             if dto.taskId == "marcap":
                 async def taskWorker(runDto: StockCrawlingRunCrawlingDTO, pool: Pool, taskPool: TaskPool) -> None:
                     marcapCrawler = MarcapCrawler()
+                    self.crawlers[runDto.taskUniqueId] = marcapCrawler
                     self.tasksRepository.createListners(marcapCrawler.ee)
                     self.crawlerRepository.createListener(marcapCrawler.ee)
                     logger.info(f"taskWorker:{runDto.taskUniqueId}")
@@ -34,6 +36,9 @@ class CrawlingService:
                     taskPool.removeTaskPool(pool)
                 task = Task(taskWorker, {"runDto": dto})
                 self.tasksRepository.runMarcapTask(task, dto)
+    
+    def cancelCrawling(self, dto: StockCrawlingRunCrawlingDTO) -> None:
+        self.crawlers[dto.taskUniqueId].isCancelled = True
 
     def fetchTasks(self, webSocket: WebSocket) -> None:
         self.manager.send(RES_SOCKET_CRAWLING_FETCH_TASKS, self.tasksRepository.tasksdto.dict(), webSocket)
@@ -54,3 +59,4 @@ class CrawlingService:
     def completeTask(self, marcap: str) -> None:
         tasks: StockCrawlingCompletedTasksDTO = self.tasksRepository.getCompletedTask()
         self.manager.sendBroadCast(RES_SOCKET_CRAWLING_FETCH_COMPLETED_TASK, tasks.dict())
+        
