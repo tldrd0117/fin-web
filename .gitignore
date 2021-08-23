@@ -1,0 +1,7 @@
+fin-db/db/data
+.mypy_cache
+.pytest_cache
+.vscode
+node_modules
+__pycache__
+__init__.py
