@@ -77,7 +77,7 @@ export default () => {
                             {errorMsg?<div className={"text-sm text-red-500 mt-2 errMsg"}>{errorMsg}</div>:null}
                             <Button type={"submit"}
                                 disabled={formik.isSubmitting}
-                                className={"button"} >로그인</Button>
+                                className={"button bg-blue-500 hover:bg-blue-600 text-white text-lg"} >로그인</Button>
                         </Form>
                         )
                     }

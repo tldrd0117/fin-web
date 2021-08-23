@@ -12,7 +12,7 @@ export default (props) => {
     const dispatch = useDispatch()
     useEffect(()=>{
         if(isConnected){
-            dispatch(fetchCompletedTask({}))
+            dispatch(fetchCompletedTask({offset:0, limit:20}))
             dispatch(fetchTaskState({ taskId: "marcap"}))
             dispatch(fetchTaskSchedule({}))
         }

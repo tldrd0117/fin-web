@@ -8,8 +8,9 @@ export default function PrivateRoute({ children, ...rest }) {
     return (
       <Route
         {...rest}
-        render={({ location }) =>
-            token ? (
+        render={({ location }) =>{
+          console.log("token: "+token)
+          return token ? (
             children
           ) : (
             <Redirect
@@ -19,7 +20,7 @@ export default function PrivateRoute({ children, ...rest }) {
               }}
             />
           )
-        }
+        }}
       />
     );
   }

@@ -1,6 +1,6 @@
 
 from watchdog.events import FileSystemEventHandler, FileSystemEvent, FileMovedEvent, FileCreatedEvent, FileDeletedEvent, FileModifiedEvent
-from app.model.dto import StockCrawlingDownloadTaskDTO
+from app.model.dto import StockCrawlingDownloadTask
 from pymitter import EventEmitter
 from typing import Callable, Final
 
@@ -12,7 +12,7 @@ class CmdFileSystemEventHandler(FileSystemEventHandler):
     def __init__(self, ee: EventEmitter) -> None:
         self.ee = ee
     
-    def setDownloadTask(self, downloadTask: StockCrawlingDownloadTaskDTO) -> None:
+    def setDownloadTask(self, downloadTask: StockCrawlingDownloadTask) -> None:
         self.downloadTask = downloadTask
 
     def on_any_event(self, event: FileSystemEvent) -> None:

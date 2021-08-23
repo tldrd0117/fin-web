@@ -1,4 +1,4 @@
-from typing import Dict, List
+from typing import Any, Dict, List
 from pydantic import BaseModel
 
 
@@ -12,7 +12,19 @@ class StockTaskState(BaseModel):
     years: Dict
 
 
-class StockCrawlingRunCrawlingDTO(BaseModel):
+class ListLimitData(BaseModel):
+    offset: int
+    limit: int
+
+
+class ListLimitResponse(BaseModel):
+    data: Any
+    offset: int
+    limit: int
+    count: int
+
+
+class StockCrawlingRunCrawling(BaseModel):
     driverAddr: str
     market: str
     startDateStr: str
@@ -39,14 +51,14 @@ class StockTaskScheduleInfo(BaseModel):
     hour: str
     minute: str
     second: str
-    taskList: List[StockCrawlingRunCrawlingDTO] = []
+    taskList: List[StockCrawlingRunCrawling] = []
 
 
 class StockTaskScheduleList(BaseModel):
     list: List[StockTaskSchedule]
 
 
-class StockCrawlingDownloadTaskDTO(BaseModel):
+class StockCrawlingDownloadTask(BaseModel):
     uuid: str
     market: str
     dateStr: str
@@ -54,7 +66,7 @@ class StockCrawlingDownloadTaskDTO(BaseModel):
     taskUniqueId: str
 
 
-class StockCrawlingTaskDTO(BaseModel):
+class StockCrawlingTask(BaseModel):
     count: int = 0
     successCount: int = 0
     failCount: int = 0
@@ -72,17 +84,17 @@ class StockCrawlingTaskDTO(BaseModel):
     taskId: str = ""
 
 
-class StockCrawlingTasksDTO(BaseModel):
+class StockCrawlingTasks(BaseModel):
     tasks: dict = dict()
     taskIds: List[str] = []
 
 
-class StockCrawlingCompletedTasksDTO(BaseModel):
+class StockCrawlingCompletedTasks(BaseModel):
     history: dict = dict()
     historyIds: List[str] = []
 
 
-class StockMarketCapitalDTO(BaseModel):
+class StockMarketCapital(BaseModel):
     # 종목코드,종목명,종가,대비,등락률,시가,고가,저가,거래량,거래대금,시가총액,상장주식수
     date: str
     market: str
@@ -100,8 +112,8 @@ class StockMarketCapitalDTO(BaseModel):
     number: str
 
 
-class StockMarketCapitalResultDTO(BaseModel):
-    data: List[StockMarketCapitalDTO] = []
+class StockMarketCapitalResult(BaseModel):
+    data: List[StockMarketCapital] = []
     date: str = ""
     market: str = ""
     result: str = "fail"

@@ -1,6 +1,6 @@
 
 
-const url = process.env.NODE_ENV=="production"?"/user/":"http://localhost:30003/user/"
+const url = process.env.NODE_ENV=="production"?"/user/":"http://localhost:30005/user/"
 
 const BASEURL = url;
 
@@ -15,6 +15,7 @@ export const getToken = async (username: string, password: string) => {
     const formData = new FormData()
     formData.append("username", username);
     formData.append("password", password);
+    console.log("getToken: " + username)
     try{
         const response: Response = await fetch(`${BASEURL}token`,{
             method: "POST",
@@ -29,6 +30,7 @@ export const getToken = async (username: string, password: string) => {
 }
 
 export const getMe = async (token: string) => {
+    console.log("getMe")
     const response: Response = await fetch(`${BASEURL}me`,{
         body: JSON.stringify({
             token

@@ -50,9 +50,10 @@ spec:
           path: /Users/iseongjae/Documents/PersonalProjects/fin-web/fin-crawling-server/nginx/client
           type: DirectoryOrCreate
       - name: socket-file
-        hostPath:
-          path: /Users/iseongjae/Documents/PersonalProjects/fin-web/fin-crawling-server/sock/tmp
-          type: DirectoryOrCreate
+        emptyDir: {}
+        # hostPath:
+          # path: /Users/iseongjae/Documents/PersonalProjects/fin-web/fin-crawling-server/sock/tmp
+          # type: DirectoryOrCreate
     
 
 

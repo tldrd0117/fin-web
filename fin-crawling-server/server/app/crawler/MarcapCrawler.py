@@ -18,7 +18,7 @@ from app.observer.DownloadObserver import DownloadObserver
 from app.observer.CmdFileSystemEventHandler import FILE_SYSTEM_HANDLER
 
 from pathlib import Path
-from app.model.dto import StockCrawlingDownloadTaskDTO, StockCrawlingRunCrawlingDTO, StockMarketCapitalResultDTO, StockMarketCapitalDTO
+from app.model.dto import StockCrawlingDownloadTask, StockCrawlingRunCrawling, StockMarketCapitalResult, StockMarketCapital
 from uvicorn.config import logger
 
 T = TypeVar("T")
@@ -39,6 +39,7 @@ class MarcapCrawler(object):
         self.ee = EventEmitter()
         self.isLock = False
         self.isCancelled = False
+        self.isError = False
 
     def createUUID(self) -> str:
         return str(uuid.uuid4())
@@ -56,13 +57,13 @@ class MarcapCrawler(object):
         )
         return driver
 
-    async def crawling(self, dto: StockCrawlingRunCrawlingDTO) -> None:
+    async def crawling(self, dto: StockCrawlingRunCrawling) -> None:
         driver = None
         uuid = self.createUUID()
         logger.info(uuid)
-        self.ee.emit(EVENT_MARCAP_CRAWLING_ON_CONNECTING_WEBDRIVER, dto)
         downloadObserver = None
         try:
+            self.ee.emit(EVENT_MARCAP_CRAWLING_ON_CONNECTING_WEBDRIVER, dto)
             driver = self.connectWebDriver(dto.driverAddr, uuid)
             driver.get("http://data.krx.co.kr/contents/MDC/MDI/mdiLoader/index.cmd?menuId=MDC0201020101")
             try:
@@ -83,7 +84,7 @@ class MarcapCrawler(object):
 
             while date <= endDate:
                 dateStr = date.strftime("%Y%m%d")
-                downloadTask = StockCrawlingDownloadTaskDTO(**{
+                downloadTask = StockCrawlingDownloadTask(**{
                     "dateStr": dateStr,
                     "market": dto.market,
                     "uuid": uuid,
@@ -100,6 +101,7 @@ class MarcapCrawler(object):
             if str(e).startswith("#@@"):
                 self.ee.emit(EVENT_MARCAP_CRAWLING_ON_CANCEL, dto)
             else:
+                self.isError = True
                 self.ee.emit(EVENT_MARCAP_CRAWLING_ON_ERROR, dto)
             logger.error(f"error: {str(e)}")
         finally:
@@ -108,7 +110,7 @@ class MarcapCrawler(object):
             if driver:
                 driver.quit()
     
-    async def downloadData(self, downloadTask: StockCrawlingDownloadTaskDTO, downloadObserver: DownloadObserver, driver: WebDriver) -> None:
+    async def downloadData(self, downloadTask: StockCrawlingDownloadTask, downloadObserver: DownloadObserver, driver: WebDriver) -> None:
         logger.info("downloadData")
         if driver is None:
             return
@@ -144,7 +146,7 @@ class MarcapCrawler(object):
         mainThreadLoop = asyncio.get_running_loop()
 
         @self.ee.once(FILE_SYSTEM_HANDLER(downloadTask.uuid))
-        def downloadComplete(event: FileCreatedEvent, downloadTask: StockCrawlingDownloadTaskDTO) -> None:
+        def downloadComplete(event: FileCreatedEvent, downloadTask: StockCrawlingDownloadTask) -> None:
             self.ee.emit(EVENT_MARCAP_CRAWLING_ON_DOWNLOAD_COMPLETE, downloadTask)
             mainThreadLoop.create_task(self.parseFile(event, downloadTask, downloadObserver))
 
@@ -152,7 +154,7 @@ class MarcapCrawler(object):
             await asyncio.sleep(1)
             logger.info(f"isLock:{str(self.isLock)}")
     
-    def convertFileToDto(self, path: str, dto: StockMarketCapitalResultDTO) -> None:
+    def convertFileToDto(self, path: str, dto: StockMarketCapitalResult) -> None:
         lines = []
         with open(path, "r", encoding="utf-8") as f:
             p = Path(f.name)
@@ -161,7 +163,7 @@ class MarcapCrawler(object):
         
         for i in range(1, len(lines)):
             data = lines[i].replace('"', '').split(",")
-            marcap = StockMarketCapitalDTO(**{
+            marcap = StockMarketCapital(**{
                 "date": dto.date,
                 "market": dto.market,
                 "code": data[0].strip(),
@@ -189,9 +191,9 @@ class MarcapCrawler(object):
             restTimes -= 1
         return isExist
     
-    async def parseFile(self, event: FileCreatedEvent, downloadTask: StockCrawlingDownloadTaskDTO, downloadObserver: DownloadObserver) -> None:
+    async def parseFile(self, event: FileCreatedEvent, downloadTask: StockCrawlingDownloadTask, downloadObserver: DownloadObserver) -> None:
         isSuccess = False
-        retdto = StockMarketCapitalResultDTO()
+        retdto = StockMarketCapitalResult()
         try:
             date = downloadTask.dateStr
             market = downloadTask.market

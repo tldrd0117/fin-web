@@ -35,4 +35,9 @@ COPY ./ .
 # CMD ["poetry","run","app"]
 # CMD ["uwsgi","--ini","uwsgi.ini"]
 CMD ["poetry","run","uvicorn","app.main:app", "--reload", "--host=0.0.0.0", "--port=8000"]
-# CMD ["poetry","run","uvicorn","app.main:app", "--uds", "/usr/src/app/sock/bind.sock"]
+# CMD ["poetry","run","uvicorn","app.main:app", "--reload"]
+# ARG BUILD_FLAVOR
+# RUN echo "$BUILD_FLAVOR"
+# RUN if [ "$BUILD_FLAVOR" = "DEV" ]; then echo "hello"; else echo "bye"; fi
+# RUN if [ "$BUILD_FLAVOR" = "DEV" ]; then poetry run uvicorn app.main:app --reload --host=0.0.0.0 --port=8000; else poetry run uvicorn app.main:app --uds /usr/src/app/sock/uvicorn.sock; fi
+# CMD ["poetry","run","uvicorn","app.main:app"]

@@ -1,7 +1,7 @@
 import os
 from watchdog.observers import Observer
 from pymitter import EventEmitter
-from app.model.dto import StockCrawlingDownloadTaskDTO
+from app.model.dto import StockCrawlingDownloadTask
 from app.observer.CmdFileSystemEventHandler import CmdFileSystemEventHandler
 
 

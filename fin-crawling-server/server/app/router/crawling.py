@@ -1,5 +1,5 @@
 from fastapi import WebSocket
-from app.model.model import StockCrawlingRunCrawling
+from app.model.dto import StockCrawlingRunCrawling, ListLimitData
 from app.service.CrawlingService import CrawlingService
 from app.module.socket.manager import ConnectionManager
 from uvicorn.config import logger
@@ -29,7 +29,7 @@ class CrawlingSocketRouter(object):
 
     def connect(self, data: dict, websocket: WebSocket) -> None:
         print("connect")
-
+    
     def message(self, data: dict, websocket: WebSocket) -> None:
         print(data)
 
@@ -55,19 +55,23 @@ class CrawlingSocketRouter(object):
     
     def cancelCrawling(self, data: dict, websocket: WebSocket) -> None:
         dtoList = []
+        logger.info(str(data))
         for market in data["market"]:
-            taskUniqueId = data["taskId"]+market+data["startDate"]+data["endDate"]+str(uuid.uuid4())
             dto = StockCrawlingRunCrawling(**{
                 "driverAddr": "http://fin-carwling-webdriver:4444",
                 "market": market,
                 "startDateStr": data["startDate"],
                 "endDateStr": data["endDate"],
                 "taskId": data["taskId"],
-                "taskUniqueId": taskUniqueId
+                "taskUniqueId": data["taskUniqueId"]
             })
             dtoList.append(dto)
         for dto in dtoList:
             self.crawlingService.cancelCrawling(dto)
 
     def fetchCompletedTask(self, data: dict, websocket: WebSocket) -> None:
-        self.crawlingService.fetchCompletedTask(websocket)
+        dto = ListLimitData(**{
+            "offset": data["offset"],
+            "limit": data["limit"]
+        })
+        self.crawlingService.fetchCompletedTask(dto, websocket)

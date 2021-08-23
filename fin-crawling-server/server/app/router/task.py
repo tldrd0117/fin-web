@@ -1,6 +1,6 @@
 
 from fastapi import WebSocket
-from app.model.dto import StockCrawlingRunCrawlingDTO, StockTaskSchedule
+from app.model.dto import StockCrawlingRunCrawling, StockTaskSchedule
 from app.service.CrawlingService import CrawlingService
 from app.service.TaskService import TaskService
 from app.module.socket.manager import ConnectionManager
@@ -39,9 +39,9 @@ class TaskSocketRouter(object):
         self.taskService.getTaskSchedule(websocket)
 
     def addTaskSchedule(self, data: dict, websocket: WebSocket) -> None:
-        if data["startDate"] == "*":
-            data["startDate"] = getNowDateStr()
-            data["endDate"] = getNowDateStr()
+        # if data["startDate"] == "*":
+        #     data["startDate"] = getNowDateStr()
+        #     data["endDate"] = getNowDateStr()
 
         scheduleDto = StockTaskSchedule(**{
             "year": data["year"],
@@ -55,8 +55,8 @@ class TaskSocketRouter(object):
         dtoList = []
         for market in data["market"]:
             taskUniqueId = data["taskId"]+market+data["startDate"]+data["endDate"]+str(uuid.uuid4())
-            dto = StockCrawlingRunCrawlingDTO(**{
-                "driverAddr": "http://webdriver:4444",
+            dto = StockCrawlingRunCrawling(**{
+                "driverAddr": "http://fin-carwling-webdriver:4444",
                 "market": market,
                 "startDateStr": data["startDate"],
                 "endDateStr": data["endDate"],

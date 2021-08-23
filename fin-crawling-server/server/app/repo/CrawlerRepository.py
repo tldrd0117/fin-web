@@ -4,7 +4,7 @@ from app.crawler.MarcapCrawler import EVENT_MARCAP_CRAWLING_ON_CONNECTING_WEBDRI
     EVENT_MARCAP_CRAWLING_ON_DOWNLOAD_START, \
     EVENT_MARCAP_CRAWLING_ON_PARSING_COMPLETE, \
     EVENT_MARCAP_CRAWLING_ON_START_CRAWLING
-from app.model.dto import StockCrawlingDownloadTaskDTO, StockCrawlingRunCrawlingDTO, StockMarketCapitalResultDTO
+from app.model.dto import StockCrawlingDownloadTask, StockCrawlingRunCrawling, StockMarketCapitalResult
 from app.datasource.StockMongoDataSource import StockMongoDataSource
 from pymitter import EventEmitter
 # from uvicorn.config import logger
@@ -25,19 +25,19 @@ class CrawlerRepository(object):
         ee.on(EVENT_MARCAP_CRAWLING_ON_START_CRAWLING, self.onStartCrawling)
         ee.on(EVENT_MARCAP_CRAWLING_ON_PARSING_COMPLETE, self.onParsingComplete)
     
-    def onConnectingWebDriver(self, dto: StockCrawlingRunCrawlingDTO) -> None:
+    def onConnectingWebDriver(self, dto: StockCrawlingRunCrawling) -> None:
         pass
 
-    def onDownloadComplete(self, dto: StockCrawlingRunCrawlingDTO) -> None:
+    def onDownloadComplete(self, dto: StockCrawlingRunCrawling) -> None:
         pass
 
-    def onDownloadStart(self, dto: StockCrawlingRunCrawlingDTO) -> None:
+    def onDownloadStart(self, dto: StockCrawlingRunCrawling) -> None:
         pass
 
-    def onStartCrawling(self, dto: StockCrawlingRunCrawlingDTO) -> None:
+    def onStartCrawling(self, dto: StockCrawlingRunCrawling) -> None:
         pass
 
-    def onParsingComplete(self, isSuccess: bool, retdto: StockMarketCapitalResultDTO, dto: StockCrawlingDownloadTaskDTO) -> None:
+    def onParsingComplete(self, isSuccess: bool, retdto: StockMarketCapitalResult, dto: StockCrawlingDownloadTask) -> None:
         pass
         # logger.info("mongod:"+retdto.json())
         # self.mongod.insertMarcap(retdto.dict())

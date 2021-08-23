@@ -33,11 +33,13 @@ export default (props) => {
                                 {
                                     props.body.map(v=>
                                         <tr>
-                                            {v.map(v=><td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
+                                            {
+                                                v instanceof Array?
+                                                v.map(v=><td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
                                                 <p className="text-gray-900 whitespace-no-wrap text-center">
                                                     {v}
                                                     </p>
-                                             </td>)}
+                                             </td>):v}
                                         </tr>
 
                                     )

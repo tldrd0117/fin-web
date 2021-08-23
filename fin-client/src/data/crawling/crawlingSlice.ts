@@ -6,13 +6,23 @@ const initialState = {
             type:"marcap",
             list:{
                 "0":{
-                    id: 0,
-                    count: 0,
-                    successCount: 0,
-                    restCount: 0,
-                    failCount: 0,
-                    percent: 0,
-                    state: "stop"
+                    "id": 0,
+                    "count": 5, 
+                    "createdAt": "", 
+                    "endDateStr": "20000000", 
+                    "failCount": 0, 
+                    "failTasks": [], 
+                    "index": 5, 
+                    "market": "kospi", 
+                    "percent": 100.0, 
+                    "restCount": 0, 
+                    "startDateStr": "20000000", 
+                    "state": "success", 
+                    "successCount": 5, 
+                    "taskId": "marcap", 
+                    "tasks": ["20210701", "20210702", "20210703", "20210704", "20210705"], 
+                    "tasksRet": [1, 1, 1, 1, 1], 
+                    "updatedAt": ""
                 },
             },
             ids:[0]
@@ -66,8 +76,17 @@ interface RunCrawlingPayload{
     endDate: string
 }
 
+interface CancelCrawlingPayload{
+    taskId: string
+    market: Array<string>
+    startDate: string
+    endDate: string
+    taskUniqueId: string
+}
+
 const { actions, reducer } = crawlingSlice
 export const { runCrawling, fetchTasksRes, reset } = actions
+export const cancelCrawling = createAction<CancelCrawlingPayload>("crawling/cancelCrawling")
 export const fetchTasks = createAction<RunCrawlingPayload>("crawling/fetchTasks")
 
 export default reducer

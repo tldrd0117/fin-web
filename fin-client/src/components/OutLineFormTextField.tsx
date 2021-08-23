@@ -1,4 +1,4 @@
-import React, { ChangeEvent, ChangeEventHandler, useState } from 'react';
+import React, { ChangeEvent, ChangeEventHandler, useEffect, useRef, useState } from 'react';
 import { FieldHookConfig, useField } from 'formik';
 
 
@@ -12,10 +12,12 @@ interface OutLineTextFieldProps{
 export default ({label, height = 40, wrapperClassName, formik, ...props}) => {
     let top = (height/2)-11;
     let fontSize = 16;
+    const first = useRef(null)
     const [isEmpty, setEmpty] = useState(true);
     const [isFocus, setFocus] = useState(false);
     const [field, meta] = useField(props as FieldHookConfig<any>)
     const handleChange = (e) => {
+        console.log("change")
         setEmpty(e.target.value.length == 0)
         formik.handleChange(e)
     }
@@ -42,6 +44,16 @@ export default ({label, height = 40, wrapperClassName, formik, ...props}) => {
         }
     }
 
+    useEffect( () => {
+        if(first && first.current){
+            if(first.current.value && first.current.value.length > 0){
+                setEmpty(false)
+            } else {
+                setEmpty(true)
+            }
+        }
+    },[first])
+
     return <>
         <style jsx>{`
             input{
@@ -65,9 +77,11 @@ export default ({label, height = 40, wrapperClassName, formik, ...props}) => {
                 onChange={handleChange}
                 onFocus={handleFocus}
                 onBlur={handleBlur}
+                onPaste={handleChange}
                 value={formik.values[props.name]}
                 className={`border-solid border border-light-blue-500 w-full px-3`}
                 style={{height}}
+                ref={first}
             />
             <label htmlFor={props.id || props.name} 
                 style={getLabelStyle()}

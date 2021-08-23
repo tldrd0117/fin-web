@@ -1,15 +1,24 @@
 import React from 'react'
 import { RootState } from '../data/root/rootReducer'
-import { useSelector } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import CrawlingCompleteListItem from './CrawlingCompleteListItem'
 import HeaderTable from '../components/HeaderTable'
+import { fetchCompletedTask } from '../data/crawling/crawlingHistorySlice'
 
 
 export default (props) => {
     const { taskId } = props
-    const { history } = useSelector((state: RootState) => state.crawlingHistory)
-    if(history && history[taskId]){
-        const { ids, list } = history[taskId]
+    const histData = useSelector((state: RootState) => state.crawlingHistory)
+    const { data, offset, limit, count } = histData
+    const dispatch = useDispatch()
+
+    const handleNext = () => {
+        if( count > offset + limit ){
+            dispatch(fetchCompletedTask({offset:offset+limit, limit}))
+        }
+    }
+    if(data.history && data.history[taskId]){
+        const { ids, list } = data.history[taskId]
         return <div className={"relative"}>
             <style jsx>{`
                 .w-p{
@@ -31,7 +40,7 @@ export default (props) => {
                     } = list[val];
                     return [
                     `${startDateStr} ~ ${endDateStr}`, market, count, successCount, failCount, percent
-                ]})]}
+                ]}), count <= offset + limit? null : <td onClick={handleNext} className={"text-center text-sm p-4"} colSpan={6}>더보기</td>]}
             />
         </div>
     } else {

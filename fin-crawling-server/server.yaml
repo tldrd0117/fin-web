@@ -6,9 +6,12 @@ metadata:
 spec:
   type: NodePort
   ports:
-  - name: http
+  - name: dev
     port: 8000
-    nodePort: 30003
+    nodePort: 30005
+  - name: http
+    port: 80
+    nodePort: 30004
   selector:
     app: fin-cc
 
@@ -16,7 +19,7 @@ spec:
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: fin-carwling-server
+  name: fin-crawling-server-app
   namespace: fin-crawling
 spec:
   replicas: 1
@@ -30,7 +33,17 @@ spec:
     spec:
       terminationGracePeriodSeconds: 60
       containers:
-      - name: fin-carwling-server
+      - name: fin-crawling-nginx
+        image: tldrd0117/nginx
+        imagePullPolicy: Always
+        volumeMounts:
+          - name: config-data
+            mountPath: /etc/nginx/nginx.conf
+          - name: client-resouce
+            mountPath: /usr/src/client
+          - name: socket-file
+            mountPath: /usr/src/tmp
+      - name: fin-crawling-server
         image: tldrd0117/fin-crawling-server
         imagePullPolicy: Always
         ports:
@@ -41,7 +54,7 @@ spec:
           - name: app-resouce
             mountPath: /usr/src/app
           - name: socket-file
-            mountPath: /tmp/
+            mountPath: /usr/src/app/sock
           - name: log-file
             mountPath: /usr/src/app/log
       volumes:
@@ -54,12 +67,21 @@ spec:
           path: /Users/iseongjae/Documents/PersonalProjects/fin-web/fin-crawling-server/server
           type: DirectoryOrCreate
       - name: socket-file
+        # emptyDir: {}
         hostPath:
           path: /Users/iseongjae/Documents/PersonalProjects/fin-web/fin-crawling-server/sock/tmp
           type: DirectoryOrCreate
       - name: log-file
         hostPath:
           path: /Users/iseongjae/Documents/PersonalProjects/fin-web/fin-crawling-server/log
+          type: DirectoryOrCreate
+      - name: config-data
+        hostPath: 
+          path: /Users/iseongjae/Documents/PersonalProjects/fin-web/fin-crawling-server/nginx/nginx.conf
+          type: File
+      - name: client-resouce
+        hostPath: 
+          path: /Users/iseongjae/Documents/PersonalProjects/fin-web/fin-crawling-server/nginx/client
           type: DirectoryOrCreate
     
 

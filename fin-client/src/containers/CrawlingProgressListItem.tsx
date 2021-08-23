@@ -1,20 +1,53 @@
 import React from 'react'
+import { useDispatch } from 'react-redux'
+import Button from '../components/Button'
 import LinearProgressBar from '../components/LinearProgressBar'
+import { cancelCrawling } from '../data/crawling/crawlingSlice'
+import {getDateHipen} from '../utils/DateUtils'
 
 export default (props) => {
+    const dispatch = useDispatch()
     const {
         data:{
             count,
-            successCount,
-            restCount,
-            failCount,
-            state,
-            percent
-        }
+            createdAt, 
+            endDateStr, 
+            failCount, 
+            failTasks, 
+            index, 
+            market, 
+            percent, 
+            restCount, 
+            startDateStr, 
+            state, 
+            successCount, 
+            taskId, 
+            tasks, 
+            tasksRet, 
+            updatedAt,
+            taskUniqueId
+        },
+        key
     } = props
+
+    const handleCancel = () => {
+        dispatch(cancelCrawling({
+            taskId,
+            market,
+            startDate: startDateStr,
+            endDate: endDateStr,
+            taskUniqueId,
+        }))
+    }
     return <>
             <div className={"relative mt-4"}>
+                <label className="block text-black text-medium font-semibold  mt-4" >
+                    {`${market} - (${getDateHipen(startDateStr)} ~ ${getDateHipen(endDateStr)})`}
+                </label>
                 <div>
+                    <label className="block text-gray-400 text-sm font-bold mb-2 mt-2" >
+                        진행
+                    </label>
                     <span>{`전체: ${count||"0"}`}</span>
                     <span className={"text-green-400 ml-2"}>{`성공: ${successCount||"0"}`}</span>
                     <span className={"text-red-400 ml-2"}>{`실패: ${failCount||"0"}`}</span>
@@ -36,6 +69,7 @@ export default (props) => {
                     opacity-90 hover:opacity-100 absolute top-0 right-0`}>
                     {state||""}
                 </span>
+                <Button onClick={handleCancel} className={"bg-red-400 hover:bg-red-500 text-white text-sm mt-4"}>취소</Button>
             </div>
         </>
 }

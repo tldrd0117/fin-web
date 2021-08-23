@@ -12,7 +12,7 @@ import { push } from 'connected-react-router'
 //     transports: ["websocket"]
 // })
 
-const socketUrl = process.env.NODE_ENV=="production"?"ws://"+location.host+"/ws/":"ws://localhost:30003/ws/"
+const socketUrl = process.env.NODE_ENV=="production"?"ws://"+location.host+"/ws/":"ws://localhost:30005/ws/"
 
 function createSocketConnection(token) {
     return eventChannel(emit => {
@@ -39,6 +39,7 @@ function createSocketConnection(token) {
                 emit({eventType: "onerror", data: ev})
             }
             socket.onmessage = (ev:MessageEvent<any>) : any => {
+                console.log("socket/onmessage: "+ev.data)
                 emit({eventType: "onmessage", data: JSON.parse(ev.data)})
             }
         }
@@ -172,14 +173,5 @@ export function* runEmitSaga(action){
     if(isConnected && socket){
         yield apply(socket, socket.send, [JSON.stringify({event: action.type, payload: action.payload})])
     }
-}
-
-export function* watchEmitData() {
-    yield all([
-        takeEvery(runCrawling, runEmitSaga),
-        takeEvery(fetchTasks, runEmitSaga),
-        takeEvery(fetchCompletedTask, runEmitSaga)
-    ])
-    // yield takeEvery(getTaskHistory, runEmitSaga)
 }
 

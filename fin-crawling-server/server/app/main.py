@@ -14,7 +14,9 @@ origins = [
     "http://localhost:8080",
     "http://localhost:8083",
     "http://localhost:31111",
-    "http://localhost:8000"
+    "http://localhost:30005",
+    "http://localhost:8000",
+    "*"
 ]
 
 app = FastAPI()
@@ -28,7 +30,7 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-logger.info("initiate app")
+logger.info("initiate app2")
 
 # def my_excepthook(type, value, traceback):
 #     logger.error('Unhandled error:', str(type), str(value), str(traceback))
@@ -46,8 +48,15 @@ loop = None
 
 @app.on_event("startup")
 async def startup() -> None:
+    loop = asyncio.get_event_loop()
+    loop.create_task(startScheduler())
+
+
+async def startScheduler() -> None:
     taskScheduler: TaskScheduler = Locator.getInstance().get(TaskScheduler)
     taskScheduler.start()
+
+
     # loop = asyncio.get_event_loop()
     # TasksRepository().createTaskRunner(loop)
 

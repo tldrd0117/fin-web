@@ -23,7 +23,7 @@ async def get_token(
     if token is None or not userService.check_token(token):
         await websocket.close(code=status.WS_1008_POLICY_VIOLATION)
         return None
-    return token
+    return token 
 
 
 @router.websocket("/ws/{client_id}")

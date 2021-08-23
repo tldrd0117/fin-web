@@ -1,6 +1,6 @@
 
 from typing import List
-from app.model.dto import StockCrawlingRunCrawlingDTO, StockTaskSchedule, StockTaskScheduleList, StockTaskState, StockTaskScheduleInfo
+from app.model.dto import StockCrawlingRunCrawling, StockTaskSchedule, StockTaskScheduleList, StockTaskState, StockTaskScheduleInfo
 from app.model.task import TaskPoolInfo
 from app.module.locator import Locator
 from app.repo.TasksRepository import TasksRepository, EVENT_TASK_REPO_TASK_COMPLETE, EVENT_TASK_REPO_UPDATE_POOL_INFO
@@ -59,14 +59,18 @@ class TaskService:
             self.manager.send(RES_SOCKET_TASK_FETCH_TASK_SCHEDULE, stockTaskScheduleList.dict(), webSocket)
     
     @staticmethod
-    def marcapJob(marcapDtos: List[StockCrawlingRunCrawlingDTO]) -> None:
+    def marcapJob(marcapDtos: List[StockCrawlingRunCrawling]) -> None:
         service: CrawlingService = Locator.getInstance().get(CrawlingService)
         for dto in marcapDtos:
-            if dto.endDateStr == "*":
+            logger.info("#### schedule job start ####")
+            logger.info("command" + dto.startDateStr + "~" + dto.endDateStr)
+            if dto.startDateStr == "*" or dto.endDateStr == "*":
+                dto.startDateStr = getNowDateStr()
                 dto.endDateStr = getNowDateStr()
+            logger.info("real:" + dto.startDateStr + "~" + dto.endDateStr)
         service.runCrawling(marcapDtos)
     
-    def addTaskSchedule(self, scheduleDto: StockTaskSchedule, runCrawlingDto: List[StockCrawlingRunCrawlingDTO], webSocket: WebSocket) -> None:
+    def addTaskSchedule(self, scheduleDto: StockTaskSchedule, runCrawlingDto: List[StockCrawlingRunCrawling], webSocket: WebSocket) -> None:
         marcapDtos = []
         for dto in runCrawlingDto:
             if dto.taskId == "marcap":

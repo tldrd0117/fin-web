@@ -8,7 +8,7 @@ from pymongo.monitoring import (CommandFailedEvent, CommandStartedEvent,
                                 CommandSucceededEvent)
 
 from uvicorn.config import logger
-from app.model.dto import StockMarketCapitalDTO
+from app.model.dto import StockMarketCapital, ListLimitData, ListLimitResponse
 from app.util.DateUtils import getNow
 
 log = logging.getLogger("mongo")
@@ -73,7 +73,7 @@ class StockMongoDataSource:
             newdata.append(one)
         return newdata
 
-    def insertMarcap(self, li: list[StockMarketCapitalDTO]) -> None:
+    def insertMarcap(self, li: list[StockMarketCapital]) -> None:
         try:
             if not self.isSetupMarcap():
                 self.setupMarcap()
@@ -91,10 +91,31 @@ class StockMongoDataSource:
         except Exception as e:
             print(e)
 
-    def getCompletedTask(self) -> list:
+    def getCompletedTask(self, dto: ListLimitData) -> ListLimitResponse:
         try:
-            cursor = self.task.find({"$or": [{"state": "success"}, {"state": "fail"}]}).sort("createdAt", pymongo.DESCENDING)
-            return self.exceptId(list(cursor))
+            data = dto.dict()
+            cursor = self.task.find({"$or": [
+                        {"state": "success"}, 
+                        {"state": "fail"}
+                    ]}
+                ).sort("createdAt", pymongo.DESCENDING)\
+                .skip(data["offset"])\
+                .limit(data["limit"])
+            
+            count = self.task.find({"$or": [
+                        {"state": "success"}, 
+                        {"state": "fail"}
+                    ]}
+                ).count()
+            
+            res = ListLimitResponse(**{
+                "count": count,
+                "offset": data["offset"],
+                "limit": data["limit"],
+                "data": self.exceptId(list(cursor))
+            })
+            
+            return res
         except Exception as e:
             print(e)
         return []
