@@ -151,6 +151,8 @@ class MarcapCrawler(object):
             mainThreadLoop.create_task(self.parseFile(event, downloadTask, downloadObserver))
 
         while self.isLock:
+            if self.isCancelled:
+                break
             await asyncio.sleep(1)
             logger.info(f"isLock:{str(self.isLock)}")
     

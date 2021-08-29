@@ -1,12 +1,11 @@
 import os
 from watchdog.observers import Observer
 from pymitter import EventEmitter
-from app.model.dto import StockCrawlingDownloadTask
 from app.observer.CmdFileSystemEventHandler import CmdFileSystemEventHandler
 
 
 class DownloadObserver(object):
-    def startObserver(self, uuid, ee: EventEmitter) -> None:
+    def startObserver(self, uuid: str, ee: EventEmitter) -> None:
         # curdir = os.path.dirname(__file__)
         relPath = os.path.relpath(f"../downloads/{uuid}", start=os.curdir)
         path = os.path.realpath(relPath)
