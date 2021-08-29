@@ -13,7 +13,7 @@ class DownloadObserver(object):
         print(path)
         if not os.path.exists(path):
             os.mkdir(path)
-            os.chmod(path, 777)
+            os.system(f'chmod 777 -R {path}')
         self.event_handler = CmdFileSystemEventHandler(ee)
         # self.event_handler.setDownloadTask(downloadTask)
         # log_handler = LoggingEventHandler()
