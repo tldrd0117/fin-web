@@ -48,7 +48,7 @@ class MarcapCrawler(object):
     def connectWebDriver(self, addr: str, uuid: str) -> WebDriver:
         chrome_options = webdriver.ChromeOptions()
         prefs = {
-            'profile.default_content_setting_values.automatic_downloads': True,
+            'profile.default_content_setting_values.automatic_downloads': 1,
             'download.default_directory': f"/home/seluser/Downloads/{uuid}"
         }
         chrome_options.add_experimental_option("prefs", prefs)
@@ -80,7 +80,7 @@ class MarcapCrawler(object):
             path = await downloadObserver.makePath(uuid)
             downloadObserver.startObserver(path, self.ee)
 
-            driver = self.connectLocalDriver(dto.driverAddr, uuid)
+            driver = self.connectWebDriver(dto.driverAddr, uuid)
             driver.get("http://data.krx.co.kr/contents/MDC/MDI/mdiLoader/index.cmd?menuId=MDC0201020101")
             try:
                 alert = WebDriverWait(driver, timeout=3).until(EC.alert_is_present())
