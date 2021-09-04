@@ -22,6 +22,7 @@ class CmdFileSystemEventHandler(FileSystemEventHandler):
         :type event:
             :class:`FileSystemEvent`
         """
+        print(f"any:{event}")
 
     def on_moved(self, event: FileMovedEvent) -> None:
         """Called when a file or a directory is moved or renamed.
@@ -30,6 +31,7 @@ class CmdFileSystemEventHandler(FileSystemEventHandler):
         :type event:
             :class:`DirMovedEvent` or :class:`FileMovedEvent`
         """
+        print(f"on_moved:{event}")
 
     def on_created(self, event: FileCreatedEvent) -> None:
         """Called when a file or directory is created.
@@ -41,6 +43,9 @@ class CmdFileSystemEventHandler(FileSystemEventHandler):
         # if self.queue.empty():
         #     print("####empty")
         #     return
+        print("file_Created")
+        print(event)
+        print(event.src_path)
         if not event.src_path.endswith(".csv"):
             print("####not exist")
             return
@@ -53,6 +58,7 @@ class CmdFileSystemEventHandler(FileSystemEventHandler):
         :type event:
             :class:`DirDeletedEvent` or :class:`FileDeletedEvent`
         """
+        print(f"on_deleted:{event}")
 
     def on_modified(self, event: FileModifiedEvent) -> None:
         """Called when a file or directory is modified.
@@ -62,3 +68,4 @@ class CmdFileSystemEventHandler(FileSystemEventHandler):
             :class:`DirModifiedEvent` or :class:`FileModifiedEvent`
         """
         # print("modified")
+        print(f"on_modified:{event}")

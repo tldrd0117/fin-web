@@ -4,9 +4,11 @@ metadata:
   name: fin-carwling-webdriver
   namespace: fin-crawling
 spec:
+  type: NodePort
   ports:
   - name: http
     port: 4444
+    nodePort: 30006
   selector:
     app: fin-carwling-webdriver
 
@@ -48,7 +50,7 @@ spec:
           type: DirectoryOrCreate
       - name: download-data
         hostPath: 
-          path: /Users/iseongjae/Documents/PersonalProjects/fin-web/fin-crawling-server/downloads
+          path: /Users/iseongjae/Documents/PersonalProjects/fin-web/fin-crawling-server/server/downloads
           type: DirectoryOrCreate
     
 

@@ -124,10 +124,6 @@ class TasksRepository(object):
         task.restCount = task.restCount - count
         i = 0
         for _ in range(count):
-            logger.info("count:"+str(count))
-            logger.info("index:"+str(task.index))
-            logger.info("i:"+str(i))
-            logger.info("_:"+str(_))
             left = task.tasks[task.index + i]
             task.failTasks.append(left)
             task.tasksRet[task.index + i] = FAIL
@@ -141,13 +137,9 @@ class TasksRepository(object):
     
     def getCompletedTask(self, dto: ListLimitData) -> ListLimitResponse:
         taskData = self.mongod.getCompletedTask(dto)
-        logger.info("taskData:"+str(taskData))
         tasks: Dict = dict()
         taskIds = []
         for task in taskData.data:
-            logger.info("task:"+str(task))
-            logger.info("taskId:"+str(task["taskId"]))
-            logger.info("tasks:"+str(tasks))
             if task["taskId"] not in tasks:
                 tasks[task["taskId"]] = dict()
                 tasks[task["taskId"]]["list"] = dict()
@@ -160,7 +152,6 @@ class TasksRepository(object):
             "history": tasks,
             "historyIds": taskIds
         })
-        logger.info(stockCrawlingCompletedTasksDTO.json())
         taskData.data = stockCrawlingCompletedTasksDTO
         return taskData
 

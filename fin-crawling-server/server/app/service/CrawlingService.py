@@ -52,7 +52,7 @@ class CrawlingService:
     
     def fetchCompletedTask(self, dto: ListLimitData, webSocket: WebSocket) -> None:
         tasks: ListLimitResponse = self.tasksRepository.getCompletedTask(dto)
-        logger.info("histories:"+tasks.json())
+        # logger.info("histories:"+tasks.json())
         self.manager.send(RES_SOCKET_CRAWLING_FETCH_COMPLETED_TASK, tasks.dict(), webSocket)
 
     def createTaskRepositoryListener(self) -> None:
@@ -60,13 +60,13 @@ class CrawlingService:
         self.tasksRepository.taskEventEmitter.on(EVENT_TASK_REPO_TASK_COMPLETE, self.completeTask)
     
     def updateTasks(self, tasks: StockCrawlingTasks) -> None:
-        logger.info("tasks:"+tasks.json())
+        # logger.info("tasks:"+tasks.json())
         self.manager.sendBroadCast(RES_SOCKET_CRAWLING_RUN_CRAWLING, tasks.dict())
     
     def completeTask(self, marcap: str) -> None:
         dto = ListLimitData(**{
-            "offset":0,
-            "limit":20
+            "offset": 0,
+            "limit": 20
         })
         tasks: StockCrawlingCompletedTasks = self.tasksRepository.getCompletedTask(dto)
         self.manager.sendBroadCast(RES_SOCKET_CRAWLING_FETCH_COMPLETED_TASK, tasks.dict())

@@ -46,20 +46,8 @@ class MarcapCrawler(object):
         return str(uuid.uuid4())
 
     def connectWebDriver(self, addr: str, uuid: str) -> WebDriver:
-        options = Options()
-        options.add_argument("--headless")
-        options.add_argument("window-size=1400,1500")
-        options.add_argument("--disable-gpu")
-        options.add_argument("--no-sandbox")
-        options.add_argument("start-maximized")
-        options.add_argument("enable-automation")
-        options.add_argument("--disable-infobars")
-        options.add_argument("--disable-dev-shm-usage")
         chrome_options = webdriver.ChromeOptions()
         prefs = {
-            "download.prompt_for_download": False,
-            "download.directory_upgrade": True,
-            "plugins.always_open_pdf_externally": True,
             'profile.default_content_setting_values.automatic_downloads': True,
             'download.default_directory': f"/home/seluser/Downloads/{uuid}"
         }
@@ -70,6 +58,16 @@ class MarcapCrawler(object):
         )
         return driver
 
+    def connectLocalDriver(self, addr: str, uuid: str) -> WebDriver:
+        chrome_options = webdriver.ChromeOptions()
+        prefs = {
+            'profile.default_content_setting_values.automatic_downloads': 1,
+            'download.default_directory': f"/Users/iseongjae/Documents/PersonalProjects/fin-web/fin-crawling-server/server/downloads/{uuid}"
+        }
+        chrome_options.add_experimental_option("prefs", prefs)
+        driver = webdriver.Chrome(executable_path="/Users/iseongjae/Downloads/chromedriver", chrome_options=chrome_options)
+        return driver
+
     async def crawling(self, dto: StockCrawlingRunCrawling) -> None:
         driver = None
         uuid = self.createUUID()
@@ -77,7 +75,12 @@ class MarcapCrawler(object):
         downloadObserver = None
         try:
             self.ee.emit(EVENT_MARCAP_CRAWLING_ON_CONNECTING_WEBDRIVER, dto)
-            driver = self.connectWebDriver(dto.driverAddr, uuid)
+            
+            downloadObserver = DownloadObserver()
+            path = await downloadObserver.makePath(uuid)
+            downloadObserver.startObserver(path, self.ee)
+
+            driver = self.connectLocalDriver(dto.driverAddr, uuid)
             driver.get("http://data.krx.co.kr/contents/MDC/MDI/mdiLoader/index.cmd?menuId=MDC0201020101")
             try:
                 alert = WebDriverWait(driver, timeout=3).until(EC.alert_is_present())
@@ -90,8 +93,7 @@ class MarcapCrawler(object):
             WebDriverWait(driver, timeout=20, poll_frequency=1).until(EC.element_to_be_clickable((By.CSS_SELECTOR, "#mktId_0_1")))
             date = datetime.strptime(dto.startDateStr, "%Y%m%d")
             endDate = datetime.strptime(dto.endDateStr, "%Y%m%d")
-            downloadObserver = DownloadObserver()
-            downloadObserver.startObserver(uuid, self.ee)
+
             if self.isCancelled:
                 raise Exception(f"#@@ {dto.taskUniqueId} cancelled")
 
@@ -104,6 +106,7 @@ class MarcapCrawler(object):
                     "taskId": dto.taskId,
                     "taskUniqueId": dto.taskUniqueId
                 })
+                print(downloadTask.json())
                 downloadObserver.event_handler.setDownloadTask(downloadTask)
                 self.ee.emit(EVENT_MARCAP_CRAWLING_ON_DOWNLOAD_START, downloadTask)
                 await self.downloadData(downloadTask, downloadObserver, driver)
@@ -116,6 +119,7 @@ class MarcapCrawler(object):
             else:
                 self.isError = True
                 self.ee.emit(EVENT_MARCAP_CRAWLING_ON_ERROR, dto)
+            print(f"error: {str(e)}")
             logger.error(f"error: {str(e)}")
         finally:
             if downloadObserver:
@@ -148,9 +152,9 @@ class MarcapCrawler(object):
         logger.info("before:"+before)
         logger.info("after:"+after)
         await asyncio.sleep(3)
-        WebDriverWait(driver, timeout=10, poll_frequency=1).until(EC.element_to_be_clickable((By.CSS_SELECTOR, "*[title='다운로드 팝업']")))
+        WebDriverWait(driver, timeout=10, poll_frequency=2).until(EC.element_to_be_clickable((By.CSS_SELECTOR, "*[title='다운로드 팝업']")))
         driver.execute_script("$('[title=\"다운로드 팝업\"]').click()")
-        WebDriverWait(driver, timeout=10, poll_frequency=1).until(EC.element_to_be_clickable((By.CSS_SELECTOR, "*[data-type='csv']")))
+        WebDriverWait(driver, timeout=10, poll_frequency=2).until(EC.element_to_be_clickable((By.CSS_SELECTOR, "*[data-type='csv']")))
         driver.execute_script("$(\"[data-type='csv']\").click()")
         print("wait:"+downloadTask.dateStr)
         logger.info("wait:"+downloadTask.dateStr)
@@ -166,7 +170,8 @@ class MarcapCrawler(object):
         while self.isLock:
             if self.isCancelled:
                 break
-            await asyncio.sleep(1)
+            await asyncio.sleep(1, loop=mainThreadLoop)
+            print(f"isLock:{str(self.isLock)}")
             logger.info(f"isLock:{str(self.isLock)}")
     
     def convertFileToDto(self, path: str, dto: StockMarketCapitalResult) -> None:

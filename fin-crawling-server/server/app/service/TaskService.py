@@ -105,5 +105,5 @@ class TaskService:
         self.manager.send(RES_SOCKET_TASK_FETCH_TASK_POOL_INFO, taskPoolInfo.dict(), webSocket)
     
     def updateTaskPoolInfo(self, poolInfo: TaskPoolInfo) -> None:
-        logger.info(f"updateTaskPoolInfo:{poolInfo.json()}")
+        # logger.info(f"updateTaskPoolInfo:{poolInfo.json()}")
         self.manager.sendBroadCast(RES_SOCKET_TASK_FETCH_TASK_POOL_INFO, poolInfo.dict())
