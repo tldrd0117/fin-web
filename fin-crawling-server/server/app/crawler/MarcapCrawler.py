@@ -56,6 +56,7 @@ class MarcapCrawler(object):
             command_executor=addr,
             options=chrome_options,
         )
+        driver.set_script_timeout(600)
         return driver
 
     def connectLocalDriver(self, addr: str, uuid: str) -> WebDriver:
