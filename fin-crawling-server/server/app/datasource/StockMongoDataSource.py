@@ -124,7 +124,7 @@ class StockMongoDataSource:
         try:
             cursor = self.task.find({
                 "taskId": taskId,
-                "$or": [{"state": "success"}, {"state": "fail"}]
+                "$or": [{"state": "success"}, {"state": "fail"}, {"state": "error"}]
             }, projection=["tasks", "tasksRet"])
             return list(cursor)
         except Exception as e:
