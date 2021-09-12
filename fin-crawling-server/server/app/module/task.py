@@ -34,7 +34,12 @@ class Pool(object):
     
     def run(self, taskPool: TaskPool) -> None:
         self.isRun = True
-        asyncio.get_running_loop().create_task(self.task.run(taskPool, self))
+        self.poolTask = asyncio.ensure_future(self.task.run(taskPool, self))
+    
+    def cancel(self) -> None:
+        self.isRun = False
+        if self.poolTask and not self.poolTask.cancelled():
+            self.poolTask.cancel()
         
 
 class TaskPool(object):
@@ -105,18 +110,26 @@ class TaskRunner(object):
     async def notifyToPool(self) -> None:
         try:
             print(f"notifyToPool:{self.pool.poolCount()}")
-            if self.pool.poolSize > self.queue.qsize() and self.pool.poolCount() >= self.queue.qsize():
-                print("exit")
-            elif self.pool.poolSize > self.pool.poolCount() and self.queue.qsize() > 0:
+            if self.queue.qsize() > 0 and (self.pool.poolSize - self.pool.poolCount()) > 0:
                 pool = self.pool.addTaskPool(Pool(), False)
-                print(f"before qsize:{self.queue.qsize()}")
                 task: Task = await asyncio.wait_for(self.queue.get(), timeout=1)
-                print(f"after qsize:{self.queue.qsize()}")
                 if task:
                     pool.setTask(task)
                     pool.run(self.pool)
                 else:
                     self.pool.removeTaskPool(pool, False)
+            # if self.pool.poolSize > self.queue.qsize() and self.pool.poolCount() >= self.queue.qsize():
+            #     print("exit")
+            # elif self.pool.poolSize > self.pool.poolCount() and self.queue.qsize() > 0:
+            #     pool = self.pool.addTaskPool(Pool(), False)
+            #     print(f"before qsize:{self.queue.qsize()}")
+            #     task: Task = await asyncio.wait_for(self.queue.get(), timeout=1)
+            #     print(f"after qsize:{self.queue.qsize()}")
+            #     if task:
+            #         pool.setTask(task)
+            #         pool.run(self.pool)
+            #     else:
+            #         self.pool.removeTaskPool(pool, False)
         except asyncio.TimeoutError as e:
             print(f"timeout:{str(e)}")
             self.pool.removeTaskPool(pool, False)

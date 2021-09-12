@@ -21,7 +21,7 @@ async def runTest(loop: asyncio.AbstractEventLoop) -> None:
     taskRepository = TasksRepository(mongod)
     # taskRepository.createTaskRunner()
     
-    for index in range(10):
+    for index in range(20):
         task = Task(taskWorker, {"data": "new"+str(index), "time": 1})
         taskRepository.runTask(task)
     # try:
@@ -32,6 +32,7 @@ async def runTest(loop: asyncio.AbstractEventLoop) -> None:
 
 # pytest -s test_task_runner.py
 def test() -> None:
+    print("run test")
     loop = asyncio.get_event_loop()
     loop.create_task(runTest(loop))
     try:

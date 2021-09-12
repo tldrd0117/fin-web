@@ -4,6 +4,7 @@ import os
 
 from datetime import datetime, timedelta
 from typing import TypeVar, Final
+from asyncio.exceptions import CancelledError
 
 from pymitter import EventEmitter
 from selenium import webdriver
@@ -39,7 +40,6 @@ class MarcapCrawler(object):
         super().__init__()
         self.ee = EventEmitter()
         self.isLock = False
-        self.isCancelled = False
         self.isError = False
 
     def createUUID(self) -> str:
@@ -95,9 +95,6 @@ class MarcapCrawler(object):
             date = datetime.strptime(dto.startDateStr, "%Y%m%d")
             endDate = datetime.strptime(dto.endDateStr, "%Y%m%d")
 
-            if self.isCancelled:
-                raise Exception(f"#@@ {dto.taskUniqueId} cancelled")
-
             while date <= endDate:
                 dateStr = date.strftime("%Y%m%d")
                 downloadTask = StockCrawlingDownloadTask(**{
@@ -112,14 +109,13 @@ class MarcapCrawler(object):
                 self.ee.emit(EVENT_MARCAP_CRAWLING_ON_DOWNLOAD_START, downloadTask)
                 await self.downloadData(downloadTask, downloadObserver, driver)
                 date = date + timedelta(days=1)
-                if self.isCancelled:
-                    raise Exception(f"#@@ {dto.taskUniqueId} cancelled")
+        except CancelledError as ce:
+            print(f"CancelledError: {str(ce)}")
+            logger.error(f"CancelledError: {str(ce)}")
+            self.ee.emit(EVENT_MARCAP_CRAWLING_ON_CANCEL, dto)
         except Exception as e:
-            if str(e).startswith("#@@"):
-                self.ee.emit(EVENT_MARCAP_CRAWLING_ON_CANCEL, dto)
-            else:
-                self.isError = True
-                self.ee.emit(EVENT_MARCAP_CRAWLING_ON_ERROR, dto)
+            self.isError = True
+            self.ee.emit(EVENT_MARCAP_CRAWLING_ON_ERROR, dto)
             print(f"error: {str(e)}")
             logger.error(f"error: {str(e)}")
         finally:
@@ -170,8 +166,6 @@ class MarcapCrawler(object):
 
         timeout = 10
         while self.isLock:
-            if self.isCancelled:
-                break
             timeout = timeout - 1
             if timeout <= 0:
                 retdto = StockMarketCapitalResult()

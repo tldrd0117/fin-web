@@ -21,6 +21,7 @@ class CrawlingService:
         self.crawlerRepository = crawlerRepository
         self.manager = manager
         self.crawlers: Dict = {}
+        self.pools: Dict = {}
         self.createTaskRepositoryListener()
 
     def runCrawling(self, dtoList: List[StockCrawlingRunCrawling]) -> None:
@@ -29,6 +30,7 @@ class CrawlingService:
                 async def taskWorker(runDto: StockCrawlingRunCrawling, pool: Pool, taskPool: TaskPool) -> None:
                     marcapCrawler = MarcapCrawler()
                     self.crawlers[runDto.taskUniqueId] = marcapCrawler
+                    self.pools[runDto.taskUniqueId] = pool
                     self.tasksRepository.createListners(marcapCrawler.ee)
                     self.crawlerRepository.createListener(marcapCrawler.ee)
                     logger.info(f"taskWorker:{runDto.taskUniqueId}")
@@ -40,6 +42,7 @@ class CrawlingService:
     
     def cancelCrawling(self, dto: StockCrawlingRunCrawling) -> None:
         if dto.taskUniqueId in self.crawlers:
+            self.pools[dto.taskUniqueId].cancel()
             self.crawlers[dto.taskUniqueId].isCancelled = True
         else:
             task = self.tasksRepository.getTask(dto.taskId, dto.taskUniqueId)
