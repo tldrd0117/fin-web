@@ -168,9 +168,17 @@ class MarcapCrawler(object):
             self.ee.emit(EVENT_MARCAP_CRAWLING_ON_DOWNLOAD_COMPLETE, downloadTask)
             mainThreadLoop.create_task(self.parseFile(event, downloadTask, downloadObserver))
 
+        timeout = 10
         while self.isLock:
             if self.isCancelled:
                 break
+            timeout = timeout - 1
+            if timeout <= 0:
+                retdto = StockMarketCapitalResult()
+                retdto.result = "fail"
+                retdto.errorMsg = "timeout"
+                self.ee.emit(EVENT_MARCAP_CRAWLING_ON_PARSING_COMPLETE, False, retdto, downloadTask)
+                return
             await asyncio.sleep(1, loop=mainThreadLoop)
             print(f"isLock:{str(self.isLock)}")
             logger.info(f"isLock:{str(self.isLock)}")
