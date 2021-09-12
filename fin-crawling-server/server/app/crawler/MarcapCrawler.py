@@ -180,8 +180,8 @@ class MarcapCrawler(object):
                 self.ee.emit(EVENT_MARCAP_CRAWLING_ON_PARSING_COMPLETE, False, retdto, downloadTask)
                 return
             await asyncio.sleep(1, loop=mainThreadLoop)
-            print(f"isLock:{str(self.isLock)}")
-            logger.info(f"isLock:{str(self.isLock)}")
+            print(f"isLock:{str(self.isLock)} timeout:{timeout}")
+            logger.info(f"isLock:{str(self.isLock)} timeout:{timeout}")
     
     def convertFileToDto(self, path: str, dto: StockMarketCapitalResult) -> None:
         lines = []
