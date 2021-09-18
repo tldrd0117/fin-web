@@ -1,6 +1,6 @@
 
 from typing import List
-from app.model.dto import StockCrawlingRunCrawling, StockTaskSchedule, StockTaskScheduleList, StockTaskState, StockTaskScheduleInfo
+from app.model.dto import YearData, StockCrawlingRunCrawling, StockTaskSchedule, StockTaskScheduleList, StockTaskState, StockTaskScheduleInfo
 from app.model.task import TaskPoolInfo
 from app.module.locator import Locator
 from app.repo.TasksRepository import TasksRepository, EVENT_TASK_REPO_TASK_COMPLETE, EVENT_TASK_REPO_UPDATE_POOL_INFO
@@ -93,7 +93,7 @@ class TaskService:
         self.getTaskSchedule(webSocket, True)
         
     def getTaskState(self, taskId: str, webSocket: WebSocket) -> None:
-        data: StockTaskState = self.tasksRepository.getAllTaskState(taskId)
+        data: YearData = self.tasksRepository.getAllTaskState(taskId)
         self.manager.send(RES_SOCKET_TASK_FETCH_TASK_STATE, data.dict(), webSocket)
 
     def updateTaskState(self, taskId: str) -> None:

@@ -33,15 +33,15 @@ const taskSlice = createSlice({
                 [ {stocks, years, market, taskId}...]
             */
             
-            state.yearData = payload
-            Object.keys(payload).forEach(taskId=>{
-                Object.keys(payload[taskId]).forEach(market=>{
-                    state.yearData[taskId][market].stocks = payload[taskId][market].stocks.map(v=>({
+            state.yearData = payload.yearData
+            Object.keys(payload.yearData).forEach(taskId=>{
+                Object.keys(payload.yearData[taskId]).forEach(market=>{
+                    state.yearData[taskId][market].stocks = payload.yearData[taskId][market].stocks.map(v=>({
                         date: v.date,
                         count: 1,
                         level: (v.ret+1)
                     }));
-                    state.yearData[taskId][market].yearArray = Object.keys(payload[taskId][market].years).sort((a,b)=>Number(a)-Number(b))
+                    state.yearData[taskId][market].yearArray = Object.keys(payload.yearData[taskId][market].years).sort((a,b)=>Number(a)-Number(b))
                 })
 
             })

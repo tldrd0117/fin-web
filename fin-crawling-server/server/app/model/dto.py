@@ -17,7 +17,11 @@ class StockTaskState(BaseModel):
     taskId: str
     stocks: List
     years: Dict
-    
+
+
+class YearData(BaseModel):
+    yearData: Dict[str, Dict]
+
 
 class ListLimitResponse(BaseModel):
     data: Any

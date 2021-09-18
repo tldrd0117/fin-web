@@ -11,7 +11,7 @@ from app.crawler.MarcapCrawler import EVENT_MARCAP_CRAWLING_ON_CONNECTING_WEBDRI
     EVENT_MARCAP_CRAWLING_ON_ERROR, \
     EVENT_MARCAP_CRAWLING_ON_CANCEL
 from app.datasource.StockMongoDataSource import StockMongoDataSource
-from app.model.dto import StockCrawlingCompletedTasks, StockCrawlingDownloadTask, StockCrawlingRunCrawling, StockCrawlingTasks, StockMarketCapitalResult, StockCrawlingTask, StockTaskState, ListLimitData, ListLimitResponse
+from app.model.dto import StockCrawlingCompletedTasks, StockCrawlingDownloadTask, StockCrawlingRunCrawling, StockCrawlingTasks, StockMarketCapitalResult, StockCrawlingTask, StockTaskState, ListLimitData, ListLimitResponse, YearData
 from app.model.task import TaskPoolInfo
 from app.module.task import Task, TaskRunner
 
@@ -157,8 +157,10 @@ class TasksRepository(object):
 
     def getAllTaskState(self, taskId: str) -> StockTaskState:
         markets = ["kospi", "kosdaq"]
-        resultDict: dict = dict()
-        resultDict[taskId] = dict()
+        resultDict: YearData = YearData(**{
+            "yearData": dict()
+        })
+        resultDict.yearData[taskId] = dict()
         for market in markets:
             data = self.mongod.getAllTaskState(taskId, market)
             compDict: Dict = {}
@@ -177,7 +179,7 @@ class TasksRepository(object):
                         compDict[taskDate] = {"date": taskDate, "ret": one["tasksRet"][idx]}
             collect: List = list(compDict.values())
             collect = sorted(collect, key=lambda x: x["date"])
-            resultDict[taskId][market] = StockTaskState(**{
+            resultDict.yearData[taskId][market] = StockTaskState(**{
                 "stocks": collect,
                 "years": count,
                 "market": market,
