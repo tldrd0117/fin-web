@@ -120,10 +120,11 @@ class StockMongoDataSource:
             print(e)
         return []
     
-    def getAllTaskState(self, taskId: str) -> list:
+    def getAllTaskState(self, taskId: str, market: str) -> list:
         try:
             cursor = self.task.find({
                 "taskId": taskId,
+                "market": market
                 # "$or": [{"state": "success"}, {"state": "fail"}, {"state": "error"}]
             }, projection=["tasks", "tasksRet"])
             return list(cursor)

@@ -156,27 +156,34 @@ class TasksRepository(object):
         return taskData
 
     def getAllTaskState(self, taskId: str) -> StockTaskState:
-        data = self.mongod.getAllTaskState(taskId)
-        compDict: Dict = {}
-        count: Dict = {}
-        for one in data:
-            for idx, taskDate in enumerate(one["tasks"]):
-                if taskDate in compDict.keys():
-                    if compDict[taskDate]["ret"] == 1 or one["tasksRet"][idx] == 1:
-                        compDict[taskDate] = {"date": taskDate, "ret": 1}
-                else:
-                    year = taskDate[0:4]
-                    if year in count.keys():
-                        count[year] = count[year] + 1
+        markets = ["kospi", "kosdaq"]
+        resultDict: dict = dict()
+        resultDict[taskId] = dict()
+        for market in markets:
+            data = self.mongod.getAllTaskState(taskId, market)
+            compDict: Dict = {}
+            count: Dict = {}
+            for one in data:
+                for idx, taskDate in enumerate(one["tasks"]):
+                    if taskDate in compDict.keys():
+                        if compDict[taskDate]["ret"] == 1 or one["tasksRet"][idx] == 1:
+                            compDict[taskDate] = {"date": taskDate, "ret": 1}
                     else:
-                        count[year] = 1
-                    compDict[taskDate] = {"date": taskDate, "ret": one["tasksRet"][idx]}
-        collect: List = list(compDict.values())
-        collect = sorted(collect, key=lambda x: x["date"])
-        return StockTaskState(**{
-            "stocks": collect,
-            "years": count
-        })
+                        year = taskDate[0:4]
+                        if year in count.keys():
+                            count[year] = count[year] + 1
+                        else:
+                            count[year] = 1
+                        compDict[taskDate] = {"date": taskDate, "ret": one["tasksRet"][idx]}
+            collect: List = list(compDict.values())
+            collect = sorted(collect, key=lambda x: x["date"])
+            resultDict[taskId][market] = StockTaskState(**{
+                "stocks": collect,
+                "years": count,
+                "market": market,
+                "taskId": taskId
+            })
+        return resultDict
 
     def createListners(self, ee: EventEmitter) -> None:
         ee.on(EVENT_MARCAP_CRAWLING_ON_CONNECTING_WEBDRIVER, self.onConnectingWebDriver)

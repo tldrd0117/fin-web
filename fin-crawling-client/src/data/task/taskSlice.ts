@@ -4,9 +4,20 @@ import { createAction, createSlice } from "@reduxjs/toolkit";
 const taskSlice = createSlice({
     name: "task",
     initialState: {
-        stocks: [],
-        years:{},
-        yearArray:[],
+        yearData: {
+            marcap:{
+                kospi:{
+                    stocks: [],
+                    years:{},
+                    yearArray:[],
+                },
+                kosdaq:{
+                    stocks: [],
+                    years:{},
+                    yearArray:[],
+                }
+            }
+        },
         poolInfo: {
             poolSize: 0,
             poolCount: 0,
@@ -17,14 +28,23 @@ const taskSlice = createSlice({
     reducers:{
         fetchTaskStateRes: (state, action) => {
             const { payload } = action;
-            state.stocks = payload.stocks.map(v=>({
-                date: v.date,
-                count: 1,
-                level: (v.ret+1)
-            }));
-            state.years = payload.years;
-            state.yearArray = Object.keys(payload.years).sort((a,b)=>Number(a)-Number(b))
+            /*
+                res
+                [ {stocks, years, market, taskId}...]
+            */
+            
+            state.yearData = payload
+            Object.keys(payload).forEach(taskId=>{
+                Object.keys(payload[taskId]).forEach(market=>{
+                    state.yearData[taskId][market].stocks = payload[taskId][market].stocks.map(v=>({
+                        date: v.date,
+                        count: 1,
+                        level: (v.ret+1)
+                    }));
+                    state.yearData[taskId][market].yearArray = Object.keys(payload[taskId][market].years).sort((a,b)=>Number(a)-Number(b))
+                })
 
+            })
         },
         fetchTaskPoolInfoRes: (state, action) => {
             const { payload } = action;

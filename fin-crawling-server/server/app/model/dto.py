@@ -7,15 +7,17 @@ class SocketResponse(BaseModel):
     payload: dict
 
 
-class StockTaskState(BaseModel):
-    stocks: List
-    years: Dict
-
-
 class ListLimitData(BaseModel):
     offset: int
     limit: int
 
+
+class StockTaskState(BaseModel):
+    market: str
+    taskId: str
+    stocks: List
+    years: Dict
+    
 
 class ListLimitResponse(BaseModel):
     data: Any

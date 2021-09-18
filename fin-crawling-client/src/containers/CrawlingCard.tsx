@@ -28,15 +28,23 @@ export default (props) =>{
             <div className={"w-full h-px bg-gray-300 mt-8 mb-4"}></div>
 
             <p className={"mt-2 mb-2"}>Task Calendar</p>
-            <YearCalendar
-                blockSize={10} blockMargin={4}
-                fullYear={false}
-                style={{maxWidth:"100%"}}
-                task={task}
-                years={task.yearArray}
-            >
-                <ReactTooltip delayShow={50} html />
-            </YearCalendar>
+            {
+                Object.keys(task.yearData["marcap"]).map(market=>{
+                    return <>
+                        <p>{market}</p>
+                        <YearCalendar
+                            blockSize={10} blockMargin={4}
+                            fullYear={false}
+                            style={{maxWidth:"100%"}}
+                            task={task.yearData["marcap"][market]}
+                            years={task.yearData["marcap"][market].yearArray}
+                        >
+                            <ReactTooltip delayShow={50} html />
+                        </YearCalendar>
+                    </>
+                })
+            }
+            
             <div className={"w-full h-px bg-gray-300 mt-8 mb-4"}></div>
             <p className={"mt-2"}>Completed History</p>
             <CrawlingCompleteList taskId={"marcap"}/>
