@@ -4,7 +4,7 @@ from typing import Dict, List
 from app.repo.CrawlerRepository import CrawlerRepository
 from app.repo.TasksRepository import EVENT_TASK_REPO_TASK_COMPLETE, TasksRepository, EVENT_TASK_REPO_UPDATE_TASKS
 from app.module.task import Pool, Task, TaskPool
-from app.model.dto import StockCrawlingCompletedTasks, StockCrawlingRunCrawling, StockCrawlingTasks, ListLimitData, ListLimitResponse
+from app.model.dto import StockUpdateState, StockCrawlingCompletedTasks, StockCrawlingRunCrawling, StockCrawlingTasks, ListLimitData, ListLimitResponse
 from app.crawler.MarcapCrawler import MarcapCrawler
 from fastapi import WebSocket
 from app.module.socket.manager import ConnectionManager
@@ -66,7 +66,7 @@ class CrawlingService:
         # logger.info("tasks:"+tasks.json())
         self.manager.sendBroadCast(RES_SOCKET_CRAWLING_RUN_CRAWLING, tasks.dict())
     
-    def completeTask(self, marcap: str) -> None:
+    def completeTask(self, marcap: str, stockUpdateState: StockUpdateState) -> None:
         dto = ListLimitData(**{
             "offset": 0,
             "limit": 20

@@ -55,8 +55,10 @@ class MarcapCrawler(object):
         driver = webdriver.Remote(
             command_executor=addr,
             options=chrome_options,
+
         )
-        driver.set_script_timeout(600)
+        driver.set_page_load_timeout(20)
+        driver.set_script_timeout(20)
         return driver
 
     def connectLocalDriver(self, addr: str, uuid: str) -> WebDriver:
@@ -164,7 +166,7 @@ class MarcapCrawler(object):
             self.ee.emit(EVENT_MARCAP_CRAWLING_ON_DOWNLOAD_COMPLETE, downloadTask)
             mainThreadLoop.create_task(self.parseFile(event, downloadTask, downloadObserver))
 
-        timeout = 10
+        timeout = 30
         while self.isLock:
             timeout = timeout - 1
             if timeout <= 0:

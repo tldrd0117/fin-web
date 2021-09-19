@@ -60,7 +60,7 @@ spec:
       volumes:
       - name: download-data
         hostPath: 
-          path: /Users/iseongjae/Documents/PersonalProjects/fin-web/fin-crawling-server/downloads
+          path: /Users/iseongjae/Documents/PersonalProjects/fin-web/fin-crawling-server/server/downloads
           type: DirectoryOrCreate
       - name: app-resouce
         hostPath: 

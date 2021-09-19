@@ -1,6 +1,6 @@
 
 from typing import List
-from app.model.dto import YearData, StockCrawlingRunCrawling, StockTaskSchedule, StockTaskScheduleList, StockTaskState, StockTaskScheduleInfo
+from app.model.dto import StockUpdateState, YearData, StockCrawlingRunCrawling, StockTaskSchedule, StockTaskScheduleList, StockTaskState, StockTaskScheduleInfo
 from app.model.task import TaskPoolInfo
 from app.module.locator import Locator
 from app.repo.TasksRepository import TasksRepository, EVENT_TASK_REPO_TASK_COMPLETE, EVENT_TASK_REPO_UPDATE_POOL_INFO
@@ -13,6 +13,7 @@ from app.service.CrawlingService import CrawlingService
 from uvicorn.config import logger
 
 RES_SOCKET_TASK_FETCH_TASK_STATE = "task/fetchTaskStateRes"
+RES_SOCKET_TASK_UPDATE_TASK_STATE = "task/updateTaskStateRes"
 RES_SOCKET_TASK_FETCH_TASK_SCHEDULE = "taskSchedule/fetchTaskScheduleRes"
 RES_SOCKET_TASK_FETCH_TASK_POOL_INFO = "task/fetchTaskPoolInfoRes"
 
@@ -96,9 +97,8 @@ class TaskService:
         data: YearData = self.tasksRepository.getAllTaskState(taskId)
         self.manager.send(RES_SOCKET_TASK_FETCH_TASK_STATE, data.dict(), webSocket)
 
-    def updateTaskState(self, taskId: str) -> None:
-        data: StockTaskState = self.tasksRepository.getAllTaskState(taskId)
-        self.manager.sendBroadCast(RES_SOCKET_TASK_FETCH_TASK_STATE, data.dict())
+    def updateTaskState(self, taskId: str, stockUpdateState: StockUpdateState) -> None:
+        self.manager.sendBroadCast(RES_SOCKET_TASK_UPDATE_TASK_STATE, stockUpdateState.dict())
 
     def getTaskPoolInfo(self, webSocket: WebSocket) -> None:
         taskPoolInfo: TaskPoolInfo = self.tasksRepository.getPoolInfo()

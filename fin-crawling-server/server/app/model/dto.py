@@ -19,6 +19,13 @@ class StockTaskState(BaseModel):
     years: Dict
 
 
+class StockUpdateState(BaseModel):
+    market: str
+    taskId: str
+    date: str
+    ret: str
+
+
 class YearData(BaseModel):
     yearData: Dict[str, Dict]
 

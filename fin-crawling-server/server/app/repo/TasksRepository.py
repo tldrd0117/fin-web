@@ -11,7 +11,7 @@ from app.crawler.MarcapCrawler import EVENT_MARCAP_CRAWLING_ON_CONNECTING_WEBDRI
     EVENT_MARCAP_CRAWLING_ON_ERROR, \
     EVENT_MARCAP_CRAWLING_ON_CANCEL
 from app.datasource.StockMongoDataSource import StockMongoDataSource
-from app.model.dto import StockCrawlingCompletedTasks, StockCrawlingDownloadTask, StockCrawlingRunCrawling, StockCrawlingTasks, StockMarketCapitalResult, StockCrawlingTask, StockTaskState, ListLimitData, ListLimitResponse, YearData
+from app.model.dto import StockUpdateState, StockCrawlingCompletedTasks, StockCrawlingDownloadTask, StockCrawlingRunCrawling, StockCrawlingTasks, StockMarketCapitalResult, StockCrawlingTask, StockTaskState, ListLimitData, ListLimitResponse, YearData
 from app.model.task import TaskPoolInfo
 from app.module.task import Task, TaskRunner
 
@@ -180,6 +180,8 @@ class TasksRepository(object):
             collect: List = list(compDict.values())
             collect = sorted(collect, key=lambda x: x["date"])
             resultDict.yearData[taskId][market] = StockTaskState(**{
+                "taskStates": compDict,
+                "taskKeys": compDict.keys(),
                 "stocks": collect,
                 "years": count,
                 "market": market,
@@ -240,7 +242,12 @@ class TasksRepository(object):
         self.taskEventEmitter.emit(EVENT_TASK_REPO_UPDATE_TASKS, self.tasksdto)
         self.mongod.upsertTask(task.dict())
         self.mongod.insertMarcap(retdto.data)
-        self.taskEventEmitter.emit(EVENT_TASK_REPO_TASK_COMPLETE, "marcap")
+        self.taskEventEmitter.emit(EVENT_TASK_REPO_TASK_COMPLETE, "marcap", StockUpdateState(**{
+            "taskId": dto.taskId,
+            "market": dto.market,
+            "date": dto.dateStr,
+            "ret": 1 if isSuccess else 2
+        }))
     
     def onCancelled(self, dto: StockCrawlingRunCrawling) -> None:
         task = self.getTask(dto.taskId, dto.taskUniqueId)
