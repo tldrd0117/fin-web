@@ -18,6 +18,7 @@ import {
 } from '../utils/CalendarUtils';
 import { useSelector } from 'react-redux';
 import { RootState } from '../data/root/rootReducer';
+import ReactTooltip from 'react-tooltip';
 
 
 export function usePrevious<T>(value: T): T {
@@ -69,13 +70,18 @@ const YearCalendar: React.FC<Props> = ({
 
   const fetchData = useCallback(() => {
     setError(null);
+    console.log("yearFetchData")
     getGraphData(task,{
       years,
       lastYear: fullYear,
     })
       .then(setGraphs)
       .catch(setError);
-  }, [years, username, fullYear]);
+  }, [years, username, fullYear, task.stocks]);
+
+  useEffect(()=>{
+    ReactTooltip.rebuild()
+  }, [graphs]);
 
   // Fetch data on mount
   useEffect(fetchData, []); // eslint-disable-line
@@ -117,7 +123,9 @@ const YearCalendar: React.FC<Props> = ({
 
   function getTooltipMessage(day: Required<Block>) {
     const date = parseISO(day.date);
-    return `<strong>${day.info.count} contributions</strong> on ${format(date, dateFormat)}`;
+    
+    return `<strong>${day.info.level == 2? "성공" : 
+                    day.info.level == 3? "실패" : "대기" }</strong> ${date.getFullYear()}년 ${date.getMonth()+1}월 ${date.getDate()}일`;
   }
 
   function renderMonthLabels(monthLabels: GraphData['monthLabels']) {
@@ -153,7 +161,7 @@ const YearCalendar: React.FC<Props> = ({
             height={blockSize}
             fill={theme[`grade${day.info ? day.info.level : 0}`]}
             data-tip={day.info ? getTooltipMessage(day as Required<Block>) : null}
-            key={day.date}
+            key={`${day.date}-${day.info?day.info.count:""}-${day.info?day.info.level:""}`}
           />
         )),
       )
@@ -187,6 +195,7 @@ const YearCalendar: React.FC<Props> = ({
   if (!graphs) {
     return <div className={getClassName('loading', styles.loading)}>Loading …</div>;
   }
+
 
   return (
     <article className={NAMESPACE} style={style}>

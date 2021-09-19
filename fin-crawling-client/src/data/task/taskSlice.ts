@@ -31,6 +31,8 @@ const taskSlice = createSlice({
             /*
                 res
                 [ {stocks, years, market, taskId}...]
+
+                ret: 0 (WAIT), 1 (SUCCESS), 2 (FAIL)
             */
             
             state.yearData = payload.yearData
@@ -45,6 +47,22 @@ const taskSlice = createSlice({
                 })
 
             })
+        },
+        updateTaskStateRes: (state, action) => {
+            const { payload } = action;
+            const { date, market, taskId, ret} = payload;
+            const index = state.yearData[taskId][market].stocks.findIndex(v=> v.date == date);
+            if(index == -1){
+                state.yearData[taskId][market].stocks.push({
+                    date, count: 1, level: (Number(ret)+1)
+                })
+                state.yearData[taskId][market].years[date.slice(0,4)] += 1
+            } else {
+                state.yearData[taskId][market].stocks[index] = {
+                    date, count: 1, level: (Number(ret)+1)
+                };
+            }
+            console.log(`updateRet: ${(Number(ret)+1)} ${date}`)
         },
         fetchTaskPoolInfoRes: (state, action) => {
             const { payload } = action;

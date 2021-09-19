@@ -13,9 +13,9 @@ export type Theme = {
     background: 'transparent',
     text: '#000',
     grade4: '#216e39',
-    grade3: '#30a14e',
+    grade3: '#f87171',
     grade2: '#34d399',
-    grade1: '#f87171',
+    grade1: '#FCD34D',
     grade0: '#ebedf0',
   };
   

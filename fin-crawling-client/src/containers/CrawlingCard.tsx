@@ -33,6 +33,7 @@ export default (props) =>{
                     return <>
                         <p>{market}</p>
                         <YearCalendar
+                            key={market}
                             blockSize={10} blockMargin={4}
                             fullYear={false}
                             style={{maxWidth:"100%"}}

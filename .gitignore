@@ -5,3 +5,5 @@ fin-db/db/data
 node_modules
 __pycache__
 __init__.py
+server.yaml
+server-webdriver.yaml
