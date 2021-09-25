@@ -1,5 +1,6 @@
 import { createAction, createSlice } from "@reduxjs/toolkit";
 
+let timeTest = 0;
 
 const taskSlice = createSlice({
     name: "task",
@@ -26,8 +27,13 @@ const taskSlice = createSlice({
         }
     },
     reducers:{
+        fetchTaskState: (state, action) => {
+            timeTest = Date.now()
+            console.log("startTime:" + timeTest)
+        },
         fetchTaskStateRes: (state, action) => {
             const { payload } = action;
+            console.log("takeTime:" + (Date.now()-timeTest))
             /*
                 res
                 [ {stocks, years, market, taskId}...]
@@ -78,6 +84,6 @@ export interface FetchTaskPayload{
     taskId: string
 }
 
-export const fetchTaskState = createAction<FetchTaskPayload>("task/fetchTaskState");
-export const { fetchTaskStateRes } = actions
+// export const fetchTaskState = createAction<FetchTaskPayload>("task/fetchTaskState");
+export const { fetchTaskStateRes, fetchTaskState } = actions
 export default reducer

@@ -2,6 +2,7 @@ import React from 'react'
 import { useSelector } from 'react-redux';
 import ReactTooltip from 'react-tooltip';
 import Card from '../components/Card';
+import Toggle from '../components/Toggle';
 import YearCalendar from '../components/YearCalendar';
 import { RootState } from '../data/root/rootReducer';
 import CrawlingCompleteList from './CrawlingCompleteList';
@@ -10,6 +11,7 @@ import CrawlingForm from './CrawlingForm';
 import CrawlingProgressList from './CrawlingProgressList';
 import CrawlingSchedulingForm from './CrawlingSchedulingForm';
 import CrawlingTaskScheduleList from './CrawlingTaskScheduleList'
+import ToggleTitle from './ToggleTitle';
 
 
 export default (props) =>{
@@ -23,32 +25,52 @@ export default (props) =>{
             <div className={"w-full h-px bg-gray-300 mt-8 mb-4"}></div>
             <CrawlingSchedulingForm/>
             <div className={"w-full h-px bg-gray-300 mt-8 mb-4"}></div>
-            <p>Task Schedule</p>
-            <CrawlingTaskScheduleList/>
-            <div className={"w-full h-px bg-gray-300 mt-8 mb-4"}></div>
-
-            <p className={"mt-2 mb-2"}>Task Calendar</p>
-            {
-                Object.keys(task.yearData["marcap"]).map(market=>{
-                    return <>
-                        <p>{market}</p>
-                        <YearCalendar
-                            key={market}
-                            blockSize={10} blockMargin={4}
-                            fullYear={false}
-                            style={{maxWidth:"100%"}}
-                            task={task.yearData["marcap"][market]}
-                            years={task.yearData["marcap"][market].yearArray}
-                        >
-                            <ReactTooltip delayShow={50} html />
-                        </YearCalendar>
+            <ToggleTitle
+                title={"Task Schedule"}
+                show={
+                    <>
+                        <CrawlingTaskScheduleList/>
                     </>
-                })
-            }
+                }
+                hide={null}/>
+            <div className={"w-full h-px bg-gray-300 mt-4 mb-4"}></div>
+            <ToggleTitle 
+                title={"Task Calendar"}
+                show={
+                    <>
+                        {
+                            Object.keys(task.yearData["marcap"]).map(market=>{
+                                return <div className={"mt-4"}>
+                                    <p className={"mt-4 mb-2"}>{market}</p>
+                                    <YearCalendar
+                                        key={market}
+                                        blockSize={10} blockMargin={4}
+                                        fullYear={false}
+                                        style={{maxWidth:"100%"}}
+                                        task={task.yearData["marcap"][market]}
+                                        years={task.yearData["marcap"][market].yearArray}
+                                    >
+                                        <ReactTooltip delayShow={50} html />
+                                    </YearCalendar>
+                                </div>
+                            })
+                        }
+                    </>
+                } 
+                hide={null}
+            />
             
-            <div className={"w-full h-px bg-gray-300 mt-8 mb-4"}></div>
-            <p className={"mt-2"}>Completed History</p>
-            <CrawlingCompleteList taskId={"marcap"}/>
+            
+            <div className={"w-full h-px bg-gray-300 mt-4 mb-4"}></div>
+            <ToggleTitle
+                title={"Completed History"}
+                show={<>
+                    <CrawlingCompleteList taskId={"marcap"}/>
+                </>}
+                hide={null}
+            />
+            {/* <p className={"mt-2"}>Completed History</p> */}
+            
             
         </Card>
 

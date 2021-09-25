@@ -40,7 +40,7 @@ export default (props) => {
                     } = list[val];
                     return [
                     `${startDateStr} ~ ${endDateStr}`, market, count, successCount, failCount, percent
-                ]}), count <= offset + limit? null : <td onClick={handleNext} className={"text-center text-sm p-4"} colSpan={6}>더보기</td>]}
+                ]}), count <= offset + limit? null : <td onClick={handleNext} className={"text-center text-sm p-4 cursor-pointer"} colSpan={6}>더보기</td>]}
             />
         </div>
     } else {

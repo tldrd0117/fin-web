@@ -69,6 +69,7 @@ let config = {
 };
 
 module.exports = (env, argv) => {
+    process.env.mode = argv.mode
     if(argv.mode == "development"){
         return {
             ...config,
