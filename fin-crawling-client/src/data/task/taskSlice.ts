@@ -33,7 +33,8 @@ const taskSlice = createSlice({
         },
         fetchTaskStateRes: (state, action) => {
             const { payload } = action;
-            console.log("takeTime:" + (Date.now()-timeTest))
+            const loadedTime = Date.now()
+            console.log("loadedTime:" + (loadedTime-timeTest))
             /*
                 res
                 [ {stocks, years, market, taskId}...]
@@ -53,6 +54,7 @@ const taskSlice = createSlice({
                 })
 
             })
+            console.log("convertedTime:" + (Date.now()-loadedTime))
         },
         updateTaskStateRes: (state, action) => {
             const { payload } = action;

@@ -184,11 +184,11 @@ function getMonthLabels(blocks: GraphData['blocks'], lastYear: boolean): Array<M
 }
 
 function getGraphDataForYear(year: number, data: ApiResult, lastYear: boolean): GraphData {
-  console.log(data)
+  // console.log(data)
   const blocks = getBlocksForYear(year, data, lastYear);
   const monthLabels = getMonthLabels(blocks, lastYear);
   const totalCount = data.years[lastYear ? 'lastYear' : year] ?? 0;
-  console.log(year, blocks, monthLabels, totalCount)
+  // console.log(year, blocks, monthLabels, totalCount)
   return {
     year,
     blocks,
@@ -200,7 +200,7 @@ function getGraphDataForYear(year: number, data: ApiResult, lastYear: boolean): 
 export async function getGraphData(data: ApiResult, options: RequestOptions): Promise<Array<GraphData>> {
   const { years, lastYear } = options;
   // const data: ApiResult = await (await fetch(`${API_URL}${username}?y=all&y=lastYear`)).json();
-  console.log(data)
+  // console.log(data)
   if (!Object.keys(data.years).length) {
     throw Error('No data available');
   }

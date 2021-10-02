@@ -19,6 +19,8 @@ import {
 import { useSelector } from 'react-redux';
 import { RootState } from '../data/root/rootReducer';
 import ReactTooltip from 'react-tooltip';
+import SequentialList from 'react-sequential-list';
+import useStateCallback from '../utils/hook/useStateCallback';
 
 
 export function usePrevious<T>(value: T): T {
@@ -61,16 +63,20 @@ const YearCalendar: React.FC<Props> = ({
   years = [Number(format(new Date(), 'yyyy'))],
   task = { years:{}, stocks:[]}
 }) => {
-  const [graphs, setGraphs] = useState<Array<GraphData> | null>(null);
+  const [graphs, setGraphs] = useStateCallback<Array<GraphData> | null>([]);
   const [error, setError] = useState<Error | null>(null);
 
   const prevYears = usePrevious(years);
   const prevUsername = usePrevious(username);
   const prevFullYear = usePrevious(fullYear);
 
+  useEffect(() => {
+    console.log("changeGraphs", graphs.length)
+    // ReactTooltip.rebuild()
+  },[graphs])
+
   const fetchData = useCallback(() => {
     setError(null);
-    console.log("yearFetchData")
     getGraphData(task,{
       years,
       lastYear: fullYear,
@@ -79,12 +85,8 @@ const YearCalendar: React.FC<Props> = ({
       .catch(setError);
   }, [years, username, fullYear, task.stocks]);
 
-  useEffect(()=>{
-    ReactTooltip.rebuild()
-  }, [graphs]);
-
   // Fetch data on mount
-  useEffect(fetchData, []); // eslint-disable-line
+  // useEffect(fetchData, []); // eslint-disable-line
 
   // Refetch if relevant props change
   useEffect(() => {
@@ -197,30 +199,42 @@ const YearCalendar: React.FC<Props> = ({
   }
 
 
+  // const ListGraphsItems = ({graph}) => {
+  const ListGraphsItems = ({graph, onComplete = null}) => {
+    const { year, blocks, monthLabels, totalCount } = graph;
+    useEffect(() => {
+      if(onComplete) {
+        console.log("onComplete: "+ year)
+        onComplete();
+      }
+    },[onComplete])
+    return (
+      <div key={year} className={getClassName('chart', styles.chart)}>
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          width={width}
+          height={height}
+          viewBox={`0 0 ${width} ${height}`}
+          className={"calendar"}
+          style={{ backgroundColor: theme?.background }}
+        >
+          {renderMonthLabels(monthLabels)}
+          {renderBlocks(blocks)}
+        </svg>
+
+        {showTotalCount && renderTotalCount(year, totalCount)}
+        {children}
+      </div>
+    );
+  }
+
   return (
     <article className={NAMESPACE} style={style}>
-      {graphs.map(graph => {
-        const { year, blocks, monthLabels, totalCount } = graph;
-
-        return (
-          <div key={year} className={getClassName('chart', styles.chart)}>
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              width={width}
-              height={height}
-              viewBox={`0 0 ${width} ${height}`}
-              className={"calendar"}
-              style={{ backgroundColor: theme?.background }}
-            >
-              {renderMonthLabels(monthLabels)}
-              {renderBlocks(blocks)}
-            </svg>
-
-            {showTotalCount && renderTotalCount(year, totalCount)}
-            {children}
-          </div>
-        );
-      })}
+      <SequentialList>
+        {graphs.map(graph => {
+          return <ListGraphsItems graph={graph}/>
+        })}
+      </SequentialList>
     </article>
   );
 };

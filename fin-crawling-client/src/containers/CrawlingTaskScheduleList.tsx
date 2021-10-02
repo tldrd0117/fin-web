@@ -18,6 +18,7 @@ export default (props) => {
     }
     return <div className={"relative"}>
         {
+            taskSchedule.list && taskSchedule.list.length > 0?
             taskSchedule.list.map(v=>
                 <>
                     <p className={"mt-2"}>{v.id}</p>
@@ -33,7 +34,8 @@ export default (props) => {
                     />
                     <Button onClick={() => handleRemove(v.id)} className={"bg-red-400 hover:bg-red-500 text-white text-sm mt-4"}>삭제</Button>
                 </>
-            )
+            ):
+            <p>데이터가 없습니다.</p>
         }
     </div>
     
