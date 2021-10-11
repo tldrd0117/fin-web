@@ -11,11 +11,13 @@ const taskSlice = createSlice({
                     stocks: [],
                     years:{},
                     yearArray:[],
+                    lastUpdateYear: 2021
                 },
                 kosdaq:{
                     stocks: [],
                     years:{},
                     yearArray:[],
+                    lastUpdateYear: 2021
                 }
             }
         },
@@ -70,6 +72,7 @@ const taskSlice = createSlice({
                     date, count: 1, level: (Number(ret)+1)
                 };
             }
+            state.yearData[taskId][market].lastUpdateYear = date.slice(0,4)
             console.log(`updateRet: ${(Number(ret)+1)} ${date}`)
         },
         fetchTaskPoolInfoRes: (state, action) => {

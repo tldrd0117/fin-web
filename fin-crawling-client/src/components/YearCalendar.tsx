@@ -3,6 +3,9 @@ import format from 'date-fns/format';
 import parseISO from 'date-fns/parseISO';
 import getYear from 'date-fns/getYear';
 import { ColorInput } from 'tinycolor2';
+import { GridLoader } from 'react-spinners';
+
+
 
 import * as styles from '../styles/calendar.css';
 
@@ -14,7 +17,7 @@ import {
   Theme,
   ApiResult,
   createCalendarTheme, getClassName,
-  GraphData, Block, getGraphData
+  GraphData, Block, getGraphData, updateGraphData
 } from '../utils/CalendarUtils';
 import { useSelector } from 'react-redux';
 import { RootState } from '../data/root/rootReducer';
@@ -44,6 +47,7 @@ export type Props = {
   showTotalCount?: boolean;
   style?: CSSProperties;
   theme?: Theme;
+  market?: string;
   years?: Array<number>;
   task?: ApiResult
 };
@@ -59,12 +63,14 @@ const YearCalendar: React.FC<Props> = ({
   fullYear = true,
   showTotalCount = true,
   style = {},
+  market = "kospi",
   theme = undefined,
   years = [Number(format(new Date(), 'yyyy'))],
-  task = { years:{}, stocks:[]}
+  task = { years:{}, stocks:[], lastUpdateYear: 2021}
 }) => {
   const [graphs, setGraphs] = useStateCallback<Array<GraphData> | null>([]);
   const [error, setError] = useState<Error | null>(null);
+  const [isLoading, setLoading] = useState(true)
 
   const prevYears = usePrevious(years);
   const prevUsername = usePrevious(username);
@@ -77,13 +83,22 @@ const YearCalendar: React.FC<Props> = ({
 
   const fetchData = useCallback(() => {
     setError(null);
-    getGraphData(task,{
-      years,
-      lastYear: fullYear,
-    })
+    if(graphs.length > 0){
+      console.log("updateGraphData")
+      setLoading(true);
+      updateGraphData(task, {years, lastYear: fullYear}, graphs)
       .then(setGraphs)
-      .catch(setError);
-  }, [years, username, fullYear, task.stocks]);
+      .catch(setError)
+    } else {
+      console.log("getGraphData")
+      getGraphData(task,{
+        years,
+        lastYear: fullYear,
+      })
+        .then(setGraphs)
+        .catch(setError);
+    }
+  }, [task.lastUpdateYear]);
 
   // Fetch data on mount
   // useEffect(fetchData, []); // eslint-disable-line
@@ -149,29 +164,40 @@ const YearCalendar: React.FC<Props> = ({
     ));
   }
 
-  function renderBlocks(blocks: GraphData['blocks']) {
+  const Block = React.memo((day: Block&{y}) => {
     const theme = getTheme();
     const textHeight = Math.round(fontSize * LINE_HEIGHT);
+    return <rect
+      x="0"
+      y={textHeight + (blockSize + blockMargin) * day.y}
+      width={blockSize}
+      height={blockSize}
+      fill={theme[`grade${day.info ? day.info.level : 0}`]}
+      data-tip={day.info ? getTooltipMessage(day as Required<Block>) : null}
+      key={`${day.date}-${day.info?day.info.count:""}-${day.info?day.info.level:""}`}
+    />
+  }, (prev, next) => {
+    return prev.date == next.date && prev.info.level == next.info.level
+  })
 
-    return blocks
-      .map(week =>
-        week.map((day, y) => (
-          <rect
-            x="0"
-            y={textHeight + (blockSize + blockMargin) * y}
-            width={blockSize}
-            height={blockSize}
-            fill={theme[`grade${day.info ? day.info.level : 0}`]}
-            data-tip={day.info ? getTooltipMessage(day as Required<Block>) : null}
-            key={`${day.date}-${day.info?day.info.count:""}-${day.info?day.info.level:""}`}
-          />
-        )),
-      )
-      .map((week, x) => (
-        <g key={x} transform={`translate(${(blockSize + blockMargin) * x}, 0)`}>
-          {week}
-        </g>
-      ));
+  const renderBlocks = (blocks: GraphData['blocks']) => {
+    return <>
+      {
+        blocks
+        .map(week =>
+          week.map((day, y) => {
+            return <Block date={day.date} info={day.info} y={y}/>
+          }),
+        )
+        .map((week, x) => {
+          return (
+          <g key={x} transform={`translate(${(blockSize + blockMargin) * x}, 0)`}>
+            {week}
+          </g>
+        )}
+        )
+      }
+      </>
   }
 
   function renderTotalCount(year: number, totalCount: number) {
@@ -194,17 +220,24 @@ const YearCalendar: React.FC<Props> = ({
     return <p>Error :(</p>;
   }
 
-  if (!graphs) {
-    return <div className={getClassName('loading', styles.loading)}>Loading …</div>;
-  }
-
+  // if (isLoading) {
+  //   return <div className={"flex"}>
+  //       <GridLoader color={"#ebedf0"} size={15} margin={2} loading={true} />
+  //       <GridLoader color={"#22C55E"} size={15} margin={2} loading={true} />
+  //       <GridLoader color={"#f87171"} size={15} margin={2} loading={true} />
+  //     </div>
+  //   // return <div className={getClassName('loading', styles.loading)}>Loading …</div>;
+  // }
 
   // const ListGraphsItems = ({graph}) => {
-  const ListGraphsItems = ({graph, onComplete = null}) => {
+  const ListGraphsItems = ({graph, onComplete = null, isLast}) => {
     const { year, blocks, monthLabels, totalCount } = graph;
     useEffect(() => {
       if(onComplete) {
-        console.log("onComplete: "+ year)
+        console.log(market+" onComplete: "+ year)
+        if(isLast){
+          setLoading(false)
+        }
         onComplete();
       }
     },[onComplete])
@@ -231,10 +264,17 @@ const YearCalendar: React.FC<Props> = ({
   return (
     <article className={NAMESPACE} style={style}>
       <SequentialList>
-        {graphs.map(graph => {
-          return <ListGraphsItems graph={graph}/>
+        {graphs.map((graph, i) => {
+          return <ListGraphsItems graph={graph} isLast={i==graphs.length-1}/>
         })}
       </SequentialList>
+      {
+        isLoading?<div className={"flex"}>
+          <GridLoader color={"#ebedf0"} size={10} margin={2} loading={true} />
+          <GridLoader color={"#22C55E"} size={10} margin={2} loading={true} />
+          <GridLoader color={"#f87171"} size={10} margin={2} loading={true} />
+        </div>:null
+      }
     </article>
   );
 };

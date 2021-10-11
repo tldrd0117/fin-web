@@ -46,6 +46,7 @@ export default (props) =>{
                                         key={market}
                                         blockSize={10} blockMargin={4}
                                         fullYear={false}
+                                        market={market}
                                         style={{maxWidth:"100%"}}
                                         task={task.yearData["marcap"][market]}
                                         years={task.yearData["marcap"][market].yearArray}

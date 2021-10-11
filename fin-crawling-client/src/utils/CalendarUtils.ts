@@ -110,6 +110,7 @@ export interface ApiResult {
     count: number;
     level: number;
   }>;
+  lastUpdateYear: number;
 }
 
 function getContributionsForDate(data: ApiResult, date: string) {
@@ -209,5 +210,24 @@ export async function getGraphData(data: ApiResult, options: RequestOptions): Pr
     const isCurrentYear = isSameYear(parseISO(String(year)), new Date());
     console.log(year)
     return getGraphDataForYear(year, data, isCurrentYear && lastYear);
+  });
+}
+
+export async function updateGraphData(data: ApiResult, options: RequestOptions, orgData)
+{
+  const { years, lastYear } = options;
+  // const data: ApiResult = await (await fetch(`${API_URL}${username}?y=all&y=lastYear`)).json();
+  // console.log(data)
+  if (!Object.keys(data.years).length) {
+    throw Error('No data available');
+  }
+
+  return orgData.map(curData => {
+    const isCurrentYear = isSameYear(parseISO(String(curData.year)), new Date());
+    if(curData.year==data.lastUpdateYear){
+      return getGraphDataForYear(curData.year, data, isCurrentYear && lastYear);
+    } else {
+      return curData
+    }
   });
 }

@@ -61,6 +61,7 @@
     "react-router-dom": "^5.2.0",
     "react-select": "^4.3.1",
     "react-sequential-list": "^1.0.5",
+    "react-spinners": "^0.11.0",
     "react-tooltip": "^4.2.21",
     "redux": "^4.0.5",
     "redux-saga": "^1.1.3",
