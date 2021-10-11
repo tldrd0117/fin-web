@@ -15,7 +15,7 @@ import ToggleTitle from './ToggleTitle';
 
 
 export default (props) =>{
-    const task = useSelector((state: RootState) => state.task)
+    const yearData = useSelector((state: RootState) => state.task.yearData)
     return <Card className={"mt-10 relative"}>
             <h2 className="text-gray-700 font-semibold text-xl sm:text-2xl tracking-wide mb-4 pr-10">일자별 주식 및 시가총액 크롤링</h2>
             <CrawlingExecutionForm/>
@@ -39,7 +39,7 @@ export default (props) =>{
                 show={
                     <>
                         {
-                            Object.keys(task.yearData["marcap"]).map(market=>{
+                            Object.keys(yearData["marcap"]).map(market=>{
                                 return <div className={"mt-4"}>
                                     <p className={"mt-4 mb-2"}>{market}</p>
                                     <YearCalendar
@@ -48,8 +48,8 @@ export default (props) =>{
                                         fullYear={false}
                                         market={market}
                                         style={{maxWidth:"100%"}}
-                                        task={task.yearData["marcap"][market]}
-                                        years={task.yearData["marcap"][market].yearArray}
+                                        task={yearData["marcap"][market]}
+                                        years={yearData["marcap"][market].yearArray}
                                     >
                                         <ReactTooltip delayShow={50} html />
                                     </YearCalendar>

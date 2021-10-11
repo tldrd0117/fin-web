@@ -76,10 +76,10 @@ const YearCalendar: React.FC<Props> = ({
   const prevUsername = usePrevious(username);
   const prevFullYear = usePrevious(fullYear);
 
-  useEffect(() => {
-    console.log("changeGraphs", graphs.length)
+  // useEffect(() => {
+    // console.log("changeGraphs", graphs.length)
     // ReactTooltip.rebuild()
-  },[graphs])
+  // },[graphs])
 
   const fetchData = useCallback(() => {
     setError(null);
@@ -99,21 +99,11 @@ const YearCalendar: React.FC<Props> = ({
         .catch(setError);
     }
   }, [task.lastUpdateYear]);
-
-  // Fetch data on mount
-  // useEffect(fetchData, []); // eslint-disable-line
-
   // Refetch if relevant props change
   useEffect(() => {
-    // if (
-    //   prevFullYear !== fullYear ||
-    //   prevUsername !== username ||
-    //   prevYears.some(y => !years.includes(y))
-    // ) {
       console.log("fetchData")
       fetchData();
-    // }
-  }, [task]);
+  }, [task.lastUpdateYear]);
 
   function getTheme(): Theme {
     if (theme) {
