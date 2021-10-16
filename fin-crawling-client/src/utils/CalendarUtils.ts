@@ -205,12 +205,16 @@ export async function getGraphData(data: ApiResult, options: RequestOptions): Pr
   if (!Object.keys(data.years).length) {
     throw Error('No data available');
   }
+  const now = Date.now()
 
-  return years.map(year => {
+  const ret = years.map(year => {
     const isCurrentYear = isSameYear(parseISO(String(year)), new Date());
     console.log(year)
     return getGraphDataForYear(year, data, isCurrentYear && lastYear);
   });
+  console.log("ret:", ret);
+  console.log("Timeret:", (Date.now() - now));
+  return ret;
 }
 
 export async function updateGraphData(data: ApiResult, options: RequestOptions, orgData)

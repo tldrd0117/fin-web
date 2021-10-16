@@ -91,11 +91,15 @@ const YearCalendar: React.FC<Props> = ({
       .catch(setError)
     } else {
       console.log("getGraphData")
+      const now = Date.now();
       getGraphData(task,{
         years,
         lastYear: fullYear,
       })
         .then(setGraphs)
+        .then(() => {
+          console.log("getGraphDataTimes:"+(Date.now() - now))
+        })
         .catch(setError);
     }
   }, [task.lastUpdateYear]);
@@ -141,6 +145,11 @@ const YearCalendar: React.FC<Props> = ({
       fontSize,
     };
 
+    const now = Date.now();
+    useEffect(() => {
+      console.log("renderMonthLabelsTimes:"+(Date.now() - now))
+    },[])
+
     // Remove the first month label if there's not enough space to the next one
     // (end of previous month)
     if (monthLabels[1].x - monthLabels[0].x <= MIN_DISTANCE_MONTH_LABELS) {
@@ -171,6 +180,10 @@ const YearCalendar: React.FC<Props> = ({
   })
 
   const renderBlocks = (blocks: GraphData['blocks']) => {
+    const now = Date.now();
+    useEffect(() => {
+      console.log("renderBlocksTimes:"+(Date.now() - now))
+    },[])
     return <>
       {
         blocks
@@ -222,6 +235,7 @@ const YearCalendar: React.FC<Props> = ({
   // const ListGraphsItems = ({graph}) => {
   const ListGraphsItems = ({graph, onComplete = null, isLast}) => {
     const { year, blocks, monthLabels, totalCount } = graph;
+    const now = Date.now();
     useEffect(() => {
       if(onComplete) {
         console.log(market+" onComplete: "+ year)
@@ -230,6 +244,7 @@ const YearCalendar: React.FC<Props> = ({
         }
         onComplete();
       }
+      console.log("graphsItemTimes:"+(Date.now()-now));
     },[onComplete])
     return (
       <div key={year} className={getClassName('chart', styles.chart)}>
