@@ -21,6 +21,7 @@ export default (props) => {
     const [year, setYear] = useState("*")
     const [month, setMonth] = useState("*")
     const [day, setDay] = useState("*")
+    const [dayOfWeek, setDayOfWeek] = useState("*")
     const [hour, setHour] = useState("*")
     const [minute, setMinute] = useState("*")
     const [second, setSecond] = useState("0")
@@ -47,7 +48,7 @@ export default (props) => {
         const endDate = isReservedDateFix?"*":getDateString(reservedEndDate)
         dispatch(
             addTaskSchedule({
-                year, month, day, hour, minute, second,
+                year, month, day, hour, minute, second, dayOfWeek,
                 taskId: "marcap",
                 market: reservedMarket,
                 startDate,
@@ -69,10 +70,11 @@ export default (props) => {
     }
 
     const handleDateTextField = (value, type) => {
-        const checkTarget = ["year", "month", "day", "hour", "minute", "second"];
+        const checkTarget = ["year", "month", "dayOfWeek", "day", "hour", "minute", "second"];
         const checkMap = {
             year:[year, setYear], 
             month:[month, setMonth], 
+            dayOfWeek:[dayOfWeek, setDayOfWeek],
             day:[day, setDay], 
             hour:[hour, setHour], 
             minute:[minute, setMinute], 
@@ -88,11 +90,12 @@ export default (props) => {
     }
 
     const handleTextFieldBlurEvent = (value, type) => {
-        const checkTarget = ["year", "month", "day", "hour", "minute", "second"];
+        const checkTarget = ["year", "month", "dayOfWeek", "day", "hour", "minute", "second"];
         const checkMap = {
             year:[year, setYear], 
             month:[month, setMonth], 
-            day:[day, setDay], 
+            dayOfWeek: [dayOfWeek, setDayOfWeek],
+            day:[day, setDay],
             hour:[hour, setHour], 
             minute:[minute, setMinute], 
             second:[second, setSecond]
@@ -212,12 +215,26 @@ export default (props) => {
                 left={10} 
                 label={"월"}/>
             <OutLineTextField 
+                onChange={(e)=>handleDateTextField(e.target.value, "dayOfWeek")} 
+                onBlur={(e)=>handleTextFieldBlurEvent(e.target.value, "dayOfWeek")} 
+                value={dayOfWeek} 
+                className={"mx-1 w-14"} 
+                left={10} 
+                label={"주(월-일{0-6})"}/>
+            <OutLineTextField 
                 onChange={(e)=>handleDateTextField(e.target.value, "day")} 
                 onBlur={(e)=>handleTextFieldBlurEvent(e.target.value, "day")} 
                 value={day} 
                 className={"mx-1 w-14"} 
                 left={10} 
                 label={"일"}/>
+            <OutLineTextField 
+                onChange={(e)=>handleDateTextField(e.target.value, "day")} 
+                onBlur={(e)=>handleTextFieldBlurEvent(e.target.value, "day")} 
+                value={dayOfWeek} 
+                className={"mx-1 w-14"} 
+                left={10} 
+                label={"주"}/>
             <OutLineTextField 
                 onChange={(e)=>handleDateTextField(e.target.value, "hour")} 
                 onBlur={(e)=>handleTextFieldBlurEvent(e.target.value, "hour")} 

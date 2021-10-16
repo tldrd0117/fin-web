@@ -50,6 +50,7 @@ class StockTaskSchedule(BaseModel):
     id: str = ""
     year: str
     month: str
+    dayOfWeek: str
     day: str
     hour: str
     minute: str
@@ -60,6 +61,7 @@ class StockTaskScheduleInfo(BaseModel):
     id: str = ""
     year: str
     month: str
+    dayOfWeek: str
     day: str
     hour: str
     minute: str

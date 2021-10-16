@@ -15,8 +15,8 @@ class TaskScheduler(object):
         self.jobs: list = []
         self.jobLengthMax = 0
     
-    def addJob(self, job: Callable, year: str, month: str, day: str, hour: str, minute: str, second: str, target: str, args: List = None) -> Job:
-        trigger = CronTrigger(year=year, month=month, day=day, hour=hour, minute=minute, second=second)
+    def addJob(self, job: Callable, year: str, month: str, dayOfWeek: str, day: str, hour: str, minute: str, second: str, target: str, args: List = None) -> Job:
+        trigger = CronTrigger(year=year, month=month, day_of_week=dayOfWeek, day=day, hour=hour, minute=minute, second=second)
         try:
             nextLength = self.jobLengthMax + 1
             job = self.scheduler.add_job(job, args=args, trigger=trigger, id=f"{target}-{nextLength}")

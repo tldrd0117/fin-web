@@ -46,6 +46,7 @@ class TaskSocketRouter(object):
         scheduleDto = StockTaskSchedule(**{
             "year": data["year"],
             "month": data["month"],
+            "dayOfWeek": data["dayOfWeek"],
             "day": data["day"],
             "hour": data["hour"],
             "minute": data["minute"],

@@ -8,6 +8,7 @@ const taskScheduleSlice = createSlice({
             id: "",
             year: "*",
             month: "*",
+            dayOfWeek: "*",
             day: "*",
             hour: "*",
             minute: "*",
@@ -30,6 +31,7 @@ export interface AddTaskSchedulePayload{
     year: string
     month: string
     day: string
+    dayOfWeek: string
     hour: string
     minute: string
     second: string
