@@ -50,7 +50,7 @@ spec:
           type: DirectoryOrCreate
       - name: download-data
         hostPath: 
-          path: /Users/iseongjae/Documents/PersonalProjects/fin-web/fin-crawling-server/server/downloads
+          path: /run/desktop/mnt/host/wsl/projects/fin-web/fin-crawling-server/server/downloads
           type: DirectoryOrCreate
     
 

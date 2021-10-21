@@ -7,3 +7,4 @@ __pycache__
 __init__.py
 server.yaml
 server-webdriver.yaml
+Dockerfile

@@ -44,7 +44,7 @@ spec:
       volumes:
       - name: dbdata
         hostPath: 
-          path: /Users/iseongjae/Documents/PersonalProjects/fin-web/fin-db/db/data
+          path: /run/desktop/mnt/host/wsl/projects/fin-web/fin-db/db/data
           type: DirectoryOrCreate
 
 

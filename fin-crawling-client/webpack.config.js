@@ -64,6 +64,7 @@ let config = {
         extensions: ['.tsx', '.ts', '.js'],
     },
     devServer: {
+        host:"0.0.0.0",
         historyApiFallback: true
     }
 };

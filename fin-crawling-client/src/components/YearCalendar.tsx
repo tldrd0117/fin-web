@@ -163,7 +163,7 @@ const YearCalendar: React.FC<Props> = ({
     ));
   }
 
-  const Block = React.memo((day: Block&{y}) => {
+  const Block = (day: Block&{y}) => {
     const theme = getTheme();
     const textHeight = Math.round(fontSize * LINE_HEIGHT);
     return <rect
@@ -175,11 +175,10 @@ const YearCalendar: React.FC<Props> = ({
       data-tip={day.info ? getTooltipMessage(day as Required<Block>) : null}
       key={`${day.date}-${day.info?day.info.count:""}-${day.info?day.info.level:""}`}
     />
-  }, (prev, next) => {
-    return prev.date == next.date && prev.info.level == next.info.level
-  })
+  }
 
-  const renderBlocks = (blocks: GraphData['blocks']) => {
+  const Blocks = React.memo((props: {blocks}) => {
+    const blocks: GraphData['blocks'] = props.blocks;
     const now = Date.now();
     useEffect(() => {
       console.log("renderBlocksTimes:"+(Date.now() - now))
@@ -201,7 +200,24 @@ const YearCalendar: React.FC<Props> = ({
         )
       }
       </>
-  }
+  }, (prev, next) => {
+    const prevBlocks = prev.blocks;
+    const nextBlocks = next.blocks;
+    if(prevBlocks.length != nextBlocks.length){
+      return false;
+    }
+    for(let i = 0; i < prevBlocks.length; ++i){
+      if(prevBlocks[i].length != nextBlocks[i].length){
+        return false;
+      }
+      for(let j = 0; j < prevBlocks[i].length; ++j){
+        if(prevBlocks[i][j].date!=nextBlocks[i][j].date || prevBlocks[i][j].info.level!=nextBlocks[i][j].info.level){
+          return false;
+        }
+      }
+    }
+    return true;
+  })
 
   function renderTotalCount(year: number, totalCount: number) {
     const isCurrentYear = getYear(new Date()) === year;
@@ -257,7 +273,7 @@ const YearCalendar: React.FC<Props> = ({
           style={{ backgroundColor: theme?.background }}
         >
           {renderMonthLabels(monthLabels)}
-          {renderBlocks(blocks)}
+          <Blocks blocks={blocks}/>
         </svg>
 
         {showTotalCount && renderTotalCount(year, totalCount)}

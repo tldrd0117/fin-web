@@ -34,7 +34,7 @@ spec:
       terminationGracePeriodSeconds: 60
       containers:
       - name: fin-crawling-nginx
-        image: tldrd0117/nginx
+        image: tldrd0117/fin-crawling-nginx
         imagePullPolicy: Always
         volumeMounts:
           - name: config-data
@@ -46,6 +46,7 @@ spec:
       - name: fin-crawling-server
         image: tldrd0117/fin-crawling-server
         imagePullPolicy: Always
+        # command: ['sh', '-c', 'echo wait && sleep 6000']
         ports:
         - containerPort: 8000
         volumeMounts:
@@ -60,28 +61,28 @@ spec:
       volumes:
       - name: download-data
         hostPath: 
-          path: /Users/iseongjae/Documents/PersonalProjects/fin-web/fin-crawling-server/server/downloads
+          path: /run/desktop/mnt/host/wsl/projects/fin-web/fin-crawling-server/server/downloads
           type: DirectoryOrCreate
       - name: app-resouce
         hostPath: 
-          path: /Users/iseongjae/Documents/PersonalProjects/fin-web/fin-crawling-server/server
+          path: /run/desktop/mnt/host/wsl/projects/fin-web/fin-crawling-server/server
           type: DirectoryOrCreate
       - name: socket-file
         # emptyDir: {}
         hostPath:
-          path: /Users/iseongjae/Documents/PersonalProjects/fin-web/fin-crawling-server/sock/tmp
+          path: /run/desktop/mnt/host/wsl/projects/fin-web/fin-crawling-server/sock/tmp
           type: DirectoryOrCreate
       - name: log-file
         hostPath:
-          path: /Users/iseongjae/Documents/PersonalProjects/fin-web/fin-crawling-server/log
+          path: /run/desktop/mnt/host/wsl/projects/fin-web/fin-crawling-server/log
           type: DirectoryOrCreate
       - name: config-data
         hostPath: 
-          path: /Users/iseongjae/Documents/PersonalProjects/fin-web/fin-crawling-server/nginx/nginx.conf
+          path: /run/desktop/mnt/host/wsl/projects/fin-web/fin-crawling-server/nginx/nginx.conf
           type: File
       - name: client-resouce
         hostPath: 
-          path: /Users/iseongjae/Documents/PersonalProjects/fin-web/fin-crawling-server/nginx/client
+          path: /run/desktop/mnt/host/wsl/projects/fin-web/fin-crawling-server/nginx/client
           type: DirectoryOrCreate
     
 
