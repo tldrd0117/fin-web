@@ -91,6 +91,7 @@ const YearCalendar: React.FC<Props> = ({
       .catch(setError)
     } else {
       console.log("getGraphData")
+      console.log(task)
       const now = Date.now();
       getGraphData(task,{
         years,
