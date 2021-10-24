@@ -1,4 +1,5 @@
 import logging
+from typing import List
 
 from pymongo import ASCENDING, MongoClient, monitoring
 import pymongo
@@ -90,6 +91,31 @@ class StockMongoDataSource:
                 }, upsert=True)
         except Exception as e:
             print(e)
+    
+    def getMarcap(self, market: str, startDate: str, endDate: str) -> List[StockMarketCapital]:
+        try:
+            if not self.isSetupMarcap():
+                self.setupMarcap()
+            cursor = self.marcap.find({"$and": [{"date": {"$gte": startDate, "$lte": endDate}}, {"market": market}]})
+            return list(map(lambda data: StockMarketCapital(**{
+                "date": data["date"],
+                "market": data["market"],
+                "code": data["code"],
+                "name": data["name"],
+                "close": data["close"],
+                "diff": data["diff"],
+                "percent": data["percent"],
+                "open": data["open"],
+                "high": data["high"],
+                "low": data["low"],
+                "volume": data["volume"],
+                "price": data["price"],
+                "marcap": data["marcap"],
+                "number": data["number"]
+            }), list(cursor)))
+        except Exception as e:
+            print(e)
+            return list()
 
     def getCompletedTask(self, dto: ListLimitData) -> ListLimitResponse:
         try:
