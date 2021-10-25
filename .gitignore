@@ -9,3 +9,5 @@ server.yaml
 server-webdriver.yaml
 Dockerfile
 .python-version
+fin-db/mongodb-express.yaml
+fin-db/mongodb-oper.yaml
