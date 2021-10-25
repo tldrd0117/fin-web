@@ -55,14 +55,13 @@ class TaskSocketRouter(object):
 
         dtoList = []
         for market in data["market"]:
-            taskUniqueId = data["taskId"]+market+data["startDate"]+data["endDate"]+str(uuid.uuid4())
             dto = StockCrawlingRunCrawling(**{
                 "driverAddr": "http://fin-carwling-webdriver:4444",
                 "market": market,
                 "startDateStr": data["startDate"],
                 "endDateStr": data["endDate"],
                 "taskId": data["taskId"],
-                "taskUniqueId": taskUniqueId
+                "taskUniqueId": ""
             })
             dtoList.append(dto)
         self.taskService.addTaskSchedule(scheduleDto, dtoList, websocket)

@@ -11,6 +11,7 @@ from fastapi import WebSocket
 
 from app.service.CrawlingService import CrawlingService
 from uvicorn.config import logger
+import uuid
 
 RES_SOCKET_TASK_FETCH_TASK_STATE = "task/fetchTaskStateRes"
 RES_SOCKET_TASK_UPDATE_TASK_STATE = "task/updateTaskStateRes"
@@ -66,6 +67,7 @@ class TaskService:
         for dto in marcapDtos:
             logger.info("#### schedule job start ####")
             logger.info("command" + dto.startDateStr + "~" + dto.endDateStr)
+            dto.taskUniqueId = dto.taskId+dto.market+dto.startDateStr+dto.endDateStr+str(uuid.uuid4())
             if dto.startDateStr == "*" or dto.endDateStr == "*":
                 dto.startDateStr = getNowDateStr()
                 dto.endDateStr = getNowDateStr()
