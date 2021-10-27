@@ -3,6 +3,7 @@ from app.module.locator import Locator
 from app.setup_instance import locator
 from app.router.socketEndpoint import router as socketRouter
 from app.router.user import router as userRouter
+from app.router.stock import router as stockRouter
 from app.scheduler.TaskScheduler import TaskScheduler
 from fastapi.middleware.cors import CORSMiddleware
 import asyncio
@@ -22,6 +23,7 @@ origins = [
 app = FastAPI()
 app.include_router(socketRouter)
 app.include_router(userRouter)
+app.include_router(stockRouter)
 app.add_middleware(
     CORSMiddleware,
     allow_origins=origins,
