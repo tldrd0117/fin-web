@@ -133,3 +133,8 @@ class StockMarketCapitalResult(BaseModel):
     market: str = ""
     result: str = "fail"
     errorMsg: str = ""
+
+
+class StockMarketCapitalResponse(BaseModel):
+    list: List[StockMarketCapital]
+    count: int

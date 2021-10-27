@@ -5,7 +5,7 @@ from app.module.locator import Locator
 
 from app.service.UserService import UserService
 from app.service.StockService import StockService
-from app.model.dto import StockMarketCapital
+from app.model.dto import StockMarketCapitalResponse
 
 
 router = APIRouter(prefix="/stock")
@@ -14,5 +14,9 @@ stockService: StockService = Locator.getInstance().get(StockService)
 
 
 @router.get("/marcap")
-async def getStockData(market: str, startDate: str, endDate: str) -> List[StockMarketCapital]:
-    return stockService.getStockData(market, startDate, endDate)
+async def getStockData(market: str, startDate: str, endDate: str) -> StockMarketCapitalResponse:
+    li = stockService.getStockData(market, startDate, endDate)
+    return StockMarketCapitalResponse(**{
+        "list": li,
+        "count": len(li)
+    })

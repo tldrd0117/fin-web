@@ -20,7 +20,7 @@ class DownloadObserver(object):
                 print(stdout.decode())
                 print(stderr.decode())
         except Exception as e:
-            print(f"error: {e}")
+            print(f"makePath error: {e}")
         
         return path
 

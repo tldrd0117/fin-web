@@ -1,6 +1,7 @@
 from __future__ import annotations
 import asyncio
 import os
+import traceback
 
 from datetime import datetime, timedelta
 from typing import TypeVar, Final
@@ -82,8 +83,10 @@ class MarcapCrawler(object):
             downloadObserver = DownloadObserver()
             path = await downloadObserver.makePath(uuid)
             downloadObserver.startObserver(path, self.ee)
+            print("startObserver")
 
             driver = self.connectWebDriver(dto.driverAddr, uuid)
+            print("connectWebDriver")
             driver.get("http://data.krx.co.kr/contents/MDC/MDI/mdiLoader/index.cmd?menuId=MDC0201020101")
             try:
                 alert = WebDriverWait(driver, timeout=3).until(EC.alert_is_present())
@@ -119,6 +122,7 @@ class MarcapCrawler(object):
             self.isError = True
             self.ee.emit(EVENT_MARCAP_CRAWLING_ON_ERROR, dto)
             print(f"error: {str(e)}")
+            print(traceback.format_exc())
             logger.error(f"error: {str(e)}")
         finally:
             if downloadObserver:
@@ -188,22 +192,41 @@ class MarcapCrawler(object):
         
         for i in range(1, len(lines)):
             data = lines[i].replace('"', '').split(",")
-            marcap = StockMarketCapital(**{
-                "date": dto.date,
-                "market": dto.market,
-                "code": data[0].strip(),
-                "name": data[1].strip(),
-                "close": data[2].strip(),
-                "diff": data[3].strip(),
-                "percent": data[4].strip(),
-                "open": data[5].strip(),
-                "high": data[6].strip(),
-                "low": data[7].strip(),
-                "volume": data[8].strip(),
-                "price": data[9].strip(),
-                "marcap": data[10].strip(),
-                "number": data[11].strip()
-            })
+            if dto.market == "kospi":
+                marcap = StockMarketCapital(**{
+                    "date": dto.date,
+                    "market": dto.market,
+                    "code": data[0].strip(),
+                    "name": data[1].strip(),
+                    "close": data[2].strip(),
+                    "diff": data[3].strip(),
+                    "percent": data[4].strip(),
+                    "open": data[5].strip(),
+                    "high": data[6].strip(),
+                    "low": data[7].strip(),
+                    "volume": data[8].strip(),
+                    "price": data[9].strip(),
+                    "marcap": data[10].strip(),
+                    "number": data[11].strip()
+                })
+            else:
+                marcap = StockMarketCapital(**{
+                    "date": dto.date,
+                    "market": dto.market,
+                    "code": data[0].strip(),
+                    "name": data[1].strip(),
+                    "close": data[3].strip(),
+                    "diff": data[4].strip(),
+                    "percent": data[5].strip(),
+                    "open": data[6].strip(),
+                    "high": data[7].strip(),
+                    "low": data[8].strip(),
+                    "volume": data[9].strip(),
+                    "price": data[10].strip(),
+                    "marcap": data[11].strip(),
+                    "number": data[12].strip()
+                })
+            print("append marcap: " + marcap)
             
             dto.data.append(marcap)
 
