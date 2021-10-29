@@ -226,7 +226,7 @@ class MarcapCrawler(object):
                     "marcap": data[11].strip(),
                     "number": data[12].strip()
                 })
-            print("append marcap: " + marcap)
+            # print("append marcap: " + str(marcap))
             
             dto.data.append(marcap)
 

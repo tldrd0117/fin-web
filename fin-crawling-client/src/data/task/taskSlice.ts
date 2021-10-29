@@ -71,6 +71,18 @@ const taskSlice = createSlice({
                 state.yearData[taskId][market].stocks[index] = {
                     date, count: 1, level: (Number(ret)+1)
                 };
+                // state.yearData[taskId][market].years[date.slice(0,4)] = 0
+                // state.yearData[taskId][market].yearArray
+            }
+            const count = state.yearData[taskId][market].years[date.slice(0,4)]
+            if(count){
+                state.yearData[taskId][market].years[date.slice(0,4)] += 1
+            } else {
+                state.yearData[taskId][market].years[date.slice(0,4)] = 1
+            }
+            const yearIndex = state.yearData[taskId][market].yearArray.findIndex(v=> v == date.slice(0,4));
+            if(yearIndex == -1){
+                state.yearData[taskId][market].yearArray.push(date.slice(0,4))
             }
             state.yearData[taskId][market].lastUpdateYear = date.slice(0,4)
             console.log(`updateRet: ${(Number(ret)+1)} ${date}`)
