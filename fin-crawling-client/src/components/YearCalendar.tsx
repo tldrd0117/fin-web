@@ -68,13 +68,9 @@ const YearCalendar: React.FC<Props> = ({
   years = [Number(format(new Date(), 'yyyy'))],
   task = { years:{}, stocks:[], lastUpdateYear: 2021}
 }) => {
-  const [graphs, setGraphs] = useStateCallback<Array<GraphData> | null>([]);
+  const [graphs, setGraphs] = useState<Array<GraphData> | null>([]);
   const [error, setError] = useState<Error | null>(null);
   const [isLoading, setLoading] = useState(true)
-
-  const prevYears = usePrevious(years);
-  const prevUsername = usePrevious(username);
-  const prevFullYear = usePrevious(fullYear);
 
   // useEffect(() => {
     // console.log("changeGraphs", graphs.length)
@@ -84,10 +80,13 @@ const YearCalendar: React.FC<Props> = ({
   const fetchData = useCallback(() => {
     setError(null);
     if(graphs.length > 0){
-      console.log("updateGraphData")
+      console.log("updateGraphData",task,years)
       setLoading(true);
       updateGraphData(task, {years, lastYear: fullYear}, graphs)
       .then(setGraphs)
+      .then(() => {
+        console.log("updateGraphData Graph: ", graphs)
+      })
       .catch(setError)
     } else {
       console.log("getGraphData")
