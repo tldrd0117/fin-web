@@ -19,6 +19,7 @@ import uuid
 
 from app.observer.DownloadObserver import DownloadObserver
 from app.observer.CmdFileSystemEventHandler import FILE_SYSTEM_HANDLER
+from app.module.logger import Logger
 
 from pathlib import Path
 from app.model.dto import StockCrawlingDownloadTask, StockCrawlingRunCrawling, StockMarketCapitalResult, StockMarketCapital
@@ -42,6 +43,7 @@ class MarcapCrawler(object):
         self.ee = EventEmitter()
         self.isLock = False
         self.isError = False
+        self.logger = Logger("MarcapCrawler")
 
     def createUUID(self) -> str:
         return str(uuid.uuid4())
@@ -60,6 +62,7 @@ class MarcapCrawler(object):
         )
         driver.set_page_load_timeout(20)
         driver.set_script_timeout(20)
+        self.logger.info("connectWebDriver", "create driver")
         return driver
 
     def connectLocalDriver(self, addr: str, uuid: str) -> WebDriver:
@@ -83,6 +86,7 @@ class MarcapCrawler(object):
             downloadObserver = DownloadObserver()
             path = await downloadObserver.makePath(uuid)
             downloadObserver.startObserver(path, self.ee)
+            self.logger.info("crawling", "create observer and start")
             print("startObserver")
 
             driver = self.connectWebDriver(dto.driverAddr, uuid)
@@ -109,6 +113,7 @@ class MarcapCrawler(object):
                     "taskId": dto.taskId,
                     "taskUniqueId": dto.taskUniqueId
                 })
+                self.logger.info("crawling", f"create downloadTask taskId: {dto.taskId} market: {dto.market} date: {dateStr} taskUniqueId: {dto.taskUniqueId}")
                 print(downloadTask.json())
                 downloadObserver.event_handler.setDownloadTask(downloadTask)
                 self.ee.emit(EVENT_MARCAP_CRAWLING_ON_DOWNLOAD_START, downloadTask)
@@ -180,6 +185,7 @@ class MarcapCrawler(object):
                 self.ee.emit(EVENT_MARCAP_CRAWLING_ON_PARSING_COMPLETE, False, retdto, downloadTask)
                 return
             await asyncio.sleep(1, loop=mainThreadLoop)
+            self.logger.info("downloadData", f"isLock:{str(self.isLock)} timeout:{timeout} taskUniqueId: {downloadTask.taskUniqueId}")
             print(f"isLock:{str(self.isLock)} timeout:{timeout}")
             logger.info(f"isLock:{str(self.isLock)} timeout:{timeout}")
     
@@ -262,12 +268,14 @@ class MarcapCrawler(object):
             isSuccess = True
             self.ee.emit(EVENT_MARCAP_CRAWLING_ON_PARSING_COMPLETE, isSuccess, retdto, downloadTask)
             self.isLock = False
+            self.logger.info("parseFile", f"success, {downloadTask.taskUniqueId}")
         except Exception as e:
             retdto.result = "fail"
             retdto.errorMsg = str(e)
             logger.error(str(e))
             self.ee.emit(EVENT_MARCAP_CRAWLING_ON_PARSING_COMPLETE, isSuccess, retdto, downloadTask)
             self.isLock = False
+            self.logger.error("parseFile", f"fail, {downloadTask.taskUniqueId} err: {str(e)}")
         finally:
             logger.info("parseFile...")
 

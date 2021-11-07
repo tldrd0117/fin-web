@@ -14,6 +14,7 @@ from app.datasource.StockMongoDataSource import StockMongoDataSource
 from app.model.dto import StockUpdateState, StockCrawlingCompletedTasks, StockCrawlingDownloadTask, StockCrawlingRunCrawling, StockCrawlingTasks, StockMarketCapitalResult, StockCrawlingTask, StockTaskState, ListLimitData, ListLimitResponse, YearData
 from app.model.task import TaskPoolInfo
 from app.module.task import Task, TaskRunner
+from app.module.logger import Logger
 
 
 from uvicorn.config import logger
@@ -31,7 +32,7 @@ class TasksRepository(object):
     def __init__(self, mongod: StockMongoDataSource) -> None:
         super().__init__()
         self.mongod = mongod
-
+        self.logger = Logger("TasksRepository")
         self.taskEventEmitter = EventEmitter()
         self.tasksdto = StockCrawlingTasks()
         self.taskRunner: Optional[TaskRunner] = None
@@ -41,10 +42,12 @@ class TasksRepository(object):
         if self.taskRunner is None:
             self.taskRunner = TaskRunner()
             self.taskRunner.notifyCallback = self.updatePoolInfo
+            self.logger.info("createTaskRunner", "created taskrunner")
 
     def updatePoolInfo(self, poolInfo: TaskPoolInfo) -> None:
         self.taskEventEmitter.emit(EVENT_TASK_REPO_UPDATE_POOL_INFO, poolInfo)
         logger.info(f"updatePoolInfo:{poolInfo.json()}, {str(self)}")
+        self.logger.info("updatePoolInfo", f"{poolInfo.json()}")
     
     def getPoolInfo(self) -> None:
         if self.taskRunner:
@@ -78,6 +81,7 @@ class TasksRepository(object):
             self.addTask(task)
             self.taskEventEmitter.emit(EVENT_TASK_REPO_UPDATE_TASKS, self.tasksdto)
             self.runTask(workerTask)
+            self.logger.info("runMarcapTask", f"runTask {task.json()}")
 
     def addTask(self, task: StockCrawlingTask) -> None:
         if "marcap" not in self.tasksdto.tasks:
@@ -87,9 +91,11 @@ class TasksRepository(object):
             self.tasksdto.taskIds.append("marcap")
         self.tasksdto.tasks[task.taskId]["list"][task.taskUniqueId] = task
         self.tasksdto.tasks[task.taskId]["ids"].append(task.taskUniqueId)
+        self.logger.info("addTask", f"{task.taskUniqueId}")
 
     def updateTask(self, task: StockCrawlingTask) -> None:
         self.tasksdto.tasks[task.taskId]["list"][task.taskUniqueId] = task
+        self.logger.info("updateTask", f"{task.taskUniqueId}")
     
     def getTask(self, taskId: str, taskUniqueId: str) -> StockCrawlingTask:
         if self.isExistTask(taskId, taskUniqueId):
@@ -104,6 +110,7 @@ class TasksRepository(object):
             if task.taskUniqueId in self.tasksdto.tasks[task.taskId]["list"]:
                 del self.tasksdto.tasks[task.taskId]["list"][task.taskUniqueId]
                 self.tasksdto.tasks[task.taskId]["ids"].remove(task.taskUniqueId)
+                self.logger.info("deleteTask", f"{task.taskUniqueId}")
     
     def success(self, task: StockCrawlingTask, count: int) -> None:
         task.successCount = task.successCount + count
@@ -118,6 +125,7 @@ class TasksRepository(object):
             task.state = "success"
         else:
             task.state = "waiting next task"
+        self.logger.info("success", f"{task.taskUniqueId}")
 
     def fail(self, task: StockCrawlingTask, count: int) -> None:
         task.failCount = task.failCount + count
@@ -134,6 +142,7 @@ class TasksRepository(object):
             task.state = "fail"
         else:
             task.state = "waiting next task"
+        self.logger.info("fail", f"{task.taskUniqueId}")
     
     def getCompletedTask(self, dto: ListLimitData) -> ListLimitResponse:
         taskData = self.mongod.getCompletedTask(dto)
@@ -153,6 +162,7 @@ class TasksRepository(object):
             "historyIds": taskIds
         })
         taskData.data = stockCrawlingCompletedTasksDTO
+        self.logger.info("getCompletedTask", f"count: {len(taskIds)}")
         return taskData
 
     def getAllTaskState(self, taskId: str) -> StockTaskState:
@@ -204,6 +214,7 @@ class TasksRepository(object):
         self.updateTask(task)
         self.taskEventEmitter.emit(EVENT_TASK_REPO_UPDATE_TASKS, self.tasksdto)
         self.mongod.upsertTask(task.dict())
+        self.logger.info("onConnectingWebDriver", task.taskUniqueId)
 
     def onStartCrawling(self, dto: StockCrawlingRunCrawling) -> None:
         task = self.getTask(dto.taskId, dto.taskUniqueId)
@@ -211,6 +222,7 @@ class TasksRepository(object):
         self.updateTask(task)
         self.taskEventEmitter.emit(EVENT_TASK_REPO_UPDATE_TASKS, self.tasksdto)
         self.mongod.upsertTask(task.dict())
+        self.logger.info("onStartCrawling", task.taskUniqueId)
     
     def onDownloadStart(self, dto: StockCrawlingDownloadTask) -> None:
         logger.info("onDownloadStart: "+dto.json())
@@ -219,6 +231,7 @@ class TasksRepository(object):
         self.updateTask(task)
         self.taskEventEmitter.emit(EVENT_TASK_REPO_UPDATE_TASKS, self.tasksdto)
         self.mongod.upsertTask(task.dict())
+        self.logger.info("onDownloadStart", task.taskUniqueId)
 
     def onDownloadComplete(self, dto: StockCrawlingDownloadTask) -> None:
         task = self.getTask(dto.taskId, dto.taskUniqueId)
@@ -226,6 +239,7 @@ class TasksRepository(object):
         self.updateTask(task)
         self.taskEventEmitter.emit(EVENT_TASK_REPO_UPDATE_TASKS, self.tasksdto)
         self.mongod.upsertTask(task.dict())
+        self.logger.info("onDownloadComplete", task.taskUniqueId)
 
     def onParsingComplete(self, isSuccess: bool, retdto: StockMarketCapitalResult, dto: StockCrawlingDownloadTask) -> None:
         logger.info("onParsingComplete")
@@ -239,6 +253,7 @@ class TasksRepository(object):
             self.fail(task, 1)
         if task.restCount <= 0:
             self.deleteTask(task)
+        task.errMsg = retdto.errorMsg
         self.taskEventEmitter.emit(EVENT_TASK_REPO_UPDATE_TASKS, self.tasksdto)
         self.mongod.upsertTask(task.dict())
         self.mongod.insertMarcap(retdto.data)
@@ -248,6 +263,7 @@ class TasksRepository(object):
             "date": dto.dateStr,
             "ret": 1 if isSuccess else 2
         }))
+        self.logger.info("onParsingComplete", task.taskUniqueId)
     
     def onCancelled(self, dto: StockCrawlingRunCrawling) -> None:
         task = self.getTask(dto.taskId, dto.taskUniqueId)
@@ -256,6 +272,7 @@ class TasksRepository(object):
         self.updateTask(task)
         self.taskEventEmitter.emit(EVENT_TASK_REPO_UPDATE_TASKS, self.tasksdto)
         self.mongod.upsertTask(task.dict())
+        self.logger.info("onCancelled", task.taskUniqueId)
     
     def onError(self, dto: StockCrawlingRunCrawling) -> None:
         task = self.getTask(dto.taskId, dto.taskUniqueId)
@@ -264,4 +281,5 @@ class TasksRepository(object):
         self.updateTask(task)
         self.taskEventEmitter.emit(EVENT_TASK_REPO_UPDATE_TASKS, self.tasksdto)
         self.mongod.upsertTask(task.dict())
+        self.logger.error("onError", task.taskUniqueId)
 

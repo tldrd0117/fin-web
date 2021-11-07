@@ -97,6 +97,7 @@ class StockCrawlingTask(BaseModel):
     taskUniqueId: str = ""
     percent: float = 0.0
     taskId: str = ""
+    errMsg: str = ""
 
 
 class StockCrawlingTasks(BaseModel):

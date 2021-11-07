@@ -11,6 +11,7 @@ from pymongo.monitoring import (CommandFailedEvent, CommandStartedEvent,
 from uvicorn.config import logger
 from app.model.dto import StockMarketCapital, ListLimitData, ListLimitResponse
 from app.util.DateUtils import getNow
+from app.module.logger import Logger
 
 log = logging.getLogger("mongo")
 
@@ -37,6 +38,7 @@ class StockMongoDataSource:
         self.userName = "root"
         self.password = "example"
         self.path = f'mongodb://{self.userName}:{self.password}@{self.host}:{self.port}'
+        self.logger = Logger
         logger.info(f"db connecting... {self.path}")
         try:
             self.client = MongoClient(self.path)
@@ -50,6 +52,7 @@ class StockMongoDataSource:
         self.stock = self.client["stock"]
         self.marcap = self.getCollection("marcap")
         self.task = self.getCollection("task")
+        self.factor = self.getCollection("factor")
         print(self.marcap.index_information())
         try:
             self.marcap.create_index([("date", ASCENDING), ("code", ASCENDING), ("market", ASCENDING)], unique=True, name="marcapIndex")
