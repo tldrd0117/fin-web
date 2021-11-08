@@ -9,7 +9,7 @@ class Logger:
         self.logger = logging.getLogger("logger")
         self.cls = cls
         self.fileHandler = logging.handlers.TimedRotatingFileHandler(
-            filename="server/",
+            filename="server/log/log-",
             when='midnight',
             interval=1
         )
