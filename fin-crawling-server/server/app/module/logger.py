@@ -16,6 +16,7 @@ class Logger:
             when='midnight',
             interval=1
         )
+        self.logger.addHandler(self.fileHandler)
     
     
     def info(self, func: str, msg: str) -> None:
