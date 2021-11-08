@@ -2,14 +2,17 @@
 import logging
 import logging.handlers
 from app.util.DateUtils import getNowDateStr
+import pathlib
 
 
 class Logger:
     def __init__(self, cls: str) -> None:
         self.logger = logging.getLogger("logger")
         self.cls = cls
+        path = pathlib.Path("../../../log")
+
         self.fileHandler = logging.handlers.TimedRotatingFileHandler(
-            filename="server/log",
+            filename=path.resolve(),
             when='midnight',
             interval=1
         )
