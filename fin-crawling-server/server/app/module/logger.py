@@ -9,6 +9,7 @@ from uvicorn.config import logger
 class Logger:
     def __init__(self, cls: str) -> None:
         self.logger = logging.getLogger("logger"+cls)
+        self.logger.setLevel(logging.INFO)
         self.cls = cls
         path = pathlib.Path("../server/log/log")
         logger.info(path.resolve())
