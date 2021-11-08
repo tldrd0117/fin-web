@@ -11,7 +11,6 @@ from app.service.StockService import StockService
 from app.datasource.StockMongoDataSource import StockMongoDataSource
 from app.router.task import TaskSocketRouter
 from app.router.crawling import CrawlingSocketRouter
-from app.module.logger import Logger
 
 
 locator = Locator.getInstance()
@@ -28,7 +27,6 @@ stockService = StockService(stockRepository)
 
 taskSocketRouter = TaskSocketRouter(crawlingService, taskService, manager)
 crawlingSocketRouter = CrawlingSocketRouter(crawlingService, manager)
-logger = Logger()
 
 
 locator.register(manager)
@@ -44,4 +42,3 @@ locator.register(taskSocketRouter)
 locator.register(crawlingSocketRouter)
 locator.register(stockRepository)
 locator.register(stockService)
-locator.register(logger)
