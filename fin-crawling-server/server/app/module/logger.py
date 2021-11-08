@@ -10,6 +10,7 @@ class Logger:
     def __init__(self, cls: str) -> None:
         self.logger = logging.getLogger("logger"+cls)
         self.logger.setLevel(logging.INFO)
+        
         self.cls = cls
         path = pathlib.Path("../server/log/log")
         logger.info(path.resolve())
@@ -20,6 +21,11 @@ class Logger:
             interval=1
         )
         self.logger.addHandler(self.fileHandler)
+        
+        formatter = logging.Formatter(
+            '%(asctime)s - %(levelname)s - [%(filename)s:%(lineno)d] %(message)s'
+        )
+        self.fileHandler.setFormatter(formatter) # 핸들러에 로깅 포맷 할당
     
     
     def info(self, func: str, msg: str) -> None:
