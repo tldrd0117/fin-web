@@ -37,13 +37,21 @@ class ListLimitResponse(BaseModel):
     count: int
 
 
-class StockCrawlingRunCrawling(BaseModel):
+class RunCrawling(BaseModel):
+    taskId: str
+    taskUniqueId: str
+
+
+class FactorRunCrawling(BaseModel):
+    market: str
+    year: str
+
+
+class StockRunCrawling(RunCrawling):
     driverAddr: str
     market: str
     startDateStr: str
     endDateStr: str
-    taskId: str
-    taskUniqueId: str
 
 
 class StockTaskSchedule(BaseModel):
@@ -66,7 +74,7 @@ class StockTaskScheduleInfo(BaseModel):
     hour: str
     minute: str
     second: str
-    taskList: List[StockCrawlingRunCrawling] = []
+    taskList: List[StockRunCrawling] = []
 
 
 class StockTaskScheduleList(BaseModel):

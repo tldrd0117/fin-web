@@ -4,8 +4,8 @@ import os
 import traceback
 
 from datetime import datetime, timedelta
-from typing import TypeVar, Final
-from asyncio.exceptions import CancelledError
+from typing import TypeVar
+from typing_extensions import Final
 
 from pymitter import EventEmitter
 from selenium import webdriver
@@ -13,7 +13,6 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.remote.webdriver import WebDriver
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.wait import WebDriverWait
-from selenium.webdriver.chrome.options import Options
 from watchdog.events import FileCreatedEvent
 import uuid
 
@@ -21,8 +20,8 @@ from app.observer.DownloadObserver import DownloadObserver
 from app.observer.CmdFileSystemEventHandler import FILE_SYSTEM_HANDLER
 from app.module.logger import Logger
 
-from pathlib import Path
-from app.model.dto import StockCrawlingDownloadTask, StockCrawlingRunCrawling, StockMarketCapitalResult, StockMarketCapital
+# from pathlib import Path
+from app.model.dto import StockCrawlingDownloadTask, StockRunCrawling, StockMarketCapitalResult, StockMarketCapital
 from uvicorn.config import logger
 
 T = TypeVar("T")
@@ -34,6 +33,7 @@ EVENT_MARCAP_CRAWLING_ON_DOWNLOAD_COMPLETE: Final = "marcapCrawler/onDownloadCom
 EVENT_MARCAP_CRAWLING_ON_PARSING_COMPLETE: Final = "marcapCrawler/onParsingComplete"
 EVENT_MARCAP_CRAWLING_ON_CANCEL: Final = "marcapCrawler/cancel"
 EVENT_MARCAP_CRAWLING_ON_ERROR: Final = "marcapCrawler/error"
+EVENT_MARCAP_CRAWLING_ON_RESULT_OF_STOCK_DATA: Final = "marcapCrawler/onResultOfStockData"
 
 
 class MarcapCrawler(object):
@@ -75,7 +75,7 @@ class MarcapCrawler(object):
         driver = webdriver.Chrome(executable_path="/Users/iseongjae/Downloads/chromedriver", chrome_options=chrome_options)
         return driver
 
-    async def crawling(self, dto: StockCrawlingRunCrawling) -> None:
+    async def crawling(self, dto: StockRunCrawling) -> None:
         driver = None
         uuid = self.createUUID()
         logger.info(uuid)
@@ -119,7 +119,7 @@ class MarcapCrawler(object):
                 self.ee.emit(EVENT_MARCAP_CRAWLING_ON_DOWNLOAD_START, downloadTask)
                 await self.downloadData(downloadTask, downloadObserver, driver)
                 date = date + timedelta(days=1)
-        except CancelledError as ce:
+        except asyncio.CancelledError as ce:
             print(f"CancelledError: {str(ce)}")
             logger.error(f"CancelledError: {str(ce)}")
             self.ee.emit(EVENT_MARCAP_CRAWLING_ON_CANCEL, dto)
@@ -192,7 +192,7 @@ class MarcapCrawler(object):
     def convertFileToDto(self, path: str, dto: StockMarketCapitalResult) -> None:
         lines = []
         with open(path, "r", encoding="utf-8") as f:
-            p = Path(f.name)
+            # p = Path(f.name)
             # dto.date = p.stem
             lines = f.readlines()
         
@@ -267,6 +267,7 @@ class MarcapCrawler(object):
             retdto.result = "success"
             isSuccess = True
             self.ee.emit(EVENT_MARCAP_CRAWLING_ON_PARSING_COMPLETE, isSuccess, retdto, downloadTask)
+            self.ee.emit(EVENT_MARCAP_CRAWLING_ON_RESULT_OF_STOCK_DATA, retdto)
             self.isLock = False
             self.logger.info("parseFile", f"success, {downloadTask.taskUniqueId}")
         except Exception as e:

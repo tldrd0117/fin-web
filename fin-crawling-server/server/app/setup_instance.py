@@ -15,13 +15,24 @@ from app.router.crawling import CrawlingSocketRouter
 
 locator = Locator.getInstance()
 manager = ConnectionManager()
-userService = UserService()
 stockMongoDataSource = StockMongoDataSource()
+
+# REPOSITORY
 crawlerRepository = CrawlerRepository(stockMongoDataSource)
 tasksRepository = TasksRepository(stockMongoDataSource)
 stockRepository = StockRepository(stockMongoDataSource)
-crawlingService = CrawlingService(manager, tasksRepository, crawlerRepository)
+repositories = {
+    "crawlerRepository": crawlerRepository,
+    "tasksRepository": tasksRepository,
+    "stockRepository": stockRepository
+}
+
+# SCHEDULER
 taskScheduler = TaskScheduler(stockMongoDataSource.client)
+
+# SERVICE
+userService = UserService()
+crawlingService = CrawlingService(manager, tasksRepository, crawlerRepository, stockRepository)
 taskService = TaskService(manager, tasksRepository, taskScheduler, crawlingService)
 stockService = StockService(stockRepository)
 

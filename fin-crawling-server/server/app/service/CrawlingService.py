@@ -3,8 +3,9 @@ import asyncio
 from typing import Dict, List
 from app.repo.CrawlerRepository import CrawlerRepository
 from app.repo.TasksRepository import EVENT_TASK_REPO_TASK_COMPLETE, TasksRepository, EVENT_TASK_REPO_UPDATE_TASKS
+from app.repo.StockRepository import StockRepository
 from app.module.task import Pool, Task, TaskPool
-from app.model.dto import StockUpdateState, StockCrawlingCompletedTasks, StockCrawlingRunCrawling, StockCrawlingTasks, ListLimitData, ListLimitResponse
+from app.model.dto import StockUpdateState, StockCrawlingCompletedTasks, StockRunCrawling, FactorRunCrawling, StockCrawlingTasks, ListLimitData, ListLimitResponse, RunCrawling
 from app.crawler.MarcapCrawler import MarcapCrawler
 from fastapi import WebSocket
 from app.module.socket.manager import ConnectionManager
@@ -16,31 +17,37 @@ RES_SOCKET_CRAWLING_RUN_CRAWLING = "crawling/runCrawlingRes"
 
 
 class CrawlingService:
-    def __init__(self, manager: ConnectionManager, tasksRepository: TasksRepository, crawlerRepository: CrawlerRepository) -> None:
+    def __init__(self, manager: ConnectionManager, tasksRepository: TasksRepository, crawlerRepository: CrawlerRepository, stockRepository: StockRepository) -> None:
         self.tasksRepository = tasksRepository
         self.crawlerRepository = crawlerRepository
+        self.stockRepository = stockRepository
         self.manager = manager
         self.crawlers: Dict = {}
         self.pools: Dict = {}
         self.createTaskRepositoryListener()
 
-    def runCrawling(self, dtoList: List[StockCrawlingRunCrawling]) -> None:
+    def runCrawling(self, dtoList: List[RunCrawling]) -> None:
         for dto in dtoList:
             if dto.taskId == "marcap":
-                async def taskWorker(runDto: StockCrawlingRunCrawling, pool: Pool, taskPool: TaskPool) -> None:
+                async def marcapTaskWorker(runDto: StockRunCrawling, pool: Pool, taskPool: TaskPool) -> None:
                     marcapCrawler = MarcapCrawler()
                     self.crawlers[runDto.taskUniqueId] = marcapCrawler
                     self.pools[runDto.taskUniqueId] = pool
                     self.tasksRepository.createListners(marcapCrawler.ee)
                     self.crawlerRepository.createListener(marcapCrawler.ee)
+                    self.stockRepository.createListners(marcapCrawler.ee)
                     logger.info(f"taskWorker:{runDto.taskUniqueId}")
                     await asyncio.create_task(marcapCrawler.crawling(runDto))
                     taskPool.removeTaskPool(pool)
                     del self.crawlers[runDto.taskUniqueId]
-                task = Task(taskWorker, {"runDto": dto})
+                task = Task(marcapTaskWorker, {"runDto": dto})
                 self.tasksRepository.runMarcapTask(task, dto)
+            elif dto.taskId == "factor":
+                async def factorTaskWorker(runDto: FactorRunCrawling, pool: Pool, taskPool: TaskPool) -> None:
+                    pass
+                task = Task(factorTaskWorker, {"runDto": dto})
     
-    def cancelCrawling(self, dto: StockCrawlingRunCrawling) -> None:
+    def cancelCrawling(self, dto: StockRunCrawling) -> None:
         if dto.taskUniqueId in self.crawlers:
             self.pools[dto.taskUniqueId].cancel()
             self.crawlers[dto.taskUniqueId].isCancelled = True

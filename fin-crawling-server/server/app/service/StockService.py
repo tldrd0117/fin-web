@@ -9,3 +9,4 @@ class StockService:
 
     def getStockData(self, market: str, startDate: str, endDate: str) -> List[StockMarketCapital]:
         return self.stockRepository.getStockData(market, startDate, endDate)
+    

@@ -256,7 +256,6 @@ class TasksRepository(object):
         task.errMsg = retdto.errorMsg
         self.taskEventEmitter.emit(EVENT_TASK_REPO_UPDATE_TASKS, self.tasksdto)
         self.mongod.upsertTask(task.dict())
-        self.mongod.insertMarcap(retdto.data)
         self.taskEventEmitter.emit(EVENT_TASK_REPO_TASK_COMPLETE, "marcap", StockUpdateState(**{
             "taskId": dto.taskId,
             "market": dto.market,
