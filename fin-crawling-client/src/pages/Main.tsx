@@ -5,6 +5,7 @@ import CrawlingBoard from '../containers/CrawlingBoard';
 import Menu from '../containers/Menu';
 import { RootState } from '../data/root/rootReducer'
 import { endConnection, startConnection } from '../data/socket/socketSlice';
+import { menus } from '../constants/Menu'
 
 export default ( {SubComponent = null}) => {
     const { isConnected } = useSelector((state: RootState)=>state.socket)
@@ -52,12 +53,12 @@ export default ( {SubComponent = null}) => {
                 
             </AppBar>
             <div className={"menu-layout"}>
-                <Menu className={"hidden sm:block"} menus={["일자별 주식 및 시가총액"]}/>
+                <Menu className={"hidden sm:block"} menus={menus}/>
                  {SubComponent? <SubComponent/>:null}
             </div>
             {
                 isMenuOpen?<div className={"sm:hidden fixed z-50 w-full h-full menu-layout-2"}>
-                    <Menu onClick={()=>setMenuOpen(!isMenuOpen)} menus={["일자별 주식 및 시가총액"]}/>
+                    <Menu onClick={()=>setMenuOpen(!isMenuOpen)} menus={menus}/>
                 </div>:null
             }
             

@@ -7,20 +7,20 @@ from pymongo.monitoring import (CommandFailedEvent, CommandStartedEvent,
 
 from dotenv import dotenv_values
 
-log = Logger("mongo")
+log = Logger("MongoDataSource")
 config = dotenv_values('.env')
 
 
 class CommandLogger(monitoring.CommandListener):
 
     def started(self, event: CommandStartedEvent) -> None:
-        log.debug("Command {0.command_name} with request id ""{0.request_id} started on server ""{0.connection_id}".format(event))
+        log.info("started", "Command {0.command_name} with request id ""{0.request_id} started on server ""{0.connection_id}".format(event))
 
     def succeeded(self, event: CommandSucceededEvent) -> None:
-        log.debug("Command {0.command_name} with request id ""{0.request_id} on server {0.connection_id} ""succeeded in {0.duration_micros} ""microseconds".format(event))
+        log.info("succeeded", "Command {0.command_name} with request id ""{0.request_id} on server {0.connection_id} ""succeeded in {0.duration_micros} ""microseconds".format(event))
 
     def failed(self, event: CommandFailedEvent) -> None:
-        log.debug("Command {0.command_name} with request id ""{0.request_id} on server {0.connection_id} ""failed in {0.duration_micros} ""microseconds".format(event))
+        log.info("failed", "Command {0.command_name} with request id ""{0.request_id} on server {0.connection_id} ""failed in {0.duration_micros} ""microseconds".format(event))
 
 
 monitoring.register(CommandLogger())
@@ -28,20 +28,20 @@ monitoring.register(CommandLogger())
 
 class MongoDataSource():
     def __init__(self) -> None:
-        self.host = config.mongodbHost
-        self.port = config.mongodbPort
-        self.userName = config.mongodbUserName
-        self.password = config.mongodbPassword
+        self.host = config["mongodbHost"]
+        self.port = config["mongodbPort"]
+        self.userName = config["mongodbUserName"]
+        self.password = config["mongodbPassword"]
         self.path = f'mongodb://{self.userName}:{self.password}@{self.host}:{self.port}'
         self.logger = log
-        log.info(f"db connecting... {self.path}")
+        log.info("__init__", f"db connecting... {self.path}")
         try:
             self.client = MongoClient(self.path)
             self.client.server_info()
             self.setupMarcap()
-            log.info("db connection seccess")
+            log.info("__init__", "db connection seccess")
         except Exception as e:
-            log.info(e)
+            log.info("__init__", e)
     
     def setupMarcap(self) -> None:
         self.stock = self.client["stock"]

@@ -8,6 +8,7 @@ export default (props) => {
     return <>
         <style jsx>{`
             span{
+                display: block;
                 padding: 10px 0px 10px 20px;
                 &:hover{
                     @apply bg-gray-900;

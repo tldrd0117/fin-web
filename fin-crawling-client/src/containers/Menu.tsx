@@ -5,10 +5,10 @@ import MenuItem from '../components/MenuItem';
 
 export default ({ menus, className = "", width="300px", onClick=null }) => {
     const dispatch = useDispatch()
-    const handleClick = () => {
+    const handleClick = (url) => {
         console.log("handleClick")
-        dispatch(push("/marcap"))
-        onClick();
+        dispatch(push(`${url}`))
+        if(onClick) onClick();
     }
     return <>
         <style jsx>{`
@@ -20,7 +20,7 @@ export default ({ menus, className = "", width="300px", onClick=null }) => {
             }
         `}</style>
         <div className={`menu shadow bg-gray-700 flex flex-col ${className}`}>
-            {menus.map(v=><MenuItem onClick={handleClick} key={v}>{v}</MenuItem>)}
+            {menus.map(menu=><MenuItem onClick={()=>handleClick(menu.url)} key={menu.name}>{menu.name}</MenuItem>)}
         </div>
     </>
 }

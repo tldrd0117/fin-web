@@ -30,6 +30,8 @@ class Logger:
     
     def info(self, func: str, msg: str) -> None:
         self.logger.info(f"cls: {self.cls}, func: {func}, msg: {msg}")
+        logger.info(f"cls: {self.cls}, func: {func}, msg: {msg}")
     
     def error(self, func: str, msg: str) -> None:
         self.logger.error(f"cls: {self.cls}, func: {func}, msg {msg}")
+        logger.error(f"cls: {self.cls}, func: {func}, msg {msg}")

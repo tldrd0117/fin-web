@@ -9,7 +9,7 @@ from pymongo import DESCENDING
 
 class StockMongoDataSource(MongoDataSource):
     def __init__(self) -> None:
-        super()
+        super().__init__()
 
     def insertMarcap(self, li: List[StockMarketCapital]) -> None:
         try:
