@@ -1,17 +1,9 @@
-from collections import deque
-from datetime import datetime, timedelta
-from typing import Dict, Final, List, Optional
+from typing import Dict, List, Optional
+from typing_extensions import Final
 
 from pymitter import EventEmitter
-from app.crawler.MarcapCrawler import EVENT_MARCAP_CRAWLING_ON_CONNECTING_WEBDRIVER, \
-    EVENT_MARCAP_CRAWLING_ON_DOWNLOAD_COMPLETE, \
-    EVENT_MARCAP_CRAWLING_ON_DOWNLOAD_START, \
-    EVENT_MARCAP_CRAWLING_ON_PARSING_COMPLETE, \
-    EVENT_MARCAP_CRAWLING_ON_START_CRAWLING, \
-    EVENT_MARCAP_CRAWLING_ON_ERROR, \
-    EVENT_MARCAP_CRAWLING_ON_CANCEL
 from app.datasource.StockMongoDataSource import StockMongoDataSource
-from app.model.dto import StockUpdateState, StockCrawlingCompletedTasks, StockCrawlingDownloadTask, StockCrawlingRunCrawling, StockCrawlingTasks, StockMarketCapitalResult, StockCrawlingTask, StockTaskState, ListLimitData, ListLimitResponse, YearData
+from app.model.dto import StockCrawlingCompletedTasks, StockCrawlingTasks, StockCrawlingTask, StockTaskState, ListLimitData, ListLimitResponse, YearData
 from app.model.task import TaskPoolInfo
 from app.module.task import Task, TaskRunner
 from app.module.logger import Logger
@@ -58,30 +50,6 @@ class TasksRepository(object):
         # print("runTask")
         if self.taskRunner:
             self.taskRunner.put(task)
-    
-    def runMarcapTask(self, workerTask: Task, dto: StockCrawlingRunCrawling) -> None:
-        if self.taskRunner:
-            if self.isExistTask(dto.taskId, dto.taskUniqueId):
-                return
-            startDate = datetime.strptime(dto.startDateStr, "%Y%m%d")
-            endDate = datetime.strptime(dto.endDateStr, "%Y%m%d")
-            taskDates = [(startDate + timedelta(days=x)).strftime("%Y%m%d") for x in range((endDate - startDate).days + 1)]
-            task = StockCrawlingTask(**{
-                "market": dto.market,
-                "startDateStr": dto.startDateStr,
-                "endDateStr": dto.endDateStr,
-                "taskUniqueId": dto.taskUniqueId,
-                "taskId": dto.taskId,
-                "count": len(taskDates),
-                "tasks": deque(taskDates),
-                "restCount": len(taskDates),
-                "tasksRet": deque(([0]*len(taskDates))),
-            })
-            task.state = "find worker"
-            self.addTask(task)
-            self.taskEventEmitter.emit(EVENT_TASK_REPO_UPDATE_TASKS, self.tasksdto)
-            self.runTask(workerTask)
-            self.logger.info("runMarcapTask", f"runTask {task.json()}")
 
     def addTask(self, task: StockCrawlingTask) -> None:
         if "marcap" not in self.tasksdto.tasks:
@@ -198,87 +166,3 @@ class TasksRepository(object):
                 "taskId": taskId
             })
         return resultDict
-
-    def createListners(self, ee: EventEmitter) -> None:
-        ee.on(EVENT_MARCAP_CRAWLING_ON_CONNECTING_WEBDRIVER, self.onConnectingWebDriver)
-        ee.on(EVENT_MARCAP_CRAWLING_ON_START_CRAWLING, self.onStartCrawling)
-        ee.on(EVENT_MARCAP_CRAWLING_ON_DOWNLOAD_START, self.onDownloadStart)
-        ee.on(EVENT_MARCAP_CRAWLING_ON_DOWNLOAD_COMPLETE, self.onDownloadComplete)
-        ee.on(EVENT_MARCAP_CRAWLING_ON_PARSING_COMPLETE, self.onParsingComplete)
-        ee.on(EVENT_MARCAP_CRAWLING_ON_ERROR, self.onError)
-        ee.on(EVENT_MARCAP_CRAWLING_ON_CANCEL, self.onCancelled)
-    
-    def onConnectingWebDriver(self, dto: StockCrawlingRunCrawling) -> None:
-        task = self.getTask(dto.taskId, dto.taskUniqueId)
-        task.state = "connecting webdriver"
-        self.updateTask(task)
-        self.taskEventEmitter.emit(EVENT_TASK_REPO_UPDATE_TASKS, self.tasksdto)
-        self.mongod.upsertTask(task.dict())
-        self.logger.info("onConnectingWebDriver", task.taskUniqueId)
-
-    def onStartCrawling(self, dto: StockCrawlingRunCrawling) -> None:
-        task = self.getTask(dto.taskId, dto.taskUniqueId)
-        task.state = "start crawling"
-        self.updateTask(task)
-        self.taskEventEmitter.emit(EVENT_TASK_REPO_UPDATE_TASKS, self.tasksdto)
-        self.mongod.upsertTask(task.dict())
-        self.logger.info("onStartCrawling", task.taskUniqueId)
-    
-    def onDownloadStart(self, dto: StockCrawlingDownloadTask) -> None:
-        logger.info("onDownloadStart: "+dto.json())
-        task = self.getTask(dto.taskId, dto.taskUniqueId)
-        task.state = "download start"
-        self.updateTask(task)
-        self.taskEventEmitter.emit(EVENT_TASK_REPO_UPDATE_TASKS, self.tasksdto)
-        self.mongod.upsertTask(task.dict())
-        self.logger.info("onDownloadStart", task.taskUniqueId)
-
-    def onDownloadComplete(self, dto: StockCrawlingDownloadTask) -> None:
-        task = self.getTask(dto.taskId, dto.taskUniqueId)
-        task.state = "download complete"
-        self.updateTask(task)
-        self.taskEventEmitter.emit(EVENT_TASK_REPO_UPDATE_TASKS, self.tasksdto)
-        self.mongod.upsertTask(task.dict())
-        self.logger.info("onDownloadComplete", task.taskUniqueId)
-
-    def onParsingComplete(self, isSuccess: bool, retdto: StockMarketCapitalResult, dto: StockCrawlingDownloadTask) -> None:
-        logger.info("onParsingComplete")
-        logger.info(f"taskId:{dto.taskId} taskUniqueId{dto.taskUniqueId}")
-        tar = self.tasksdto.tasks[dto.taskId]["list"]
-        logger.info(f"taskDTO: {tar}")
-        task = self.getTask(dto.taskId, dto.taskUniqueId)
-        if isSuccess:
-            self.success(task, 1)
-        else:
-            self.fail(task, 1)
-        if task.restCount <= 0:
-            self.deleteTask(task)
-        task.errMsg = retdto.errorMsg
-        self.taskEventEmitter.emit(EVENT_TASK_REPO_UPDATE_TASKS, self.tasksdto)
-        self.mongod.upsertTask(task.dict())
-        self.taskEventEmitter.emit(EVENT_TASK_REPO_TASK_COMPLETE, "marcap", StockUpdateState(**{
-            "taskId": dto.taskId,
-            "market": dto.market,
-            "date": dto.dateStr,
-            "ret": 1 if isSuccess else 2
-        }))
-        self.logger.info("onParsingComplete", task.taskUniqueId)
-    
-    def onCancelled(self, dto: StockCrawlingRunCrawling) -> None:
-        task = self.getTask(dto.taskId, dto.taskUniqueId)
-        self.fail(task, task.restCount)
-        task.state = "cancelled"
-        self.updateTask(task)
-        self.taskEventEmitter.emit(EVENT_TASK_REPO_UPDATE_TASKS, self.tasksdto)
-        self.mongod.upsertTask(task.dict())
-        self.logger.info("onCancelled", task.taskUniqueId)
-    
-    def onError(self, dto: StockCrawlingRunCrawling) -> None:
-        task = self.getTask(dto.taskId, dto.taskUniqueId)
-        self.fail(task, task.restCount)
-        task.state = "error"
-        self.updateTask(task)
-        self.taskEventEmitter.emit(EVENT_TASK_REPO_UPDATE_TASKS, self.tasksdto)
-        self.mongod.upsertTask(task.dict())
-        self.logger.error("onError", task.taskUniqueId)
-

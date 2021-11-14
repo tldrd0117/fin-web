@@ -1,5 +1,5 @@
 from fastapi import WebSocket
-from app.model.dto import StockCrawlingRunCrawling, ListLimitData
+from app.model.dto import StockRunCrawling, ListLimitData
 from app.service.CrawlingService import CrawlingService
 from app.module.socket.manager import ConnectionManager
 from uvicorn.config import logger
@@ -42,7 +42,7 @@ class CrawlingSocketRouter(object):
         dtoList = []
         for market in data["market"]:
             taskUniqueId = data["taskId"]+market+data["startDate"]+data["endDate"]+str(uuid.uuid4())
-            dto = StockCrawlingRunCrawling(**{
+            dto = StockRunCrawling(**{
                 "driverAddr": "http://fin-carwling-webdriver:4444",
                 "market": market,
                 "startDateStr": data["startDate"],
@@ -57,7 +57,7 @@ class CrawlingSocketRouter(object):
         dtoList = []
         logger.info(str(data))
         for market in data["market"]:
-            dto = StockCrawlingRunCrawling(**{
+            dto = StockRunCrawling(**{
                 "driverAddr": "http://fin-carwling-webdriver:4444",
                 "market": market,
                 "startDateStr": data["startDate"],

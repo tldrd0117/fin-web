@@ -44,6 +44,6 @@ class FactorCrawler(object):
                     # dfs[factor] = pd.DataFrame()
                 # factorDf.loc[factor] = df
                 # dfs[factor] = pd.concat([dfs[factor], df])
-        factorDf = factorDf.melt(id_vars=["종목코드", "종목명", "결산월", "단위", "factor"],
-                    var_name="year", value_name="value")
+        factorDf = factorDf.melt(id_vars=["종목코드", "종목명", "결산월", "단위", "데이터명"],
+                    var_name="year", value_name="데이터값")
         self.ee.emit(EVENT_FACTOR_CRAWLING_ON_RESULT_OF_FACTOR, factorDf.to_dict("records"))

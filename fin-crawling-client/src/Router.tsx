@@ -13,6 +13,7 @@ import { ConnectedRouter } from 'connected-react-router';
 import {history, RootState} from "./data/root/rootReducer"
 import PrivateRouter from './components/PrivateRouter'
 import CrawlingBoard from './containers/CrawlingBoard';
+import FactorBoard from './containers/FactorBoard';
 
 export default () => {
     return <>
@@ -20,6 +21,9 @@ export default () => {
             <Switch>
                 <PrivateRouter path="/marcap" exect>
                     <Main SubComponent={CrawlingBoard}/>
+                </PrivateRouter>
+                <PrivateRouter path="/factor" exect>
+                    <Main SubComponent={FactorBoard}/>
                 </PrivateRouter>
                 <Route path="/login">
                     <Login />

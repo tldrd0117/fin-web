@@ -1,6 +1,6 @@
 
 from typing import List
-from app.model.dto import StockUpdateState, YearData, StockCrawlingRunCrawling, StockTaskSchedule, StockTaskScheduleList, StockTaskState, StockTaskScheduleInfo
+from app.model.dto import StockUpdateState, YearData, StockTaskSchedule, StockTaskScheduleList, StockTaskScheduleInfo, StockRunCrawling
 from app.model.task import TaskPoolInfo
 from app.module.locator import Locator
 from app.repo.TasksRepository import TasksRepository, EVENT_TASK_REPO_TASK_COMPLETE, EVENT_TASK_REPO_UPDATE_POOL_INFO
@@ -62,7 +62,7 @@ class TaskService:
             self.manager.send(RES_SOCKET_TASK_FETCH_TASK_SCHEDULE, stockTaskScheduleList.dict(), webSocket)
     
     @staticmethod
-    def marcapJob(marcapDtos: List[StockCrawlingRunCrawling]) -> None:
+    def marcapJob(marcapDtos: List[StockRunCrawling]) -> None:
         service: CrawlingService = Locator.getInstance().get(CrawlingService)
         for dto in marcapDtos:
             logger.info("#### schedule job start ####")
@@ -74,7 +74,7 @@ class TaskService:
             logger.info("real:" + dto.startDateStr + "~" + dto.endDateStr)
         service.runCrawling(marcapDtos)
     
-    def addTaskSchedule(self, scheduleDto: StockTaskSchedule, runCrawlingDto: List[StockCrawlingRunCrawling], webSocket: WebSocket) -> None:
+    def addTaskSchedule(self, scheduleDto: StockTaskSchedule, runCrawlingDto: List[StockRunCrawling], webSocket: WebSocket) -> None:
         marcapDtos = []
         for dto in runCrawlingDto:
             if dto.taskId == "marcap":
@@ -111,3 +111,4 @@ class TaskService:
     def updateTaskPoolInfo(self, poolInfo: TaskPoolInfo) -> None:
         # logger.info(f"updateTaskPoolInfo:{poolInfo.json()}")
         self.manager.sendBroadCast(RES_SOCKET_TASK_FETCH_TASK_POOL_INFO, poolInfo.dict())
+    

@@ -1,11 +1,9 @@
 
 from fastapi import WebSocket
-from app.model.dto import StockCrawlingRunCrawling, StockTaskSchedule
+from app.model.dto import StockRunCrawling, StockTaskSchedule
 from app.service.CrawlingService import CrawlingService
 from app.service.TaskService import TaskService
 from app.module.socket.manager import ConnectionManager
-from app.util.DateUtils import getNowDateStr
-import uuid
 
 REQ_SOCKET_TASK_FETCH_TASK_STATE = "task/fetchTaskState"
 REQ_SOCKET_TASK_FETCH_TASK_POOL_INFO = "task/fetchTaskPoolInfo"
@@ -55,7 +53,7 @@ class TaskSocketRouter(object):
 
         dtoList = []
         for market in data["market"]:
-            dto = StockCrawlingRunCrawling(**{
+            dto = StockRunCrawling(**{
                 "driverAddr": "http://fin-carwling-webdriver:4444",
                 "market": market,
                 "startDateStr": data["startDate"],
