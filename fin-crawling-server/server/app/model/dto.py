@@ -147,3 +147,11 @@ class StockMarketCapitalResult(BaseModel):
 class StockMarketCapitalResponse(BaseModel):
     list: List[StockMarketCapital]
     count: int
+
+
+class KrxFactor(BaseModel):
+    code: str
+    name: str
+    type: str
+    key: str
+    value: str

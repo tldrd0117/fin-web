@@ -16,5 +16,6 @@ class FactorService:
         data = self.factorRepository.getFactorsInFile()
         self.manager.sendBroadCast(RES_SOCKET_FACTOR_UPDATE_STATE_RES, dict())
         # update Db
+        self.factorRepository.insertFactor(data)
         self.manager.sendBroadCast(RES_SOCKET_FACTOR_MOVE_FACTOR_FILE_TO_DB_END, dict())
     

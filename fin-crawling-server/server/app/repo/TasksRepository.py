@@ -2,8 +2,9 @@ from typing import Dict, List, Optional
 from typing_extensions import Final
 
 from pymitter import EventEmitter
-from app.datasource.StockMongoDataSource import StockMongoDataSource
-from app.model.dto import StockCrawlingCompletedTasks, StockCrawlingTasks, StockCrawlingTask, StockTaskState, ListLimitData, ListLimitResponse, YearData
+from app.datasource.TaskMongoDataSource import TaskMongoDataSource
+from app.model.dto import StockCrawlingCompletedTasks, StockMarketCapitalResult, StockCrawlingDownloadTask, StockUpdateState, \
+    StockCrawlingTasks, StockCrawlingTask, StockTaskState, ListLimitData, ListLimitResponse, YearData
 from app.model.task import TaskPoolInfo
 from app.module.task import Task, TaskRunner
 from app.module.logger import Logger
@@ -21,7 +22,7 @@ EVENT_TASK_REPO_UPDATE_POOL_INFO = "taskRepo/updatePoolInfo"
 
 
 class TasksRepository(object):
-    def __init__(self, mongod: StockMongoDataSource) -> None:
+    def __init__(self, mongod: TaskMongoDataSource) -> None:
         super().__init__()
         self.mongod = mongod
         self.logger = Logger("TasksRepository")
@@ -64,6 +65,8 @@ class TasksRepository(object):
     def updateTask(self, task: StockCrawlingTask) -> None:
         self.tasksdto.tasks[task.taskId]["list"][task.taskUniqueId] = task
         self.logger.info("updateTask", f"{task.taskUniqueId}")
+        self.mongod.upsertTask(task.dict())
+        self.taskEventEmitter.emit(EVENT_TASK_REPO_UPDATE_TASKS, self.tasksdto)
     
     def getTask(self, taskId: str, taskUniqueId: str) -> StockCrawlingTask:
         if self.isExistTask(taskId, taskUniqueId):
@@ -79,6 +82,22 @@ class TasksRepository(object):
                 del self.tasksdto.tasks[task.taskId]["list"][task.taskUniqueId]
                 self.tasksdto.tasks[task.taskId]["ids"].remove(task.taskUniqueId)
                 self.logger.info("deleteTask", f"{task.taskUniqueId}")
+    
+    def completeTask(self, isSuccess: bool, retdto: StockMarketCapitalResult, dto: StockCrawlingDownloadTask) -> None:
+        task = self.getTask(dto.taskId, dto.taskUniqueId)
+        if isSuccess:
+            self.success(task, 1)
+        else:
+            self.fail(task, 1)
+        if task.restCount <= 0:
+            self.deleteTask(task)
+        task.errMsg = retdto.errorMsg
+        self.taskEventEmitter.emit(EVENT_TASK_REPO_TASK_COMPLETE, "marcap", StockUpdateState(**{
+            "taskId": dto.taskId,
+            "market": dto.market,
+            "date": dto.dateStr,
+            "ret": 1 if isSuccess else 2
+        }))
     
     def success(self, task: StockCrawlingTask, count: int) -> None:
         task.successCount = task.successCount + count
