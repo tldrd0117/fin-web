@@ -7,12 +7,13 @@ from uvicorn.config import logger
 
 
 class Logger:
-    def __init__(self, cls: str) -> None:
+
+    def __init__(self, cls: str, name: str = "log") -> None:
         self.logger = logging.getLogger("logger"+cls)
         self.logger.setLevel(logging.INFO)
         
         self.cls = cls
-        path = pathlib.Path("../server/log/log")
+        path = pathlib.Path(f"../app/log/{name}")
         logger.info(path.resolve())
 
         self.fileHandler = logging.handlers.TimedRotatingFileHandler(
@@ -25,10 +26,13 @@ class Logger:
         formatter = logging.Formatter(
             '%(asctime)s - %(levelname)s - [%(filename)s:%(lineno)d] %(message)s'
         )
-        self.fileHandler.setFormatter(formatter) # 핸들러에 로깅 포맷 할당
+        self.fileHandler.setFormatter(formatter)    # 핸들러에 로깅 포맷 할당
     
-    
-    def info(self, func: str, msg: str) -> None:
+    def info(self, func: str, msg: str = None) -> None:
+        if msg is None:
+            self.logger.info(f"cls: {self.cls}, msg: {func}")
+            return
+
         self.logger.info(f"cls: {self.cls}, func: {func}, msg: {msg}")
         logger.info(f"cls: {self.cls}, func: {func}, msg: {msg}")
     

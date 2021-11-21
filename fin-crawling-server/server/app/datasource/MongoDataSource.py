@@ -7,7 +7,7 @@ from pymongo.monitoring import (CommandFailedEvent, CommandStartedEvent,
 
 from dotenv import dotenv_values
 
-log = Logger("MongoDataSource")
+log = Logger("MongoDataSource", "mongoDb")
 config = dotenv_values('.env')
 
 
@@ -52,6 +52,7 @@ class MongoDataSource():
         try:
             self.marcap.create_index([("date", ASCENDING), ("code", ASCENDING), ("market", ASCENDING)], unique=True, name="marcapIndex")
             self.task.create_index([("taskUniqueId", ASCENDING)], unique=True, name="taskIndex")
+            self.factor.create_index([("dataYear", ASCENDING), ("dataMonth", ASCENDING), ("code", ASCENDING), ("dataName", ASCENDING)], unique=True, name="factorIndex")
         except Exception as e:
             print(e)
         print(self.marcap.index_information())

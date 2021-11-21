@@ -6,6 +6,7 @@ import { RootState } from '../data/root/rootReducer';
 import { fetchTaskSchedule } from '../data/task/taskScheduleSlice';
 import { fetchTaskState } from '../data/task/taskSlice';
 import CrawlingList from './CrawlingList';
+import FactorList from './FactorList';
 
 export default (props) => {
     const {isConnected} = useSelector((state: RootState)=>state.socket)
@@ -36,6 +37,7 @@ export default (props) => {
             },{
                 name:"팩터"
             }]}/>
+            <FactorList/>
             
         </div>
     </>

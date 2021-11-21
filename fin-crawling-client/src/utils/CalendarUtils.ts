@@ -230,9 +230,11 @@ export async function updateGraphData(data: ApiResult, options: RequestOptions, 
   const targetYears = years.filter(year=> {
     return year == data.lastUpdateYear
   })
+  console.log(data.lastUpdateYear)
   const isIn = orgData.findIndex(v=>v.year == data.lastUpdateYear)
 
-  if(isIn){
+  if(isIn != -1){
+    console.log("isin")
     return orgData.map(curData => {
       const isCurrentYear = isSameYear(parseISO(String(curData.year)), new Date());
       if(curData.year==data.lastUpdateYear){
@@ -242,6 +244,7 @@ export async function updateGraphData(data: ApiResult, options: RequestOptions, 
       }
     });
   } else {
+    console.log("isnotin")
     return orgData.concat(targetYears.map(year => {
       const isCurrentYear = isSameYear(parseISO(String(year)), new Date());
       console.log(year)

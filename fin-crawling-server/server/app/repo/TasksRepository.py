@@ -4,7 +4,7 @@ from typing_extensions import Final
 from pymitter import EventEmitter
 from app.datasource.TaskMongoDataSource import TaskMongoDataSource
 from app.model.dto import StockCrawlingCompletedTasks, StockMarketCapitalResult, StockCrawlingDownloadTask, StockUpdateState, \
-    StockCrawlingTasks, StockCrawlingTask, StockTaskState, ListLimitData, ListLimitResponse, YearData
+    ProcessTasks, ProcessTask, StockTaskState, ListLimitData, ListLimitResponse, YearData
 from app.model.task import TaskPoolInfo
 from app.module.task import Task, TaskRunner
 from app.module.logger import Logger
@@ -27,32 +27,37 @@ class TasksRepository(object):
         self.mongod = mongod
         self.logger = Logger("TasksRepository")
         self.taskEventEmitter = EventEmitter()
-        self.tasksdto = StockCrawlingTasks()
+        self.tasksdto = ProcessTasks()
         self.taskRunner: Optional[TaskRunner] = None
         self.createTaskRunner()
     
+    # 태스크 러너를 만든다.
     def createTaskRunner(self) -> None:
         if self.taskRunner is None:
             self.taskRunner = TaskRunner()
-            self.taskRunner.notifyCallback = self.updatePoolInfo
+            self.taskRunner.notifyCallback = self.onUpdatePoolInfo
             self.logger.info("createTaskRunner", "created taskrunner")
 
-    def updatePoolInfo(self, poolInfo: TaskPoolInfo) -> None:
+    # 태스크 풀 정보가 업데이트 될 떄 이벤트를 날린다.
+    def onUpdatePoolInfo(self, poolInfo: TaskPoolInfo) -> None:
         self.taskEventEmitter.emit(EVENT_TASK_REPO_UPDATE_POOL_INFO, poolInfo)
         logger.info(f"updatePoolInfo:{poolInfo.json()}, {str(self)}")
         self.logger.info("updatePoolInfo", f"{poolInfo.json()}")
     
+    # 테스크 풀 정보를 가져온다.
     def getPoolInfo(self) -> None:
         if self.taskRunner:
             poolInfo = self.taskRunner.getPoolInfo()
             self.taskEventEmitter.emit(EVENT_TASK_REPO_UPDATE_POOL_INFO, poolInfo)
     
+    # 태스크 풀에 태스크를 등록한다.
     def runTask(self, task: Task) -> None:
         # print("runTask")
         if self.taskRunner:
             self.taskRunner.put(task)
 
-    def addTask(self, task: StockCrawlingTask) -> None:
+    # 추가된 태스크 정보를 저장한다.
+    def addTask(self, task: ProcessTask) -> None:
         if "marcap" not in self.tasksdto.tasks:
             self.tasksdto.tasks[task.taskId] = dict()
             self.tasksdto.tasks[task.taskId]["list"] = dict()
@@ -62,28 +67,38 @@ class TasksRepository(object):
         self.tasksdto.tasks[task.taskId]["ids"].append(task.taskUniqueId)
         self.logger.info("addTask", f"{task.taskUniqueId}")
 
-    def updateTask(self, task: StockCrawlingTask) -> None:
+    # 갱신 태스크 정보를 저장한다.
+    def updateTask(self, task: ProcessTask) -> None:
         self.tasksdto.tasks[task.taskId]["list"][task.taskUniqueId] = task
         self.logger.info("updateTask", f"{task.taskUniqueId}")
         self.mongod.upsertTask(task.dict())
         self.taskEventEmitter.emit(EVENT_TASK_REPO_UPDATE_TASKS, self.tasksdto)
     
-    def getTask(self, taskId: str, taskUniqueId: str) -> StockCrawlingTask:
+    # 저장된 테스크 정보를 반환한다.
+    def getTask(self, taskId: str, taskUniqueId: str) -> ProcessTask:
         if self.isExistTask(taskId, taskUniqueId):
             return self.tasksdto.tasks[taskId]["list"][taskUniqueId]
         return None
     
+    # 저장된 태스크가 있는지 확인한다.
     def isExistTask(self, taskId: str, taskUniqueId: str) -> bool:
         return taskId in self.tasksdto.tasks and taskUniqueId in self.tasksdto.tasks[taskId]["list"]
 
-    def deleteTask(self, task: StockCrawlingTask) -> None:
+    # 저장된 태스크 정보를 삭제한다.
+    def deleteTask(self, task: ProcessTask) -> None:
         if task.taskId in self.tasksdto.tasks:
             if task.taskUniqueId in self.tasksdto.tasks[task.taskId]["list"]:
                 del self.tasksdto.tasks[task.taskId]["list"][task.taskUniqueId]
                 self.tasksdto.tasks[task.taskId]["ids"].remove(task.taskUniqueId)
                 self.logger.info("deleteTask", f"{task.taskUniqueId}")
     
-    def completeTask(self, isSuccess: bool, retdto: StockMarketCapitalResult, dto: StockCrawlingDownloadTask) -> None:
+    def completeFactorConvertFileToDbTask(self, task: ProcessTask) -> None:
+        self.success(task, 1)
+        self.updateTask(task)
+        self.taskEventEmitter.emit(EVENT_TASK_REPO_TASK_COMPLETE, "factorFile")
+
+    # 완료된 태스크 정보를 처린한다.
+    def completeStockCrawlingTask(self, isSuccess: bool, retdto: StockMarketCapitalResult, dto: StockCrawlingDownloadTask) -> None:
         task = self.getTask(dto.taskId, dto.taskUniqueId)
         if isSuccess:
             self.success(task, 1)
@@ -92,6 +107,9 @@ class TasksRepository(object):
         if task.restCount <= 0:
             self.deleteTask(task)
         task.errMsg = retdto.errorMsg
+        task.state = "complete"
+        self.updateTask(task)
+        self.logger.info("completeTask", "complete")
         self.taskEventEmitter.emit(EVENT_TASK_REPO_TASK_COMPLETE, "marcap", StockUpdateState(**{
             "taskId": dto.taskId,
             "market": dto.market,
@@ -99,7 +117,8 @@ class TasksRepository(object):
             "ret": 1 if isSuccess else 2
         }))
     
-    def success(self, task: StockCrawlingTask, count: int) -> None:
+    # 성공한 태스크 정보를 처리한다.
+    def success(self, task: ProcessTask, count: int) -> None:
         task.successCount = task.successCount + count
         task.restCount = task.restCount - count
         i = 0
@@ -114,7 +133,8 @@ class TasksRepository(object):
             task.state = "waiting next task"
         self.logger.info("success", f"{task.taskUniqueId}")
 
-    def fail(self, task: StockCrawlingTask, count: int) -> None:
+    # 실패한 태스크 정보를 처리한다.
+    def fail(self, task: ProcessTask, count: int) -> None:
         task.failCount = task.failCount + count
         task.restCount = task.restCount - count
         i = 0
@@ -131,6 +151,7 @@ class TasksRepository(object):
             task.state = "waiting next task"
         self.logger.info("fail", f"{task.taskUniqueId}")
     
+    # 완료된 태스크 정보를 반환한다.
     def getCompletedTask(self, dto: ListLimitData) -> ListLimitResponse:
         taskData = self.mongod.getCompletedTask(dto)
         tasks: Dict = dict()
@@ -152,6 +173,7 @@ class TasksRepository(object):
         self.logger.info("getCompletedTask", f"count: {len(taskIds)}")
         return taskData
 
+    # 모든 태스크 상태를 반환한다.
     def getAllTaskState(self, taskId: str) -> StockTaskState:
         markets = ["kospi", "kosdaq"]
         resultDict: YearData = YearData(**{

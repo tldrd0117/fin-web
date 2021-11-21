@@ -39,30 +39,37 @@ class CrawlerRepository(object):
         ee.on(EVENT_MARCAP_CRAWLING_ON_ERROR, self.onError)
         ee.on(EVENT_MARCAP_CRAWLING_ON_CANCEL, self.onCancelled)
     
+    # 크롤러 추가
     def addCrawler(self, uniqueId: str, crawler: Any) -> None:
         self.crawlers[uniqueId] = crawler
     
+    # 크롤러 삭제
     def removeCrawler(self, uniqueId: str) -> None:
         del self.crawlers[uniqueId]
     
+    # 크롤러 불러오기
     def getCrawlers(self) -> Dict:
         return self.crawlers
     
+    # 하나의 크롤러 불러오기
     def getCrawler(self, uniqueId: str) -> Any:
         return self.crawlers[uniqueId]
     
+    # 크롤링 중 웹드라이버와 연결되었을 때 이벤트
     def onConnectingWebDriver(self, dto: StockRunCrawling) -> None:
         task = self.tasksRepository.getTask(dto.taskId, dto.taskUniqueId)
         task.state = "connecting webdriver"
         self.tasksRepository.updateTask(task)
         self.logger.info("onConnectingWebDriver", task.taskUniqueId)
 
+    # 크롤링이 시작되었을 떄 이벤트
     def onStartCrawling(self, dto: StockRunCrawling) -> None:
         task = self.tasksRepository.getTask(dto.taskId, dto.taskUniqueId)
         task.state = "start crawling"
         self.tasksRepository.updateTask(task)
         self.logger.info("onStartCrawling", task.taskUniqueId)
     
+    # 크롤링 데이터 다운로드가 시작되었을 때 이벤트
     def onDownloadStart(self, dto: StockCrawlingDownloadTask) -> None:
         # self.logger.info("onDownloadStart: "+dto.json())
         task = self.tasksRepository.getTask(dto.taskId, dto.taskUniqueId)
@@ -70,19 +77,22 @@ class CrawlerRepository(object):
         self.tasksRepository.updateTask(task)
         self.logger.info("onDownloadStart", task.taskUniqueId)
 
+    # 크롤링 데이터 다운로드가 완료되었을 때 이벤트
     def onDownloadComplete(self, dto: StockCrawlingDownloadTask) -> None:
         task = self.tasksRepository.getTask(dto.taskId, dto.taskUniqueId)
         task.state = "download complete"
         self.tasksRepository.updateTask(task)
         self.logger.info("onDownloadComplete", task.taskUniqueId)
 
+    # 크롤링 데이터 변환이 완료되었을 때 이벤트
     def onParsingComplete(self, isSuccess: bool, retdto: StockMarketCapitalResult, dto: StockCrawlingDownloadTask) -> None:
         self.logger.info("onParsingComplete")
         self.logger.info(f"taskId:{dto.taskId} taskUniqueId{dto.taskUniqueId}")
         tar = self.tasksRepository.tasksdto.tasks[dto.taskId]["list"]
         self.logger.info(f"taskDTO: {tar}")
-        self.tasksRepository.completeTask(isSuccess, retdto, dto)
+        self.tasksRepository.completeStockCrawlingTask(isSuccess, retdto, dto)
     
+    # 크롤링이 취소되었을 때 이벤트
     def onCancelled(self, dto: StockRunCrawling) -> None:
         task = self.tasksRepository.getTask(dto.taskId, dto.taskUniqueId)
         self.tasksRepository.fail(task, task.restCount)
@@ -90,6 +100,7 @@ class CrawlerRepository(object):
         self.tasksRepository.updateTask(task)
         self.logger.info("onCancelled", task.taskUniqueId)
     
+    # 크롤링이 에러가났을 때 이벤트
     def onError(self, dto: StockRunCrawling) -> None:
         task = self.tasksRepository.getTask(dto.taskId, dto.taskUniqueId)
         self.tasksRepository.fail(task, task.restCount)

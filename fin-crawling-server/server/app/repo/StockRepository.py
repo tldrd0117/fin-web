@@ -16,12 +16,14 @@ class StockRepository(object):
         self.logger = Logger("StockRepository")
         self.ee = EventEmitter()
 
+    # db의 주식 시가총액 데이터를 반환한다.
     def getStockData(self, market: str, startDate: str, endDate: str) -> List[StockMarketCapital]:
         return self.mongod.getMarcap(market, startDate, endDate)
 
     def createListners(self, ee: EventEmitter) -> None:
         ee.on(EVENT_MARCAP_CRAWLING_ON_RESULT_OF_STOCK_DATA, self.onResultOfStockData)
     
+    # 주식 종목 데이터 크롤링 결과값을 db에 저장한다.
     def onResultOfStockData(self, dto: StockMarketCapitalResult) -> None:
         self.mongod.insertMarcap(dto.data)
     

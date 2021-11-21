@@ -1,253 +1,200 @@
-2021-11-15 13:41:25,595 - INFO - [logger.py:32] cls: MongoDataSource, func: __init__, msg: db connecting... mongodb://root:example@mongo:27017
-2021-11-15 13:41:48,627 - INFO - [logger.py:32] cls: MongoDataSource, func: started, msg: Command saslContinue with request id 1957747793 started on server ('mongo', 27017)
-2021-11-15 13:41:48,627 - INFO - [logger.py:32] cls: MongoDataSource, func: succeeded, msg: Command saslContinue with request id 1957747793 on server ('mongo', 27017) succeeded in 171 microseconds
-2021-11-15 13:41:48,627 - INFO - [logger.py:32] cls: MongoDataSource, func: started, msg: Command buildinfo with request id 424238335 started on server ('mongo', 27017)
-2021-11-15 13:41:48,627 - INFO - [logger.py:32] cls: MongoDataSource, func: succeeded, msg: Command buildinfo with request id 424238335 on server ('mongo', 27017) succeeded in 161 microseconds
-2021-11-15 13:41:48,628 - INFO - [logger.py:32] cls: MongoDataSource, func: started, msg: Command listIndexes with request id 719885386 started on server ('mongo', 27017)
-2021-11-15 13:41:48,628 - INFO - [logger.py:32] cls: MongoDataSource, func: succeeded, msg: Command listIndexes with request id 719885386 on server ('mongo', 27017) succeeded in 195 microseconds
-2021-11-15 13:41:48,628 - INFO - [logger.py:32] cls: MongoDataSource, func: started, msg: Command createIndexes with request id 1649760492 started on server ('mongo', 27017)
-2021-11-15 13:41:48,628 - INFO - [logger.py:32] cls: MongoDataSource, func: succeeded, msg: Command createIndexes with request id 1649760492 on server ('mongo', 27017) succeeded in 166 microseconds
-2021-11-15 13:41:48,629 - INFO - [logger.py:32] cls: MongoDataSource, func: started, msg: Command createIndexes with request id 596516649 started on server ('mongo', 27017)
-2021-11-15 13:41:48,629 - INFO - [logger.py:32] cls: MongoDataSource, func: succeeded, msg: Command createIndexes with request id 596516649 on server ('mongo', 27017) succeeded in 143 microseconds
-2021-11-15 13:41:48,629 - INFO - [logger.py:32] cls: MongoDataSource, func: started, msg: Command listIndexes with request id 1189641421 started on server ('mongo', 27017)
-2021-11-15 13:41:48,629 - INFO - [logger.py:32] cls: MongoDataSource, func: succeeded, msg: Command listIndexes with request id 1189641421 on server ('mongo', 27017) succeeded in 163 microseconds
-2021-11-15 13:41:48,629 - INFO - [logger.py:32] cls: MongoDataSource, func: __init__, msg: db connection seccess
-2021-11-15 13:41:48,630 - INFO - [logger.py:32] cls: TasksRepository, func: createTaskRunner, msg: created taskrunner
-2021-11-15 13:41:48,645 - INFO - [logger.py:32] cls: MongoDataSource, func: started, msg: Command createIndexes with request id 1025202362 started on server ('mongo', 27017)
-2021-11-15 13:41:48,645 - INFO - [logger.py:32] cls: MongoDataSource, func: succeeded, msg: Command createIndexes with request id 1025202362 on server ('mongo', 27017) succeeded in 238 microseconds
-2021-11-15 13:41:48,646 - INFO - [logger.py:32] cls: MongoDataSource, func: started, msg: Command find with request id 1350490027 started on server ('mongo', 27017)
-2021-11-15 13:41:48,647 - INFO - [logger.py:32] cls: MongoDataSource, func: succeeded, msg: Command find with request id 1350490027 on server ('mongo', 27017) succeeded in 918 microseconds
-2021-11-15 13:41:48,647 - INFO - [logger.py:32] cls: MongoDataSource, func: started, msg: Command find with request id 783368690 started on server ('mongo', 27017)
-2021-11-15 13:41:48,648 - INFO - [logger.py:32] cls: MongoDataSource, func: succeeded, msg: Command find with request id 783368690 on server ('mongo', 27017) succeeded in 710 microseconds
-2021-11-15 13:41:48,648 - INFO - [logger.py:32] cls: MongoDataSource, func: started, msg: Command find with request id 1102520059 started on server ('mongo', 27017)
-2021-11-15 13:41:48,649 - INFO - [logger.py:32] cls: MongoDataSource, func: succeeded, msg: Command find with request id 1102520059 on server ('mongo', 27017) succeeded in 196 microseconds
-2021-11-15 14:34:41,476 - INFO - [logger.py:32] cls: MongoDataSource, func: __init__, msg: db connecting... mongodb://root:example@mongo:27017
-2021-11-15 14:34:41,482 - INFO - [logger.py:32] cls: MongoDataSource, func: started, msg: Command saslContinue with request id 1957747793 started on server ('mongo', 27017)
-2021-11-15 14:34:41,483 - INFO - [logger.py:32] cls: MongoDataSource, func: succeeded, msg: Command saslContinue with request id 1957747793 on server ('mongo', 27017) succeeded in 183 microseconds
-2021-11-15 14:34:41,483 - INFO - [logger.py:32] cls: MongoDataSource, func: started, msg: Command buildinfo with request id 424238335 started on server ('mongo', 27017)
-2021-11-15 14:34:41,483 - INFO - [logger.py:32] cls: MongoDataSource, func: succeeded, msg: Command buildinfo with request id 424238335 on server ('mongo', 27017) succeeded in 146 microseconds
-2021-11-15 14:34:41,483 - INFO - [logger.py:32] cls: MongoDataSource, func: started, msg: Command listIndexes with request id 719885386 started on server ('mongo', 27017)
-2021-11-15 14:34:41,484 - INFO - [logger.py:32] cls: MongoDataSource, func: succeeded, msg: Command listIndexes with request id 719885386 on server ('mongo', 27017) succeeded in 290 microseconds
-2021-11-15 14:34:41,484 - INFO - [logger.py:32] cls: MongoDataSource, func: started, msg: Command createIndexes with request id 1649760492 started on server ('mongo', 27017)
-2021-11-15 14:34:41,484 - INFO - [logger.py:32] cls: MongoDataSource, func: succeeded, msg: Command createIndexes with request id 1649760492 on server ('mongo', 27017) succeeded in 187 microseconds
-2021-11-15 14:34:41,485 - INFO - [logger.py:32] cls: MongoDataSource, func: started, msg: Command createIndexes with request id 596516649 started on server ('mongo', 27017)
-2021-11-15 14:34:41,485 - INFO - [logger.py:32] cls: MongoDataSource, func: succeeded, msg: Command createIndexes with request id 596516649 on server ('mongo', 27017) succeeded in 154 microseconds
-2021-11-15 14:34:41,485 - INFO - [logger.py:32] cls: MongoDataSource, func: started, msg: Command listIndexes with request id 1189641421 started on server ('mongo', 27017)
-2021-11-15 14:34:41,485 - INFO - [logger.py:32] cls: MongoDataSource, func: succeeded, msg: Command listIndexes with request id 1189641421 on server ('mongo', 27017) succeeded in 176 microseconds
-2021-11-15 14:34:41,485 - INFO - [logger.py:32] cls: MongoDataSource, func: __init__, msg: db connection seccess
-2021-11-15 14:34:41,486 - INFO - [logger.py:32] cls: TasksRepository, func: createTaskRunner, msg: created taskrunner
-2021-11-15 14:34:41,499 - INFO - [logger.py:32] cls: MongoDataSource, func: started, msg: Command createIndexes with request id 1025202362 started on server ('mongo', 27017)
-2021-11-15 14:34:41,499 - INFO - [logger.py:32] cls: MongoDataSource, func: succeeded, msg: Command createIndexes with request id 1025202362 on server ('mongo', 27017) succeeded in 192 microseconds
-2021-11-15 14:34:41,500 - INFO - [logger.py:32] cls: MongoDataSource, func: started, msg: Command find with request id 1350490027 started on server ('mongo', 27017)
-2021-11-15 14:34:41,500 - INFO - [logger.py:32] cls: MongoDataSource, func: succeeded, msg: Command find with request id 1350490027 on server ('mongo', 27017) succeeded in 225 microseconds
-2021-11-15 14:34:41,500 - INFO - [logger.py:32] cls: MongoDataSource, func: started, msg: Command find with request id 783368690 started on server ('mongo', 27017)
-2021-11-15 14:34:41,501 - INFO - [logger.py:32] cls: MongoDataSource, func: succeeded, msg: Command find with request id 783368690 on server ('mongo', 27017) succeeded in 209 microseconds
-2021-11-15 14:34:41,501 - INFO - [logger.py:32] cls: MongoDataSource, func: started, msg: Command find with request id 1102520059 started on server ('mongo', 27017)
-2021-11-15 14:34:41,501 - INFO - [logger.py:32] cls: MongoDataSource, func: succeeded, msg: Command find with request id 1102520059 on server ('mongo', 27017) succeeded in 223 microseconds
-2021-11-15 14:34:55,711 - INFO - [logger.py:32] cls: MongoDataSource, func: __init__, msg: db connecting... mongodb://root:example@mongo:27017
-2021-11-15 14:34:55,718 - INFO - [logger.py:32] cls: MongoDataSource, func: started, msg: Command saslContinue with request id 1957747793 started on server ('mongo', 27017)
-2021-11-15 14:34:55,718 - INFO - [logger.py:32] cls: MongoDataSource, func: succeeded, msg: Command saslContinue with request id 1957747793 on server ('mongo', 27017) succeeded in 247 microseconds
-2021-11-15 14:34:55,719 - INFO - [logger.py:32] cls: MongoDataSource, func: started, msg: Command buildinfo with request id 424238335 started on server ('mongo', 27017)
-2021-11-15 14:34:55,719 - INFO - [logger.py:32] cls: MongoDataSource, func: succeeded, msg: Command buildinfo with request id 424238335 on server ('mongo', 27017) succeeded in 212 microseconds
-2021-11-15 14:34:55,719 - INFO - [logger.py:32] cls: MongoDataSource, func: started, msg: Command listIndexes with request id 719885386 started on server ('mongo', 27017)
-2021-11-15 14:34:55,720 - INFO - [logger.py:32] cls: MongoDataSource, func: succeeded, msg: Command listIndexes with request id 719885386 on server ('mongo', 27017) succeeded in 278 microseconds
-2021-11-15 14:34:55,720 - INFO - [logger.py:32] cls: MongoDataSource, func: started, msg: Command createIndexes with request id 1649760492 started on server ('mongo', 27017)
-2021-11-15 14:34:55,720 - INFO - [logger.py:32] cls: MongoDataSource, func: succeeded, msg: Command createIndexes with request id 1649760492 on server ('mongo', 27017) succeeded in 192 microseconds
-2021-11-15 14:34:55,720 - INFO - [logger.py:32] cls: MongoDataSource, func: started, msg: Command createIndexes with request id 596516649 started on server ('mongo', 27017)
-2021-11-15 14:34:55,721 - INFO - [logger.py:32] cls: MongoDataSource, func: succeeded, msg: Command createIndexes with request id 596516649 on server ('mongo', 27017) succeeded in 158 microseconds
-2021-11-15 14:34:55,721 - INFO - [logger.py:32] cls: MongoDataSource, func: started, msg: Command listIndexes with request id 1189641421 started on server ('mongo', 27017)
-2021-11-15 14:34:55,721 - INFO - [logger.py:32] cls: MongoDataSource, func: succeeded, msg: Command listIndexes with request id 1189641421 on server ('mongo', 27017) succeeded in 171 microseconds
-2021-11-15 14:34:55,721 - INFO - [logger.py:32] cls: MongoDataSource, func: __init__, msg: db connection seccess
-2021-11-15 14:34:55,722 - INFO - [logger.py:32] cls: TasksRepository, func: createTaskRunner, msg: created taskrunner
-2021-11-15 14:34:55,736 - INFO - [logger.py:32] cls: MongoDataSource, func: started, msg: Command createIndexes with request id 1025202362 started on server ('mongo', 27017)
-2021-11-15 14:34:55,736 - INFO - [logger.py:32] cls: MongoDataSource, func: succeeded, msg: Command createIndexes with request id 1025202362 on server ('mongo', 27017) succeeded in 279 microseconds
-2021-11-15 14:34:55,736 - INFO - [logger.py:32] cls: MongoDataSource, func: started, msg: Command find with request id 1350490027 started on server ('mongo', 27017)
-2021-11-15 14:34:55,737 - INFO - [logger.py:32] cls: MongoDataSource, func: succeeded, msg: Command find with request id 1350490027 on server ('mongo', 27017) succeeded in 248 microseconds
-2021-11-15 14:34:55,737 - INFO - [logger.py:32] cls: MongoDataSource, func: started, msg: Command find with request id 783368690 started on server ('mongo', 27017)
-2021-11-15 14:34:55,737 - INFO - [logger.py:32] cls: MongoDataSource, func: succeeded, msg: Command find with request id 783368690 on server ('mongo', 27017) succeeded in 254 microseconds
-2021-11-15 14:34:55,738 - INFO - [logger.py:32] cls: MongoDataSource, func: started, msg: Command find with request id 1102520059 started on server ('mongo', 27017)
-2021-11-15 14:34:55,738 - INFO - [logger.py:32] cls: MongoDataSource, func: succeeded, msg: Command find with request id 1102520059 on server ('mongo', 27017) succeeded in 208 microseconds
-2021-11-15 14:58:49,582 - INFO - [logger.py:32] cls: MongoDataSource, func: __init__, msg: db connecting... mongodb://root:example@mongo:27017
-2021-11-15 14:58:49,588 - INFO - [logger.py:32] cls: MongoDataSource, func: started, msg: Command saslContinue with request id 1957747793 started on server ('mongo', 27017)
-2021-11-15 14:58:49,588 - INFO - [logger.py:32] cls: MongoDataSource, func: succeeded, msg: Command saslContinue with request id 1957747793 on server ('mongo', 27017) succeeded in 190 microseconds
-2021-11-15 14:58:49,589 - INFO - [logger.py:32] cls: MongoDataSource, func: started, msg: Command buildinfo with request id 424238335 started on server ('mongo', 27017)
-2021-11-15 14:58:49,589 - INFO - [logger.py:32] cls: MongoDataSource, func: succeeded, msg: Command buildinfo with request id 424238335 on server ('mongo', 27017) succeeded in 165 microseconds
-2021-11-15 14:58:49,589 - INFO - [logger.py:32] cls: MongoDataSource, func: started, msg: Command listIndexes with request id 719885386 started on server ('mongo', 27017)
-2021-11-15 14:58:49,589 - INFO - [logger.py:32] cls: MongoDataSource, func: succeeded, msg: Command listIndexes with request id 719885386 on server ('mongo', 27017) succeeded in 201 microseconds
-2021-11-15 14:58:49,590 - INFO - [logger.py:32] cls: MongoDataSource, func: started, msg: Command createIndexes with request id 1649760492 started on server ('mongo', 27017)
-2021-11-15 14:58:49,590 - INFO - [logger.py:32] cls: MongoDataSource, func: succeeded, msg: Command createIndexes with request id 1649760492 on server ('mongo', 27017) succeeded in 170 microseconds
-2021-11-15 14:58:49,590 - INFO - [logger.py:32] cls: MongoDataSource, func: started, msg: Command createIndexes with request id 596516649 started on server ('mongo', 27017)
-2021-11-15 14:58:49,591 - INFO - [logger.py:32] cls: MongoDataSource, func: succeeded, msg: Command createIndexes with request id 596516649 on server ('mongo', 27017) succeeded in 218 microseconds
-2021-11-15 14:58:49,591 - INFO - [logger.py:32] cls: MongoDataSource, func: started, msg: Command listIndexes with request id 1189641421 started on server ('mongo', 27017)
-2021-11-15 14:58:49,591 - INFO - [logger.py:32] cls: MongoDataSource, func: succeeded, msg: Command listIndexes with request id 1189641421 on server ('mongo', 27017) succeeded in 166 microseconds
-2021-11-15 14:58:49,591 - INFO - [logger.py:32] cls: MongoDataSource, func: __init__, msg: db connection seccess
-2021-11-15 14:58:49,591 - INFO - [logger.py:32] cls: TasksRepository, func: createTaskRunner, msg: created taskrunner
-2021-11-15 14:58:49,605 - INFO - [logger.py:32] cls: MongoDataSource, func: started, msg: Command createIndexes with request id 1025202362 started on server ('mongo', 27017)
-2021-11-15 14:58:49,605 - INFO - [logger.py:32] cls: MongoDataSource, func: succeeded, msg: Command createIndexes with request id 1025202362 on server ('mongo', 27017) succeeded in 221 microseconds
-2021-11-15 14:58:49,606 - INFO - [logger.py:32] cls: MongoDataSource, func: started, msg: Command find with request id 1350490027 started on server ('mongo', 27017)
-2021-11-15 14:58:49,606 - INFO - [logger.py:32] cls: MongoDataSource, func: succeeded, msg: Command find with request id 1350490027 on server ('mongo', 27017) succeeded in 211 microseconds
-2021-11-15 14:58:49,606 - INFO - [logger.py:32] cls: MongoDataSource, func: started, msg: Command find with request id 783368690 started on server ('mongo', 27017)
-2021-11-15 14:58:49,607 - INFO - [logger.py:32] cls: MongoDataSource, func: succeeded, msg: Command find with request id 783368690 on server ('mongo', 27017) succeeded in 198 microseconds
-2021-11-15 14:58:49,607 - INFO - [logger.py:32] cls: MongoDataSource, func: started, msg: Command find with request id 1102520059 started on server ('mongo', 27017)
-2021-11-15 14:58:49,607 - INFO - [logger.py:32] cls: MongoDataSource, func: succeeded, msg: Command find with request id 1102520059 on server ('mongo', 27017) succeeded in 187 microseconds
-2021-11-15 14:58:57,303 - INFO - [logger.py:32] cls: MongoDataSource, func: __init__, msg: db connecting... mongodb://root:example@mongo:27017
-2021-11-15 14:58:57,309 - INFO - [logger.py:32] cls: MongoDataSource, func: started, msg: Command saslContinue with request id 1957747793 started on server ('mongo', 27017)
-2021-11-15 14:58:57,309 - INFO - [logger.py:32] cls: MongoDataSource, func: succeeded, msg: Command saslContinue with request id 1957747793 on server ('mongo', 27017) succeeded in 206 microseconds
-2021-11-15 14:58:57,309 - INFO - [logger.py:32] cls: MongoDataSource, func: started, msg: Command buildinfo with request id 424238335 started on server ('mongo', 27017)
-2021-11-15 14:58:57,310 - INFO - [logger.py:32] cls: MongoDataSource, func: succeeded, msg: Command buildinfo with request id 424238335 on server ('mongo', 27017) succeeded in 175 microseconds
-2021-11-15 14:58:57,310 - INFO - [logger.py:32] cls: MongoDataSource, func: started, msg: Command listIndexes with request id 719885386 started on server ('mongo', 27017)
-2021-11-15 14:58:57,310 - INFO - [logger.py:32] cls: MongoDataSource, func: succeeded, msg: Command listIndexes with request id 719885386 on server ('mongo', 27017) succeeded in 210 microseconds
-2021-11-15 14:58:57,311 - INFO - [logger.py:32] cls: MongoDataSource, func: started, msg: Command createIndexes with request id 1649760492 started on server ('mongo', 27017)
-2021-11-15 14:58:57,311 - INFO - [logger.py:32] cls: MongoDataSource, func: succeeded, msg: Command createIndexes with request id 1649760492 on server ('mongo', 27017) succeeded in 164 microseconds
-2021-11-15 14:58:57,311 - INFO - [logger.py:32] cls: MongoDataSource, func: started, msg: Command createIndexes with request id 596516649 started on server ('mongo', 27017)
-2021-11-15 14:58:57,311 - INFO - [logger.py:32] cls: MongoDataSource, func: succeeded, msg: Command createIndexes with request id 596516649 on server ('mongo', 27017) succeeded in 148 microseconds
-2021-11-15 14:58:57,311 - INFO - [logger.py:32] cls: MongoDataSource, func: started, msg: Command listIndexes with request id 1189641421 started on server ('mongo', 27017)
-2021-11-15 14:58:57,312 - INFO - [logger.py:32] cls: MongoDataSource, func: succeeded, msg: Command listIndexes with request id 1189641421 on server ('mongo', 27017) succeeded in 150 microseconds
-2021-11-15 14:58:57,312 - INFO - [logger.py:32] cls: MongoDataSource, func: __init__, msg: db connection seccess
-2021-11-15 14:58:57,312 - INFO - [logger.py:32] cls: TasksRepository, func: createTaskRunner, msg: created taskrunner
-2021-11-15 14:58:57,326 - INFO - [logger.py:32] cls: MongoDataSource, func: started, msg: Command createIndexes with request id 1025202362 started on server ('mongo', 27017)
-2021-11-15 14:58:57,326 - INFO - [logger.py:32] cls: MongoDataSource, func: succeeded, msg: Command createIndexes with request id 1025202362 on server ('mongo', 27017) succeeded in 217 microseconds
-2021-11-15 14:58:57,326 - INFO - [logger.py:32] cls: MongoDataSource, func: started, msg: Command find with request id 1350490027 started on server ('mongo', 27017)
-2021-11-15 14:58:57,327 - INFO - [logger.py:32] cls: MongoDataSource, func: succeeded, msg: Command find with request id 1350490027 on server ('mongo', 27017) succeeded in 329 microseconds
-2021-11-15 14:58:57,327 - INFO - [logger.py:32] cls: MongoDataSource, func: started, msg: Command find with request id 783368690 started on server ('mongo', 27017)
-2021-11-15 14:58:57,327 - INFO - [logger.py:32] cls: MongoDataSource, func: succeeded, msg: Command find with request id 783368690 on server ('mongo', 27017) succeeded in 250 microseconds
-2021-11-15 14:58:57,328 - INFO - [logger.py:32] cls: MongoDataSource, func: started, msg: Command find with request id 1102520059 started on server ('mongo', 27017)
-2021-11-15 14:58:57,328 - INFO - [logger.py:32] cls: MongoDataSource, func: succeeded, msg: Command find with request id 1102520059 on server ('mongo', 27017) succeeded in 216 microseconds
-2021-11-15 14:59:02,530 - INFO - [logger.py:32] cls: MongoDataSource, func: __init__, msg: db connecting... mongodb://root:example@mongo:27017
-2021-11-15 14:59:02,536 - INFO - [logger.py:32] cls: MongoDataSource, func: started, msg: Command saslContinue with request id 1957747793 started on server ('mongo', 27017)
-2021-11-15 14:59:02,537 - INFO - [logger.py:32] cls: MongoDataSource, func: succeeded, msg: Command saslContinue with request id 1957747793 on server ('mongo', 27017) succeeded in 177 microseconds
-2021-11-15 14:59:02,537 - INFO - [logger.py:32] cls: MongoDataSource, func: started, msg: Command buildinfo with request id 424238335 started on server ('mongo', 27017)
-2021-11-15 14:59:02,537 - INFO - [logger.py:32] cls: MongoDataSource, func: succeeded, msg: Command buildinfo with request id 424238335 on server ('mongo', 27017) succeeded in 158 microseconds
-2021-11-15 14:59:02,537 - INFO - [logger.py:32] cls: MongoDataSource, func: started, msg: Command listIndexes with request id 719885386 started on server ('mongo', 27017)
-2021-11-15 14:59:02,538 - INFO - [logger.py:32] cls: MongoDataSource, func: succeeded, msg: Command listIndexes with request id 719885386 on server ('mongo', 27017) succeeded in 204 microseconds
-2021-11-15 14:59:02,538 - INFO - [logger.py:32] cls: MongoDataSource, func: started, msg: Command createIndexes with request id 1649760492 started on server ('mongo', 27017)
-2021-11-15 14:59:02,538 - INFO - [logger.py:32] cls: MongoDataSource, func: succeeded, msg: Command createIndexes with request id 1649760492 on server ('mongo', 27017) succeeded in 186 microseconds
-2021-11-15 14:59:02,539 - INFO - [logger.py:32] cls: MongoDataSource, func: started, msg: Command createIndexes with request id 596516649 started on server ('mongo', 27017)
-2021-11-15 14:59:02,539 - INFO - [logger.py:32] cls: MongoDataSource, func: succeeded, msg: Command createIndexes with request id 596516649 on server ('mongo', 27017) succeeded in 151 microseconds
-2021-11-15 14:59:02,539 - INFO - [logger.py:32] cls: MongoDataSource, func: started, msg: Command listIndexes with request id 1189641421 started on server ('mongo', 27017)
-2021-11-15 14:59:02,539 - INFO - [logger.py:32] cls: MongoDataSource, func: succeeded, msg: Command listIndexes with request id 1189641421 on server ('mongo', 27017) succeeded in 158 microseconds
-2021-11-15 14:59:02,539 - INFO - [logger.py:32] cls: MongoDataSource, func: __init__, msg: db connection seccess
-2021-11-15 14:59:02,540 - INFO - [logger.py:32] cls: TasksRepository, func: createTaskRunner, msg: created taskrunner
-2021-11-15 14:59:02,553 - INFO - [logger.py:32] cls: MongoDataSource, func: started, msg: Command createIndexes with request id 1025202362 started on server ('mongo', 27017)
-2021-11-15 14:59:02,553 - INFO - [logger.py:32] cls: MongoDataSource, func: succeeded, msg: Command createIndexes with request id 1025202362 on server ('mongo', 27017) succeeded in 284 microseconds
-2021-11-15 14:59:02,554 - INFO - [logger.py:32] cls: MongoDataSource, func: started, msg: Command find with request id 1350490027 started on server ('mongo', 27017)
-2021-11-15 14:59:02,554 - INFO - [logger.py:32] cls: MongoDataSource, func: succeeded, msg: Command find with request id 1350490027 on server ('mongo', 27017) succeeded in 248 microseconds
-2021-11-15 14:59:02,554 - INFO - [logger.py:32] cls: MongoDataSource, func: started, msg: Command find with request id 783368690 started on server ('mongo', 27017)
-2021-11-15 14:59:02,555 - INFO - [logger.py:32] cls: MongoDataSource, func: succeeded, msg: Command find with request id 783368690 on server ('mongo', 27017) succeeded in 207 microseconds
-2021-11-15 14:59:02,555 - INFO - [logger.py:32] cls: MongoDataSource, func: started, msg: Command find with request id 1102520059 started on server ('mongo', 27017)
-2021-11-15 14:59:02,555 - INFO - [logger.py:32] cls: MongoDataSource, func: succeeded, msg: Command find with request id 1102520059 on server ('mongo', 27017) succeeded in 176 microseconds
-2021-11-15 15:04:59,555 - INFO - [logger.py:32] cls: MongoDataSource, func: __init__, msg: db connecting... mongodb://root:example@mongo:27017
-2021-11-15 15:04:59,561 - INFO - [logger.py:32] cls: MongoDataSource, func: started, msg: Command saslContinue with request id 1957747793 started on server ('mongo', 27017)
-2021-11-15 15:04:59,561 - INFO - [logger.py:32] cls: MongoDataSource, func: succeeded, msg: Command saslContinue with request id 1957747793 on server ('mongo', 27017) succeeded in 302 microseconds
-2021-11-15 15:04:59,562 - INFO - [logger.py:32] cls: MongoDataSource, func: started, msg: Command buildinfo with request id 424238335 started on server ('mongo', 27017)
-2021-11-15 15:04:59,562 - INFO - [logger.py:32] cls: MongoDataSource, func: succeeded, msg: Command buildinfo with request id 424238335 on server ('mongo', 27017) succeeded in 165 microseconds
-2021-11-15 15:04:59,562 - INFO - [logger.py:32] cls: MongoDataSource, func: started, msg: Command listIndexes with request id 719885386 started on server ('mongo', 27017)
-2021-11-15 15:04:59,562 - INFO - [logger.py:32] cls: MongoDataSource, func: succeeded, msg: Command listIndexes with request id 719885386 on server ('mongo', 27017) succeeded in 213 microseconds
-2021-11-15 15:04:59,563 - INFO - [logger.py:32] cls: MongoDataSource, func: started, msg: Command createIndexes with request id 1649760492 started on server ('mongo', 27017)
-2021-11-15 15:04:59,563 - INFO - [logger.py:32] cls: MongoDataSource, func: succeeded, msg: Command createIndexes with request id 1649760492 on server ('mongo', 27017) succeeded in 166 microseconds
-2021-11-15 15:04:59,563 - INFO - [logger.py:32] cls: MongoDataSource, func: started, msg: Command createIndexes with request id 596516649 started on server ('mongo', 27017)
-2021-11-15 15:04:59,563 - INFO - [logger.py:32] cls: MongoDataSource, func: succeeded, msg: Command createIndexes with request id 596516649 on server ('mongo', 27017) succeeded in 158 microseconds
-2021-11-15 15:04:59,564 - INFO - [logger.py:32] cls: MongoDataSource, func: started, msg: Command listIndexes with request id 1189641421 started on server ('mongo', 27017)
-2021-11-15 15:04:59,564 - INFO - [logger.py:32] cls: MongoDataSource, func: succeeded, msg: Command listIndexes with request id 1189641421 on server ('mongo', 27017) succeeded in 175 microseconds
-2021-11-15 15:04:59,564 - INFO - [logger.py:32] cls: MongoDataSource, func: __init__, msg: db connection seccess
-2021-11-15 15:04:59,564 - INFO - [logger.py:32] cls: TasksRepository, func: createTaskRunner, msg: created taskrunner
-2021-11-15 15:04:59,578 - INFO - [logger.py:32] cls: MongoDataSource, func: started, msg: Command createIndexes with request id 1025202362 started on server ('mongo', 27017)
-2021-11-15 15:04:59,578 - INFO - [logger.py:32] cls: MongoDataSource, func: succeeded, msg: Command createIndexes with request id 1025202362 on server ('mongo', 27017) succeeded in 193 microseconds
-2021-11-15 15:04:59,578 - INFO - [logger.py:32] cls: MongoDataSource, func: started, msg: Command find with request id 1350490027 started on server ('mongo', 27017)
-2021-11-15 15:04:59,579 - INFO - [logger.py:32] cls: MongoDataSource, func: succeeded, msg: Command find with request id 1350490027 on server ('mongo', 27017) succeeded in 195 microseconds
-2021-11-15 15:04:59,579 - INFO - [logger.py:32] cls: MongoDataSource, func: started, msg: Command find with request id 783368690 started on server ('mongo', 27017)
-2021-11-15 15:04:59,579 - INFO - [logger.py:32] cls: MongoDataSource, func: succeeded, msg: Command find with request id 783368690 on server ('mongo', 27017) succeeded in 224 microseconds
-2021-11-15 15:04:59,580 - INFO - [logger.py:32] cls: MongoDataSource, func: started, msg: Command find with request id 1102520059 started on server ('mongo', 27017)
-2021-11-15 15:04:59,580 - INFO - [logger.py:32] cls: MongoDataSource, func: succeeded, msg: Command find with request id 1102520059 on server ('mongo', 27017) succeeded in 194 microseconds
-2021-11-15 15:05:13,305 - INFO - [logger.py:32] cls: MongoDataSource, func: __init__, msg: db connecting... mongodb://root:example@mongo:27017
-2021-11-15 15:05:13,312 - INFO - [logger.py:32] cls: MongoDataSource, func: started, msg: Command saslContinue with request id 1957747793 started on server ('mongo', 27017)
-2021-11-15 15:05:13,312 - INFO - [logger.py:32] cls: MongoDataSource, func: succeeded, msg: Command saslContinue with request id 1957747793 on server ('mongo', 27017) succeeded in 289 microseconds
-2021-11-15 15:05:13,312 - INFO - [logger.py:32] cls: MongoDataSource, func: started, msg: Command buildinfo with request id 424238335 started on server ('mongo', 27017)
-2021-11-15 15:05:13,312 - INFO - [logger.py:32] cls: MongoDataSource, func: succeeded, msg: Command buildinfo with request id 424238335 on server ('mongo', 27017) succeeded in 177 microseconds
-2021-11-15 15:05:13,313 - INFO - [logger.py:32] cls: MongoDataSource, func: started, msg: Command listIndexes with request id 719885386 started on server ('mongo', 27017)
-2021-11-15 15:05:13,313 - INFO - [logger.py:32] cls: MongoDataSource, func: succeeded, msg: Command listIndexes with request id 719885386 on server ('mongo', 27017) succeeded in 225 microseconds
-2021-11-15 15:05:13,313 - INFO - [logger.py:32] cls: MongoDataSource, func: started, msg: Command createIndexes with request id 1649760492 started on server ('mongo', 27017)
-2021-11-15 15:05:13,314 - INFO - [logger.py:32] cls: MongoDataSource, func: succeeded, msg: Command createIndexes with request id 1649760492 on server ('mongo', 27017) succeeded in 203 microseconds
-2021-11-15 15:05:13,314 - INFO - [logger.py:32] cls: MongoDataSource, func: started, msg: Command createIndexes with request id 596516649 started on server ('mongo', 27017)
-2021-11-15 15:05:13,314 - INFO - [logger.py:32] cls: MongoDataSource, func: succeeded, msg: Command createIndexes with request id 596516649 on server ('mongo', 27017) succeeded in 155 microseconds
-2021-11-15 15:05:13,314 - INFO - [logger.py:32] cls: MongoDataSource, func: started, msg: Command listIndexes with request id 1189641421 started on server ('mongo', 27017)
-2021-11-15 15:05:13,315 - INFO - [logger.py:32] cls: MongoDataSource, func: succeeded, msg: Command listIndexes with request id 1189641421 on server ('mongo', 27017) succeeded in 170 microseconds
-2021-11-15 15:05:13,315 - INFO - [logger.py:32] cls: MongoDataSource, func: __init__, msg: db connection seccess
-2021-11-15 15:05:13,315 - INFO - [logger.py:32] cls: TasksRepository, func: createTaskRunner, msg: created taskrunner
-2021-11-15 15:05:13,329 - INFO - [logger.py:32] cls: MongoDataSource, func: started, msg: Command createIndexes with request id 1025202362 started on server ('mongo', 27017)
-2021-11-15 15:05:13,330 - INFO - [logger.py:32] cls: MongoDataSource, func: succeeded, msg: Command createIndexes with request id 1025202362 on server ('mongo', 27017) succeeded in 313 microseconds
-2021-11-15 15:05:13,330 - INFO - [logger.py:32] cls: MongoDataSource, func: started, msg: Command find with request id 1350490027 started on server ('mongo', 27017)
-2021-11-15 15:05:13,330 - INFO - [logger.py:32] cls: MongoDataSource, func: succeeded, msg: Command find with request id 1350490027 on server ('mongo', 27017) succeeded in 238 microseconds
-2021-11-15 15:05:13,331 - INFO - [logger.py:32] cls: MongoDataSource, func: started, msg: Command find with request id 783368690 started on server ('mongo', 27017)
-2021-11-15 15:05:13,331 - INFO - [logger.py:32] cls: MongoDataSource, func: succeeded, msg: Command find with request id 783368690 on server ('mongo', 27017) succeeded in 199 microseconds
-2021-11-15 15:05:13,331 - INFO - [logger.py:32] cls: MongoDataSource, func: started, msg: Command find with request id 1102520059 started on server ('mongo', 27017)
-2021-11-15 15:05:13,332 - INFO - [logger.py:32] cls: MongoDataSource, func: succeeded, msg: Command find with request id 1102520059 on server ('mongo', 27017) succeeded in 231 microseconds
-2021-11-15 15:05:37,054 - INFO - [logger.py:32] cls: MongoDataSource, func: __init__, msg: db connecting... mongodb://root:example@mongo:27017
-2021-11-15 15:05:37,061 - INFO - [logger.py:32] cls: MongoDataSource, func: started, msg: Command saslContinue with request id 1957747793 started on server ('mongo', 27017)
-2021-11-15 15:05:37,061 - INFO - [logger.py:32] cls: MongoDataSource, func: succeeded, msg: Command saslContinue with request id 1957747793 on server ('mongo', 27017) succeeded in 175 microseconds
-2021-11-15 15:05:37,061 - INFO - [logger.py:32] cls: MongoDataSource, func: started, msg: Command buildinfo with request id 424238335 started on server ('mongo', 27017)
-2021-11-15 15:05:37,062 - INFO - [logger.py:32] cls: MongoDataSource, func: succeeded, msg: Command buildinfo with request id 424238335 on server ('mongo', 27017) succeeded in 243 microseconds
-2021-11-15 15:05:37,062 - INFO - [logger.py:32] cls: MongoDataSource, func: started, msg: Command listIndexes with request id 719885386 started on server ('mongo', 27017)
-2021-11-15 15:05:37,062 - INFO - [logger.py:32] cls: MongoDataSource, func: succeeded, msg: Command listIndexes with request id 719885386 on server ('mongo', 27017) succeeded in 214 microseconds
-2021-11-15 15:05:37,063 - INFO - [logger.py:32] cls: MongoDataSource, func: started, msg: Command createIndexes with request id 1649760492 started on server ('mongo', 27017)
-2021-11-15 15:05:37,063 - INFO - [logger.py:32] cls: MongoDataSource, func: succeeded, msg: Command createIndexes with request id 1649760492 on server ('mongo', 27017) succeeded in 185 microseconds
-2021-11-15 15:05:37,063 - INFO - [logger.py:32] cls: MongoDataSource, func: started, msg: Command createIndexes with request id 596516649 started on server ('mongo', 27017)
-2021-11-15 15:05:37,063 - INFO - [logger.py:32] cls: MongoDataSource, func: succeeded, msg: Command createIndexes with request id 596516649 on server ('mongo', 27017) succeeded in 197 microseconds
-2021-11-15 15:05:37,063 - INFO - [logger.py:32] cls: MongoDataSource, func: started, msg: Command listIndexes with request id 1189641421 started on server ('mongo', 27017)
-2021-11-15 15:05:37,064 - INFO - [logger.py:32] cls: MongoDataSource, func: succeeded, msg: Command listIndexes with request id 1189641421 on server ('mongo', 27017) succeeded in 175 microseconds
-2021-11-15 15:05:37,064 - INFO - [logger.py:32] cls: MongoDataSource, func: __init__, msg: db connection seccess
-2021-11-15 15:05:37,064 - INFO - [logger.py:32] cls: TasksRepository, func: createTaskRunner, msg: created taskrunner
-2021-11-15 15:05:37,078 - INFO - [logger.py:32] cls: MongoDataSource, func: started, msg: Command createIndexes with request id 1025202362 started on server ('mongo', 27017)
-2021-11-15 15:05:37,078 - INFO - [logger.py:32] cls: MongoDataSource, func: succeeded, msg: Command createIndexes with request id 1025202362 on server ('mongo', 27017) succeeded in 194 microseconds
-2021-11-15 15:05:37,078 - INFO - [logger.py:32] cls: MongoDataSource, func: started, msg: Command find with request id 1350490027 started on server ('mongo', 27017)
-2021-11-15 15:05:37,079 - INFO - [logger.py:32] cls: MongoDataSource, func: succeeded, msg: Command find with request id 1350490027 on server ('mongo', 27017) succeeded in 262 microseconds
-2021-11-15 15:05:37,079 - INFO - [logger.py:32] cls: MongoDataSource, func: started, msg: Command find with request id 783368690 started on server ('mongo', 27017)
-2021-11-15 15:05:37,080 - INFO - [logger.py:32] cls: MongoDataSource, func: succeeded, msg: Command find with request id 783368690 on server ('mongo', 27017) succeeded in 263 microseconds
-2021-11-15 15:05:37,080 - INFO - [logger.py:32] cls: MongoDataSource, func: started, msg: Command find with request id 1102520059 started on server ('mongo', 27017)
-2021-11-15 15:05:37,080 - INFO - [logger.py:32] cls: MongoDataSource, func: succeeded, msg: Command find with request id 1102520059 on server ('mongo', 27017) succeeded in 187 microseconds
-2021-11-15 15:06:26,111 - INFO - [logger.py:32] cls: MongoDataSource, func: __init__, msg: db connecting... mongodb://root:example@mongo:27017
-2021-11-15 15:06:26,117 - INFO - [logger.py:32] cls: MongoDataSource, func: started, msg: Command saslContinue with request id 1957747793 started on server ('mongo', 27017)
-2021-11-15 15:06:26,118 - INFO - [logger.py:32] cls: MongoDataSource, func: succeeded, msg: Command saslContinue with request id 1957747793 on server ('mongo', 27017) succeeded in 192 microseconds
-2021-11-15 15:06:26,118 - INFO - [logger.py:32] cls: MongoDataSource, func: started, msg: Command buildinfo with request id 424238335 started on server ('mongo', 27017)
-2021-11-15 15:06:26,118 - INFO - [logger.py:32] cls: MongoDataSource, func: succeeded, msg: Command buildinfo with request id 424238335 on server ('mongo', 27017) succeeded in 190 microseconds
-2021-11-15 15:06:26,118 - INFO - [logger.py:32] cls: MongoDataSource, func: started, msg: Command listIndexes with request id 719885386 started on server ('mongo', 27017)
-2021-11-15 15:06:26,119 - INFO - [logger.py:32] cls: MongoDataSource, func: succeeded, msg: Command listIndexes with request id 719885386 on server ('mongo', 27017) succeeded in 202 microseconds
-2021-11-15 15:06:26,119 - INFO - [logger.py:32] cls: MongoDataSource, func: started, msg: Command createIndexes with request id 1649760492 started on server ('mongo', 27017)
-2021-11-15 15:06:26,119 - INFO - [logger.py:32] cls: MongoDataSource, func: succeeded, msg: Command createIndexes with request id 1649760492 on server ('mongo', 27017) succeeded in 173 microseconds
-2021-11-15 15:06:26,119 - INFO - [logger.py:32] cls: MongoDataSource, func: started, msg: Command createIndexes with request id 596516649 started on server ('mongo', 27017)
-2021-11-15 15:06:26,120 - INFO - [logger.py:32] cls: MongoDataSource, func: succeeded, msg: Command createIndexes with request id 596516649 on server ('mongo', 27017) succeeded in 154 microseconds
-2021-11-15 15:06:26,120 - INFO - [logger.py:32] cls: MongoDataSource, func: started, msg: Command listIndexes with request id 1189641421 started on server ('mongo', 27017)
-2021-11-15 15:06:26,120 - INFO - [logger.py:32] cls: MongoDataSource, func: succeeded, msg: Command listIndexes with request id 1189641421 on server ('mongo', 27017) succeeded in 147 microseconds
-2021-11-15 15:06:26,120 - INFO - [logger.py:32] cls: MongoDataSource, func: __init__, msg: db connection seccess
-2021-11-15 15:06:26,121 - INFO - [logger.py:32] cls: TasksRepository, func: createTaskRunner, msg: created taskrunner
-2021-11-15 15:06:26,134 - INFO - [logger.py:32] cls: MongoDataSource, func: started, msg: Command createIndexes with request id 1025202362 started on server ('mongo', 27017)
-2021-11-15 15:06:26,134 - INFO - [logger.py:32] cls: MongoDataSource, func: succeeded, msg: Command createIndexes with request id 1025202362 on server ('mongo', 27017) succeeded in 265 microseconds
-2021-11-15 15:06:26,134 - INFO - [logger.py:32] cls: MongoDataSource, func: started, msg: Command find with request id 1350490027 started on server ('mongo', 27017)
-2021-11-15 15:06:26,135 - INFO - [logger.py:32] cls: MongoDataSource, func: succeeded, msg: Command find with request id 1350490027 on server ('mongo', 27017) succeeded in 248 microseconds
-2021-11-15 15:06:26,135 - INFO - [logger.py:32] cls: MongoDataSource, func: started, msg: Command find with request id 783368690 started on server ('mongo', 27017)
-2021-11-15 15:06:26,135 - INFO - [logger.py:32] cls: MongoDataSource, func: succeeded, msg: Command find with request id 783368690 on server ('mongo', 27017) succeeded in 227 microseconds
-2021-11-15 15:06:26,136 - INFO - [logger.py:32] cls: MongoDataSource, func: started, msg: Command find with request id 1102520059 started on server ('mongo', 27017)
-2021-11-15 15:06:26,136 - INFO - [logger.py:32] cls: MongoDataSource, func: succeeded, msg: Command find with request id 1102520059 on server ('mongo', 27017) succeeded in 198 microseconds
-2021-11-15 15:06:40,852 - INFO - [logger.py:32] cls: MongoDataSource, func: __init__, msg: db connecting... mongodb://root:example@mongo:27017
-2021-11-15 15:06:40,858 - INFO - [logger.py:32] cls: MongoDataSource, func: started, msg: Command saslContinue with request id 1957747793 started on server ('mongo', 27017)
-2021-11-15 15:06:40,858 - INFO - [logger.py:32] cls: MongoDataSource, func: succeeded, msg: Command saslContinue with request id 1957747793 on server ('mongo', 27017) succeeded in 187 microseconds
-2021-11-15 15:06:40,859 - INFO - [logger.py:32] cls: MongoDataSource, func: started, msg: Command buildinfo with request id 424238335 started on server ('mongo', 27017)
-2021-11-15 15:06:40,859 - INFO - [logger.py:32] cls: MongoDataSource, func: succeeded, msg: Command buildinfo with request id 424238335 on server ('mongo', 27017) succeeded in 175 microseconds
-2021-11-15 15:06:40,859 - INFO - [logger.py:32] cls: MongoDataSource, func: started, msg: Command listIndexes with request id 719885386 started on server ('mongo', 27017)
-2021-11-15 15:06:40,860 - INFO - [logger.py:32] cls: MongoDataSource, func: succeeded, msg: Command listIndexes with request id 719885386 on server ('mongo', 27017) succeeded in 179 microseconds
-2021-11-15 15:06:40,860 - INFO - [logger.py:32] cls: MongoDataSource, func: started, msg: Command createIndexes with request id 1649760492 started on server ('mongo', 27017)
-2021-11-15 15:06:40,860 - INFO - [logger.py:32] cls: MongoDataSource, func: succeeded, msg: Command createIndexes with request id 1649760492 on server ('mongo', 27017) succeeded in 170 microseconds
-2021-11-15 15:06:40,860 - INFO - [logger.py:32] cls: MongoDataSource, func: started, msg: Command createIndexes with request id 596516649 started on server ('mongo', 27017)
-2021-11-15 15:06:40,860 - INFO - [logger.py:32] cls: MongoDataSource, func: succeeded, msg: Command createIndexes with request id 596516649 on server ('mongo', 27017) succeeded in 151 microseconds
-2021-11-15 15:06:40,861 - INFO - [logger.py:32] cls: MongoDataSource, func: started, msg: Command listIndexes with request id 1189641421 started on server ('mongo', 27017)
-2021-11-15 15:06:40,861 - INFO - [logger.py:32] cls: MongoDataSource, func: succeeded, msg: Command listIndexes with request id 1189641421 on server ('mongo', 27017) succeeded in 180 microseconds
-2021-11-15 15:06:40,861 - INFO - [logger.py:32] cls: MongoDataSource, func: __init__, msg: db connection seccess
-2021-11-15 15:06:40,861 - INFO - [logger.py:32] cls: TasksRepository, func: createTaskRunner, msg: created taskrunner
-2021-11-15 15:06:40,875 - INFO - [logger.py:32] cls: MongoDataSource, func: started, msg: Command createIndexes with request id 1025202362 started on server ('mongo', 27017)
-2021-11-15 15:06:40,876 - INFO - [logger.py:32] cls: MongoDataSource, func: succeeded, msg: Command createIndexes with request id 1025202362 on server ('mongo', 27017) succeeded in 317 microseconds
-2021-11-15 15:06:40,876 - INFO - [logger.py:32] cls: MongoDataSource, func: started, msg: Command find with request id 1350490027 started on server ('mongo', 27017)
-2021-11-15 15:06:40,877 - INFO - [logger.py:32] cls: MongoDataSource, func: succeeded, msg: Command find with request id 1350490027 on server ('mongo', 27017) succeeded in 367 microseconds
-2021-11-15 15:06:40,877 - INFO - [logger.py:32] cls: MongoDataSource, func: started, msg: Command find with request id 783368690 started on server ('mongo', 27017)
-2021-11-15 15:06:40,877 - INFO - [logger.py:32] cls: MongoDataSource, func: succeeded, msg: Command find with request id 783368690 on server ('mongo', 27017) succeeded in 268 microseconds
-2021-11-15 15:06:40,878 - INFO - [logger.py:32] cls: MongoDataSource, func: started, msg: Command find with request id 1102520059 started on server ('mongo', 27017)
-2021-11-15 15:06:40,878 - INFO - [logger.py:32] cls: MongoDataSource, func: succeeded, msg: Command find with request id 1102520059 on server ('mongo', 27017) succeeded in 212 microseconds
+2021-11-21 03:38:55,598 - INFO - [logger.py:36] cls: TasksRepository, func: createTaskRunner, msg: created taskrunner
+2021-11-21 06:09:22,917 - INFO - [logger.py:36] cls: TasksRepository, func: createTaskRunner, msg: created taskrunner
+2021-11-21 06:11:04,683 - INFO - [logger.py:36] cls: TasksRepository, func: createTaskRunner, msg: created taskrunner
+2021-11-21 06:12:19,992 - INFO - [logger.py:36] cls: TasksRepository, func: createTaskRunner, msg: created taskrunner
+2021-11-21 06:12:28,949 - INFO - [logger.py:36] cls: TasksRepository, func: createTaskRunner, msg: created taskrunner
+2021-11-21 06:12:37,189 - INFO - [logger.py:36] cls: TasksRepository, func: createTaskRunner, msg: created taskrunner
+2021-11-21 06:14:55,536 - INFO - [logger.py:36] cls: TasksRepository, func: createTaskRunner, msg: created taskrunner
+2021-11-21 06:15:28,956 - INFO - [logger.py:36] cls: TasksRepository, func: createTaskRunner, msg: created taskrunner
+2021-11-21 06:15:39,940 - INFO - [logger.py:36] cls: TasksRepository, func: createTaskRunner, msg: created taskrunner
+2021-11-21 06:15:46,862 - INFO - [logger.py:36] cls: TasksRepository, func: createTaskRunner, msg: created taskrunner
+2021-11-21 06:31:52,532 - INFO - [logger.py:36] cls: TasksRepository, func: getCompletedTask, msg: count: 1
+2021-11-21 06:33:18,567 - INFO - [logger.py:36] cls: TasksRepository, func: getCompletedTask, msg: count: 1
+2021-11-21 06:43:30,676 - INFO - [logger.py:36] cls: TasksRepository, func: getCompletedTask, msg: count: 1
+2021-11-21 06:55:57,870 - INFO - [logger.py:36] cls: TasksRepository, func: getCompletedTask, msg: count: 1
+2021-11-21 06:57:40,875 - INFO - [logger.py:36] cls: TasksRepository, func: getCompletedTask, msg: count: 1
+2021-11-21 06:59:40,745 - INFO - [logger.py:36] cls: TasksRepository, func: getCompletedTask, msg: count: 1
+2021-11-21 07:01:16,068 - INFO - [logger.py:36] cls: TasksRepository, func: getCompletedTask, msg: count: 1
+2021-11-21 07:04:36,051 - INFO - [logger.py:36] cls: TasksRepository, func: getCompletedTask, msg: count: 1
+2021-11-21 07:06:04,911 - INFO - [logger.py:36] cls: TasksRepository, func: getCompletedTask, msg: count: 1
+2021-11-21 07:07:26,513 - INFO - [logger.py:36] cls: TasksRepository, func: getCompletedTask, msg: count: 1
+2021-11-21 07:08:16,380 - INFO - [logger.py:36] cls: TasksRepository, func: getCompletedTask, msg: count: 1
+2021-11-21 07:08:38,666 - INFO - [logger.py:36] cls: TasksRepository, func: addTask, msg: marcapkospi20211119202111192eaed4b9-c98f-4a93-ad25-42556a042063
+2021-11-21 07:08:38,673 - INFO - [logger.py:36] cls: CrawlingService, func: runMarcapTask, msg: runTask {"count": 1, "successCount": 0, "failCount": 0, "restCount": 1, "failTasks": [], "state": "find worker", "tasks": ["20211119"], "tasksRet": [0], "index": 0, "market": "kospi", "startDateStr": "20211119", "endDateStr": "20211119", "taskUniqueId": "marcapkospi20211119202111192eaed4b9-c98f-4a93-ad25-42556a042063", "percent": 0.0, "taskId": "marcap", "errMsg": ""}
+2021-11-21 07:08:38,678 - INFO - [logger.py:36] cls: TaskRunner, func: _put, msg: task put
+2021-11-21 07:08:38,710 - INFO - [logger.py:36] cls: Pool, func: run, msg: task pool run
+2021-11-21 07:08:38,718 - INFO - [logger.py:36] cls: TaskRunner, func: updatePoolInfo, msg: runCount:1, queueCount:0
+2021-11-21 07:08:38,728 - INFO - [logger.py:36] cls: TasksRepository, func: updatePoolInfo, msg: {"poolSize": 8, "poolCount": 1, "runCount": 1, "queueCount": 0}
+2021-11-21 07:08:38,731 - INFO - [logger.py:36] cls: Task, func: run, msg: task run
+2021-11-21 07:08:38,733 - INFO - [logger.py:36] cls: CrawlingService, func: runCrawling&marcapTaskWorker, msg: start
+2021-11-21 07:08:38,754 - INFO - [logger.py:36] cls: CrawlingService, func: runCrawling&marcapTaskWorker, msg: taskWorker:marcapkospi20211119202111192eaed4b9-c98f-4a93-ad25-42556a042063
+2021-11-21 07:08:38,757 - INFO - [logger.py:36] cls: MarcapCrawler, func: crawling, msg: 8a36b33f-9c0c-456f-91ad-6c65fcb3addd
+2021-11-21 07:08:38,760 - INFO - [logger.py:36] cls: TasksRepository, func: updateTask, msg: marcapkospi20211119202111192eaed4b9-c98f-4a93-ad25-42556a042063
+2021-11-21 07:08:38,893 - INFO - [logger.py:36] cls: CrawlerRepository, func: onConnectingWebDriver, msg: marcapkospi20211119202111192eaed4b9-c98f-4a93-ad25-42556a042063
+2021-11-21 07:08:39,325 - INFO - [logger.py:36] cls: MarcapCrawler, func: crawling, msg: create observer and start
+2021-11-21 07:08:56,232 - INFO - [logger.py:36] cls: MarcapCrawler, func: connectWebDriver, msg: create driver
+2021-11-21 07:09:05,320 - INFO - [logger.py:36] cls: TasksRepository, func: updateTask, msg: marcapkospi20211119202111192eaed4b9-c98f-4a93-ad25-42556a042063
+2021-11-21 07:09:05,362 - INFO - [logger.py:36] cls: CrawlerRepository, func: onStartCrawling, msg: marcapkospi20211119202111192eaed4b9-c98f-4a93-ad25-42556a042063
+2021-11-21 07:09:05,610 - INFO - [logger.py:36] cls: MarcapCrawler, func: crawling, msg: create downloadTask taskId: marcap market: kospi date: 20211119 taskUniqueId: marcapkospi20211119202111192eaed4b9-c98f-4a93-ad25-42556a042063
+2021-11-21 07:09:05,612 - INFO - [logger.py:36] cls: TasksRepository, func: updateTask, msg: marcapkospi20211119202111192eaed4b9-c98f-4a93-ad25-42556a042063
+2021-11-21 07:09:05,624 - INFO - [logger.py:36] cls: CrawlerRepository, func: onDownloadStart, msg: marcapkospi20211119202111192eaed4b9-c98f-4a93-ad25-42556a042063
+2021-11-21 07:09:05,626 - INFO - [logger.py:33] cls: MarcapCrawler, msg: downloadData
+2021-11-21 07:09:11,618 - INFO - [logger.py:36] cls: TasksRepository, func: updateTask, msg: marcapkospi20211119202111192eaed4b9-c98f-4a93-ad25-42556a042063
+2021-11-21 07:09:11,634 - INFO - [logger.py:36] cls: CrawlerRepository, func: onDownloadComplete, msg: marcapkospi20211119202111192eaed4b9-c98f-4a93-ad25-42556a042063
+2021-11-21 07:09:12,171 - INFO - [logger.py:36] cls: MarcapCrawler, func: downloadData, msg: isLock:True timeout:29 taskUniqueId: marcapkospi20211119202111192eaed4b9-c98f-4a93-ad25-42556a042063
+2021-11-21 07:09:12,186 - INFO - [logger.py:33] cls: MarcapCrawler, msg: isLock:True timeout:29
+2021-11-21 07:09:12,911 - INFO - [logger.py:33] cls: CrawlerRepository, msg: onParsingComplete
+2021-11-21 07:09:12,915 - INFO - [logger.py:33] cls: CrawlerRepository, msg: taskId:marcap taskUniqueIdmarcapkospi20211119202111192eaed4b9-c98f-4a93-ad25-42556a042063
+2021-11-21 07:09:12,937 - INFO - [logger.py:33] cls: CrawlerRepository, msg: taskDTO: {'marcapkospi20211119202111192eaed4b9-c98f-4a93-ad25-42556a042063': StockCrawlingTask(count=1, successCount=0, failCount=0, restCount=1, failTasks=[], state='download complete', tasks=['20211119'], tasksRet=[0], index=0, market='kospi', startDateStr='20211119', endDateStr='20211119', taskUniqueId='marcapkospi20211119202111192eaed4b9-c98f-4a93-ad25-42556a042063', percent=0.0, taskId='marcap', errMsg='')}
+2021-11-21 07:09:12,939 - INFO - [logger.py:36] cls: TasksRepository, func: success, msg: marcapkospi20211119202111192eaed4b9-c98f-4a93-ad25-42556a042063
+2021-11-21 07:09:12,942 - INFO - [logger.py:36] cls: TasksRepository, func: deleteTask, msg: marcapkospi20211119202111192eaed4b9-c98f-4a93-ad25-42556a042063
+2021-11-21 07:09:12,945 - INFO - [logger.py:36] cls: TasksRepository, func: updateTask, msg: marcapkospi20211119202111192eaed4b9-c98f-4a93-ad25-42556a042063
+2021-11-21 07:09:12,966 - INFO - [logger.py:36] cls: TasksRepository, func: completeTask, msg: complete
+2021-11-21 07:09:13,057 - INFO - [logger.py:36] cls: TasksRepository, func: getCompletedTask, msg: count: 1
+2021-11-21 07:09:27,293 - INFO - [logger.py:36] cls: MarcapCrawler, func: parseFile, msg: success, marcapkospi20211119202111192eaed4b9-c98f-4a93-ad25-42556a042063
+2021-11-21 07:09:27,296 - INFO - [logger.py:33] cls: MarcapCrawler, msg: parseFile...
+2021-11-21 07:09:27,303 - INFO - [logger.py:36] cls: MarcapCrawler, func: downloadData, msg: isLock:False timeout:28 taskUniqueId: marcapkospi20211119202111192eaed4b9-c98f-4a93-ad25-42556a042063
+2021-11-21 07:09:27,319 - INFO - [logger.py:33] cls: MarcapCrawler, msg: isLock:False timeout:28
+2021-11-21 07:09:28,961 - INFO - [logger.py:36] cls: TaskRunner, func: updatePoolInfo, msg: runCount:0, queueCount:0
+2021-11-21 07:09:28,974 - INFO - [logger.py:36] cls: TasksRepository, func: updatePoolInfo, msg: {"poolSize": 8, "poolCount": 0, "runCount": 0, "queueCount": 0}
+2021-11-21 07:12:00,685 - INFO - [logger.py:36] cls: TasksRepository, func: getCompletedTask, msg: count: 1
+2021-11-21 07:12:22,039 - INFO - [logger.py:36] cls: TasksRepository, func: addTask, msg: marcapkospi2021111820211118bcf1f785-d291-4470-a40a-19fc32c409b8
+2021-11-21 07:12:22,053 - INFO - [logger.py:36] cls: CrawlingService, func: runMarcapTask, msg: runTask {"count": 1, "successCount": 0, "failCount": 0, "restCount": 1, "failTasks": [], "state": "find worker", "tasks": ["20211118"], "tasksRet": [0], "index": 0, "market": "kospi", "startDateStr": "20211118", "endDateStr": "20211118", "taskUniqueId": "marcapkospi2021111820211118bcf1f785-d291-4470-a40a-19fc32c409b8", "percent": 0.0, "taskId": "marcap", "errMsg": ""}
+2021-11-21 07:12:22,057 - INFO - [logger.py:36] cls: TaskRunner, func: _put, msg: task put
+2021-11-21 07:12:22,072 - INFO - [logger.py:36] cls: Pool, func: run, msg: task pool run
+2021-11-21 07:12:22,072 - INFO - [logger.py:36] cls: Pool, func: run, msg: task pool run
+2021-11-21 07:12:22,083 - INFO - [logger.py:36] cls: TaskRunner, func: updatePoolInfo, msg: runCount:1, queueCount:0
+2021-11-21 07:12:22,089 - INFO - [logger.py:36] cls: TasksRepository, func: updatePoolInfo, msg: {"poolSize": 8, "poolCount": 1, "runCount": 1, "queueCount": 0}
+2021-11-21 07:12:22,098 - INFO - [logger.py:36] cls: Task, func: run, msg: task run
+2021-11-21 07:12:22,098 - INFO - [logger.py:36] cls: Task, func: run, msg: task run
+2021-11-21 07:12:22,105 - INFO - [logger.py:36] cls: CrawlingService, func: runCrawling&marcapTaskWorker, msg: start
+2021-11-21 07:12:22,126 - INFO - [logger.py:36] cls: CrawlingService, func: runCrawling&marcapTaskWorker, msg: taskWorker:marcapkospi2021111820211118bcf1f785-d291-4470-a40a-19fc32c409b8
+2021-11-21 07:12:22,144 - INFO - [logger.py:36] cls: MarcapCrawler, func: crawling, msg: 58db66f8-e19e-4f8e-9714-80112a6c50de
+2021-11-21 07:12:22,144 - INFO - [logger.py:36] cls: MarcapCrawler, func: crawling, msg: 58db66f8-e19e-4f8e-9714-80112a6c50de
+2021-11-21 07:12:22,193 - INFO - [logger.py:36] cls: TasksRepository, func: updateTask, msg: marcapkospi2021111820211118bcf1f785-d291-4470-a40a-19fc32c409b8
+2021-11-21 07:12:22,275 - INFO - [logger.py:36] cls: CrawlerRepository, func: onConnectingWebDriver, msg: marcapkospi2021111820211118bcf1f785-d291-4470-a40a-19fc32c409b8
+2021-11-21 07:12:22,474 - INFO - [logger.py:36] cls: MarcapCrawler, func: crawling, msg: create observer and start
+2021-11-21 07:12:22,474 - INFO - [logger.py:36] cls: MarcapCrawler, func: crawling, msg: create observer and start
+2021-11-21 07:12:29,456 - INFO - [logger.py:36] cls: MarcapCrawler, func: connectWebDriver, msg: create driver
+2021-11-21 07:12:29,456 - INFO - [logger.py:36] cls: MarcapCrawler, func: connectWebDriver, msg: create driver
+2021-11-21 07:12:39,564 - INFO - [logger.py:36] cls: TasksRepository, func: updateTask, msg: marcapkospi2021111820211118bcf1f785-d291-4470-a40a-19fc32c409b8
+2021-11-21 07:12:39,580 - INFO - [logger.py:36] cls: CrawlerRepository, func: onStartCrawling, msg: marcapkospi2021111820211118bcf1f785-d291-4470-a40a-19fc32c409b8
+2021-11-21 07:12:39,767 - INFO - [logger.py:36] cls: MarcapCrawler, func: crawling, msg: create downloadTask taskId: marcap market: kospi date: 20211118 taskUniqueId: marcapkospi2021111820211118bcf1f785-d291-4470-a40a-19fc32c409b8
+2021-11-21 07:12:39,767 - INFO - [logger.py:36] cls: MarcapCrawler, func: crawling, msg: create downloadTask taskId: marcap market: kospi date: 20211118 taskUniqueId: marcapkospi2021111820211118bcf1f785-d291-4470-a40a-19fc32c409b8
+2021-11-21 07:12:39,770 - INFO - [logger.py:36] cls: TasksRepository, func: updateTask, msg: marcapkospi2021111820211118bcf1f785-d291-4470-a40a-19fc32c409b8
+2021-11-21 07:12:39,782 - INFO - [logger.py:36] cls: CrawlerRepository, func: onDownloadStart, msg: marcapkospi2021111820211118bcf1f785-d291-4470-a40a-19fc32c409b8
+2021-11-21 07:12:39,784 - INFO - [logger.py:33] cls: MarcapCrawler, msg: downloadData
+2021-11-21 07:12:39,784 - INFO - [logger.py:33] cls: MarcapCrawler, msg: downloadData
+2021-11-21 07:12:46,280 - INFO - [logger.py:36] cls: TasksRepository, func: updateTask, msg: marcapkospi2021111820211118bcf1f785-d291-4470-a40a-19fc32c409b8
+2021-11-21 07:12:46,323 - INFO - [logger.py:36] cls: CrawlerRepository, func: onDownloadComplete, msg: marcapkospi2021111820211118bcf1f785-d291-4470-a40a-19fc32c409b8
+2021-11-21 07:12:46,866 - INFO - [logger.py:36] cls: MarcapCrawler, func: downloadData, msg: isLock:True timeout:29 taskUniqueId: marcapkospi2021111820211118bcf1f785-d291-4470-a40a-19fc32c409b8
+2021-11-21 07:12:46,866 - INFO - [logger.py:36] cls: MarcapCrawler, func: downloadData, msg: isLock:True timeout:29 taskUniqueId: marcapkospi2021111820211118bcf1f785-d291-4470-a40a-19fc32c409b8
+2021-11-21 07:12:46,907 - INFO - [logger.py:33] cls: MarcapCrawler, msg: isLock:True timeout:29
+2021-11-21 07:12:46,907 - INFO - [logger.py:33] cls: MarcapCrawler, msg: isLock:True timeout:29
+2021-11-21 07:12:47,890 - INFO - [logger.py:33] cls: CrawlerRepository, msg: onParsingComplete
+2021-11-21 07:12:47,930 - INFO - [logger.py:33] cls: CrawlerRepository, msg: taskId:marcap taskUniqueIdmarcapkospi2021111820211118bcf1f785-d291-4470-a40a-19fc32c409b8
+2021-11-21 07:12:47,942 - INFO - [logger.py:33] cls: CrawlerRepository, msg: taskDTO: {'marcapkospi20211119202111192eaed4b9-c98f-4a93-ad25-42556a042063': StockCrawlingTask(count=1, successCount=1, failCount=0, restCount=0, failTasks=[], state='complete', tasks=['20211119'], tasksRet=[1], index=1, market='kospi', startDateStr='20211119', endDateStr='20211119', taskUniqueId='marcapkospi20211119202111192eaed4b9-c98f-4a93-ad25-42556a042063', percent=100.0, taskId='marcap', errMsg=''), 'marcapkospi2021111820211118bcf1f785-d291-4470-a40a-19fc32c409b8': StockCrawlingTask(count=1, successCount=0, failCount=0, restCount=1, failTasks=[], state='download complete', tasks=['20211118'], tasksRet=[0], index=0, market='kospi', startDateStr='20211118', endDateStr='20211118', taskUniqueId='marcapkospi2021111820211118bcf1f785-d291-4470-a40a-19fc32c409b8', percent=0.0, taskId='marcap', errMsg='')}
+2021-11-21 07:12:47,950 - INFO - [logger.py:36] cls: TasksRepository, func: success, msg: marcapkospi2021111820211118bcf1f785-d291-4470-a40a-19fc32c409b8
+2021-11-21 07:12:47,953 - INFO - [logger.py:36] cls: TasksRepository, func: deleteTask, msg: marcapkospi2021111820211118bcf1f785-d291-4470-a40a-19fc32c409b8
+2021-11-21 07:12:47,960 - INFO - [logger.py:36] cls: TasksRepository, func: updateTask, msg: marcapkospi2021111820211118bcf1f785-d291-4470-a40a-19fc32c409b8
+2021-11-21 07:12:48,014 - INFO - [logger.py:36] cls: TasksRepository, func: completeTask, msg: complete
+2021-11-21 07:12:48,113 - INFO - [logger.py:36] cls: TasksRepository, func: getCompletedTask, msg: count: 1
+2021-11-21 07:12:59,412 - INFO - [logger.py:36] cls: MarcapCrawler, func: parseFile, msg: success, marcapkospi2021111820211118bcf1f785-d291-4470-a40a-19fc32c409b8
+2021-11-21 07:12:59,412 - INFO - [logger.py:36] cls: MarcapCrawler, func: parseFile, msg: success, marcapkospi2021111820211118bcf1f785-d291-4470-a40a-19fc32c409b8
+2021-11-21 07:12:59,419 - INFO - [logger.py:33] cls: MarcapCrawler, msg: parseFile...
+2021-11-21 07:12:59,419 - INFO - [logger.py:33] cls: MarcapCrawler, msg: parseFile...
+2021-11-21 07:12:59,428 - INFO - [logger.py:36] cls: MarcapCrawler, func: downloadData, msg: isLock:False timeout:28 taskUniqueId: marcapkospi2021111820211118bcf1f785-d291-4470-a40a-19fc32c409b8
+2021-11-21 07:12:59,428 - INFO - [logger.py:36] cls: MarcapCrawler, func: downloadData, msg: isLock:False timeout:28 taskUniqueId: marcapkospi2021111820211118bcf1f785-d291-4470-a40a-19fc32c409b8
+2021-11-21 07:12:59,452 - INFO - [logger.py:33] cls: MarcapCrawler, msg: isLock:False timeout:28
+2021-11-21 07:12:59,452 - INFO - [logger.py:33] cls: MarcapCrawler, msg: isLock:False timeout:28
+2021-11-21 07:13:00,826 - INFO - [logger.py:36] cls: TaskRunner, func: updatePoolInfo, msg: runCount:0, queueCount:0
+2021-11-21 07:13:00,837 - INFO - [logger.py:36] cls: TasksRepository, func: updatePoolInfo, msg: {"poolSize": 8, "poolCount": 0, "runCount": 0, "queueCount": 0}
+2021-11-21 07:14:37,917 - INFO - [logger.py:36] cls: TasksRepository, func: getCompletedTask, msg: count: 1
+2021-11-21 07:14:54,230 - INFO - [logger.py:36] cls: TasksRepository, func: addTask, msg: marcapkospi2021111720211117c933ff98-a842-4ccd-a880-559964d3d8ca
+2021-11-21 07:14:54,355 - INFO - [logger.py:36] cls: CrawlingService, func: runMarcapTask, msg: runTask {"count": 1, "successCount": 0, "failCount": 0, "restCount": 1, "failTasks": [], "state": "find worker", "tasks": ["20211117"], "tasksRet": [0], "index": 0, "market": "kospi", "startDateStr": "20211117", "endDateStr": "20211117", "taskUniqueId": "marcapkospi2021111720211117c933ff98-a842-4ccd-a880-559964d3d8ca", "percent": 0.0, "taskId": "marcap", "errMsg": ""}
+2021-11-21 07:14:54,360 - INFO - [logger.py:36] cls: TaskRunner, func: _put, msg: task put
+2021-11-21 07:14:54,403 - INFO - [logger.py:36] cls: Pool, func: run, msg: task pool run
+2021-11-21 07:14:54,403 - INFO - [logger.py:36] cls: Pool, func: run, msg: task pool run
+2021-11-21 07:14:54,403 - INFO - [logger.py:36] cls: Pool, func: run, msg: task pool run
+2021-11-21 07:14:54,426 - INFO - [logger.py:36] cls: TaskRunner, func: updatePoolInfo, msg: runCount:1, queueCount:0
+2021-11-21 07:14:54,430 - INFO - [logger.py:36] cls: TasksRepository, func: updatePoolInfo, msg: {"poolSize": 8, "poolCount": 1, "runCount": 1, "queueCount": 0}
+2021-11-21 07:14:54,434 - INFO - [logger.py:36] cls: Task, func: run, msg: task run
+2021-11-21 07:14:54,434 - INFO - [logger.py:36] cls: Task, func: run, msg: task run
+2021-11-21 07:14:54,434 - INFO - [logger.py:36] cls: Task, func: run, msg: task run
+2021-11-21 07:14:54,439 - INFO - [logger.py:36] cls: CrawlingService, func: runCrawling&marcapTaskWorker, msg: start
+2021-11-21 07:14:54,465 - INFO - [logger.py:36] cls: CrawlingService, func: runCrawling&marcapTaskWorker, msg: taskWorker:marcapkospi2021111720211117c933ff98-a842-4ccd-a880-559964d3d8ca
+2021-11-21 07:14:54,474 - INFO - [logger.py:36] cls: MarcapCrawler, func: crawling, msg: 6b56ac44-625b-4378-a2df-6dca69773e9d
+2021-11-21 07:14:54,474 - INFO - [logger.py:36] cls: MarcapCrawler, func: crawling, msg: 6b56ac44-625b-4378-a2df-6dca69773e9d
+2021-11-21 07:14:54,474 - INFO - [logger.py:36] cls: MarcapCrawler, func: crawling, msg: 6b56ac44-625b-4378-a2df-6dca69773e9d
+2021-11-21 07:14:54,483 - INFO - [logger.py:36] cls: TasksRepository, func: updateTask, msg: marcapkospi2021111720211117c933ff98-a842-4ccd-a880-559964d3d8ca
+2021-11-21 07:14:54,518 - INFO - [logger.py:36] cls: CrawlerRepository, func: onConnectingWebDriver, msg: marcapkospi2021111720211117c933ff98-a842-4ccd-a880-559964d3d8ca
+2021-11-21 07:14:54,828 - INFO - [logger.py:36] cls: MarcapCrawler, func: crawling, msg: create observer and start
+2021-11-21 07:14:54,828 - INFO - [logger.py:36] cls: MarcapCrawler, func: crawling, msg: create observer and start
+2021-11-21 07:14:54,828 - INFO - [logger.py:36] cls: MarcapCrawler, func: crawling, msg: create observer and start
+2021-11-21 07:15:02,869 - INFO - [logger.py:36] cls: MarcapCrawler, func: connectWebDriver, msg: create driver
+2021-11-21 07:15:02,869 - INFO - [logger.py:36] cls: MarcapCrawler, func: connectWebDriver, msg: create driver
+2021-11-21 07:15:02,869 - INFO - [logger.py:36] cls: MarcapCrawler, func: connectWebDriver, msg: create driver
+2021-11-21 07:15:12,852 - INFO - [logger.py:36] cls: TasksRepository, func: updateTask, msg: marcapkospi2021111720211117c933ff98-a842-4ccd-a880-559964d3d8ca
+2021-11-21 07:15:12,882 - INFO - [logger.py:36] cls: CrawlerRepository, func: onStartCrawling, msg: marcapkospi2021111720211117c933ff98-a842-4ccd-a880-559964d3d8ca
+2021-11-21 07:15:13,083 - INFO - [logger.py:36] cls: MarcapCrawler, func: crawling, msg: create downloadTask taskId: marcap market: kospi date: 20211117 taskUniqueId: marcapkospi2021111720211117c933ff98-a842-4ccd-a880-559964d3d8ca
+2021-11-21 07:15:13,083 - INFO - [logger.py:36] cls: MarcapCrawler, func: crawling, msg: create downloadTask taskId: marcap market: kospi date: 20211117 taskUniqueId: marcapkospi2021111720211117c933ff98-a842-4ccd-a880-559964d3d8ca
+2021-11-21 07:15:13,083 - INFO - [logger.py:36] cls: MarcapCrawler, func: crawling, msg: create downloadTask taskId: marcap market: kospi date: 20211117 taskUniqueId: marcapkospi2021111720211117c933ff98-a842-4ccd-a880-559964d3d8ca
+2021-11-21 07:15:13,091 - INFO - [logger.py:36] cls: TasksRepository, func: updateTask, msg: marcapkospi2021111720211117c933ff98-a842-4ccd-a880-559964d3d8ca
+2021-11-21 07:15:13,115 - INFO - [logger.py:36] cls: CrawlerRepository, func: onDownloadStart, msg: marcapkospi2021111720211117c933ff98-a842-4ccd-a880-559964d3d8ca
+2021-11-21 07:15:13,118 - INFO - [logger.py:33] cls: MarcapCrawler, msg: downloadData
+2021-11-21 07:15:13,118 - INFO - [logger.py:33] cls: MarcapCrawler, msg: downloadData
+2021-11-21 07:15:13,118 - INFO - [logger.py:33] cls: MarcapCrawler, msg: downloadData
+2021-11-21 07:15:19,259 - INFO - [logger.py:36] cls: TasksRepository, func: updateTask, msg: marcapkospi2021111720211117c933ff98-a842-4ccd-a880-559964d3d8ca
+2021-11-21 07:15:19,275 - INFO - [logger.py:36] cls: CrawlerRepository, func: onDownloadComplete, msg: marcapkospi2021111720211117c933ff98-a842-4ccd-a880-559964d3d8ca
+2021-11-21 07:15:19,598 - INFO - [logger.py:36] cls: MarcapCrawler, func: downloadData, msg: isLock:True timeout:29 taskUniqueId: marcapkospi2021111720211117c933ff98-a842-4ccd-a880-559964d3d8ca
+2021-11-21 07:15:19,598 - INFO - [logger.py:36] cls: MarcapCrawler, func: downloadData, msg: isLock:True timeout:29 taskUniqueId: marcapkospi2021111720211117c933ff98-a842-4ccd-a880-559964d3d8ca
+2021-11-21 07:15:19,598 - INFO - [logger.py:36] cls: MarcapCrawler, func: downloadData, msg: isLock:True timeout:29 taskUniqueId: marcapkospi2021111720211117c933ff98-a842-4ccd-a880-559964d3d8ca
+2021-11-21 07:15:19,603 - INFO - [logger.py:33] cls: MarcapCrawler, msg: isLock:True timeout:29
+2021-11-21 07:15:19,603 - INFO - [logger.py:33] cls: MarcapCrawler, msg: isLock:True timeout:29
+2021-11-21 07:15:19,603 - INFO - [logger.py:33] cls: MarcapCrawler, msg: isLock:True timeout:29
+2021-11-21 07:15:20,489 - INFO - [logger.py:33] cls: CrawlerRepository, msg: onParsingComplete
+2021-11-21 07:15:20,497 - INFO - [logger.py:33] cls: CrawlerRepository, msg: taskId:marcap taskUniqueIdmarcapkospi2021111720211117c933ff98-a842-4ccd-a880-559964d3d8ca
+2021-11-21 07:15:20,508 - INFO - [logger.py:33] cls: CrawlerRepository, msg: taskDTO: {'marcapkospi20211119202111192eaed4b9-c98f-4a93-ad25-42556a042063': StockCrawlingTask(count=1, successCount=1, failCount=0, restCount=0, failTasks=[], state='complete', tasks=['20211119'], tasksRet=[1], index=1, market='kospi', startDateStr='20211119', endDateStr='20211119', taskUniqueId='marcapkospi20211119202111192eaed4b9-c98f-4a93-ad25-42556a042063', percent=100.0, taskId='marcap', errMsg=''), 'marcapkospi2021111820211118bcf1f785-d291-4470-a40a-19fc32c409b8': StockCrawlingTask(count=1, successCount=1, failCount=0, restCount=0, failTasks=[], state='complete', tasks=['20211118'], tasksRet=[1], index=1, market='kospi', startDateStr='20211118', endDateStr='20211118', taskUniqueId='marcapkospi2021111820211118bcf1f785-d291-4470-a40a-19fc32c409b8', percent=100.0, taskId='marcap', errMsg=''), 'marcapkospi2021111720211117c933ff98-a842-4ccd-a880-559964d3d8ca': StockCrawlingTask(count=1, successCount=0, failCount=0, restCount=1, failTasks=[], state='download complete', tasks=['20211117'], tasksRet=[0], index=0, market='kospi', startDateStr='20211117', endDateStr='20211117', taskUniqueId='marcapkospi2021111720211117c933ff98-a842-4ccd-a880-559964d3d8ca', percent=0.0, taskId='marcap', errMsg='')}
+2021-11-21 07:15:20,543 - INFO - [logger.py:36] cls: TasksRepository, func: success, msg: marcapkospi2021111720211117c933ff98-a842-4ccd-a880-559964d3d8ca
+2021-11-21 07:15:20,599 - INFO - [logger.py:36] cls: TasksRepository, func: deleteTask, msg: marcapkospi2021111720211117c933ff98-a842-4ccd-a880-559964d3d8ca
+2021-11-21 07:15:20,621 - INFO - [logger.py:36] cls: TasksRepository, func: updateTask, msg: marcapkospi2021111720211117c933ff98-a842-4ccd-a880-559964d3d8ca
+2021-11-21 07:15:20,686 - INFO - [logger.py:36] cls: TasksRepository, func: completeTask, msg: complete
+2021-11-21 07:15:20,848 - INFO - [logger.py:36] cls: TasksRepository, func: getCompletedTask, msg: count: 1
+2021-11-21 07:15:30,534 - INFO - [logger.py:36] cls: MarcapCrawler, func: parseFile, msg: success, marcapkospi2021111720211117c933ff98-a842-4ccd-a880-559964d3d8ca
+2021-11-21 07:15:30,534 - INFO - [logger.py:36] cls: MarcapCrawler, func: parseFile, msg: success, marcapkospi2021111720211117c933ff98-a842-4ccd-a880-559964d3d8ca
+2021-11-21 07:15:30,534 - INFO - [logger.py:36] cls: MarcapCrawler, func: parseFile, msg: success, marcapkospi2021111720211117c933ff98-a842-4ccd-a880-559964d3d8ca
+2021-11-21 07:15:30,538 - INFO - [logger.py:33] cls: MarcapCrawler, msg: parseFile...
+2021-11-21 07:15:30,538 - INFO - [logger.py:33] cls: MarcapCrawler, msg: parseFile...
+2021-11-21 07:15:30,538 - INFO - [logger.py:33] cls: MarcapCrawler, msg: parseFile...
+2021-11-21 07:15:30,545 - INFO - [logger.py:36] cls: MarcapCrawler, func: downloadData, msg: isLock:False timeout:28 taskUniqueId: marcapkospi2021111720211117c933ff98-a842-4ccd-a880-559964d3d8ca
+2021-11-21 07:15:30,545 - INFO - [logger.py:36] cls: MarcapCrawler, func: downloadData, msg: isLock:False timeout:28 taskUniqueId: marcapkospi2021111720211117c933ff98-a842-4ccd-a880-559964d3d8ca
+2021-11-21 07:15:30,545 - INFO - [logger.py:36] cls: MarcapCrawler, func: downloadData, msg: isLock:False timeout:28 taskUniqueId: marcapkospi2021111720211117c933ff98-a842-4ccd-a880-559964d3d8ca
+2021-11-21 07:15:30,594 - INFO - [logger.py:33] cls: MarcapCrawler, msg: isLock:False timeout:28
+2021-11-21 07:15:30,594 - INFO - [logger.py:33] cls: MarcapCrawler, msg: isLock:False timeout:28
+2021-11-21 07:15:30,594 - INFO - [logger.py:33] cls: MarcapCrawler, msg: isLock:False timeout:28
+2021-11-21 07:15:31,572 - INFO - [logger.py:36] cls: TaskRunner, func: updatePoolInfo, msg: runCount:0, queueCount:0
+2021-11-21 07:15:31,593 - INFO - [logger.py:36] cls: TasksRepository, func: updatePoolInfo, msg: {"poolSize": 8, "poolCount": 0, "runCount": 0, "queueCount": 0}
+2021-11-21 07:17:25,450 - INFO - [logger.py:36] cls: TasksRepository, func: getCompletedTask, msg: count: 1
+2021-11-21 07:18:40,232 - INFO - [logger.py:36] cls: TasksRepository, func: getCompletedTask, msg: count: 1
+2021-11-21 07:19:40,275 - INFO - [logger.py:36] cls: TasksRepository, func: getCompletedTask, msg: count: 1
+2021-11-21 07:24:02,098 - INFO - [logger.py:36] cls: TasksRepository, func: getCompletedTask, msg: count: 1
+2021-11-21 07:24:08,492 - INFO - [logger.py:36] cls: TasksRepository, func: getCompletedTask, msg: count: 1
+2021-11-21 07:24:14,827 - INFO - [logger.py:36] cls: TasksRepository, func: getCompletedTask, msg: count: 1
+2021-11-21 07:24:23,934 - INFO - [logger.py:36] cls: TasksRepository, func: getCompletedTask, msg: count: 1
+2021-11-21 07:33:22,675 - INFO - [logger.py:36] cls: TasksRepository, func: getCompletedTask, msg: count: 1
+2021-11-21 07:34:49,187 - INFO - [logger.py:36] cls: TasksRepository, func: getCompletedTask, msg: count: 1
+2021-11-21 08:30:37,390 - INFO - [logger.py:36] cls: TasksRepository, func: getCompletedTask, msg: count: 1
+2021-11-21 08:41:09,177 - INFO - [logger.py:36] cls: TasksRepository, func: createTaskRunner, msg: created taskrunner
+2021-11-21 08:46:15,211 - INFO - [logger.py:36] cls: TasksRepository, func: createTaskRunner, msg: created taskrunner
+2021-11-21 08:48:32,684 - INFO - [logger.py:36] cls: TasksRepository, func: createTaskRunner, msg: created taskrunner
+2021-11-21 08:54:38,941 - INFO - [logger.py:36] cls: TasksRepository, func: createTaskRunner, msg: created taskrunner
+2021-11-21 08:56:54,690 - INFO - [logger.py:36] cls: TasksRepository, func: createTaskRunner, msg: created taskrunner
+2021-11-21 09:01:32,031 - INFO - [logger.py:36] cls: TasksRepository, func: createTaskRunner, msg: created taskrunner
+2021-11-21 09:07:25,259 - INFO - [logger.py:36] cls: TasksRepository, func: createTaskRunner, msg: created taskrunner
+2021-11-21 09:07:43,146 - INFO - [logger.py:36] cls: TasksRepository, func: createTaskRunner, msg: created taskrunner
+2021-11-21 09:08:23,704 - INFO - [logger.py:36] cls: TasksRepository, func: createTaskRunner, msg: created taskrunner
+2021-11-21 09:09:53,439 - INFO - [logger.py:36] cls: TasksRepository, func: createTaskRunner, msg: created taskrunner
+2021-11-21 09:10:06,510 - INFO - [logger.py:36] cls: TasksRepository, func: createTaskRunner, msg: created taskrunner
+2021-11-21 09:10:19,455 - INFO - [logger.py:36] cls: TasksRepository, func: createTaskRunner, msg: created taskrunner
+2021-11-21 09:10:39,793 - INFO - [logger.py:36] cls: TasksRepository, func: createTaskRunner, msg: created taskrunner
+2021-11-21 09:13:02,302 - INFO - [logger.py:36] cls: TasksRepository, func: createTaskRunner, msg: created taskrunner

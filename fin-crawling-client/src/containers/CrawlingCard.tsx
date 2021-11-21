@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { useSelector } from 'react-redux';
 import ReactTooltip from 'react-tooltip';
 import Card from '../components/Card';
@@ -12,6 +12,7 @@ import CrawlingProgressList from './CrawlingProgressList';
 import CrawlingSchedulingForm from './CrawlingSchedulingForm';
 import CrawlingTaskScheduleList from './CrawlingTaskScheduleList'
 import ToggleTitle from './ToggleTitle';
+import YearCalandarList from './YearCalandarList';
 
 
 export default (props) =>{
@@ -38,7 +39,8 @@ export default (props) =>{
                 title={"Task Calendar"}
                 show={
                     <>
-                        {
+                        <YearCalandarList yearData={yearData}/>
+                        {/* {
                             Object.keys(yearData["marcap"]).map(market=>{
                                 return <div className={"mt-4"}>
                                     <p className={"mt-4 mb-2"}>{market}</p>
@@ -55,7 +57,7 @@ export default (props) =>{
                                     </YearCalendar>
                                 </div>
                             })
-                        }
+                        } */}
                     </>
                 } 
                 hide={null}

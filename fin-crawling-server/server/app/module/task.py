@@ -2,7 +2,7 @@ from __future__ import annotations
 from typing import Any, Callable, List, Optional
 from asyncio.events import AbstractEventLoop
 import asyncio
-from uvicorn.config import logger
+from app.module.logger import Logger
 
 from app.model.task import TaskPoolInfo
 
@@ -14,10 +14,11 @@ class Task(object):
         super().__init__()
         self.func = func
         self.param = param
+        self.logger = Logger("Task")
         self.loop: Optional[AbstractEventLoop] = None
 
     async def run(self, taskPool: TaskPool, pool: Pool) -> None:
-        print("run")
+        self.logger.info("run", "task run")
         if self.loop:
             self.param["taskPool"] = taskPool
             self.param["pool"] = pool
@@ -28,16 +29,19 @@ class Pool(object):
     def __init__(self) -> None:
         super().__init__()
         self.isRun = False
+        self.logger = Logger("Pool")
     
     def setTask(self, task: Task) -> None:
         self.task = task
     
     def run(self, taskPool: TaskPool) -> None:
         self.isRun = True
+        self.logger.info("run", "task pool run")
         self.poolTask = asyncio.ensure_future(self.task.run(taskPool, self))
     
     def cancel(self) -> None:
         self.isRun = False
+        self.logger.info("cancel", "task pool cancel")
         if self.poolTask and not self.poolTask.cancelled():
             self.poolTask.cancel()
         
@@ -73,6 +77,7 @@ class TaskPool(object):
 class TaskRunner(object):
     def __init__(self) -> None:
         super().__init__()
+        self.logger = Logger("TaskRunner")
         self.queue: asyncio.Queue = asyncio.Queue()
         self.loop = asyncio.get_running_loop()
         self.pool = TaskPool(notifyCallback=self.notifyRmOnPool)
@@ -88,8 +93,7 @@ class TaskRunner(object):
             })
 
     def updatePoolInfo(self) -> None:
-        print(f"poolCount:{self.pool.poolCount()}, runCount:{self.pool.runCount()}, queueCount:{self.queue.qsize()}")
-        logger.info(f"runCount:{self.pool.runCount()}, queueCount:{self.queue.qsize()}")
+        self.logger.info("updatePoolInfo", f"runCount:{self.pool.runCount()}, queueCount:{self.queue.qsize()}")
         if self.notifyCallback:
             self.notifyCallback(TaskPoolInfo(**{
                 "poolSize": self.pool.poolSize,
@@ -109,7 +113,6 @@ class TaskRunner(object):
     
     async def notifyToPool(self) -> None:
         try:
-            print(f"notifyToPool:{self.pool.poolCount()}")
             if self.queue.qsize() > 0 and (self.pool.poolSize - self.pool.poolCount()) > 0:
                 pool = self.pool.addTaskPool(Pool(), False)
                 task: Task = await asyncio.wait_for(self.queue.get(), timeout=1)
@@ -131,7 +134,7 @@ class TaskRunner(object):
             #     else:
             #         self.pool.removeTaskPool(pool, False)
         except asyncio.TimeoutError as e:
-            print(f"timeout:{str(e)}")
+            self.logger.info("notifyToPool", f"timeout:{str(e)}")
             self.pool.removeTaskPool(pool, False)
         finally:
             self.updatePoolInfo()
@@ -141,6 +144,7 @@ class TaskRunner(object):
         self.loop.create_task(self._put(task))
 
     async def _put(self, task: Task) -> None:
+        self.logger.info("_put", "task put")
         await self.queue.put(task)
         self.notifyPutOnQueue()
         

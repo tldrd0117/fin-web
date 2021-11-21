@@ -6,8 +6,8 @@ from app.repo.TasksRepository import EVENT_TASK_REPO_TASK_COMPLETE, TasksReposit
 from app.repo.StockRepository import StockRepository
 from app.module.task import Pool, Task, TaskPool
 from app.model.dto import StockUpdateState, StockCrawlingCompletedTasks, \
-    StockRunCrawling, FactorRunCrawling, StockCrawlingTasks, ListLimitData, \
-    ListLimitResponse, RunCrawling, StockCrawlingTask
+    StockRunCrawling, FactorRunCrawling, ProcessTasks, ListLimitData, \
+    ListLimitResponse, RunCrawling, ProcessTask
 from app.crawler.MarcapCrawler import MarcapCrawler
 from fastapi import WebSocket
 from app.module.socket.manager import ConnectionManager
@@ -34,13 +34,14 @@ class CrawlingService:
         for dto in dtoList:
             if dto.taskId == "marcap":
                 async def marcapTaskWorker(runDto: StockRunCrawling, pool: Pool, taskPool: TaskPool) -> None:
+                    self.logger.info("runCrawling&marcapTaskWorker", "start")
                     marcapCrawler = MarcapCrawler()
                     taskUniqueId = runDto.taskUniqueId
                     self.crawlerRepository.addCrawler(taskUniqueId, marcapCrawler)
                     self.pools[runDto.taskUniqueId] = pool
                     self.crawlerRepository.createListener(marcapCrawler.ee)
                     self.stockRepository.createListners(marcapCrawler.ee)
-                    self.logger.info(f"taskWorker:{taskUniqueId}")
+                    self.logger.info("runCrawling&marcapTaskWorker", f"taskWorker:{taskUniqueId}")
                     await asyncio.create_task(marcapCrawler.crawling(runDto))
                     taskPool.removeTaskPool(pool)
                     self.crawlerRepository.removeCrawler(taskUniqueId)
@@ -58,7 +59,7 @@ class CrawlingService:
             startDate = datetime.strptime(dto.startDateStr, "%Y%m%d")
             endDate = datetime.strptime(dto.endDateStr, "%Y%m%d")
             taskDates = [(startDate + timedelta(days=x)).strftime("%Y%m%d") for x in range((endDate - startDate).days + 1)]
-            task = StockCrawlingTask(**{
+            task = ProcessTask(**{
                 "market": dto.market,
                 "startDateStr": dto.startDateStr,
                 "endDateStr": dto.endDateStr,
@@ -97,7 +98,7 @@ class CrawlingService:
         self.tasksRepository.taskEventEmitter.on(EVENT_TASK_REPO_UPDATE_TASKS, self.updateTasks)
         self.tasksRepository.taskEventEmitter.on(EVENT_TASK_REPO_TASK_COMPLETE, self.completeTask)
     
-    def updateTasks(self, tasks: StockCrawlingTasks) -> None:
+    def updateTasks(self, tasks: ProcessTasks) -> None:
         # logger.info("tasks:"+tasks.json())
         self.manager.sendBroadCast(RES_SOCKET_CRAWLING_RUN_CRAWLING, tasks.dict())
     

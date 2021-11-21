@@ -43,7 +43,7 @@ userService = UserService()
 crawlingService = CrawlingService(manager, tasksRepository, crawlerRepository, stockRepository)
 taskService = TaskService(manager, tasksRepository, taskScheduler, crawlingService)
 stockService = StockService(stockRepository)
-factorService = FactorService(manager, factorRepository)
+factorService = FactorService(manager, factorRepository, tasksRepository, taskService)
 
 taskSocketRouter = TaskSocketRouter(crawlingService, taskService, manager)
 crawlingSocketRouter = CrawlingSocketRouter(crawlingService, manager)

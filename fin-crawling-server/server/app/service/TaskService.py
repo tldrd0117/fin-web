@@ -13,6 +13,7 @@ from app.service.CrawlingService import CrawlingService
 from uvicorn.config import logger
 import uuid
 
+RES_SOCKET_TASK_FETCH_TASKS = "task/fetchTasksRes"
 RES_SOCKET_TASK_FETCH_TASK_STATE = "task/fetchTaskStateRes"
 RES_SOCKET_TASK_UPDATE_TASK_STATE = "task/updateTaskStateRes"
 RES_SOCKET_TASK_FETCH_TASK_SCHEDULE = "taskSchedule/fetchTaskScheduleRes"
@@ -96,6 +97,9 @@ class TaskService:
     def removeTaskSchedule(self, id: str, webSocket: WebSocket) -> None:
         self.taskScheduler.removeJob(id)
         self.getTaskSchedule(webSocket, True)
+    
+    def fetchTasks(self) -> None:
+        self.manager.sendBroadCast(RES_SOCKET_TASK_FETCH_TASKS, self.tasksRepository.tasksdto.dict())
         
     def getTaskState(self, taskId: str, webSocket: WebSocket) -> None:
         data: YearData = self.tasksRepository.getAllTaskState(taskId)

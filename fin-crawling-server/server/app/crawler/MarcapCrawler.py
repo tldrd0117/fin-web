@@ -22,7 +22,6 @@ from app.module.logger import Logger
 
 # from pathlib import Path
 from app.model.dto import StockCrawlingDownloadTask, StockRunCrawling, StockMarketCapitalResult, StockMarketCapital
-from uvicorn.config import logger
 
 T = TypeVar("T")
 
@@ -78,7 +77,7 @@ class MarcapCrawler(object):
     async def crawling(self, dto: StockRunCrawling) -> None:
         driver = None
         uuid = self.createUUID()
-        logger.info(uuid)
+        self.logger.info("crawling",uuid)
         downloadObserver = None
         try:
             self.ee.emit(EVENT_MARCAP_CRAWLING_ON_CONNECTING_WEBDRIVER, dto)
@@ -121,14 +120,14 @@ class MarcapCrawler(object):
                 date = date + timedelta(days=1)
         except asyncio.CancelledError as ce:
             print(f"CancelledError: {str(ce)}")
-            logger.error(f"CancelledError: {str(ce)}")
+            self.logger.error("crawling",f"CancelledError: {str(ce)}")
             self.ee.emit(EVENT_MARCAP_CRAWLING_ON_CANCEL, dto)
         except Exception as e:
             self.isError = True
             self.ee.emit(EVENT_MARCAP_CRAWLING_ON_ERROR, dto)
             print(f"error: {str(e)}")
             print(traceback.format_exc())
-            logger.error(f"error: {str(e)}")
+            self.logger.error("crawling", f"error: {traceback.format_exc()}")
         finally:
             if downloadObserver:
                 downloadObserver.stopObserver()
@@ -136,7 +135,7 @@ class MarcapCrawler(object):
                 driver.quit()
     
     async def downloadData(self, downloadTask: StockCrawlingDownloadTask, downloadObserver: DownloadObserver, driver: WebDriver) -> None:
-        logger.info("downloadData")
+        self.logger.info("downloadData")
         if driver is None:
             return
         # pymitter
@@ -157,15 +156,14 @@ class MarcapCrawler(object):
             after = driver.execute_script('return $(".CI-MDI-UNIT-TIME").text()')
             await asyncio.sleep(0.5)
         #     driver.implicitly_wait(1)
-        logger.info("before:"+before)
-        logger.info("after:"+after)
+        print("before:"+before)
+        print("after:"+after)
         await asyncio.sleep(3)
         WebDriverWait(driver, timeout=10, poll_frequency=2).until(EC.element_to_be_clickable((By.CSS_SELECTOR, "*[title='다운로드 팝업']")))
         driver.execute_script("$('[title=\"다운로드 팝업\"]').click()")
         WebDriverWait(driver, timeout=10, poll_frequency=2).until(EC.element_to_be_clickable((By.CSS_SELECTOR, "*[data-type='csv']")))
         driver.execute_script("$(\"[data-type='csv']\").click()")
         print("wait:"+downloadTask.dateStr)
-        logger.info("wait:"+downloadTask.dateStr)
         self.isLock = True
 
         mainThreadLoop = asyncio.get_running_loop()
@@ -187,7 +185,7 @@ class MarcapCrawler(object):
             await asyncio.sleep(1, loop=mainThreadLoop)
             self.logger.info("downloadData", f"isLock:{str(self.isLock)} timeout:{timeout} taskUniqueId: {downloadTask.taskUniqueId}")
             print(f"isLock:{str(self.isLock)} timeout:{timeout}")
-            logger.info(f"isLock:{str(self.isLock)} timeout:{timeout}")
+            self.logger.info(f"isLock:{str(self.isLock)} timeout:{timeout}")
     
     def convertFileToDto(self, path: str, dto: StockMarketCapitalResult) -> None:
         lines = []
@@ -272,13 +270,12 @@ class MarcapCrawler(object):
             self.logger.info("parseFile", f"success, {downloadTask.taskUniqueId}")
         except Exception as e:
             retdto.result = "fail"
-            retdto.errorMsg = str(e)
-            logger.error(str(e))
+            retdto.errorMsg = traceback.format_exc()
             self.ee.emit(EVENT_MARCAP_CRAWLING_ON_PARSING_COMPLETE, isSuccess, retdto, downloadTask)
             self.isLock = False
-            self.logger.error("parseFile", f"fail, {downloadTask.taskUniqueId} err: {str(e)}")
+            self.logger.error("parseFile", f"fail, {downloadTask.taskUniqueId} error: {traceback.format_exc()}")
         finally:
-            logger.info("parseFile...")
+            self.logger.info("parseFile...")
 
     def changeCharSet(self, path: str) -> None:
         lines = None

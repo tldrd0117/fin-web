@@ -1,9 +1,9 @@
 
-from typing import List
+from typing import Dict, List
 from app.datasource.FactorMongoDataSource import FactorMongoDataSource
 from app.datasource.FactorFileDataSource import FactorFileDataSource
 from app.module.logger import Logger
-from app.model.dto import KrxFactor
+from app.model.dao import FactorDao
 
 
 class FactorRepository(object):
@@ -13,15 +13,10 @@ class FactorRepository(object):
         self.filed = filed
         self.logger = Logger("FactorRepository")
     
-    def getFactorsInFile(self) -> List[KrxFactor]:
-        data = self.filed.loadFactorMerge()
-        return list(map(lambda d: KrxFactor(**{
-            "code": d["종목코드"],
-            "name": d["종목명"],
-            "type": "year",
-            "key": d["데이터명"],
-            "value": (d["데이터값"] * 1000) if d["단위"] == "천원" else d["데이터값"]
-        }), data))
-    
-    def insertFactor(self, li: List[KrxFactor]) -> None:
+    # 파일에 있는 팩터 데이터를 읽어온다.
+    def getFactorsInFile(self) -> Dict:
+        return self.filed.loadFactorMerge()
+        
+    # 팩터 데이터를 db에 저장한다.
+    def insertFactor(self, li: List[FactorDao]) -> None:
         self.mongod.insertFactor(li)

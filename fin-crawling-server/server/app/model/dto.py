@@ -42,6 +42,11 @@ class RunCrawling(BaseModel):
     taskUniqueId: str
 
 
+class RunFactorFileConvert(BaseModel):
+    taskId: str
+    taskUniqueId: str
+
+
 class FactorRunCrawling(BaseModel):
     market: str
     year: str
@@ -89,7 +94,7 @@ class StockCrawlingDownloadTask(BaseModel):
     taskUniqueId: str
 
 
-class StockCrawlingTask(BaseModel):
+class ProcessTask(BaseModel):
     count: int = 0
     successCount: int = 0
     failCount: int = 0
@@ -108,7 +113,7 @@ class StockCrawlingTask(BaseModel):
     errMsg: str = ""
 
 
-class StockCrawlingTasks(BaseModel):
+class ProcessTasks(BaseModel):
     tasks: dict = dict()
     taskIds: List[str] = []
 
@@ -153,5 +158,6 @@ class KrxFactor(BaseModel):
     code: str
     name: str
     type: str
+    year: str
     key: str
     value: str

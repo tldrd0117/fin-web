@@ -79,11 +79,14 @@ const YearCalendar: React.FC<Props> = ({
 
   const fetchData = useCallback(() => {
     setError(null);
-    if(graphs.length > 0){
+    if(graphs.length == years.length){
       console.log("updateGraphData",task,years)
       setLoading(true);
       updateGraphData(task, {years, lastYear: fullYear}, graphs)
-      .then(setGraphs)
+      .then((data)=>{
+          console.log("parsed:", data);
+          setGraphs(data)
+        })
       .then(() => {
         console.log("updateGraphData Graph: ", graphs)
       })
@@ -96,18 +99,21 @@ const YearCalendar: React.FC<Props> = ({
         years,
         lastYear: fullYear,
       })
-        .then(setGraphs)
+        .then((data)=>{
+          console.log("parsed:", data);
+          setGraphs(data)
+        })
         .then(() => {
           console.log("getGraphDataTimes:"+(Date.now() - now))
         })
         .catch(setError);
     }
-  }, [task.lastUpdateYear]);
+  }, [task.lastUpdateYear, years.length]);
   // Refetch if relevant props change
   useEffect(() => {
       console.log("fetchData")
       fetchData();
-  }, [task.lastUpdateYear]);
+  }, [task.lastUpdateYear, years.length]);
 
   function getTheme(): Theme {
     if (theme) {

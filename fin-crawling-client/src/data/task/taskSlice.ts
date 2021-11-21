@@ -52,7 +52,7 @@ const taskSlice = createSlice({
                         count: 1,
                         level: (v.ret+1)
                     }));
-                    state.yearData[taskId][market].yearArray = Object.keys(payload.yearData[taskId][market].years).sort((a,b)=>Number(a)-Number(b))
+                    state.yearData[taskId][market].yearArray = Object.keys(payload.yearData[taskId][market].years).sort((a,b)=>Number(b)-Number(a))
                 })
 
             })
