@@ -1,13 +1,16 @@
 from app.repo.FactorRepository import FactorRepository
-from app.repo.TasksRepository import TasksRepository
+from app.repo.TasksRepository import TasksRepository, EVENT_TASK_REPO_TASK_COMPLETE, EVENT_TASK_REPO_UPDATE_TASKS
 from app.module.socket.manager import ConnectionManager
 from app.service.TaskService import TaskService
 from app.model.dao import FactorDao
-from app.model.dto import ProcessTask, RunFactorFileConvert
+from app.model.dto import ListLimitData, ProcessTask, RunFactorFileConvert, StockCrawlingCompletedTasks
 
 RES_SOCKET_FACTOR_MOVE_FACTOR_FILE_TO_DB_START = "factor/convertFileToDbStart"
 RES_SOCKET_FACTOR_UPDATE_STATE_RES = "factor/updateConvertStateRes"
 RES_SOCKET_FACTOR_MOVE_FACTOR_FILE_TO_DB_END = "factor/convertFileToDbEnd"
+
+RES_SOCKET_FACTOR_FETCH_COMPLETED_TASK = "factor/fetchCompletedTaskRes"
+RES_SOCKET_FACTOR_FETCH_TASKS = "factor/fetchTasksRes"
 
 
 class FactorService:
@@ -49,3 +52,17 @@ class FactorService:
         task.state = "complete"
         self.tasksRepository.completeFactorConvertFileToDbTask(task)
     
+    def createTaskRepositoryListener(self) -> None:
+        self.tasksRepository.taskEventEmitter.on(EVENT_TASK_REPO_TASK_COMPLETE, self.completeTask)
+        self.tasksRepository.taskEventEmitter.on(EVENT_TASK_REPO_UPDATE_TASKS, self.updateTasks)
+    
+    def updateTasks(self) -> None:
+        self.manager.sendBroadCast(RES_SOCKET_FACTOR_FETCH_TASKS, self.tasksRepository.tasksdto.dict())
+    
+    def completeTask(self) -> None:
+        dto = ListLimitData(**{
+            "offset": 0,
+            "limit": 20
+        })
+        tasks: StockCrawlingCompletedTasks = self.tasksRepository.getCompletedTask(dto)
+        self.manager.sendBroadCast(RES_SOCKET_FACTOR_FETCH_COMPLETED_TASK, tasks.dict())

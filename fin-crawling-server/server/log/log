@@ -198,3 +198,55 @@
 2021-11-21 09:10:19,455 - INFO - [logger.py:36] cls: TasksRepository, func: createTaskRunner, msg: created taskrunner
 2021-11-21 09:10:39,793 - INFO - [logger.py:36] cls: TasksRepository, func: createTaskRunner, msg: created taskrunner
 2021-11-21 09:13:02,302 - INFO - [logger.py:36] cls: TasksRepository, func: createTaskRunner, msg: created taskrunner
+2021-11-21 13:14:15,237 - INFO - [logger.py:36] cls: TasksRepository, func: createTaskRunner, msg: created taskrunner
+2021-11-21 13:14:27,846 - INFO - [logger.py:36] cls: TasksRepository, func: getCompletedTask, msg: count: 0
+2021-11-21 13:14:40,067 - INFO - [logger.py:36] cls: TasksRepository, func: getCompletedTask, msg: count: 0
+2021-11-21 13:14:42,922 - INFO - [logger.py:36] cls: TasksRepository, func: getCompletedTask, msg: count: 0
+2021-11-21 13:14:44,061 - INFO - [logger.py:36] cls: TasksRepository, func: getCompletedTask, msg: count: 0
+2021-11-21 13:14:56,282 - INFO - [logger.py:36] cls: TasksRepository, func: getCompletedTask, msg: count: 0
+2021-11-21 13:15:02,448 - INFO - [logger.py:36] cls: TasksRepository, func: addTask, msg: marcapkospi20211119202111191f23b66b-88c4-40d7-842c-92c7dfd7d6c3
+2021-11-21 13:15:02,448 - INFO - [logger.py:36] cls: CrawlingService, func: runMarcapTask, msg: runTask {"count": 1, "successCount": 0, "failCount": 0, "restCount": 1, "failTasks": [], "state": "find worker", "tasks": ["20211119"], "tasksRet": [0], "index": 0, "market": "kospi", "startDateStr": "20211119", "endDateStr": "20211119", "taskUniqueId": "marcapkospi20211119202111191f23b66b-88c4-40d7-842c-92c7dfd7d6c3", "percent": 0.0, "taskId": "marcap", "errMsg": ""}
+2021-11-21 13:15:02,449 - INFO - [logger.py:36] cls: TaskRunner, func: _put, msg: task put
+2021-11-21 13:15:02,449 - INFO - [logger.py:36] cls: Pool, func: run, msg: task pool run
+2021-11-21 13:15:02,449 - INFO - [logger.py:36] cls: TaskRunner, func: updatePoolInfo, msg: runCount:1, queueCount:0
+2021-11-21 13:15:02,449 - INFO - [logger.py:36] cls: TasksRepository, func: updatePoolInfo, msg: {"poolSize": 8, "poolCount": 1, "runCount": 1, "queueCount": 0}
+2021-11-21 13:15:02,449 - INFO - [logger.py:36] cls: Task, func: run, msg: task run
+2021-11-21 13:15:02,450 - INFO - [logger.py:36] cls: CrawlingService, func: runCrawling&marcapTaskWorker, msg: start
+2021-11-21 13:15:02,450 - INFO - [logger.py:36] cls: CrawlingService, func: runCrawling&marcapTaskWorker, msg: taskWorker:marcapkospi20211119202111191f23b66b-88c4-40d7-842c-92c7dfd7d6c3
+2021-11-21 13:15:02,450 - INFO - [logger.py:36] cls: MarcapCrawler, func: crawling, msg: 83b4411f-9d9f-4c0b-8902-c13f4540c05e
+2021-11-21 13:15:02,450 - INFO - [logger.py:36] cls: TasksRepository, func: updateTask, msg: marcapkospi20211119202111191f23b66b-88c4-40d7-842c-92c7dfd7d6c3
+2021-11-21 13:15:02,452 - INFO - [logger.py:36] cls: CrawlerRepository, func: onConnectingWebDriver, msg: marcapkospi20211119202111191f23b66b-88c4-40d7-842c-92c7dfd7d6c3
+2021-11-21 13:15:02,461 - INFO - [logger.py:36] cls: MarcapCrawler, func: crawling, msg: create observer and start
+2021-11-21 13:15:06,517 - INFO - [logger.py:36] cls: TasksRepository, func: fail, msg: marcapkospi20211119202111191f23b66b-88c4-40d7-842c-92c7dfd7d6c3
+2021-11-21 13:15:06,517 - INFO - [logger.py:36] cls: TasksRepository, func: updateTask, msg: marcapkospi20211119202111191f23b66b-88c4-40d7-842c-92c7dfd7d6c3
+2021-11-21 13:15:06,518 - ERROR - [logger.py:40] cls: CrawlerRepository, func: onError, msg marcapkospi20211119202111191f23b66b-88c4-40d7-842c-92c7dfd7d6c3
+2021-11-21 13:15:06,521 - ERROR - [logger.py:40] cls: MarcapCrawler, func: crawling, msg error: Traceback (most recent call last):
+  File "/usr/src/app/./app/crawler/MarcapCrawler.py", line 91, in crawling
+    driver = self.connectWebDriver(dto.driverAddr, uuid)
+  File "/usr/src/app/./app/crawler/MarcapCrawler.py", line 57, in connectWebDriver
+    driver = webdriver.Remote(
+  File "/root/.cache/pypoetry/virtualenvs/fin-crawling-fast-api-VA82Wl8V-py3.9/lib/python3.9/site-packages/selenium/webdriver/remote/webdriver.py", line 157, in __init__
+    self.start_session(capabilities, browser_profile)
+  File "/root/.cache/pypoetry/virtualenvs/fin-crawling-fast-api-VA82Wl8V-py3.9/lib/python3.9/site-packages/selenium/webdriver/remote/webdriver.py", line 252, in start_session
+    response = self.execute(Command.NEW_SESSION, parameters)
+  File "/root/.cache/pypoetry/virtualenvs/fin-crawling-fast-api-VA82Wl8V-py3.9/lib/python3.9/site-packages/selenium/webdriver/remote/webdriver.py", line 321, in execute
+    self.error_handler.check_response(response)
+  File "/root/.cache/pypoetry/virtualenvs/fin-crawling-fast-api-VA82Wl8V-py3.9/lib/python3.9/site-packages/selenium/webdriver/remote/errorhandler.py", line 130, in check_response
+    status = value["status"]
+KeyError: 'status'
+
+2021-11-21 13:15:07,462 - INFO - [logger.py:36] cls: TaskRunner, func: updatePoolInfo, msg: runCount:0, queueCount:0
+2021-11-21 13:15:07,462 - INFO - [logger.py:36] cls: TasksRepository, func: updatePoolInfo, msg: {"poolSize": 8, "poolCount": 0, "runCount": 0, "queueCount": 0}
+2021-11-21 13:17:04,030 - INFO - [logger.py:36] cls: TasksRepository, func: deleteTask, msg: marcapkospi20211119202111191f23b66b-88c4-40d7-842c-92c7dfd7d6c3
+2021-11-21 13:26:04,155 - INFO - [logger.py:36] cls: TasksRepository, func: createTaskRunner, msg: created taskrunner
+2021-11-21 13:26:18,964 - INFO - [logger.py:36] cls: TasksRepository, func: createTaskRunner, msg: created taskrunner
+2021-11-21 13:27:32,232 - INFO - [logger.py:36] cls: TasksRepository, func: createTaskRunner, msg: created taskrunner
+2021-11-21 13:27:40,527 - INFO - [logger.py:36] cls: TasksRepository, func: createTaskRunner, msg: created taskrunner
+2021-11-21 13:27:47,262 - INFO - [logger.py:36] cls: TasksRepository, func: createTaskRunner, msg: created taskrunner
+2021-11-21 13:29:36,635 - INFO - [logger.py:36] cls: TasksRepository, func: createTaskRunner, msg: created taskrunner
+2021-11-21 13:29:44,868 - INFO - [logger.py:36] cls: TasksRepository, func: createTaskRunner, msg: created taskrunner
+2021-11-21 13:44:08,016 - INFO - [logger.py:36] cls: TasksRepository, func: createTaskRunner, msg: created taskrunner
+2021-11-21 13:47:41,481 - INFO - [logger.py:36] cls: TasksRepository, func: createTaskRunner, msg: created taskrunner
+2021-11-21 13:47:46,691 - INFO - [logger.py:36] cls: TasksRepository, func: createTaskRunner, msg: created taskrunner
+2021-11-21 13:49:27,287 - INFO - [logger.py:36] cls: TasksRepository, func: createTaskRunner, msg: created taskrunner
+2021-11-21 13:49:37,013 - INFO - [logger.py:36] cls: TasksRepository, func: createTaskRunner, msg: created taskrunner

@@ -95,8 +95,8 @@ class CrawlingService:
         self.manager.send(RES_SOCKET_CRAWLING_FETCH_COMPLETED_TASK, tasks.dict(), webSocket)
 
     def createTaskRepositoryListener(self) -> None:
-        self.tasksRepository.taskEventEmitter.on(EVENT_TASK_REPO_UPDATE_TASKS, self.updateTasks)
         self.tasksRepository.taskEventEmitter.on(EVENT_TASK_REPO_TASK_COMPLETE, self.completeTask)
+        self.tasksRepository.taskEventEmitter.on(EVENT_TASK_REPO_UPDATE_TASKS, self.updateTasks)
     
     def updateTasks(self, tasks: ProcessTasks) -> None:
         # logger.info("tasks:"+tasks.json())

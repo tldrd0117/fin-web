@@ -1,0 +1,253 @@
+2021-11-15 13:41:25,595 - INFO - [logger.py:32] cls: MongoDataSource, func: __init__, msg: db connecting... mongodb://root:example@mongo:27017
+2021-11-15 13:41:48,627 - INFO - [logger.py:32] cls: MongoDataSource, func: started, msg: Command saslContinue with request id 1957747793 started on server ('mongo', 27017)
+2021-11-15 13:41:48,627 - INFO - [logger.py:32] cls: MongoDataSource, func: succeeded, msg: Command saslContinue with request id 1957747793 on server ('mongo', 27017) succeeded in 171 microseconds
+2021-11-15 13:41:48,627 - INFO - [logger.py:32] cls: MongoDataSource, func: started, msg: Command buildinfo with request id 424238335 started on server ('mongo', 27017)
+2021-11-15 13:41:48,627 - INFO - [logger.py:32] cls: MongoDataSource, func: succeeded, msg: Command buildinfo with request id 424238335 on server ('mongo', 27017) succeeded in 161 microseconds
+2021-11-15 13:41:48,628 - INFO - [logger.py:32] cls: MongoDataSource, func: started, msg: Command listIndexes with request id 719885386 started on server ('mongo', 27017)
+2021-11-15 13:41:48,628 - INFO - [logger.py:32] cls: MongoDataSource, func: succeeded, msg: Command listIndexes with request id 719885386 on server ('mongo', 27017) succeeded in 195 microseconds
+2021-11-15 13:41:48,628 - INFO - [logger.py:32] cls: MongoDataSource, func: started, msg: Command createIndexes with request id 1649760492 started on server ('mongo', 27017)
+2021-11-15 13:41:48,628 - INFO - [logger.py:32] cls: MongoDataSource, func: succeeded, msg: Command createIndexes with request id 1649760492 on server ('mongo', 27017) succeeded in 166 microseconds
+2021-11-15 13:41:48,629 - INFO - [logger.py:32] cls: MongoDataSource, func: started, msg: Command createIndexes with request id 596516649 started on server ('mongo', 27017)
+2021-11-15 13:41:48,629 - INFO - [logger.py:32] cls: MongoDataSource, func: succeeded, msg: Command createIndexes with request id 596516649 on server ('mongo', 27017) succeeded in 143 microseconds
+2021-11-15 13:41:48,629 - INFO - [logger.py:32] cls: MongoDataSource, func: started, msg: Command listIndexes with request id 1189641421 started on server ('mongo', 27017)
+2021-11-15 13:41:48,629 - INFO - [logger.py:32] cls: MongoDataSource, func: succeeded, msg: Command listIndexes with request id 1189641421 on server ('mongo', 27017) succeeded in 163 microseconds
+2021-11-15 13:41:48,629 - INFO - [logger.py:32] cls: MongoDataSource, func: __init__, msg: db connection seccess
+2021-11-15 13:41:48,630 - INFO - [logger.py:32] cls: TasksRepository, func: createTaskRunner, msg: created taskrunner
+2021-11-15 13:41:48,645 - INFO - [logger.py:32] cls: MongoDataSource, func: started, msg: Command createIndexes with request id 1025202362 started on server ('mongo', 27017)
+2021-11-15 13:41:48,645 - INFO - [logger.py:32] cls: MongoDataSource, func: succeeded, msg: Command createIndexes with request id 1025202362 on server ('mongo', 27017) succeeded in 238 microseconds
+2021-11-15 13:41:48,646 - INFO - [logger.py:32] cls: MongoDataSource, func: started, msg: Command find with request id 1350490027 started on server ('mongo', 27017)
+2021-11-15 13:41:48,647 - INFO - [logger.py:32] cls: MongoDataSource, func: succeeded, msg: Command find with request id 1350490027 on server ('mongo', 27017) succeeded in 918 microseconds
+2021-11-15 13:41:48,647 - INFO - [logger.py:32] cls: MongoDataSource, func: started, msg: Command find with request id 783368690 started on server ('mongo', 27017)
+2021-11-15 13:41:48,648 - INFO - [logger.py:32] cls: MongoDataSource, func: succeeded, msg: Command find with request id 783368690 on server ('mongo', 27017) succeeded in 710 microseconds
+2021-11-15 13:41:48,648 - INFO - [logger.py:32] cls: MongoDataSource, func: started, msg: Command find with request id 1102520059 started on server ('mongo', 27017)
+2021-11-15 13:41:48,649 - INFO - [logger.py:32] cls: MongoDataSource, func: succeeded, msg: Command find with request id 1102520059 on server ('mongo', 27017) succeeded in 196 microseconds
+2021-11-15 14:34:41,476 - INFO - [logger.py:32] cls: MongoDataSource, func: __init__, msg: db connecting... mongodb://root:example@mongo:27017
+2021-11-15 14:34:41,482 - INFO - [logger.py:32] cls: MongoDataSource, func: started, msg: Command saslContinue with request id 1957747793 started on server ('mongo', 27017)
+2021-11-15 14:34:41,483 - INFO - [logger.py:32] cls: MongoDataSource, func: succeeded, msg: Command saslContinue with request id 1957747793 on server ('mongo', 27017) succeeded in 183 microseconds
+2021-11-15 14:34:41,483 - INFO - [logger.py:32] cls: MongoDataSource, func: started, msg: Command buildinfo with request id 424238335 started on server ('mongo', 27017)
+2021-11-15 14:34:41,483 - INFO - [logger.py:32] cls: MongoDataSource, func: succeeded, msg: Command buildinfo with request id 424238335 on server ('mongo', 27017) succeeded in 146 microseconds
+2021-11-15 14:34:41,483 - INFO - [logger.py:32] cls: MongoDataSource, func: started, msg: Command listIndexes with request id 719885386 started on server ('mongo', 27017)
+2021-11-15 14:34:41,484 - INFO - [logger.py:32] cls: MongoDataSource, func: succeeded, msg: Command listIndexes with request id 719885386 on server ('mongo', 27017) succeeded in 290 microseconds
+2021-11-15 14:34:41,484 - INFO - [logger.py:32] cls: MongoDataSource, func: started, msg: Command createIndexes with request id 1649760492 started on server ('mongo', 27017)
+2021-11-15 14:34:41,484 - INFO - [logger.py:32] cls: MongoDataSource, func: succeeded, msg: Command createIndexes with request id 1649760492 on server ('mongo', 27017) succeeded in 187 microseconds
+2021-11-15 14:34:41,485 - INFO - [logger.py:32] cls: MongoDataSource, func: started, msg: Command createIndexes with request id 596516649 started on server ('mongo', 27017)
+2021-11-15 14:34:41,485 - INFO - [logger.py:32] cls: MongoDataSource, func: succeeded, msg: Command createIndexes with request id 596516649 on server ('mongo', 27017) succeeded in 154 microseconds
+2021-11-15 14:34:41,485 - INFO - [logger.py:32] cls: MongoDataSource, func: started, msg: Command listIndexes with request id 1189641421 started on server ('mongo', 27017)
+2021-11-15 14:34:41,485 - INFO - [logger.py:32] cls: MongoDataSource, func: succeeded, msg: Command listIndexes with request id 1189641421 on server ('mongo', 27017) succeeded in 176 microseconds
+2021-11-15 14:34:41,485 - INFO - [logger.py:32] cls: MongoDataSource, func: __init__, msg: db connection seccess
+2021-11-15 14:34:41,486 - INFO - [logger.py:32] cls: TasksRepository, func: createTaskRunner, msg: created taskrunner
+2021-11-15 14:34:41,499 - INFO - [logger.py:32] cls: MongoDataSource, func: started, msg: Command createIndexes with request id 1025202362 started on server ('mongo', 27017)
+2021-11-15 14:34:41,499 - INFO - [logger.py:32] cls: MongoDataSource, func: succeeded, msg: Command createIndexes with request id 1025202362 on server ('mongo', 27017) succeeded in 192 microseconds
+2021-11-15 14:34:41,500 - INFO - [logger.py:32] cls: MongoDataSource, func: started, msg: Command find with request id 1350490027 started on server ('mongo', 27017)
+2021-11-15 14:34:41,500 - INFO - [logger.py:32] cls: MongoDataSource, func: succeeded, msg: Command find with request id 1350490027 on server ('mongo', 27017) succeeded in 225 microseconds
+2021-11-15 14:34:41,500 - INFO - [logger.py:32] cls: MongoDataSource, func: started, msg: Command find with request id 783368690 started on server ('mongo', 27017)
+2021-11-15 14:34:41,501 - INFO - [logger.py:32] cls: MongoDataSource, func: succeeded, msg: Command find with request id 783368690 on server ('mongo', 27017) succeeded in 209 microseconds
+2021-11-15 14:34:41,501 - INFO - [logger.py:32] cls: MongoDataSource, func: started, msg: Command find with request id 1102520059 started on server ('mongo', 27017)
+2021-11-15 14:34:41,501 - INFO - [logger.py:32] cls: MongoDataSource, func: succeeded, msg: Command find with request id 1102520059 on server ('mongo', 27017) succeeded in 223 microseconds
+2021-11-15 14:34:55,711 - INFO - [logger.py:32] cls: MongoDataSource, func: __init__, msg: db connecting... mongodb://root:example@mongo:27017
+2021-11-15 14:34:55,718 - INFO - [logger.py:32] cls: MongoDataSource, func: started, msg: Command saslContinue with request id 1957747793 started on server ('mongo', 27017)
+2021-11-15 14:34:55,718 - INFO - [logger.py:32] cls: MongoDataSource, func: succeeded, msg: Command saslContinue with request id 1957747793 on server ('mongo', 27017) succeeded in 247 microseconds
+2021-11-15 14:34:55,719 - INFO - [logger.py:32] cls: MongoDataSource, func: started, msg: Command buildinfo with request id 424238335 started on server ('mongo', 27017)
+2021-11-15 14:34:55,719 - INFO - [logger.py:32] cls: MongoDataSource, func: succeeded, msg: Command buildinfo with request id 424238335 on server ('mongo', 27017) succeeded in 212 microseconds
+2021-11-15 14:34:55,719 - INFO - [logger.py:32] cls: MongoDataSource, func: started, msg: Command listIndexes with request id 719885386 started on server ('mongo', 27017)
+2021-11-15 14:34:55,720 - INFO - [logger.py:32] cls: MongoDataSource, func: succeeded, msg: Command listIndexes with request id 719885386 on server ('mongo', 27017) succeeded in 278 microseconds
+2021-11-15 14:34:55,720 - INFO - [logger.py:32] cls: MongoDataSource, func: started, msg: Command createIndexes with request id 1649760492 started on server ('mongo', 27017)
+2021-11-15 14:34:55,720 - INFO - [logger.py:32] cls: MongoDataSource, func: succeeded, msg: Command createIndexes with request id 1649760492 on server ('mongo', 27017) succeeded in 192 microseconds
+2021-11-15 14:34:55,720 - INFO - [logger.py:32] cls: MongoDataSource, func: started, msg: Command createIndexes with request id 596516649 started on server ('mongo', 27017)
+2021-11-15 14:34:55,721 - INFO - [logger.py:32] cls: MongoDataSource, func: succeeded, msg: Command createIndexes with request id 596516649 on server ('mongo', 27017) succeeded in 158 microseconds
+2021-11-15 14:34:55,721 - INFO - [logger.py:32] cls: MongoDataSource, func: started, msg: Command listIndexes with request id 1189641421 started on server ('mongo', 27017)
+2021-11-15 14:34:55,721 - INFO - [logger.py:32] cls: MongoDataSource, func: succeeded, msg: Command listIndexes with request id 1189641421 on server ('mongo', 27017) succeeded in 171 microseconds
+2021-11-15 14:34:55,721 - INFO - [logger.py:32] cls: MongoDataSource, func: __init__, msg: db connection seccess
+2021-11-15 14:34:55,722 - INFO - [logger.py:32] cls: TasksRepository, func: createTaskRunner, msg: created taskrunner
+2021-11-15 14:34:55,736 - INFO - [logger.py:32] cls: MongoDataSource, func: started, msg: Command createIndexes with request id 1025202362 started on server ('mongo', 27017)
+2021-11-15 14:34:55,736 - INFO - [logger.py:32] cls: MongoDataSource, func: succeeded, msg: Command createIndexes with request id 1025202362 on server ('mongo', 27017) succeeded in 279 microseconds
+2021-11-15 14:34:55,736 - INFO - [logger.py:32] cls: MongoDataSource, func: started, msg: Command find with request id 1350490027 started on server ('mongo', 27017)
+2021-11-15 14:34:55,737 - INFO - [logger.py:32] cls: MongoDataSource, func: succeeded, msg: Command find with request id 1350490027 on server ('mongo', 27017) succeeded in 248 microseconds
+2021-11-15 14:34:55,737 - INFO - [logger.py:32] cls: MongoDataSource, func: started, msg: Command find with request id 783368690 started on server ('mongo', 27017)
+2021-11-15 14:34:55,737 - INFO - [logger.py:32] cls: MongoDataSource, func: succeeded, msg: Command find with request id 783368690 on server ('mongo', 27017) succeeded in 254 microseconds
+2021-11-15 14:34:55,738 - INFO - [logger.py:32] cls: MongoDataSource, func: started, msg: Command find with request id 1102520059 started on server ('mongo', 27017)
+2021-11-15 14:34:55,738 - INFO - [logger.py:32] cls: MongoDataSource, func: succeeded, msg: Command find with request id 1102520059 on server ('mongo', 27017) succeeded in 208 microseconds
+2021-11-15 14:58:49,582 - INFO - [logger.py:32] cls: MongoDataSource, func: __init__, msg: db connecting... mongodb://root:example@mongo:27017
+2021-11-15 14:58:49,588 - INFO - [logger.py:32] cls: MongoDataSource, func: started, msg: Command saslContinue with request id 1957747793 started on server ('mongo', 27017)
+2021-11-15 14:58:49,588 - INFO - [logger.py:32] cls: MongoDataSource, func: succeeded, msg: Command saslContinue with request id 1957747793 on server ('mongo', 27017) succeeded in 190 microseconds
+2021-11-15 14:58:49,589 - INFO - [logger.py:32] cls: MongoDataSource, func: started, msg: Command buildinfo with request id 424238335 started on server ('mongo', 27017)
+2021-11-15 14:58:49,589 - INFO - [logger.py:32] cls: MongoDataSource, func: succeeded, msg: Command buildinfo with request id 424238335 on server ('mongo', 27017) succeeded in 165 microseconds
+2021-11-15 14:58:49,589 - INFO - [logger.py:32] cls: MongoDataSource, func: started, msg: Command listIndexes with request id 719885386 started on server ('mongo', 27017)
+2021-11-15 14:58:49,589 - INFO - [logger.py:32] cls: MongoDataSource, func: succeeded, msg: Command listIndexes with request id 719885386 on server ('mongo', 27017) succeeded in 201 microseconds
+2021-11-15 14:58:49,590 - INFO - [logger.py:32] cls: MongoDataSource, func: started, msg: Command createIndexes with request id 1649760492 started on server ('mongo', 27017)
+2021-11-15 14:58:49,590 - INFO - [logger.py:32] cls: MongoDataSource, func: succeeded, msg: Command createIndexes with request id 1649760492 on server ('mongo', 27017) succeeded in 170 microseconds
+2021-11-15 14:58:49,590 - INFO - [logger.py:32] cls: MongoDataSource, func: started, msg: Command createIndexes with request id 596516649 started on server ('mongo', 27017)
+2021-11-15 14:58:49,591 - INFO - [logger.py:32] cls: MongoDataSource, func: succeeded, msg: Command createIndexes with request id 596516649 on server ('mongo', 27017) succeeded in 218 microseconds
+2021-11-15 14:58:49,591 - INFO - [logger.py:32] cls: MongoDataSource, func: started, msg: Command listIndexes with request id 1189641421 started on server ('mongo', 27017)
+2021-11-15 14:58:49,591 - INFO - [logger.py:32] cls: MongoDataSource, func: succeeded, msg: Command listIndexes with request id 1189641421 on server ('mongo', 27017) succeeded in 166 microseconds
+2021-11-15 14:58:49,591 - INFO - [logger.py:32] cls: MongoDataSource, func: __init__, msg: db connection seccess
+2021-11-15 14:58:49,591 - INFO - [logger.py:32] cls: TasksRepository, func: createTaskRunner, msg: created taskrunner
+2021-11-15 14:58:49,605 - INFO - [logger.py:32] cls: MongoDataSource, func: started, msg: Command createIndexes with request id 1025202362 started on server ('mongo', 27017)
+2021-11-15 14:58:49,605 - INFO - [logger.py:32] cls: MongoDataSource, func: succeeded, msg: Command createIndexes with request id 1025202362 on server ('mongo', 27017) succeeded in 221 microseconds
+2021-11-15 14:58:49,606 - INFO - [logger.py:32] cls: MongoDataSource, func: started, msg: Command find with request id 1350490027 started on server ('mongo', 27017)
+2021-11-15 14:58:49,606 - INFO - [logger.py:32] cls: MongoDataSource, func: succeeded, msg: Command find with request id 1350490027 on server ('mongo', 27017) succeeded in 211 microseconds
+2021-11-15 14:58:49,606 - INFO - [logger.py:32] cls: MongoDataSource, func: started, msg: Command find with request id 783368690 started on server ('mongo', 27017)
+2021-11-15 14:58:49,607 - INFO - [logger.py:32] cls: MongoDataSource, func: succeeded, msg: Command find with request id 783368690 on server ('mongo', 27017) succeeded in 198 microseconds
+2021-11-15 14:58:49,607 - INFO - [logger.py:32] cls: MongoDataSource, func: started, msg: Command find with request id 1102520059 started on server ('mongo', 27017)
+2021-11-15 14:58:49,607 - INFO - [logger.py:32] cls: MongoDataSource, func: succeeded, msg: Command find with request id 1102520059 on server ('mongo', 27017) succeeded in 187 microseconds
+2021-11-15 14:58:57,303 - INFO - [logger.py:32] cls: MongoDataSource, func: __init__, msg: db connecting... mongodb://root:example@mongo:27017
+2021-11-15 14:58:57,309 - INFO - [logger.py:32] cls: MongoDataSource, func: started, msg: Command saslContinue with request id 1957747793 started on server ('mongo', 27017)
+2021-11-15 14:58:57,309 - INFO - [logger.py:32] cls: MongoDataSource, func: succeeded, msg: Command saslContinue with request id 1957747793 on server ('mongo', 27017) succeeded in 206 microseconds
+2021-11-15 14:58:57,309 - INFO - [logger.py:32] cls: MongoDataSource, func: started, msg: Command buildinfo with request id 424238335 started on server ('mongo', 27017)
+2021-11-15 14:58:57,310 - INFO - [logger.py:32] cls: MongoDataSource, func: succeeded, msg: Command buildinfo with request id 424238335 on server ('mongo', 27017) succeeded in 175 microseconds
+2021-11-15 14:58:57,310 - INFO - [logger.py:32] cls: MongoDataSource, func: started, msg: Command listIndexes with request id 719885386 started on server ('mongo', 27017)
+2021-11-15 14:58:57,310 - INFO - [logger.py:32] cls: MongoDataSource, func: succeeded, msg: Command listIndexes with request id 719885386 on server ('mongo', 27017) succeeded in 210 microseconds
+2021-11-15 14:58:57,311 - INFO - [logger.py:32] cls: MongoDataSource, func: started, msg: Command createIndexes with request id 1649760492 started on server ('mongo', 27017)
+2021-11-15 14:58:57,311 - INFO - [logger.py:32] cls: MongoDataSource, func: succeeded, msg: Command createIndexes with request id 1649760492 on server ('mongo', 27017) succeeded in 164 microseconds
+2021-11-15 14:58:57,311 - INFO - [logger.py:32] cls: MongoDataSource, func: started, msg: Command createIndexes with request id 596516649 started on server ('mongo', 27017)
+2021-11-15 14:58:57,311 - INFO - [logger.py:32] cls: MongoDataSource, func: succeeded, msg: Command createIndexes with request id 596516649 on server ('mongo', 27017) succeeded in 148 microseconds
+2021-11-15 14:58:57,311 - INFO - [logger.py:32] cls: MongoDataSource, func: started, msg: Command listIndexes with request id 1189641421 started on server ('mongo', 27017)
+2021-11-15 14:58:57,312 - INFO - [logger.py:32] cls: MongoDataSource, func: succeeded, msg: Command listIndexes with request id 1189641421 on server ('mongo', 27017) succeeded in 150 microseconds
+2021-11-15 14:58:57,312 - INFO - [logger.py:32] cls: MongoDataSource, func: __init__, msg: db connection seccess
+2021-11-15 14:58:57,312 - INFO - [logger.py:32] cls: TasksRepository, func: createTaskRunner, msg: created taskrunner
+2021-11-15 14:58:57,326 - INFO - [logger.py:32] cls: MongoDataSource, func: started, msg: Command createIndexes with request id 1025202362 started on server ('mongo', 27017)
+2021-11-15 14:58:57,326 - INFO - [logger.py:32] cls: MongoDataSource, func: succeeded, msg: Command createIndexes with request id 1025202362 on server ('mongo', 27017) succeeded in 217 microseconds
+2021-11-15 14:58:57,326 - INFO - [logger.py:32] cls: MongoDataSource, func: started, msg: Command find with request id 1350490027 started on server ('mongo', 27017)
+2021-11-15 14:58:57,327 - INFO - [logger.py:32] cls: MongoDataSource, func: succeeded, msg: Command find with request id 1350490027 on server ('mongo', 27017) succeeded in 329 microseconds
+2021-11-15 14:58:57,327 - INFO - [logger.py:32] cls: MongoDataSource, func: started, msg: Command find with request id 783368690 started on server ('mongo', 27017)
+2021-11-15 14:58:57,327 - INFO - [logger.py:32] cls: MongoDataSource, func: succeeded, msg: Command find with request id 783368690 on server ('mongo', 27017) succeeded in 250 microseconds
+2021-11-15 14:58:57,328 - INFO - [logger.py:32] cls: MongoDataSource, func: started, msg: Command find with request id 1102520059 started on server ('mongo', 27017)
+2021-11-15 14:58:57,328 - INFO - [logger.py:32] cls: MongoDataSource, func: succeeded, msg: Command find with request id 1102520059 on server ('mongo', 27017) succeeded in 216 microseconds
+2021-11-15 14:59:02,530 - INFO - [logger.py:32] cls: MongoDataSource, func: __init__, msg: db connecting... mongodb://root:example@mongo:27017
+2021-11-15 14:59:02,536 - INFO - [logger.py:32] cls: MongoDataSource, func: started, msg: Command saslContinue with request id 1957747793 started on server ('mongo', 27017)
+2021-11-15 14:59:02,537 - INFO - [logger.py:32] cls: MongoDataSource, func: succeeded, msg: Command saslContinue with request id 1957747793 on server ('mongo', 27017) succeeded in 177 microseconds
+2021-11-15 14:59:02,537 - INFO - [logger.py:32] cls: MongoDataSource, func: started, msg: Command buildinfo with request id 424238335 started on server ('mongo', 27017)
+2021-11-15 14:59:02,537 - INFO - [logger.py:32] cls: MongoDataSource, func: succeeded, msg: Command buildinfo with request id 424238335 on server ('mongo', 27017) succeeded in 158 microseconds
+2021-11-15 14:59:02,537 - INFO - [logger.py:32] cls: MongoDataSource, func: started, msg: Command listIndexes with request id 719885386 started on server ('mongo', 27017)
+2021-11-15 14:59:02,538 - INFO - [logger.py:32] cls: MongoDataSource, func: succeeded, msg: Command listIndexes with request id 719885386 on server ('mongo', 27017) succeeded in 204 microseconds
+2021-11-15 14:59:02,538 - INFO - [logger.py:32] cls: MongoDataSource, func: started, msg: Command createIndexes with request id 1649760492 started on server ('mongo', 27017)
+2021-11-15 14:59:02,538 - INFO - [logger.py:32] cls: MongoDataSource, func: succeeded, msg: Command createIndexes with request id 1649760492 on server ('mongo', 27017) succeeded in 186 microseconds
+2021-11-15 14:59:02,539 - INFO - [logger.py:32] cls: MongoDataSource, func: started, msg: Command createIndexes with request id 596516649 started on server ('mongo', 27017)
+2021-11-15 14:59:02,539 - INFO - [logger.py:32] cls: MongoDataSource, func: succeeded, msg: Command createIndexes with request id 596516649 on server ('mongo', 27017) succeeded in 151 microseconds
+2021-11-15 14:59:02,539 - INFO - [logger.py:32] cls: MongoDataSource, func: started, msg: Command listIndexes with request id 1189641421 started on server ('mongo', 27017)
+2021-11-15 14:59:02,539 - INFO - [logger.py:32] cls: MongoDataSource, func: succeeded, msg: Command listIndexes with request id 1189641421 on server ('mongo', 27017) succeeded in 158 microseconds
+2021-11-15 14:59:02,539 - INFO - [logger.py:32] cls: MongoDataSource, func: __init__, msg: db connection seccess
+2021-11-15 14:59:02,540 - INFO - [logger.py:32] cls: TasksRepository, func: createTaskRunner, msg: created taskrunner
+2021-11-15 14:59:02,553 - INFO - [logger.py:32] cls: MongoDataSource, func: started, msg: Command createIndexes with request id 1025202362 started on server ('mongo', 27017)
+2021-11-15 14:59:02,553 - INFO - [logger.py:32] cls: MongoDataSource, func: succeeded, msg: Command createIndexes with request id 1025202362 on server ('mongo', 27017) succeeded in 284 microseconds
+2021-11-15 14:59:02,554 - INFO - [logger.py:32] cls: MongoDataSource, func: started, msg: Command find with request id 1350490027 started on server ('mongo', 27017)
+2021-11-15 14:59:02,554 - INFO - [logger.py:32] cls: MongoDataSource, func: succeeded, msg: Command find with request id 1350490027 on server ('mongo', 27017) succeeded in 248 microseconds
+2021-11-15 14:59:02,554 - INFO - [logger.py:32] cls: MongoDataSource, func: started, msg: Command find with request id 783368690 started on server ('mongo', 27017)
+2021-11-15 14:59:02,555 - INFO - [logger.py:32] cls: MongoDataSource, func: succeeded, msg: Command find with request id 783368690 on server ('mongo', 27017) succeeded in 207 microseconds
+2021-11-15 14:59:02,555 - INFO - [logger.py:32] cls: MongoDataSource, func: started, msg: Command find with request id 1102520059 started on server ('mongo', 27017)
+2021-11-15 14:59:02,555 - INFO - [logger.py:32] cls: MongoDataSource, func: succeeded, msg: Command find with request id 1102520059 on server ('mongo', 27017) succeeded in 176 microseconds
+2021-11-15 15:04:59,555 - INFO - [logger.py:32] cls: MongoDataSource, func: __init__, msg: db connecting... mongodb://root:example@mongo:27017
+2021-11-15 15:04:59,561 - INFO - [logger.py:32] cls: MongoDataSource, func: started, msg: Command saslContinue with request id 1957747793 started on server ('mongo', 27017)
+2021-11-15 15:04:59,561 - INFO - [logger.py:32] cls: MongoDataSource, func: succeeded, msg: Command saslContinue with request id 1957747793 on server ('mongo', 27017) succeeded in 302 microseconds
+2021-11-15 15:04:59,562 - INFO - [logger.py:32] cls: MongoDataSource, func: started, msg: Command buildinfo with request id 424238335 started on server ('mongo', 27017)
+2021-11-15 15:04:59,562 - INFO - [logger.py:32] cls: MongoDataSource, func: succeeded, msg: Command buildinfo with request id 424238335 on server ('mongo', 27017) succeeded in 165 microseconds
+2021-11-15 15:04:59,562 - INFO - [logger.py:32] cls: MongoDataSource, func: started, msg: Command listIndexes with request id 719885386 started on server ('mongo', 27017)
+2021-11-15 15:04:59,562 - INFO - [logger.py:32] cls: MongoDataSource, func: succeeded, msg: Command listIndexes with request id 719885386 on server ('mongo', 27017) succeeded in 213 microseconds
+2021-11-15 15:04:59,563 - INFO - [logger.py:32] cls: MongoDataSource, func: started, msg: Command createIndexes with request id 1649760492 started on server ('mongo', 27017)
+2021-11-15 15:04:59,563 - INFO - [logger.py:32] cls: MongoDataSource, func: succeeded, msg: Command createIndexes with request id 1649760492 on server ('mongo', 27017) succeeded in 166 microseconds
+2021-11-15 15:04:59,563 - INFO - [logger.py:32] cls: MongoDataSource, func: started, msg: Command createIndexes with request id 596516649 started on server ('mongo', 27017)
+2021-11-15 15:04:59,563 - INFO - [logger.py:32] cls: MongoDataSource, func: succeeded, msg: Command createIndexes with request id 596516649 on server ('mongo', 27017) succeeded in 158 microseconds
+2021-11-15 15:04:59,564 - INFO - [logger.py:32] cls: MongoDataSource, func: started, msg: Command listIndexes with request id 1189641421 started on server ('mongo', 27017)
+2021-11-15 15:04:59,564 - INFO - [logger.py:32] cls: MongoDataSource, func: succeeded, msg: Command listIndexes with request id 1189641421 on server ('mongo', 27017) succeeded in 175 microseconds
+2021-11-15 15:04:59,564 - INFO - [logger.py:32] cls: MongoDataSource, func: __init__, msg: db connection seccess
+2021-11-15 15:04:59,564 - INFO - [logger.py:32] cls: TasksRepository, func: createTaskRunner, msg: created taskrunner
+2021-11-15 15:04:59,578 - INFO - [logger.py:32] cls: MongoDataSource, func: started, msg: Command createIndexes with request id 1025202362 started on server ('mongo', 27017)
+2021-11-15 15:04:59,578 - INFO - [logger.py:32] cls: MongoDataSource, func: succeeded, msg: Command createIndexes with request id 1025202362 on server ('mongo', 27017) succeeded in 193 microseconds
+2021-11-15 15:04:59,578 - INFO - [logger.py:32] cls: MongoDataSource, func: started, msg: Command find with request id 1350490027 started on server ('mongo', 27017)
+2021-11-15 15:04:59,579 - INFO - [logger.py:32] cls: MongoDataSource, func: succeeded, msg: Command find with request id 1350490027 on server ('mongo', 27017) succeeded in 195 microseconds
+2021-11-15 15:04:59,579 - INFO - [logger.py:32] cls: MongoDataSource, func: started, msg: Command find with request id 783368690 started on server ('mongo', 27017)
+2021-11-15 15:04:59,579 - INFO - [logger.py:32] cls: MongoDataSource, func: succeeded, msg: Command find with request id 783368690 on server ('mongo', 27017) succeeded in 224 microseconds
+2021-11-15 15:04:59,580 - INFO - [logger.py:32] cls: MongoDataSource, func: started, msg: Command find with request id 1102520059 started on server ('mongo', 27017)
+2021-11-15 15:04:59,580 - INFO - [logger.py:32] cls: MongoDataSource, func: succeeded, msg: Command find with request id 1102520059 on server ('mongo', 27017) succeeded in 194 microseconds
+2021-11-15 15:05:13,305 - INFO - [logger.py:32] cls: MongoDataSource, func: __init__, msg: db connecting... mongodb://root:example@mongo:27017
+2021-11-15 15:05:13,312 - INFO - [logger.py:32] cls: MongoDataSource, func: started, msg: Command saslContinue with request id 1957747793 started on server ('mongo', 27017)
+2021-11-15 15:05:13,312 - INFO - [logger.py:32] cls: MongoDataSource, func: succeeded, msg: Command saslContinue with request id 1957747793 on server ('mongo', 27017) succeeded in 289 microseconds
+2021-11-15 15:05:13,312 - INFO - [logger.py:32] cls: MongoDataSource, func: started, msg: Command buildinfo with request id 424238335 started on server ('mongo', 27017)
+2021-11-15 15:05:13,312 - INFO - [logger.py:32] cls: MongoDataSource, func: succeeded, msg: Command buildinfo with request id 424238335 on server ('mongo', 27017) succeeded in 177 microseconds
+2021-11-15 15:05:13,313 - INFO - [logger.py:32] cls: MongoDataSource, func: started, msg: Command listIndexes with request id 719885386 started on server ('mongo', 27017)
+2021-11-15 15:05:13,313 - INFO - [logger.py:32] cls: MongoDataSource, func: succeeded, msg: Command listIndexes with request id 719885386 on server ('mongo', 27017) succeeded in 225 microseconds
+2021-11-15 15:05:13,313 - INFO - [logger.py:32] cls: MongoDataSource, func: started, msg: Command createIndexes with request id 1649760492 started on server ('mongo', 27017)
+2021-11-15 15:05:13,314 - INFO - [logger.py:32] cls: MongoDataSource, func: succeeded, msg: Command createIndexes with request id 1649760492 on server ('mongo', 27017) succeeded in 203 microseconds
+2021-11-15 15:05:13,314 - INFO - [logger.py:32] cls: MongoDataSource, func: started, msg: Command createIndexes with request id 596516649 started on server ('mongo', 27017)
+2021-11-15 15:05:13,314 - INFO - [logger.py:32] cls: MongoDataSource, func: succeeded, msg: Command createIndexes with request id 596516649 on server ('mongo', 27017) succeeded in 155 microseconds
+2021-11-15 15:05:13,314 - INFO - [logger.py:32] cls: MongoDataSource, func: started, msg: Command listIndexes with request id 1189641421 started on server ('mongo', 27017)
+2021-11-15 15:05:13,315 - INFO - [logger.py:32] cls: MongoDataSource, func: succeeded, msg: Command listIndexes with request id 1189641421 on server ('mongo', 27017) succeeded in 170 microseconds
+2021-11-15 15:05:13,315 - INFO - [logger.py:32] cls: MongoDataSource, func: __init__, msg: db connection seccess
+2021-11-15 15:05:13,315 - INFO - [logger.py:32] cls: TasksRepository, func: createTaskRunner, msg: created taskrunner
+2021-11-15 15:05:13,329 - INFO - [logger.py:32] cls: MongoDataSource, func: started, msg: Command createIndexes with request id 1025202362 started on server ('mongo', 27017)
+2021-11-15 15:05:13,330 - INFO - [logger.py:32] cls: MongoDataSource, func: succeeded, msg: Command createIndexes with request id 1025202362 on server ('mongo', 27017) succeeded in 313 microseconds
+2021-11-15 15:05:13,330 - INFO - [logger.py:32] cls: MongoDataSource, func: started, msg: Command find with request id 1350490027 started on server ('mongo', 27017)
+2021-11-15 15:05:13,330 - INFO - [logger.py:32] cls: MongoDataSource, func: succeeded, msg: Command find with request id 1350490027 on server ('mongo', 27017) succeeded in 238 microseconds
+2021-11-15 15:05:13,331 - INFO - [logger.py:32] cls: MongoDataSource, func: started, msg: Command find with request id 783368690 started on server ('mongo', 27017)
+2021-11-15 15:05:13,331 - INFO - [logger.py:32] cls: MongoDataSource, func: succeeded, msg: Command find with request id 783368690 on server ('mongo', 27017) succeeded in 199 microseconds
+2021-11-15 15:05:13,331 - INFO - [logger.py:32] cls: MongoDataSource, func: started, msg: Command find with request id 1102520059 started on server ('mongo', 27017)
+2021-11-15 15:05:13,332 - INFO - [logger.py:32] cls: MongoDataSource, func: succeeded, msg: Command find with request id 1102520059 on server ('mongo', 27017) succeeded in 231 microseconds
+2021-11-15 15:05:37,054 - INFO - [logger.py:32] cls: MongoDataSource, func: __init__, msg: db connecting... mongodb://root:example@mongo:27017
+2021-11-15 15:05:37,061 - INFO - [logger.py:32] cls: MongoDataSource, func: started, msg: Command saslContinue with request id 1957747793 started on server ('mongo', 27017)
+2021-11-15 15:05:37,061 - INFO - [logger.py:32] cls: MongoDataSource, func: succeeded, msg: Command saslContinue with request id 1957747793 on server ('mongo', 27017) succeeded in 175 microseconds
+2021-11-15 15:05:37,061 - INFO - [logger.py:32] cls: MongoDataSource, func: started, msg: Command buildinfo with request id 424238335 started on server ('mongo', 27017)
+2021-11-15 15:05:37,062 - INFO - [logger.py:32] cls: MongoDataSource, func: succeeded, msg: Command buildinfo with request id 424238335 on server ('mongo', 27017) succeeded in 243 microseconds
+2021-11-15 15:05:37,062 - INFO - [logger.py:32] cls: MongoDataSource, func: started, msg: Command listIndexes with request id 719885386 started on server ('mongo', 27017)
+2021-11-15 15:05:37,062 - INFO - [logger.py:32] cls: MongoDataSource, func: succeeded, msg: Command listIndexes with request id 719885386 on server ('mongo', 27017) succeeded in 214 microseconds
+2021-11-15 15:05:37,063 - INFO - [logger.py:32] cls: MongoDataSource, func: started, msg: Command createIndexes with request id 1649760492 started on server ('mongo', 27017)
+2021-11-15 15:05:37,063 - INFO - [logger.py:32] cls: MongoDataSource, func: succeeded, msg: Command createIndexes with request id 1649760492 on server ('mongo', 27017) succeeded in 185 microseconds
+2021-11-15 15:05:37,063 - INFO - [logger.py:32] cls: MongoDataSource, func: started, msg: Command createIndexes with request id 596516649 started on server ('mongo', 27017)
+2021-11-15 15:05:37,063 - INFO - [logger.py:32] cls: MongoDataSource, func: succeeded, msg: Command createIndexes with request id 596516649 on server ('mongo', 27017) succeeded in 197 microseconds
+2021-11-15 15:05:37,063 - INFO - [logger.py:32] cls: MongoDataSource, func: started, msg: Command listIndexes with request id 1189641421 started on server ('mongo', 27017)
+2021-11-15 15:05:37,064 - INFO - [logger.py:32] cls: MongoDataSource, func: succeeded, msg: Command listIndexes with request id 1189641421 on server ('mongo', 27017) succeeded in 175 microseconds
+2021-11-15 15:05:37,064 - INFO - [logger.py:32] cls: MongoDataSource, func: __init__, msg: db connection seccess
+2021-11-15 15:05:37,064 - INFO - [logger.py:32] cls: TasksRepository, func: createTaskRunner, msg: created taskrunner
+2021-11-15 15:05:37,078 - INFO - [logger.py:32] cls: MongoDataSource, func: started, msg: Command createIndexes with request id 1025202362 started on server ('mongo', 27017)
+2021-11-15 15:05:37,078 - INFO - [logger.py:32] cls: MongoDataSource, func: succeeded, msg: Command createIndexes with request id 1025202362 on server ('mongo', 27017) succeeded in 194 microseconds
+2021-11-15 15:05:37,078 - INFO - [logger.py:32] cls: MongoDataSource, func: started, msg: Command find with request id 1350490027 started on server ('mongo', 27017)
+2021-11-15 15:05:37,079 - INFO - [logger.py:32] cls: MongoDataSource, func: succeeded, msg: Command find with request id 1350490027 on server ('mongo', 27017) succeeded in 262 microseconds
+2021-11-15 15:05:37,079 - INFO - [logger.py:32] cls: MongoDataSource, func: started, msg: Command find with request id 783368690 started on server ('mongo', 27017)
+2021-11-15 15:05:37,080 - INFO - [logger.py:32] cls: MongoDataSource, func: succeeded, msg: Command find with request id 783368690 on server ('mongo', 27017) succeeded in 263 microseconds
+2021-11-15 15:05:37,080 - INFO - [logger.py:32] cls: MongoDataSource, func: started, msg: Command find with request id 1102520059 started on server ('mongo', 27017)
+2021-11-15 15:05:37,080 - INFO - [logger.py:32] cls: MongoDataSource, func: succeeded, msg: Command find with request id 1102520059 on server ('mongo', 27017) succeeded in 187 microseconds
+2021-11-15 15:06:26,111 - INFO - [logger.py:32] cls: MongoDataSource, func: __init__, msg: db connecting... mongodb://root:example@mongo:27017
+2021-11-15 15:06:26,117 - INFO - [logger.py:32] cls: MongoDataSource, func: started, msg: Command saslContinue with request id 1957747793 started on server ('mongo', 27017)
+2021-11-15 15:06:26,118 - INFO - [logger.py:32] cls: MongoDataSource, func: succeeded, msg: Command saslContinue with request id 1957747793 on server ('mongo', 27017) succeeded in 192 microseconds
+2021-11-15 15:06:26,118 - INFO - [logger.py:32] cls: MongoDataSource, func: started, msg: Command buildinfo with request id 424238335 started on server ('mongo', 27017)
+2021-11-15 15:06:26,118 - INFO - [logger.py:32] cls: MongoDataSource, func: succeeded, msg: Command buildinfo with request id 424238335 on server ('mongo', 27017) succeeded in 190 microseconds
+2021-11-15 15:06:26,118 - INFO - [logger.py:32] cls: MongoDataSource, func: started, msg: Command listIndexes with request id 719885386 started on server ('mongo', 27017)
+2021-11-15 15:06:26,119 - INFO - [logger.py:32] cls: MongoDataSource, func: succeeded, msg: Command listIndexes with request id 719885386 on server ('mongo', 27017) succeeded in 202 microseconds
+2021-11-15 15:06:26,119 - INFO - [logger.py:32] cls: MongoDataSource, func: started, msg: Command createIndexes with request id 1649760492 started on server ('mongo', 27017)
+2021-11-15 15:06:26,119 - INFO - [logger.py:32] cls: MongoDataSource, func: succeeded, msg: Command createIndexes with request id 1649760492 on server ('mongo', 27017) succeeded in 173 microseconds
+2021-11-15 15:06:26,119 - INFO - [logger.py:32] cls: MongoDataSource, func: started, msg: Command createIndexes with request id 596516649 started on server ('mongo', 27017)
+2021-11-15 15:06:26,120 - INFO - [logger.py:32] cls: MongoDataSource, func: succeeded, msg: Command createIndexes with request id 596516649 on server ('mongo', 27017) succeeded in 154 microseconds
+2021-11-15 15:06:26,120 - INFO - [logger.py:32] cls: MongoDataSource, func: started, msg: Command listIndexes with request id 1189641421 started on server ('mongo', 27017)
+2021-11-15 15:06:26,120 - INFO - [logger.py:32] cls: MongoDataSource, func: succeeded, msg: Command listIndexes with request id 1189641421 on server ('mongo', 27017) succeeded in 147 microseconds
+2021-11-15 15:06:26,120 - INFO - [logger.py:32] cls: MongoDataSource, func: __init__, msg: db connection seccess
+2021-11-15 15:06:26,121 - INFO - [logger.py:32] cls: TasksRepository, func: createTaskRunner, msg: created taskrunner
+2021-11-15 15:06:26,134 - INFO - [logger.py:32] cls: MongoDataSource, func: started, msg: Command createIndexes with request id 1025202362 started on server ('mongo', 27017)
+2021-11-15 15:06:26,134 - INFO - [logger.py:32] cls: MongoDataSource, func: succeeded, msg: Command createIndexes with request id 1025202362 on server ('mongo', 27017) succeeded in 265 microseconds
+2021-11-15 15:06:26,134 - INFO - [logger.py:32] cls: MongoDataSource, func: started, msg: Command find with request id 1350490027 started on server ('mongo', 27017)
+2021-11-15 15:06:26,135 - INFO - [logger.py:32] cls: MongoDataSource, func: succeeded, msg: Command find with request id 1350490027 on server ('mongo', 27017) succeeded in 248 microseconds
+2021-11-15 15:06:26,135 - INFO - [logger.py:32] cls: MongoDataSource, func: started, msg: Command find with request id 783368690 started on server ('mongo', 27017)
+2021-11-15 15:06:26,135 - INFO - [logger.py:32] cls: MongoDataSource, func: succeeded, msg: Command find with request id 783368690 on server ('mongo', 27017) succeeded in 227 microseconds
+2021-11-15 15:06:26,136 - INFO - [logger.py:32] cls: MongoDataSource, func: started, msg: Command find with request id 1102520059 started on server ('mongo', 27017)
+2021-11-15 15:06:26,136 - INFO - [logger.py:32] cls: MongoDataSource, func: succeeded, msg: Command find with request id 1102520059 on server ('mongo', 27017) succeeded in 198 microseconds
+2021-11-15 15:06:40,852 - INFO - [logger.py:32] cls: MongoDataSource, func: __init__, msg: db connecting... mongodb://root:example@mongo:27017
+2021-11-15 15:06:40,858 - INFO - [logger.py:32] cls: MongoDataSource, func: started, msg: Command saslContinue with request id 1957747793 started on server ('mongo', 27017)
+2021-11-15 15:06:40,858 - INFO - [logger.py:32] cls: MongoDataSource, func: succeeded, msg: Command saslContinue with request id 1957747793 on server ('mongo', 27017) succeeded in 187 microseconds
+2021-11-15 15:06:40,859 - INFO - [logger.py:32] cls: MongoDataSource, func: started, msg: Command buildinfo with request id 424238335 started on server ('mongo', 27017)
+2021-11-15 15:06:40,859 - INFO - [logger.py:32] cls: MongoDataSource, func: succeeded, msg: Command buildinfo with request id 424238335 on server ('mongo', 27017) succeeded in 175 microseconds
+2021-11-15 15:06:40,859 - INFO - [logger.py:32] cls: MongoDataSource, func: started, msg: Command listIndexes with request id 719885386 started on server ('mongo', 27017)
+2021-11-15 15:06:40,860 - INFO - [logger.py:32] cls: MongoDataSource, func: succeeded, msg: Command listIndexes with request id 719885386 on server ('mongo', 27017) succeeded in 179 microseconds
+2021-11-15 15:06:40,860 - INFO - [logger.py:32] cls: MongoDataSource, func: started, msg: Command createIndexes with request id 1649760492 started on server ('mongo', 27017)
+2021-11-15 15:06:40,860 - INFO - [logger.py:32] cls: MongoDataSource, func: succeeded, msg: Command createIndexes with request id 1649760492 on server ('mongo', 27017) succeeded in 170 microseconds
+2021-11-15 15:06:40,860 - INFO - [logger.py:32] cls: MongoDataSource, func: started, msg: Command createIndexes with request id 596516649 started on server ('mongo', 27017)
+2021-11-15 15:06:40,860 - INFO - [logger.py:32] cls: MongoDataSource, func: succeeded, msg: Command createIndexes with request id 596516649 on server ('mongo', 27017) succeeded in 151 microseconds
+2021-11-15 15:06:40,861 - INFO - [logger.py:32] cls: MongoDataSource, func: started, msg: Command listIndexes with request id 1189641421 started on server ('mongo', 27017)
+2021-11-15 15:06:40,861 - INFO - [logger.py:32] cls: MongoDataSource, func: succeeded, msg: Command listIndexes with request id 1189641421 on server ('mongo', 27017) succeeded in 180 microseconds
+2021-11-15 15:06:40,861 - INFO - [logger.py:32] cls: MongoDataSource, func: __init__, msg: db connection seccess
+2021-11-15 15:06:40,861 - INFO - [logger.py:32] cls: TasksRepository, func: createTaskRunner, msg: created taskrunner
+2021-11-15 15:06:40,875 - INFO - [logger.py:32] cls: MongoDataSource, func: started, msg: Command createIndexes with request id 1025202362 started on server ('mongo', 27017)
+2021-11-15 15:06:40,876 - INFO - [logger.py:32] cls: MongoDataSource, func: succeeded, msg: Command createIndexes with request id 1025202362 on server ('mongo', 27017) succeeded in 317 microseconds
+2021-11-15 15:06:40,876 - INFO - [logger.py:32] cls: MongoDataSource, func: started, msg: Command find with request id 1350490027 started on server ('mongo', 27017)
+2021-11-15 15:06:40,877 - INFO - [logger.py:32] cls: MongoDataSource, func: succeeded, msg: Command find with request id 1350490027 on server ('mongo', 27017) succeeded in 367 microseconds
+2021-11-15 15:06:40,877 - INFO - [logger.py:32] cls: MongoDataSource, func: started, msg: Command find with request id 783368690 started on server ('mongo', 27017)
+2021-11-15 15:06:40,877 - INFO - [logger.py:32] cls: MongoDataSource, func: succeeded, msg: Command find with request id 783368690 on server ('mongo', 27017) succeeded in 268 microseconds
+2021-11-15 15:06:40,878 - INFO - [logger.py:32] cls: MongoDataSource, func: started, msg: Command find with request id 1102520059 started on server ('mongo', 27017)
+2021-11-15 15:06:40,878 - INFO - [logger.py:32] cls: MongoDataSource, func: succeeded, msg: Command find with request id 1102520059 on server ('mongo', 27017) succeeded in 212 microseconds
