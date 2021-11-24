@@ -4,7 +4,8 @@ from typing_extensions import Final
 from pymitter import EventEmitter
 from app.datasource.TaskMongoDataSource import TaskMongoDataSource
 from app.model.dto import StockCrawlingCompletedTasks, StockMarketCapitalResult, StockCrawlingDownloadTask, StockUpdateState, \
-    ProcessTasks, ProcessTask, StockTaskState, ListLimitData, ListLimitResponse, YearData
+    ProcessTasks, ProcessTask, StockTaskState, YearData
+from app.model.dao import ListLimitDao, ListLimitDataDao
 from app.model.task import TaskPoolInfo
 from app.module.task import Task, TaskRunner
 from app.module.logger import Logger
@@ -152,7 +153,7 @@ class TasksRepository(object):
         self.logger.info("fail", f"{task.taskUniqueId}")
     
     # 완료된 태스크 정보를 반환한다.
-    def getCompletedTask(self, dto: ListLimitData) -> ListLimitResponse:
+    def getCompletedTask(self, dto: ListLimitDao) -> ListLimitDataDao:
         taskData = self.mongod.getCompletedTask(dto)
         tasks: Dict = dict()
         taskIds = []

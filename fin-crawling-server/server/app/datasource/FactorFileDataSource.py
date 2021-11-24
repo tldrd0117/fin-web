@@ -5,7 +5,7 @@ import os.path
 
 class FactorFileDataSource:
     def __init__(self) -> None:
-        pass
+        super().__init__()
 
     def loadFactorMerge(self) -> dict:
         factor1 = self.loadFactor(2018)
@@ -39,3 +39,4 @@ class FactorFileDataSource:
                 factorDf = factorDf.append(df)
         factorDf = factorDf.melt(id_vars=["종목코드", "종목명", "결산월", "단위", "데이터명"], var_name="년", value_name="데이터값")
         return factorDf
+    

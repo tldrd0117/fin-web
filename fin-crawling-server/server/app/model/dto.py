@@ -10,6 +10,7 @@ class SocketResponse(BaseModel):
 class ListLimitData(BaseModel):
     offset: int
     limit: int
+    taskId: str
 
 
 class StockTaskState(BaseModel):

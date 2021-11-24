@@ -27,10 +27,12 @@ class StockMarketCapitalDao(Dao):
 
 class ListLimitDao(Dao):
     offset: int
-    limit: int 
+    limit: int
+    taskId: str
 
 
 class ListLimitDataDao(Dao):
+    taskId: str
     data: Any
     offset: int
     limit: int

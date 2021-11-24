@@ -14,6 +14,7 @@ from app.datasource.StockMongoDataSource import StockMongoDataSource
 from app.datasource.FactorFileDataSource import FactorFileDataSource
 from app.router.task import TaskSocketRouter
 from app.router.crawling import CrawlingSocketRouter
+from app.router.factor import FactorSocketRouter
 
 
 locator = Locator.getInstance()
@@ -47,6 +48,7 @@ factorService = FactorService(manager, factorRepository, tasksRepository, taskSe
 
 taskSocketRouter = TaskSocketRouter(crawlingService, taskService, manager)
 crawlingSocketRouter = CrawlingSocketRouter(crawlingService, manager)
+factorSocketRouter = FactorSocketRouter(factorService, manager)
 
 
 locator.register(manager)
@@ -65,3 +67,4 @@ locator.register(taskSocketRouter)
 locator.register(crawlingSocketRouter)
 locator.register(stockRepository)
 locator.register(stockService)
+locator.register(factorSocketRouter)

@@ -3,6 +3,8 @@ from typing import List
 from app.model.dao import FactorDao
 from app.util.DateUtils import getNow
 from app.datasource.MongoDataSource import MongoDataSource
+from app.model.dto import ListLimitData, ListLimitResponse
+from pymongo import DESCENDING
 
 
 class FactorMongoDataSource(MongoDataSource):
@@ -27,4 +29,32 @@ class FactorMongoDataSource(MongoDataSource):
                 }, upsert=True)
         except Exception as e:
             print(e)
-    
+
+    def getCompletedTask(self, dto: ListLimitData) -> ListLimitResponse:
+        try:
+            data = dto.dict()
+            cursor = self.task.find({"$or": [
+                        {"state": "success"}, 
+                        {"state": "fail"}
+                    ]}
+                ).sort("createdAt", DESCENDING)\
+                .skip(data["offset"])\
+                .limit(data["limit"])
+            
+            count = self.task.find({"$or": [
+                        {"state": "success"}, 
+                        {"state": "fail"}
+                    ]}
+                ).count()
+            
+            res = ListLimitResponse(**{
+                "count": count,
+                "offset": data["offset"],
+                "limit": data["limit"],
+                "data": self.exceptId(list(cursor))
+            })
+            
+            return res
+        except Exception as e:
+            print(e)
+        return []

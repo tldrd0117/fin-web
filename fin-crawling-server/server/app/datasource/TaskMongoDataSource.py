@@ -1,6 +1,6 @@
 
 from uvicorn.config import logger
-from app.model.dto import ListLimitData, ListLimitResponse
+from app.model.dao import ListLimitDao, ListLimitDataDao
 from app.util.DateUtils import getNow
 from app.datasource.MongoDataSource import MongoDataSource
 from pymongo import DESCENDING
@@ -10,7 +10,7 @@ class TaskMongoDataSource(MongoDataSource):
     def __init__(self) -> None:
         super().__init__()
 
-    def getCompletedTask(self, dto: ListLimitData) -> ListLimitResponse:
+    def getCompletedTask(self, dto: ListLimitDao) -> ListLimitDataDao:
         try:
             data = dto.dict()
             cursor = self.task.find({"$or": [
@@ -27,7 +27,8 @@ class TaskMongoDataSource(MongoDataSource):
                     ]}
                 ).count()
             
-            res = ListLimitResponse(**{
+            res = ListLimitDataDao(**{
+                "taskId": dto["taskId"],
                 "count": count,
                 "offset": data["offset"],
                 "limit": data["limit"],

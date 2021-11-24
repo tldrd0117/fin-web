@@ -7,7 +7,8 @@ from app.repo.StockRepository import StockRepository
 from app.module.task import Pool, Task, TaskPool
 from app.model.dto import StockUpdateState, StockCrawlingCompletedTasks, \
     StockRunCrawling, FactorRunCrawling, ProcessTasks, ListLimitData, \
-    ListLimitResponse, RunCrawling, ProcessTask
+    RunCrawling, ProcessTask
+from app.model.dao import ListLimitDataDao, ListLimitDao
 from app.crawler.MarcapCrawler import MarcapCrawler
 from fastapi import WebSocket
 from app.module.socket.manager import ConnectionManager
@@ -90,7 +91,12 @@ class CrawlingService:
         self.manager.send(RES_SOCKET_CRAWLING_FETCH_TASKS, self.tasksRepository.tasksdto.dict(), webSocket)
     
     def fetchCompletedTask(self, dto: ListLimitData, webSocket: WebSocket) -> None:
-        tasks: ListLimitResponse = self.tasksRepository.getCompletedTask(dto)
+        listLimitDao = ListLimitDao(**{
+            "offset": dto["offset"],
+            "limit": dto["limit"],
+            "taskId": "marcap"
+        })
+        tasks: ListLimitDataDao = self.tasksRepository.getCompletedTask(listLimitDao)
         # logger.info("histories:"+tasks.json())
         self.manager.send(RES_SOCKET_CRAWLING_FETCH_COMPLETED_TASK, tasks.dict(), webSocket)
 
@@ -103,9 +109,10 @@ class CrawlingService:
         self.manager.sendBroadCast(RES_SOCKET_CRAWLING_RUN_CRAWLING, tasks.dict())
     
     def completeTask(self, marcap: str, stockUpdateState: StockUpdateState) -> None:
-        dto = ListLimitData(**{
+        dao = ListLimitDao(**{
             "offset": 0,
-            "limit": 20
+            "limit": 20,
+            "taskId": "marcap"
         })
-        tasks: StockCrawlingCompletedTasks = self.tasksRepository.getCompletedTask(dto)
+        tasks: StockCrawlingCompletedTasks = self.tasksRepository.getCompletedTask(dao)
         self.manager.sendBroadCast(RES_SOCKET_CRAWLING_FETCH_COMPLETED_TASK, tasks.dict())
