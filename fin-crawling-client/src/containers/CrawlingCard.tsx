@@ -5,10 +5,10 @@ import Card from '../components/Card';
 import Toggle from '../components/Toggle';
 import YearCalendar from '../components/YearCalendar';
 import { RootState } from '../data/root/rootReducer';
-import CrawlingCompleteList from './CrawlingCompleteList';
+import TaskCompleteList from './TaskCompleteList';
 import CrawlingExecutionForm from './CrawlingExecutionForm';
 import CrawlingForm from './CrawlingForm';
-import CrawlingProgressList from './CrawlingProgressList';
+import TaskProgressList from './TaskProgressList';
 import CrawlingSchedulingForm from './CrawlingSchedulingForm';
 import CrawlingTaskScheduleList from './CrawlingTaskScheduleList'
 import ToggleTitle from './ToggleTitle';
@@ -16,13 +16,13 @@ import YearCalandarList from './YearCalandarList';
 
 
 export default (props) =>{
-    const yearData = useSelector((state: RootState) => state.task.yearData)
+    const yearData = useSelector((state: RootState) => state.task.calendar.data)
     return <Card className={"mt-10 relative"}>
             <h2 className="text-gray-700 font-semibold text-xl sm:text-2xl tracking-wide mb-4 pr-10">일자별 주식 및 시가총액 크롤링</h2>
             <CrawlingExecutionForm/>
             <div className={"w-full h-px bg-gray-300 mt-8 mb-4"}></div>
             <p>Progress List</p>
-            <CrawlingProgressList taskId={"marcap"}/>
+            <TaskProgressList taskId={"marcap"}/>
             <div className={"w-full h-px bg-gray-300 mt-8 mb-4"}></div>
             <CrawlingSchedulingForm/>
             <div className={"w-full h-px bg-gray-300 mt-8 mb-4"}></div>
@@ -68,7 +68,7 @@ export default (props) =>{
             <ToggleTitle
                 title={"Completed History"}
                 show={<>
-                    <CrawlingCompleteList taskId={"marcap"}/>
+                    <TaskCompleteList taskId={"marcap"}/>
                 </>}
                 hide={null}
             />

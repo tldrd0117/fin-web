@@ -4,7 +4,7 @@ import Breadcrumb from '../components/Breadcrumb';
 import { fetchCompletedTask } from '../data/crawling/crawlingHistorySlice';
 import { RootState } from '../data/root/rootReducer';
 import { fetchTaskSchedule } from '../data/task/taskScheduleSlice';
-import { fetchTaskState } from '../data/task/taskSlice';
+import { fetchTaskState } from '../data/task/taskCalendarSlice';
 import CrawlingList from './CrawlingList';
 import FactorList from './FactorList';
 

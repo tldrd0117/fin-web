@@ -30,7 +30,7 @@ export default (props) =>{
     const task = useSelector((state: RootState) => state.task)
     return <SequentialList>
         {
-            Object.keys(task.yearData["marcap"]).map(market=>{
+            Object.keys(task.calendar.data["marcap"]).map(market=>{
                 return <ListItem task={task} market={market}/>
             })
         }

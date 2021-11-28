@@ -27,12 +27,12 @@ class FactorSocketRouter(object):
             "taskId": data["taskId"],
             "taskUniqueId": data["taskId"] + str(uuid.uuid4())
         })
-        self.factorService.convertFileToDb(dto)
+        self.factorService.convertFactorFileToDb(dto)
     
     def fetchCompletedTask(self, data: dict, websocket: WebSocket) -> None:
         dto = ListLimitData(**{
             "offset": data["offset"],
             "limit": data["limit"],
-            "taskId": data["taskId"] 
+            "taskId": data["taskId"]
         })
         self.factorService.fetchCompletedTask(dto, websocket)

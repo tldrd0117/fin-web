@@ -10,8 +10,9 @@ DEFAULT_POOL_SIZE = 8
 
 
 class Task(object):
-    def __init__(self, func: Callable, param: Any = {}) -> None:
+    def __init__(self, id: str, func: Callable, param: Any = {}) -> None:
         super().__init__()
+        self.id = id
         self.func = func
         self.param = param
         self.logger = Logger("Task")
@@ -30,6 +31,8 @@ class Pool(object):
         super().__init__()
         self.isRun = False
         self.logger = Logger("Pool")
+        self.task = None
+        self.taskId = None
     
     def setTask(self, task: Task) -> None:
         self.task = task
@@ -62,6 +65,13 @@ class TaskPool(object):
         self.taskPool.remove(pool)
         if isNotify:
             self.updatePoolInfo()
+    
+    def findPool(self, id: str) -> Pool:
+        for pool in self.taskPool:
+            if pool.taskId == id:
+                return pool
+        return None
+
     
     def poolCount(self) -> int:
         return len(self.taskPool)
@@ -110,6 +120,12 @@ class TaskRunner(object):
             self.loop.create_task(self.notifyToPool())
         else:
             self.updatePoolInfo()
+    
+    def cancel(self, id: str) -> None:
+        pool: Pool = self.pool.findPool(id)
+        if pool is not None:
+            pool.cancel()
+            self.pool.removeTaskPool(pool)
     
     async def notifyToPool(self) -> None:
         try:

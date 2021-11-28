@@ -1,7 +1,7 @@
 import { take, put, call, apply, delay, takeEvery, all, select, fork, race } from 'redux-saga/effects'
 import { EventChannel, eventChannel } from 'redux-saga'
 // import { io, Socket } from 'socket.io-client'
-import { runCrawling, fetchTasks, reset } from '../crawling/crawlingSlice'
+import { fetchTasks, reset } from '../task/taskProgressSlice'
 import { connect, disconnect, endConnection, startConnection, destory, create } from '../socket/socketSlice'
 import { RootState } from '../root/rootReducer'
 import { data } from 'autoprefixer'
@@ -39,7 +39,7 @@ function createSocketConnection(token) {
                 emit({eventType: "onerror", data: ev})
             }
             socket.onmessage = (ev:MessageEvent<any>) : any => {
-                console.log("socket/onmessage: "+ev.data)
+                console.log("receive socket/onmessage: "+ev.data)
                 emit({eventType: "onmessage", data: JSON.parse(ev.data)})
             }
         }
@@ -84,6 +84,8 @@ export function* watchOnConnect() {
         }
         console.log("watchOnConnect", socket)
         if(socket.isConnected){
+            console.log("isConnected fetchTasks")
+
             yield put(fetchTasks({}))
         } else {
 
@@ -168,7 +170,7 @@ export function* watchOnMessage() {
 }
 
 export function* runEmitSaga(action){
-    console.log(action)
+    console.log("send:", action)
     const {isConnected, socket} = yield select(state => state.socket)
     if(isConnected && socket){
         yield apply(socket, socket.send, [JSON.stringify({event: action.type, payload: action.payload})])

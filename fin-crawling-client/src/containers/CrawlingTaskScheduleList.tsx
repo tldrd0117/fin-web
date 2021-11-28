@@ -1,5 +1,5 @@
 import React from 'react'
-import CrawlingProgressListItem from './CrawlingProgressListItem'
+import CrawlingProgressListItem from './TaskProgressListItem'
 import LinearProgressBar from '../components/LinearProgressBar'
 import { RootState } from '../data/root/rootReducer'
 import { useDispatch, useSelector } from 'react-redux'
@@ -9,7 +9,7 @@ import { removeTaskSchedule } from '../data/task/taskScheduleSlice'
 
 
 export default (props) => {
-    const taskSchedule = useSelector((state: RootState) => state.taskSchedule)
+    const taskSchedule = useSelector((state: RootState) => state.task.schedule)
     const dispatch = useDispatch()
     const handleRemove = (id: string) => {
         dispatch(removeTaskSchedule({

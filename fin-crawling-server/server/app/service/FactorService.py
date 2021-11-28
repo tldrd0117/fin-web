@@ -1,22 +1,23 @@
 from app.repo.FactorRepository import FactorRepository
 from app.repo.TasksRepository import TasksRepository, EVENT_TASK_REPO_TASK_COMPLETE, EVENT_TASK_REPO_UPDATE_TASKS
 from app.module.socket.manager import ConnectionManager
-from app.service.TaskService import TaskService
 from app.model.dao import ListLimitDataDao, ListLimitDao
 from fastapi import WebSocket
 from app.module.logger import Logger
 from app.model.dto import ListLimitData, ProcessTask, RunFactorFileConvert, StockCrawlingCompletedTasks
+from typing import TYPE_CHECKING
+if TYPE_CHECKING:
+    from app.service.TaskService import TaskService
 
-RES_SOCKET_FACTOR_MOVE_FACTOR_FILE_TO_DB_START = "factor/convertFileToDbStartRes"
+
 RES_SOCKET_FACTOR_UPDATE_STATE_RES = "factor/updateConvertStateRes"
-RES_SOCKET_FACTOR_MOVE_FACTOR_FILE_TO_DB_END = "factor/convertFileToDbEndRes"
 
 RES_SOCKET_FACTOR_FETCH_COMPLETED_TASK = "factor/fetchCompletedTaskRes"
 RES_SOCKET_FACTOR_FETCH_TASKS = "factor/fetchTasksRes"
 
 
 class FactorService:
-    def __init__(self, manager: ConnectionManager, factorRepository: FactorRepository, tasksRepository: TasksRepository, taskService: TaskService) -> None:
+    def __init__(self, manager: ConnectionManager, factorRepository: FactorRepository, tasksRepository: TasksRepository, taskService: 'TaskService') -> None:
         self.manager = manager
         self.factorRepository = factorRepository
         self.tasksRepository = tasksRepository
@@ -24,8 +25,8 @@ class FactorService:
         self.logger = Logger("FactorService")
     
     # file에 있는 factor를 db에 저장한다.
-    def convertFileToDb(self, dto: RunFactorFileConvert) -> None:
-        self.logger.info("convertFileToDb")
+    def convertFactorFileToDb(self, dto: RunFactorFileConvert) -> None:
+        self.logger.info("convertFactorFileToDb")
         task = ProcessTask(**{
             "market": "",
             "startDateStr": "",
@@ -39,7 +40,6 @@ class FactorService:
             "state": "start get file"
         })
         self.tasksRepository.addTask(task)
-        self.taskService.fetchTasks()
         # data = self.factorRepository.getFactorsInFile()
         task.state = "start insert db"
         self.tasksRepository.updateTask(task)
@@ -56,27 +56,27 @@ class FactorService:
         task.state = "complete"
         self.tasksRepository.completeFactorConvertFileToDbTask(task)
     
-    def createTaskRepositoryListener(self) -> None:
-        self.tasksRepository.taskEventEmitter.on(EVENT_TASK_REPO_TASK_COMPLETE, self.completeTask)
-        self.tasksRepository.taskEventEmitter.on(EVENT_TASK_REPO_UPDATE_TASKS, self.updateTasks)
+    # def createTaskRepositoryListener(self) -> None:
+        # self.tasksRepository.taskEventEmitter.on(EVENT_TASK_REPO_TASK_COMPLETE, self.completeTask)
+        # self.tasksRepository.taskEventEmitter.on(EVENT_TASK_REPO_UPDATE_TASKS, self.updateTasks)
     
-    def updateTasks(self) -> None:
-        self.manager.sendBroadCast(RES_SOCKET_FACTOR_FETCH_TASKS, self.tasksRepository.tasksdto.dict())
+    # def updateTasks(self) -> None:
+        # self.manager.sendBroadCast(RES_SOCKET_FACTOR_FETCH_TASKS, self.tasksRepository.tasksdto.dict())
     
-    def completeTask(self) -> None:
-        dto = ListLimitData(**{
-            "offset": 0,
-            "limit": 20
-        })
-        tasks: StockCrawlingCompletedTasks = self.tasksRepository.getCompletedTask(dto)
-        self.manager.sendBroadCast(RES_SOCKET_FACTOR_FETCH_COMPLETED_TASK, tasks.dict())
+    # def completeTask(self) -> None:
+    #     dto = ListLimitData(**{
+    #         "offset": 0,
+    #         "limit": 20
+    #     })
+    #     tasks: StockCrawlingCompletedTasks = self.tasksRepository.getCompletedTask(dto)
+    #     self.manager.sendBroadCast(RES_SOCKET_FACTOR_FETCH_COMPLETED_TASK, tasks.dict())
     
-    def fetchCompletedTask(self, dto: ListLimitData, webSocket: WebSocket) -> None:
-        listLimitDao = ListLimitDao(**{
-            "offset": dto["offset"],
-            "limit": dto["limit"],
-            "taskId": "factorFile"
-        })
-        tasks: ListLimitDataDao = self.tasksRepository.getCompletedTask(listLimitDao)
-        # logger.info("histories:"+tasks.json())
-        self.manager.send(RES_SOCKET_FACTOR_FETCH_COMPLETED_TASK, tasks.dict(), webSocket)
+    # def fetchCompletedTask(self, dto: ListLimitData, webSocket: WebSocket) -> None:
+    #     listLimitDao = ListLimitDao(**{
+    #         "offset": dto["offset"],
+    #         "limit": dto["limit"],
+    #         "taskId": "factorFile"
+    #     })
+    #     tasks: ListLimitDataDao = self.tasksRepository.getCompletedTask(listLimitDao)
+    #     # logger.info("histories:"+tasks.json())
+    #     self.manager.send(RES_SOCKET_FACTOR_FETCH_COMPLETED_TASK, tasks.dict(), webSocket)

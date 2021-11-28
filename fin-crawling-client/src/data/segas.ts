@@ -4,7 +4,7 @@ import { watchOnSocket } from './socket/socketSagas'
 import { addTodo } from './todos/todosSlice'
 import { watchOnToken } from './user/userSagas'
 import { watchCrawlingReq } from './crawling/crawlingSaga'
-import { watchFetchTaskState, watchTaskSchedule } from './task/taskSagas'
+import { watchTasks } from './task/taskSagas'
 import { watchFactorReq } from './factor/factorSaga'
 
 export const incrementAsync = createAction("INCREMENT_ASYNC")
@@ -31,8 +31,7 @@ export default function* rootSaga(){
         watchOnSocket(),
         watchOnToken(),
         watchCrawlingReq(),
-        watchFetchTaskState(),
-        watchTaskSchedule(),
+        watchTasks(),
         watchFactorReq()
     ])
 }

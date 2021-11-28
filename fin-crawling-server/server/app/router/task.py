@@ -1,15 +1,19 @@
 
 from fastapi import WebSocket
-from app.model.dto import StockRunCrawling, StockTaskSchedule
+from app.model.dto import StockRunCrawling, StockTaskSchedule, RunFactorFileConvert, ListLimitData
 from app.service.CrawlingService import CrawlingService
 from app.service.TaskService import TaskService
 from app.module.socket.manager import ConnectionManager
+import uuid
 
-REQ_SOCKET_TASK_FETCH_TASK_STATE = "task/fetchTaskState"
-REQ_SOCKET_TASK_FETCH_TASK_POOL_INFO = "task/fetchTaskPoolInfo"
-REQ_SOCKET_TASK_FETCH_TASK_SCHEDULE = "taskSchedule/fetchTaskSchedule"
-REQ_SOCKET_TASK_ADD_TASK_SCHEDULE = "taskSchedule/addTaskSchedule"
-REQ_SOCKET_TASK_REMOVE_TASK_SCHEDULE = "taskSchedule/removeTaskSchedule"
+REQ_SOCKET_TASK_FETCH_TASK_STATE = "task/calendar/fetchTaskState"
+REQ_SOCKET_TASK_FETCH_TASK_POOL_INFO = "task/poolInfo/fetchTaskPoolInfo"
+REQ_SOCKET_TASK_FETCH_TASK_SCHEDULE = "task/schedule/fetchTaskSchedule"
+REQ_SOCKET_TASK_ADD_TASK_SCHEDULE = "task/schedule/addTaskSchedule"
+REQ_SOCKET_TASK_REMOVE_TASK_SCHEDULE = "task/schedule/removeTaskSchedule"
+REQ_SOCKET_TASK_ADD_TASK = "task/progress/addTask"
+REQ_SOCKET_TASK_FETCH_TASKS = "task/progress/fetchTasks"
+REQ_SOCKET_TASK_FETCH_COMPLETED_TASK = "task/history/fetchCompletedTask"
 
 
 class TaskSocketRouter(object):
@@ -26,6 +30,12 @@ class TaskSocketRouter(object):
         self.ee.on(REQ_SOCKET_TASK_FETCH_TASK_SCHEDULE, self.fetchTaskSchedule)
         self.ee.on(REQ_SOCKET_TASK_ADD_TASK_SCHEDULE, self.addTaskSchedule)
         self.ee.on(REQ_SOCKET_TASK_REMOVE_TASK_SCHEDULE, self.removeTaskSchedule)
+        self.ee.on(REQ_SOCKET_TASK_ADD_TASK, self.addTask)
+        self.ee.on(REQ_SOCKET_TASK_FETCH_TASKS, self.fetchTasks)
+        self.ee.on(REQ_SOCKET_TASK_FETCH_COMPLETED_TASK, self.fetchCompletedTask)
+    
+    def fetchTasks(self, data: dict, websocket: WebSocket) -> None:
+        self.taskService.fetchTasks(websocket=websocket)
 
     def fetchTaskState(self, data: dict, websocket: WebSocket) -> None:
         self.taskService.getTaskState(data["taskId"], websocket)
@@ -35,6 +45,29 @@ class TaskSocketRouter(object):
 
     def fetchTaskSchedule(self, data: dict, websocket: WebSocket) -> None:
         self.taskService.getTaskSchedule(websocket)
+    
+    def addTask(self, data: dict, websocket: WebSocket) -> None:
+        taskName = data["taskName"]
+        if taskName == "crawlingMarcap":
+            dtoList = []
+            for market in data["market"]:
+                taskUniqueId = data["taskId"]+market+data["startDate"]+data["endDate"]+str(uuid.uuid4())
+                dto = StockRunCrawling(**{
+                    "driverAddr": "http://fin-carwling-webdriver:4444",
+                    "market": market,
+                    "startDateStr": data["startDate"],
+                    "endDateStr": data["endDate"],
+                    "taskId": data["taskId"],
+                    "taskUniqueId": taskUniqueId
+                })
+                dtoList.append(dto)
+            self.taskService.addTask(taskName, dtoList)
+        elif taskName == "convertFactorFileToDb":
+            dto = RunFactorFileConvert(**{
+                "taskId": data["taskId"],
+                "taskUniqueId": data["taskId"] + str(uuid.uuid4())
+            })
+            self.taskService.addTask(taskName, dto)
 
     def addTaskSchedule(self, data: dict, websocket: WebSocket) -> None:
         # if data["startDate"] == "*":
@@ -66,3 +99,11 @@ class TaskSocketRouter(object):
 
     def removeTaskSchedule(self, data: dict, websocket: WebSocket) -> None:
         self.taskService.removeTaskSchedule(data["id"], websocket)
+
+    def fetchCompletedTask(self, data: dict, websocket: WebSocket) -> None:
+        dto = ListLimitData(**{
+            "offset": data["offset"],
+            "limit": data["limit"],
+            "taskId": data["taskId"]
+        })
+        self.taskService.fetchCompletedTask(dto, websocket)

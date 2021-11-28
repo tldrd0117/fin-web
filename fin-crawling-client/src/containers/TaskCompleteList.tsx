@@ -1,20 +1,20 @@
 import React from 'react'
 import { RootState } from '../data/root/rootReducer'
 import { useDispatch, useSelector } from 'react-redux'
-import CrawlingCompleteListItem from './CrawlingCompleteListItem'
+import CrawlingCompleteListItem from './TaskCompleteListItem'
 import HeaderTable from '../components/HeaderTable'
-import { fetchCompletedTask } from '../data/crawling/crawlingHistorySlice'
+import { fetchCompletedTask } from '../data/task/taskHistorySlice'
 
 
 export default (props) => {
     const { taskId } = props
-    const histData = useSelector((state: RootState) => state.crawlingHistory)
+    const histData = useSelector((state: RootState) => state.task.history)
     const { data, offset, limit, count } = histData
     const dispatch = useDispatch()
 
     const handleNext = () => {
         if( count > offset + limit ){
-            dispatch(fetchCompletedTask({offset:offset+limit, limit}))
+            dispatch(fetchCompletedTask({offset:offset+limit, limit, taskId}))
         }
     }
     if(data.history && data.history[taskId]){

@@ -2,7 +2,7 @@ import { createAction, createSlice } from "@reduxjs/toolkit";
 
 
 const taskScheduleSlice = createSlice({
-    name: "taskSchedule",
+    name: "task/schedule",
     initialState: {
         list: [{
             id: "",
@@ -47,8 +47,8 @@ export interface RemoveTaskSchedulePayload{
     id: string
 }
 
-export const fetchTaskSchedule = createAction<FetchTaskSchedulePayload>("taskSchedule/fetchTaskSchedule");
-export const addTaskSchedule = createAction<AddTaskSchedulePayload>("taskSchedule/addTaskSchedule");
-export const removeTaskSchedule = createAction<RemoveTaskSchedulePayload>("taskSchedule/removeTaskSchedule");
+export const fetchTaskSchedule = createAction<FetchTaskSchedulePayload>("task/schedule/fetchTaskSchedule");
+export const addTaskSchedule = createAction<AddTaskSchedulePayload>("task/schedule/addTaskSchedule");
+export const removeTaskSchedule = createAction<RemoveTaskSchedulePayload>("task/schedule/removeTaskSchedule");
 export const { fetchTaskScheduleRes } = actions
 export default reducer

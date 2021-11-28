@@ -10,6 +10,7 @@ import OutLineTextField from '../components/OutLineTextField'
 import Button from '../components/Button'
 import CheckBox from '../components/CheckBox'
 import Select from 'react-select'
+import { addTask } from '../data/task/taskProgressSlice'
 
 export default (props) => {
     const [startDate, setStartDate] = useState(new Date())
@@ -20,7 +21,8 @@ export default (props) => {
     const dispatch = useDispatch()
     const handleRunCrawlingButton = () => {
         dispatch(
-            runCrawling({
+            addTask({
+                taskName: "crawlingMarcap",
                 taskId: "marcap",
                 market,
                 startDate: getDateString(startDate),

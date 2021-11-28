@@ -1,10 +1,10 @@
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import Breadcrumb from '../components/Breadcrumb';
-import { fetchCompletedTask } from '../data/crawling/crawlingHistorySlice';
+import { fetchCompletedTask } from '../data/task/taskHistorySlice';
 import { RootState } from '../data/root/rootReducer';
 import { fetchTaskSchedule } from '../data/task/taskScheduleSlice';
-import { fetchTaskState } from '../data/task/taskSlice';
+import { fetchTaskState } from '../data/task/taskCalendarSlice';
 import CrawlingList from './CrawlingList';
 
 export default (props) => {
@@ -12,7 +12,7 @@ export default (props) => {
     const dispatch = useDispatch()
     useEffect(()=>{
         if(isConnected){
-            dispatch(fetchCompletedTask({offset:0, limit:20}))
+            dispatch(fetchCompletedTask({offset:0, limit:20, taskId:"marcap"}))
             dispatch(fetchTaskState({ taskId: "marcap"}))
             dispatch(fetchTaskSchedule({}))
         }

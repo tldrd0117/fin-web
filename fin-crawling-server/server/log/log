@@ -1,39 +1,330 @@
-2021-11-24 14:11:40,392 - INFO - [logger.py:36] cls: TasksRepository, func: createTaskRunner, msg: created taskrunner
-2021-11-24 14:47:04,035 - INFO - [logger.py:36] cls: TasksRepository, func: getCompletedTask, msg: count: 1
-2021-11-24 14:48:26,618 - INFO - [logger.py:36] cls: TasksRepository, func: createTaskRunner, msg: created taskrunner
-2021-11-24 14:48:47,879 - INFO - [logger.py:36] cls: TasksRepository, func: createTaskRunner, msg: created taskrunner
-2021-11-24 15:00:21,196 - INFO - [logger.py:36] cls: TasksRepository, func: createTaskRunner, msg: created taskrunner
-2021-11-24 15:00:27,931 - INFO - [logger.py:36] cls: TasksRepository, func: createTaskRunner, msg: created taskrunner
-2021-11-24 15:01:04,217 - INFO - [logger.py:36] cls: TasksRepository, func: createTaskRunner, msg: created taskrunner
-2021-11-24 15:01:15,965 - INFO - [logger.py:36] cls: TasksRepository, func: createTaskRunner, msg: created taskrunner
-2021-11-24 15:01:24,205 - INFO - [logger.py:36] cls: TasksRepository, func: createTaskRunner, msg: created taskrunner
-2021-11-24 15:01:29,939 - INFO - [logger.py:36] cls: TasksRepository, func: createTaskRunner, msg: created taskrunner
-2021-11-24 15:02:34,740 - INFO - [logger.py:36] cls: TasksRepository, func: createTaskRunner, msg: created taskrunner
-2021-11-24 15:05:01,130 - INFO - [logger.py:36] cls: TasksRepository, func: createTaskRunner, msg: created taskrunner
-2021-11-24 15:05:15,905 - INFO - [logger.py:36] cls: TasksRepository, func: createTaskRunner, msg: created taskrunner
-2021-11-24 15:06:49,221 - INFO - [logger.py:36] cls: TasksRepository, func: createTaskRunner, msg: created taskrunner
-2021-11-24 15:09:41,126 - INFO - [logger.py:36] cls: TasksRepository, func: createTaskRunner, msg: created taskrunner
-2021-11-24 15:09:50,375 - INFO - [logger.py:36] cls: TasksRepository, func: createTaskRunner, msg: created taskrunner
-2021-11-24 15:10:27,144 - INFO - [logger.py:36] cls: TasksRepository, func: createTaskRunner, msg: created taskrunner
-2021-11-24 15:11:53,498 - INFO - [logger.py:36] cls: TasksRepository, func: createTaskRunner, msg: created taskrunner
-2021-11-24 15:12:02,269 - INFO - [logger.py:36] cls: TasksRepository, func: createTaskRunner, msg: created taskrunner
-2021-11-24 15:16:41,323 - INFO - [logger.py:36] cls: TasksRepository, func: createTaskRunner, msg: created taskrunner
-2021-11-24 15:17:58,150 - INFO - [logger.py:36] cls: TasksRepository, func: createTaskRunner, msg: created taskrunner
-2021-11-24 15:18:01,905 - INFO - [logger.py:36] cls: TasksRepository, func: createTaskRunner, msg: created taskrunner
-2021-11-24 15:18:21,655 - INFO - [logger.py:36] cls: TasksRepository, func: createTaskRunner, msg: created taskrunner
-2021-11-24 15:27:26,484 - INFO - [logger.py:36] cls: TasksRepository, func: createTaskRunner, msg: created taskrunner
-2021-11-24 15:28:35,792 - INFO - [logger.py:36] cls: TasksRepository, func: createTaskRunner, msg: created taskrunner
-2021-11-24 15:29:12,080 - INFO - [logger.py:36] cls: TasksRepository, func: createTaskRunner, msg: created taskrunner
-2021-11-24 15:29:33,849 - INFO - [logger.py:36] cls: TasksRepository, func: createTaskRunner, msg: created taskrunner
-2021-11-24 15:30:38,140 - INFO - [logger.py:36] cls: TasksRepository, func: createTaskRunner, msg: created taskrunner
-2021-11-24 15:33:05,538 - INFO - [logger.py:36] cls: TasksRepository, func: createTaskRunner, msg: created taskrunner
-2021-11-24 15:33:47,315 - INFO - [logger.py:36] cls: TasksRepository, func: createTaskRunner, msg: created taskrunner
-2021-11-24 15:33:58,607 - INFO - [logger.py:33] cls: CrawlingSocketRouter, msg: convertFileToDb
-2021-11-24 15:33:58,608 - INFO - [logger.py:33] cls: FactorService, msg: convertFileToDb
-2021-11-24 15:35:12,649 - INFO - [logger.py:36] cls: TasksRepository, func: createTaskRunner, msg: created taskrunner
-2021-11-24 15:35:19,239 - INFO - [logger.py:33] cls: CrawlingSocketRouter, msg: convertFileToDb
-2021-11-24 15:35:19,239 - INFO - [logger.py:33] cls: FactorService, msg: convertFileToDb
-2021-11-24 15:35:19,240 - INFO - [logger.py:36] cls: TasksRepository, func: addTask, msg: factorFile6f2a5b06-217d-4e17-bf1a-1b797f313d38
-2021-11-24 15:35:19,240 - INFO - [logger.py:36] cls: TasksRepository, func: updateTask, msg: factorFile6f2a5b06-217d-4e17-bf1a-1b797f313d38
-2021-11-24 15:35:19,242 - INFO - [logger.py:36] cls: TasksRepository, func: success, msg: factorFile6f2a5b06-217d-4e17-bf1a-1b797f313d38
-2021-11-24 15:35:19,242 - INFO - [logger.py:36] cls: TasksRepository, func: updateTask, msg: factorFile6f2a5b06-217d-4e17-bf1a-1b797f313d38
+2021-11-28 06:16:02,171 - INFO - [logger.py:36] cls: TasksRepository, func: createTaskRunner, msg: created taskrunner
+2021-11-28 06:29:21,592 - INFO - [logger.py:36] cls: TasksRepository, func: createTaskRunner, msg: created taskrunner
+2021-11-28 06:32:19,937 - INFO - [logger.py:36] cls: TasksRepository, func: createTaskRunner, msg: created taskrunner
+2021-11-28 06:32:20,255 - INFO - [logger.py:36] cls: TaskService, func: fetchTasks, msg: received
+2021-11-28 06:33:43,293 - INFO - [logger.py:36] cls: TasksRepository, func: createTaskRunner, msg: created taskrunner
+2021-11-28 06:33:43,700 - INFO - [logger.py:36] cls: TaskService, func: fetchTasks, msg: received
+2021-11-28 06:34:47,658 - INFO - [logger.py:36] cls: TaskService, func: fetchTasks, msg: received
+2021-11-28 06:35:20,933 - INFO - [logger.py:36] cls: TasksRepository, func: createTaskRunner, msg: created taskrunner
+2021-11-28 06:44:44,136 - INFO - [logger.py:33] cls: CrawlingSocketRouter, msg: convertFileToDb
+2021-11-28 06:45:35,228 - INFO - [logger.py:36] cls: TasksRepository, func: createTaskRunner, msg: created taskrunner
+2021-11-28 06:48:52,745 - INFO - [logger.py:33] cls: FactorService, msg: convertFactorFileToDb
+2021-11-28 06:48:52,751 - INFO - [logger.py:36] cls: TasksRepository, func: addTask, msg: factorFile8c4e4af6-9c75-4d20-bfd5-06c06d5bf280
+2021-11-28 06:48:52,784 - INFO - [logger.py:36] cls: TasksRepository, func: updateTask, msg: factorFile8c4e4af6-9c75-4d20-bfd5-06c06d5bf280
+2021-11-28 06:48:52,947 - INFO - [logger.py:36] cls: TasksRepository, func: success, msg: factorFile8c4e4af6-9c75-4d20-bfd5-06c06d5bf280
+2021-11-28 06:48:52,997 - INFO - [logger.py:36] cls: TasksRepository, func: updateTask, msg: factorFile8c4e4af6-9c75-4d20-bfd5-06c06d5bf280
+2021-11-28 06:53:42,924 - INFO - [logger.py:36] cls: TasksRepository, func: createTaskRunner, msg: created taskrunner
+2021-11-28 06:54:38,772 - INFO - [logger.py:33] cls: FactorService, msg: convertFactorFileToDb
+2021-11-28 06:54:38,780 - INFO - [logger.py:36] cls: TasksRepository, func: addTask, msg: factorFile827d50d6-d97f-4c6b-a376-ba205b653529
+2021-11-28 06:54:38,797 - INFO - [logger.py:36] cls: TasksRepository, func: updateTask, msg: factorFile827d50d6-d97f-4c6b-a376-ba205b653529
+2021-11-28 06:54:38,885 - INFO - [logger.py:36] cls: TasksRepository, func: success, msg: factorFile827d50d6-d97f-4c6b-a376-ba205b653529
+2021-11-28 06:54:38,887 - INFO - [logger.py:36] cls: TasksRepository, func: updateTask, msg: factorFile827d50d6-d97f-4c6b-a376-ba205b653529
+2021-11-28 06:58:19,816 - INFO - [logger.py:36] cls: TasksRepository, func: createTaskRunner, msg: created taskrunner
+2021-11-28 06:58:38,668 - INFO - [logger.py:33] cls: FactorService, msg: convertFactorFileToDb
+2021-11-28 06:58:38,691 - INFO - [logger.py:36] cls: TasksRepository, func: addTask, msg: factorFile98dd2f7f-1066-4ce7-b570-073c3206807f
+2021-11-28 06:58:38,704 - INFO - [logger.py:36] cls: TasksRepository, func: updateTask, msg: factorFile98dd2f7f-1066-4ce7-b570-073c3206807f
+2021-11-28 06:58:38,784 - INFO - [logger.py:36] cls: TasksRepository, func: success, msg: factorFile98dd2f7f-1066-4ce7-b570-073c3206807f
+2021-11-28 06:58:38,799 - INFO - [logger.py:36] cls: TasksRepository, func: updateTask, msg: factorFile98dd2f7f-1066-4ce7-b570-073c3206807f
+2021-11-28 06:59:12,564 - INFO - [logger.py:36] cls: TasksRepository, func: createTaskRunner, msg: created taskrunner
+2021-11-28 06:59:22,030 - INFO - [logger.py:33] cls: FactorService, msg: convertFactorFileToDb
+2021-11-28 06:59:22,038 - INFO - [logger.py:36] cls: TasksRepository, func: addTask, msg: factorFile16028307-a9bf-4042-b6f4-c0e70541ec98
+2021-11-28 06:59:22,058 - INFO - [logger.py:36] cls: TasksRepository, func: updateTask, msg: factorFile16028307-a9bf-4042-b6f4-c0e70541ec98
+2021-11-28 06:59:22,300 - INFO - [logger.py:36] cls: TasksRepository, func: success, msg: factorFile16028307-a9bf-4042-b6f4-c0e70541ec98
+2021-11-28 06:59:22,313 - INFO - [logger.py:36] cls: TasksRepository, func: updateTask, msg: factorFile16028307-a9bf-4042-b6f4-c0e70541ec98
+2021-11-28 07:00:09,725 - INFO - [logger.py:36] cls: TasksRepository, func: createTaskRunner, msg: created taskrunner
+2021-11-28 07:00:12,423 - INFO - [logger.py:33] cls: FactorService, msg: convertFactorFileToDb
+2021-11-28 07:00:12,435 - INFO - [logger.py:36] cls: TasksRepository, func: addTask, msg: factorFile3c875988-62d3-4bcc-8840-5bcd2cbff706
+2021-11-28 07:00:12,444 - INFO - [logger.py:36] cls: TasksRepository, func: updateTask, msg: factorFile3c875988-62d3-4bcc-8840-5bcd2cbff706
+2021-11-28 07:00:12,592 - INFO - [logger.py:36] cls: TasksRepository, func: success, msg: factorFile3c875988-62d3-4bcc-8840-5bcd2cbff706
+2021-11-28 07:00:12,608 - INFO - [logger.py:36] cls: TasksRepository, func: updateTask, msg: factorFile3c875988-62d3-4bcc-8840-5bcd2cbff706
+2021-11-28 07:00:12,711 - INFO - [logger.py:36] cls: TasksRepository, func: getCompletedTask, msg: count: 2
+2021-11-28 07:01:50,425 - INFO - [logger.py:36] cls: TasksRepository, func: createTaskRunner, msg: created taskrunner
+2021-11-28 07:01:55,773 - INFO - [logger.py:33] cls: FactorService, msg: convertFactorFileToDb
+2021-11-28 07:01:55,789 - INFO - [logger.py:36] cls: TasksRepository, func: addTask, msg: factorFilea88f0071-f93b-4791-bef0-c9135872cf49
+2021-11-28 07:01:55,807 - INFO - [logger.py:36] cls: TasksRepository, func: updateTask, msg: factorFilea88f0071-f93b-4791-bef0-c9135872cf49
+2021-11-28 07:01:55,982 - INFO - [logger.py:36] cls: TasksRepository, func: success, msg: factorFilea88f0071-f93b-4791-bef0-c9135872cf49
+2021-11-28 07:01:55,987 - INFO - [logger.py:36] cls: TasksRepository, func: updateTask, msg: factorFilea88f0071-f93b-4791-bef0-c9135872cf49
+2021-11-28 07:01:56,048 - INFO - [logger.py:36] cls: TasksRepository, func: getCompletedTask, msg: count: 2
+2021-11-28 07:04:42,480 - INFO - [logger.py:36] cls: TasksRepository, func: createTaskRunner, msg: created taskrunner
+2021-11-28 07:04:46,493 - INFO - [logger.py:33] cls: FactorService, msg: convertFactorFileToDb
+2021-11-28 07:04:46,530 - INFO - [logger.py:36] cls: TasksRepository, func: addTask, msg: factorFile3a650186-92c3-4937-97e8-930da94ae3f1
+2021-11-28 07:04:46,569 - INFO - [logger.py:36] cls: TasksRepository, func: updateTask, msg: factorFile3a650186-92c3-4937-97e8-930da94ae3f1
+2021-11-28 07:04:46,698 - INFO - [logger.py:36] cls: TasksRepository, func: success, msg: factorFile3a650186-92c3-4937-97e8-930da94ae3f1
+2021-11-28 07:04:46,708 - INFO - [logger.py:36] cls: TasksRepository, func: updateTask, msg: factorFile3a650186-92c3-4937-97e8-930da94ae3f1
+2021-11-28 07:04:46,843 - INFO - [logger.py:36] cls: TasksRepository, func: getCompletedTask, msg: count: 2
+2021-11-28 07:05:03,968 - INFO - [logger.py:36] cls: TasksRepository, func: createTaskRunner, msg: created taskrunner
+2021-11-28 07:05:06,806 - INFO - [logger.py:33] cls: FactorService, msg: convertFactorFileToDb
+2021-11-28 07:05:06,817 - INFO - [logger.py:36] cls: TasksRepository, func: addTask, msg: factorFile0d7134da-2766-4dff-9724-7c62db37c5dd
+2021-11-28 07:05:06,830 - INFO - [logger.py:36] cls: TasksRepository, func: updateTask, msg: factorFile0d7134da-2766-4dff-9724-7c62db37c5dd
+2021-11-28 07:05:06,887 - INFO - [logger.py:36] cls: TasksRepository, func: success, msg: factorFile0d7134da-2766-4dff-9724-7c62db37c5dd
+2021-11-28 07:05:06,903 - INFO - [logger.py:36] cls: TasksRepository, func: updateTask, msg: factorFile0d7134da-2766-4dff-9724-7c62db37c5dd
+2021-11-28 07:05:27,185 - INFO - [logger.py:36] cls: TasksRepository, func: createTaskRunner, msg: created taskrunner
+2021-11-28 07:05:32,144 - INFO - [logger.py:36] cls: TasksRepository, func: createTaskRunner, msg: created taskrunner
+2021-11-28 07:05:34,514 - INFO - [logger.py:33] cls: FactorService, msg: convertFactorFileToDb
+2021-11-28 07:05:34,546 - INFO - [logger.py:36] cls: TasksRepository, func: addTask, msg: factorFilebe3c05fa-1e08-4f35-b01b-e110c1593ca7
+2021-11-28 07:05:34,550 - INFO - [logger.py:36] cls: TasksRepository, func: updateTask, msg: factorFilebe3c05fa-1e08-4f35-b01b-e110c1593ca7
+2021-11-28 07:05:34,607 - INFO - [logger.py:36] cls: TasksRepository, func: success, msg: factorFilebe3c05fa-1e08-4f35-b01b-e110c1593ca7
+2021-11-28 07:05:34,624 - INFO - [logger.py:36] cls: TasksRepository, func: updateTask, msg: factorFilebe3c05fa-1e08-4f35-b01b-e110c1593ca7
+2021-11-28 07:05:34,894 - INFO - [logger.py:36] cls: TasksRepository, func: getCompletedTask, msg: count: 2
+2021-11-28 07:07:32,409 - INFO - [logger.py:36] cls: TasksRepository, func: createTaskRunner, msg: created taskrunner
+2021-11-28 07:07:50,539 - INFO - [logger.py:36] cls: TasksRepository, func: createTaskRunner, msg: created taskrunner
+2021-11-28 07:08:14,316 - INFO - [logger.py:33] cls: FactorService, msg: convertFactorFileToDb
+2021-11-28 07:08:14,329 - INFO - [logger.py:36] cls: TasksRepository, func: addTask, msg: factorFileaeffe7d6-8872-4978-b3ec-f9b2fb239511
+2021-11-28 07:08:14,347 - INFO - [logger.py:36] cls: TasksRepository, func: updateTask, msg: factorFileaeffe7d6-8872-4978-b3ec-f9b2fb239511
+2021-11-28 07:08:14,430 - INFO - [logger.py:36] cls: TasksRepository, func: success, msg: factorFileaeffe7d6-8872-4978-b3ec-f9b2fb239511
+2021-11-28 07:08:14,459 - INFO - [logger.py:36] cls: TasksRepository, func: updateTask, msg: factorFileaeffe7d6-8872-4978-b3ec-f9b2fb239511
+2021-11-28 07:08:33,640 - INFO - [logger.py:33] cls: FactorService, msg: convertFactorFileToDb
+2021-11-28 07:08:33,658 - INFO - [logger.py:36] cls: TasksRepository, func: addTask, msg: factorFile954b6d22-efba-4bf3-9676-c5cc76f513da
+2021-11-28 07:08:33,676 - INFO - [logger.py:36] cls: TasksRepository, func: updateTask, msg: factorFile954b6d22-efba-4bf3-9676-c5cc76f513da
+2021-11-28 07:08:33,770 - INFO - [logger.py:36] cls: TasksRepository, func: success, msg: factorFile954b6d22-efba-4bf3-9676-c5cc76f513da
+2021-11-28 07:08:33,775 - INFO - [logger.py:36] cls: TasksRepository, func: updateTask, msg: factorFile954b6d22-efba-4bf3-9676-c5cc76f513da
+2021-11-28 07:08:53,693 - INFO - [logger.py:36] cls: TasksRepository, func: createTaskRunner, msg: created taskrunner
+2021-11-28 07:09:04,034 - INFO - [logger.py:36] cls: TasksRepository, func: addTask, msg: marcapkospi2021112620211126be066362-3cc8-4ef5-8373-3ae03339326d
+2021-11-28 07:10:52,258 - INFO - [logger.py:36] cls: TasksRepository, func: createTaskRunner, msg: created taskrunner
+2021-11-28 07:11:07,315 - INFO - [logger.py:36] cls: TasksRepository, func: createTaskRunner, msg: created taskrunner
+2021-11-28 07:11:20,923 - INFO - [logger.py:36] cls: TasksRepository, func: createTaskRunner, msg: created taskrunner
+2021-11-28 07:11:28,652 - INFO - [logger.py:36] cls: TasksRepository, func: addTask, msg: marcapkospi2021112620211126fc04db55-6ca6-4250-a368-6c3cdbc9e505
+2021-11-28 07:11:28,681 - INFO - [logger.py:36] cls: CrawlingService, func: runMarcapTask, msg: runTask {"count": 1, "successCount": 0, "failCount": 0, "restCount": 1, "failTasks": [], "state": "find worker", "tasks": ["20211126"], "tasksRet": [0], "index": 0, "market": "kospi", "startDateStr": "20211126", "endDateStr": "20211126", "taskUniqueId": "marcapkospi2021112620211126fc04db55-6ca6-4250-a368-6c3cdbc9e505", "percent": 0.0, "taskId": "marcap", "errMsg": ""}
+2021-11-28 07:11:28,714 - INFO - [logger.py:36] cls: TaskRunner, func: _put, msg: task put
+2021-11-28 07:11:28,798 - INFO - [logger.py:36] cls: Pool, func: run, msg: task pool run
+2021-11-28 07:11:28,803 - INFO - [logger.py:36] cls: TaskRunner, func: updatePoolInfo, msg: runCount:1, queueCount:0
+2021-11-28 07:11:28,808 - INFO - [logger.py:36] cls: TasksRepository, func: updatePoolInfo, msg: {"poolSize": 8, "poolCount": 1, "runCount": 1, "queueCount": 0}
+2021-11-28 07:11:28,851 - INFO - [logger.py:36] cls: Task, func: run, msg: task run
+2021-11-28 07:11:28,860 - INFO - [logger.py:36] cls: CrawlingService, func: runCrawling&marcapTaskWorker, msg: start
+2021-11-28 07:11:28,882 - INFO - [logger.py:36] cls: CrawlingService, func: runCrawling&marcapTaskWorker, msg: taskWorker:marcapkospi2021112620211126fc04db55-6ca6-4250-a368-6c3cdbc9e505
+2021-11-28 07:11:28,894 - INFO - [logger.py:36] cls: MarcapCrawler, func: crawling, msg: a02e3071-e2d9-4199-b7aa-f71026b3dbe0
+2021-11-28 07:11:28,903 - INFO - [logger.py:36] cls: TasksRepository, func: updateTask, msg: marcapkospi2021112620211126fc04db55-6ca6-4250-a368-6c3cdbc9e505
+2021-11-28 07:11:28,935 - INFO - [logger.py:36] cls: CrawlerRepository, func: onConnectingWebDriver, msg: marcapkospi2021112620211126fc04db55-6ca6-4250-a368-6c3cdbc9e505
+2021-11-28 07:11:29,230 - INFO - [logger.py:36] cls: MarcapCrawler, func: crawling, msg: create observer and start
+2021-11-28 07:11:38,894 - INFO - [logger.py:36] cls: MarcapCrawler, func: connectWebDriver, msg: create driver
+2021-11-28 07:11:46,522 - INFO - [logger.py:36] cls: TasksRepository, func: updateTask, msg: marcapkospi2021112620211126fc04db55-6ca6-4250-a368-6c3cdbc9e505
+2021-11-28 07:11:46,711 - INFO - [logger.py:36] cls: CrawlerRepository, func: onStartCrawling, msg: marcapkospi2021112620211126fc04db55-6ca6-4250-a368-6c3cdbc9e505
+2021-11-28 07:11:46,875 - INFO - [logger.py:36] cls: MarcapCrawler, func: crawling, msg: create downloadTask taskId: marcap market: kospi date: 20211126 taskUniqueId: marcapkospi2021112620211126fc04db55-6ca6-4250-a368-6c3cdbc9e505
+2021-11-28 07:11:46,880 - INFO - [logger.py:36] cls: TasksRepository, func: updateTask, msg: marcapkospi2021112620211126fc04db55-6ca6-4250-a368-6c3cdbc9e505
+2021-11-28 07:11:46,903 - INFO - [logger.py:36] cls: CrawlerRepository, func: onDownloadStart, msg: marcapkospi2021112620211126fc04db55-6ca6-4250-a368-6c3cdbc9e505
+2021-11-28 07:11:46,911 - INFO - [logger.py:33] cls: MarcapCrawler, msg: downloadData
+2021-11-28 07:11:52,776 - INFO - [logger.py:36] cls: TasksRepository, func: updateTask, msg: marcapkospi2021112620211126fc04db55-6ca6-4250-a368-6c3cdbc9e505
+2021-11-28 07:11:52,809 - INFO - [logger.py:36] cls: CrawlerRepository, func: onDownloadComplete, msg: marcapkospi2021112620211126fc04db55-6ca6-4250-a368-6c3cdbc9e505
+2021-11-28 07:11:52,998 - INFO - [logger.py:36] cls: MarcapCrawler, func: downloadData, msg: isLock:True timeout:29 taskUniqueId: marcapkospi2021112620211126fc04db55-6ca6-4250-a368-6c3cdbc9e505
+2021-11-28 07:11:53,002 - INFO - [logger.py:33] cls: MarcapCrawler, msg: isLock:True timeout:29
+2021-11-28 07:11:54,094 - INFO - [logger.py:33] cls: CrawlerRepository, msg: onParsingComplete
+2021-11-28 07:11:54,096 - INFO - [logger.py:33] cls: CrawlerRepository, msg: taskId:marcap taskUniqueIdmarcapkospi2021112620211126fc04db55-6ca6-4250-a368-6c3cdbc9e505
+2021-11-28 07:11:54,097 - INFO - [logger.py:33] cls: CrawlerRepository, msg: taskDTO: {'marcapkospi2021112620211126fc04db55-6ca6-4250-a368-6c3cdbc9e505': ProcessTask(count=1, successCount=0, failCount=0, restCount=1, failTasks=[], state='download complete', tasks=['20211126'], tasksRet=[0], index=0, market='kospi', startDateStr='20211126', endDateStr='20211126', taskUniqueId='marcapkospi2021112620211126fc04db55-6ca6-4250-a368-6c3cdbc9e505', percent=0.0, taskId='marcap', errMsg='')}
+2021-11-28 07:11:54,099 - INFO - [logger.py:36] cls: TasksRepository, func: success, msg: marcapkospi2021112620211126fc04db55-6ca6-4250-a368-6c3cdbc9e505
+2021-11-28 07:11:54,104 - INFO - [logger.py:36] cls: TasksRepository, func: deleteTask, msg: marcapkospi2021112620211126fc04db55-6ca6-4250-a368-6c3cdbc9e505
+2021-11-28 07:11:54,129 - INFO - [logger.py:36] cls: TasksRepository, func: updateTask, msg: marcapkospi2021112620211126fc04db55-6ca6-4250-a368-6c3cdbc9e505
+2021-11-28 07:11:54,147 - INFO - [logger.py:36] cls: TasksRepository, func: completeTask, msg: complete
+2021-11-28 07:12:13,862 - INFO - [logger.py:36] cls: MarcapCrawler, func: parseFile, msg: success, marcapkospi2021112620211126fc04db55-6ca6-4250-a368-6c3cdbc9e505
+2021-11-28 07:12:13,865 - INFO - [logger.py:33] cls: MarcapCrawler, msg: parseFile...
+2021-11-28 07:12:13,871 - INFO - [logger.py:36] cls: MarcapCrawler, func: downloadData, msg: isLock:False timeout:28 taskUniqueId: marcapkospi2021112620211126fc04db55-6ca6-4250-a368-6c3cdbc9e505
+2021-11-28 07:12:13,876 - INFO - [logger.py:33] cls: MarcapCrawler, msg: isLock:False timeout:28
+2021-11-28 07:12:14,805 - INFO - [logger.py:36] cls: TaskRunner, func: updatePoolInfo, msg: runCount:0, queueCount:0
+2021-11-28 07:12:14,823 - INFO - [logger.py:36] cls: TasksRepository, func: updatePoolInfo, msg: {"poolSize": 8, "poolCount": 0, "runCount": 0, "queueCount": 0}
+2021-11-28 07:14:30,835 - INFO - [logger.py:36] cls: TasksRepository, func: addTask, msg: marcapkospi20211126202111269fe5e7e4-b716-4d48-a25e-6c3c2a901004
+2021-11-28 07:14:30,957 - INFO - [logger.py:36] cls: CrawlingService, func: runMarcapTask, msg: runTask {"count": 1, "successCount": 0, "failCount": 0, "restCount": 1, "failTasks": [], "state": "find worker", "tasks": ["20211126"], "tasksRet": [0], "index": 0, "market": "kospi", "startDateStr": "20211126", "endDateStr": "20211126", "taskUniqueId": "marcapkospi20211126202111269fe5e7e4-b716-4d48-a25e-6c3c2a901004", "percent": 0.0, "taskId": "marcap", "errMsg": ""}
+2021-11-28 07:14:31,143 - INFO - [logger.py:36] cls: TaskRunner, func: _put, msg: task put
+2021-11-28 07:14:31,170 - INFO - [logger.py:36] cls: Pool, func: run, msg: task pool run
+2021-11-28 07:14:31,170 - INFO - [logger.py:36] cls: Pool, func: run, msg: task pool run
+2021-11-28 07:14:31,183 - INFO - [logger.py:36] cls: TaskRunner, func: updatePoolInfo, msg: runCount:1, queueCount:0
+2021-11-28 07:14:31,192 - INFO - [logger.py:36] cls: TasksRepository, func: updatePoolInfo, msg: {"poolSize": 8, "poolCount": 1, "runCount": 1, "queueCount": 0}
+2021-11-28 07:14:31,198 - INFO - [logger.py:36] cls: Task, func: run, msg: task run
+2021-11-28 07:14:31,198 - INFO - [logger.py:36] cls: Task, func: run, msg: task run
+2021-11-28 07:14:31,205 - INFO - [logger.py:36] cls: CrawlingService, func: runCrawling&marcapTaskWorker, msg: start
+2021-11-28 07:14:31,220 - INFO - [logger.py:36] cls: CrawlingService, func: runCrawling&marcapTaskWorker, msg: taskWorker:marcapkospi20211126202111269fe5e7e4-b716-4d48-a25e-6c3c2a901004
+2021-11-28 07:14:31,253 - INFO - [logger.py:36] cls: MarcapCrawler, func: crawling, msg: 4ba8b540-3e14-47a8-881c-491f576f4c4b
+2021-11-28 07:14:31,253 - INFO - [logger.py:36] cls: MarcapCrawler, func: crawling, msg: 4ba8b540-3e14-47a8-881c-491f576f4c4b
+2021-11-28 07:14:31,260 - INFO - [logger.py:36] cls: TasksRepository, func: updateTask, msg: marcapkospi20211126202111269fe5e7e4-b716-4d48-a25e-6c3c2a901004
+2021-11-28 07:14:31,299 - INFO - [logger.py:36] cls: CrawlerRepository, func: onConnectingWebDriver, msg: marcapkospi20211126202111269fe5e7e4-b716-4d48-a25e-6c3c2a901004
+2021-11-28 07:14:31,638 - INFO - [logger.py:36] cls: MarcapCrawler, func: crawling, msg: create observer and start
+2021-11-28 07:14:31,638 - INFO - [logger.py:36] cls: MarcapCrawler, func: crawling, msg: create observer and start
+2021-11-28 07:14:37,356 - INFO - [logger.py:36] cls: MarcapCrawler, func: connectWebDriver, msg: create driver
+2021-11-28 07:14:37,356 - INFO - [logger.py:36] cls: MarcapCrawler, func: connectWebDriver, msg: create driver
+2021-11-28 07:14:43,518 - INFO - [logger.py:36] cls: TasksRepository, func: updateTask, msg: marcapkospi20211126202111269fe5e7e4-b716-4d48-a25e-6c3c2a901004
+2021-11-28 07:14:43,596 - INFO - [logger.py:36] cls: CrawlerRepository, func: onStartCrawling, msg: marcapkospi20211126202111269fe5e7e4-b716-4d48-a25e-6c3c2a901004
+2021-11-28 07:14:43,767 - INFO - [logger.py:36] cls: MarcapCrawler, func: crawling, msg: create downloadTask taskId: marcap market: kospi date: 20211126 taskUniqueId: marcapkospi20211126202111269fe5e7e4-b716-4d48-a25e-6c3c2a901004
+2021-11-28 07:14:43,767 - INFO - [logger.py:36] cls: MarcapCrawler, func: crawling, msg: create downloadTask taskId: marcap market: kospi date: 20211126 taskUniqueId: marcapkospi20211126202111269fe5e7e4-b716-4d48-a25e-6c3c2a901004
+2021-11-28 07:14:43,773 - INFO - [logger.py:36] cls: TasksRepository, func: updateTask, msg: marcapkospi20211126202111269fe5e7e4-b716-4d48-a25e-6c3c2a901004
+2021-11-28 07:14:43,886 - INFO - [logger.py:36] cls: CrawlerRepository, func: onDownloadStart, msg: marcapkospi20211126202111269fe5e7e4-b716-4d48-a25e-6c3c2a901004
+2021-11-28 07:14:43,893 - INFO - [logger.py:33] cls: MarcapCrawler, msg: downloadData
+2021-11-28 07:14:43,893 - INFO - [logger.py:33] cls: MarcapCrawler, msg: downloadData
+2021-11-28 07:14:50,048 - INFO - [logger.py:36] cls: TasksRepository, func: updateTask, msg: marcapkospi20211126202111269fe5e7e4-b716-4d48-a25e-6c3c2a901004
+2021-11-28 07:14:50,092 - INFO - [logger.py:36] cls: CrawlerRepository, func: onDownloadComplete, msg: marcapkospi20211126202111269fe5e7e4-b716-4d48-a25e-6c3c2a901004
+2021-11-28 07:14:50,332 - INFO - [logger.py:36] cls: MarcapCrawler, func: downloadData, msg: isLock:True timeout:29 taskUniqueId: marcapkospi20211126202111269fe5e7e4-b716-4d48-a25e-6c3c2a901004
+2021-11-28 07:14:50,332 - INFO - [logger.py:36] cls: MarcapCrawler, func: downloadData, msg: isLock:True timeout:29 taskUniqueId: marcapkospi20211126202111269fe5e7e4-b716-4d48-a25e-6c3c2a901004
+2021-11-28 07:14:50,335 - INFO - [logger.py:33] cls: MarcapCrawler, msg: isLock:True timeout:29
+2021-11-28 07:14:50,335 - INFO - [logger.py:33] cls: MarcapCrawler, msg: isLock:True timeout:29
+2021-11-28 07:14:51,091 - INFO - [logger.py:33] cls: CrawlerRepository, msg: onParsingComplete
+2021-11-28 07:14:51,092 - INFO - [logger.py:33] cls: CrawlerRepository, msg: taskId:marcap taskUniqueIdmarcapkospi20211126202111269fe5e7e4-b716-4d48-a25e-6c3c2a901004
+2021-11-28 07:14:51,094 - INFO - [logger.py:33] cls: CrawlerRepository, msg: taskDTO: {'marcapkospi2021112620211126fc04db55-6ca6-4250-a368-6c3cdbc9e505': ProcessTask(count=1, successCount=1, failCount=0, restCount=0, failTasks=[], state='complete', tasks=['20211126'], tasksRet=[1], index=1, market='kospi', startDateStr='20211126', endDateStr='20211126', taskUniqueId='marcapkospi2021112620211126fc04db55-6ca6-4250-a368-6c3cdbc9e505', percent=100.0, taskId='marcap', errMsg=''), 'marcapkospi20211126202111269fe5e7e4-b716-4d48-a25e-6c3c2a901004': ProcessTask(count=1, successCount=0, failCount=0, restCount=1, failTasks=[], state='download complete', tasks=['20211126'], tasksRet=[0], index=0, market='kospi', startDateStr='20211126', endDateStr='20211126', taskUniqueId='marcapkospi20211126202111269fe5e7e4-b716-4d48-a25e-6c3c2a901004', percent=0.0, taskId='marcap', errMsg='')}
+2021-11-28 07:14:51,096 - INFO - [logger.py:36] cls: TasksRepository, func: success, msg: marcapkospi20211126202111269fe5e7e4-b716-4d48-a25e-6c3c2a901004
+2021-11-28 07:14:51,102 - INFO - [logger.py:36] cls: TasksRepository, func: deleteTask, msg: marcapkospi20211126202111269fe5e7e4-b716-4d48-a25e-6c3c2a901004
+2021-11-28 07:14:51,114 - INFO - [logger.py:36] cls: TasksRepository, func: updateTask, msg: marcapkospi20211126202111269fe5e7e4-b716-4d48-a25e-6c3c2a901004
+2021-11-28 07:14:51,155 - INFO - [logger.py:36] cls: TasksRepository, func: completeTask, msg: complete
+2021-11-28 07:15:15,674 - INFO - [logger.py:36] cls: MarcapCrawler, func: parseFile, msg: success, marcapkospi20211126202111269fe5e7e4-b716-4d48-a25e-6c3c2a901004
+2021-11-28 07:15:15,674 - INFO - [logger.py:36] cls: MarcapCrawler, func: parseFile, msg: success, marcapkospi20211126202111269fe5e7e4-b716-4d48-a25e-6c3c2a901004
+2021-11-28 07:15:15,679 - INFO - [logger.py:33] cls: MarcapCrawler, msg: parseFile...
+2021-11-28 07:15:15,679 - INFO - [logger.py:33] cls: MarcapCrawler, msg: parseFile...
+2021-11-28 07:15:16,030 - INFO - [logger.py:36] cls: MarcapCrawler, func: downloadData, msg: isLock:False timeout:28 taskUniqueId: marcapkospi20211126202111269fe5e7e4-b716-4d48-a25e-6c3c2a901004
+2021-11-28 07:15:16,030 - INFO - [logger.py:36] cls: MarcapCrawler, func: downloadData, msg: isLock:False timeout:28 taskUniqueId: marcapkospi20211126202111269fe5e7e4-b716-4d48-a25e-6c3c2a901004
+2021-11-28 07:15:16,040 - INFO - [logger.py:33] cls: MarcapCrawler, msg: isLock:False timeout:28
+2021-11-28 07:15:16,040 - INFO - [logger.py:33] cls: MarcapCrawler, msg: isLock:False timeout:28
+2021-11-28 07:15:17,133 - INFO - [logger.py:36] cls: TaskRunner, func: updatePoolInfo, msg: runCount:0, queueCount:0
+2021-11-28 07:15:17,146 - INFO - [logger.py:36] cls: TasksRepository, func: updatePoolInfo, msg: {"poolSize": 8, "poolCount": 0, "runCount": 0, "queueCount": 0}
+2021-11-28 07:20:15,161 - INFO - [logger.py:36] cls: TasksRepository, func: createTaskRunner, msg: created taskrunner
+2021-11-28 07:20:35,347 - INFO - [logger.py:36] cls: TasksRepository, func: createTaskRunner, msg: created taskrunner
+2021-11-28 07:20:44,764 - INFO - [logger.py:36] cls: TasksRepository, func: createTaskRunner, msg: created taskrunner
+2021-11-28 07:21:13,870 - INFO - [logger.py:36] cls: TasksRepository, func: addTask, msg: marcapkospi202111262021112696d35fc4-b8fb-4183-a6d4-a52cb71c4304
+2021-11-28 07:21:13,877 - INFO - [logger.py:36] cls: CrawlingService, func: runMarcapTask, msg: runTask {"count": 1, "successCount": 0, "failCount": 0, "restCount": 1, "failTasks": [], "state": "find worker", "tasks": ["20211126"], "tasksRet": [0], "index": 0, "market": "kospi", "startDateStr": "20211126", "endDateStr": "20211126", "taskUniqueId": "marcapkospi202111262021112696d35fc4-b8fb-4183-a6d4-a52cb71c4304", "percent": 0.0, "taskId": "marcap", "errMsg": ""}
+2021-11-28 07:21:13,883 - INFO - [logger.py:36] cls: TaskRunner, func: _put, msg: task put
+2021-11-28 07:21:13,948 - INFO - [logger.py:36] cls: Pool, func: run, msg: task pool run
+2021-11-28 07:21:13,955 - INFO - [logger.py:36] cls: TaskRunner, func: updatePoolInfo, msg: runCount:1, queueCount:0
+2021-11-28 07:21:13,963 - INFO - [logger.py:36] cls: TasksRepository, func: updatePoolInfo, msg: {"poolSize": 8, "poolCount": 1, "runCount": 1, "queueCount": 0}
+2021-11-28 07:21:13,968 - INFO - [logger.py:36] cls: Task, func: run, msg: task run
+2021-11-28 07:21:13,994 - INFO - [logger.py:36] cls: CrawlingService, func: runCrawling&marcapTaskWorker, msg: start
+2021-11-28 07:21:14,003 - INFO - [logger.py:36] cls: CrawlingService, func: runCrawling&marcapTaskWorker, msg: taskWorker:marcapkospi202111262021112696d35fc4-b8fb-4183-a6d4-a52cb71c4304
+2021-11-28 07:21:14,008 - INFO - [logger.py:36] cls: MarcapCrawler, func: crawling, msg: f453d10f-bbb9-4d77-bef7-3fc0302c8fad
+2021-11-28 07:21:14,013 - INFO - [logger.py:36] cls: TasksRepository, func: updateTask, msg: marcapkospi202111262021112696d35fc4-b8fb-4183-a6d4-a52cb71c4304
+2021-11-28 07:21:14,027 - INFO - [logger.py:36] cls: CrawlerRepository, func: onConnectingWebDriver, msg: marcapkospi202111262021112696d35fc4-b8fb-4183-a6d4-a52cb71c4304
+2021-11-28 07:21:14,215 - INFO - [logger.py:36] cls: MarcapCrawler, func: crawling, msg: create observer and start
+2021-11-28 07:21:19,062 - INFO - [logger.py:36] cls: MarcapCrawler, func: connectWebDriver, msg: create driver
+2021-11-28 07:21:25,386 - INFO - [logger.py:36] cls: TasksRepository, func: updateTask, msg: marcapkospi202111262021112696d35fc4-b8fb-4183-a6d4-a52cb71c4304
+2021-11-28 07:21:25,430 - INFO - [logger.py:36] cls: CrawlerRepository, func: onStartCrawling, msg: marcapkospi202111262021112696d35fc4-b8fb-4183-a6d4-a52cb71c4304
+2021-11-28 07:21:25,583 - INFO - [logger.py:36] cls: MarcapCrawler, func: crawling, msg: create downloadTask taskId: marcap market: kospi date: 20211126 taskUniqueId: marcapkospi202111262021112696d35fc4-b8fb-4183-a6d4-a52cb71c4304
+2021-11-28 07:21:25,586 - INFO - [logger.py:36] cls: TasksRepository, func: updateTask, msg: marcapkospi202111262021112696d35fc4-b8fb-4183-a6d4-a52cb71c4304
+2021-11-28 07:21:25,623 - INFO - [logger.py:36] cls: CrawlerRepository, func: onDownloadStart, msg: marcapkospi202111262021112696d35fc4-b8fb-4183-a6d4-a52cb71c4304
+2021-11-28 07:21:25,625 - INFO - [logger.py:33] cls: MarcapCrawler, msg: downloadData
+2021-11-28 07:21:30,950 - INFO - [logger.py:36] cls: TasksRepository, func: updateTask, msg: marcapkospi202111262021112696d35fc4-b8fb-4183-a6d4-a52cb71c4304
+2021-11-28 07:21:31,061 - INFO - [logger.py:36] cls: CrawlerRepository, func: onDownloadComplete, msg: marcapkospi202111262021112696d35fc4-b8fb-4183-a6d4-a52cb71c4304
+2021-11-28 07:21:31,508 - INFO - [logger.py:36] cls: MarcapCrawler, func: downloadData, msg: isLock:True timeout:29 taskUniqueId: marcapkospi202111262021112696d35fc4-b8fb-4183-a6d4-a52cb71c4304
+2021-11-28 07:21:31,514 - INFO - [logger.py:33] cls: MarcapCrawler, msg: isLock:True timeout:29
+2021-11-28 07:21:32,135 - INFO - [logger.py:33] cls: CrawlerRepository, msg: onParsingComplete
+2021-11-28 07:21:32,139 - INFO - [logger.py:33] cls: CrawlerRepository, msg: taskId:marcap taskUniqueIdmarcapkospi202111262021112696d35fc4-b8fb-4183-a6d4-a52cb71c4304
+2021-11-28 07:21:32,141 - INFO - [logger.py:33] cls: CrawlerRepository, msg: taskDTO: {'marcapkospi202111262021112696d35fc4-b8fb-4183-a6d4-a52cb71c4304': ProcessTask(count=1, successCount=0, failCount=0, restCount=1, failTasks=[], state='download complete', tasks=['20211126'], tasksRet=[0], index=0, market='kospi', startDateStr='20211126', endDateStr='20211126', taskUniqueId='marcapkospi202111262021112696d35fc4-b8fb-4183-a6d4-a52cb71c4304', percent=0.0, taskId='marcap', errMsg='')}
+2021-11-28 07:21:32,144 - INFO - [logger.py:36] cls: TasksRepository, func: success, msg: marcapkospi202111262021112696d35fc4-b8fb-4183-a6d4-a52cb71c4304
+2021-11-28 07:21:32,147 - INFO - [logger.py:36] cls: TasksRepository, func: deleteTask, msg: marcapkospi202111262021112696d35fc4-b8fb-4183-a6d4-a52cb71c4304
+2021-11-28 07:21:32,150 - INFO - [logger.py:36] cls: TasksRepository, func: updateTask, msg: marcapkospi202111262021112696d35fc4-b8fb-4183-a6d4-a52cb71c4304
+2021-11-28 07:21:32,165 - INFO - [logger.py:36] cls: TasksRepository, func: completeTask, msg: complete
+2021-11-28 07:21:46,643 - INFO - [logger.py:36] cls: MarcapCrawler, func: parseFile, msg: success, marcapkospi202111262021112696d35fc4-b8fb-4183-a6d4-a52cb71c4304
+2021-11-28 07:21:46,646 - INFO - [logger.py:33] cls: MarcapCrawler, msg: parseFile...
+2021-11-28 07:21:46,801 - INFO - [logger.py:36] cls: MarcapCrawler, func: downloadData, msg: isLock:False timeout:28 taskUniqueId: marcapkospi202111262021112696d35fc4-b8fb-4183-a6d4-a52cb71c4304
+2021-11-28 07:21:46,811 - INFO - [logger.py:33] cls: MarcapCrawler, msg: isLock:False timeout:28
+2021-11-28 07:21:47,224 - INFO - [logger.py:36] cls: TaskRunner, func: updatePoolInfo, msg: runCount:0, queueCount:0
+2021-11-28 07:21:47,229 - INFO - [logger.py:36] cls: TasksRepository, func: updatePoolInfo, msg: {"poolSize": 8, "poolCount": 0, "runCount": 0, "queueCount": 0}
+2021-11-28 07:22:26,597 - INFO - [logger.py:33] cls: FactorService, msg: convertFactorFileToDb
+2021-11-28 07:24:17,747 - INFO - [logger.py:36] cls: TasksRepository, func: createTaskRunner, msg: created taskrunner
+2021-11-28 07:24:20,930 - INFO - [logger.py:33] cls: FactorService, msg: convertFactorFileToDb
+2021-11-28 07:24:20,944 - INFO - [logger.py:36] cls: TasksRepository, func: addTask, msg: factorFile13916372-93eb-49b5-a21e-5cbf26bbbec9
+2021-11-28 07:24:20,950 - INFO - [logger.py:36] cls: TasksRepository, func: updateTask, msg: factorFile13916372-93eb-49b5-a21e-5cbf26bbbec9
+2021-11-28 07:24:21,062 - INFO - [logger.py:36] cls: TasksRepository, func: success, msg: factorFile13916372-93eb-49b5-a21e-5cbf26bbbec9
+2021-11-28 07:24:21,069 - INFO - [logger.py:36] cls: TasksRepository, func: updateTask, msg: factorFile13916372-93eb-49b5-a21e-5cbf26bbbec9
+2021-11-28 07:24:52,734 - INFO - [logger.py:36] cls: TasksRepository, func: addTask, msg: marcapkospi2021112620211126fdd2d5ca-9196-40a3-ad6d-665e705d24b5
+2021-11-28 07:24:52,764 - INFO - [logger.py:36] cls: CrawlingService, func: runMarcapTask, msg: runTask {"count": 1, "successCount": 0, "failCount": 0, "restCount": 1, "failTasks": [], "state": "find worker", "tasks": ["20211126"], "tasksRet": [0], "index": 0, "market": "kospi", "startDateStr": "20211126", "endDateStr": "20211126", "taskUniqueId": "marcapkospi2021112620211126fdd2d5ca-9196-40a3-ad6d-665e705d24b5", "percent": 0.0, "taskId": "marcap", "errMsg": ""}
+2021-11-28 07:24:52,774 - INFO - [logger.py:36] cls: TaskRunner, func: _put, msg: task put
+2021-11-28 07:24:52,860 - INFO - [logger.py:36] cls: Pool, func: run, msg: task pool run
+2021-11-28 07:24:52,881 - INFO - [logger.py:36] cls: TaskRunner, func: updatePoolInfo, msg: runCount:1, queueCount:0
+2021-11-28 07:24:52,898 - INFO - [logger.py:36] cls: TasksRepository, func: updatePoolInfo, msg: {"poolSize": 8, "poolCount": 1, "runCount": 1, "queueCount": 0}
+2021-11-28 07:24:52,909 - INFO - [logger.py:36] cls: Task, func: run, msg: task run
+2021-11-28 07:24:52,915 - INFO - [logger.py:36] cls: CrawlingService, func: runCrawling&marcapTaskWorker, msg: start
+2021-11-28 07:24:52,953 - INFO - [logger.py:36] cls: CrawlingService, func: runCrawling&marcapTaskWorker, msg: taskWorker:marcapkospi2021112620211126fdd2d5ca-9196-40a3-ad6d-665e705d24b5
+2021-11-28 07:24:52,955 - INFO - [logger.py:36] cls: MarcapCrawler, func: crawling, msg: 33429bc5-7585-49ee-a774-b1048b79cc71
+2021-11-28 07:24:52,957 - INFO - [logger.py:36] cls: TasksRepository, func: updateTask, msg: marcapkospi2021112620211126fdd2d5ca-9196-40a3-ad6d-665e705d24b5
+2021-11-28 07:24:52,974 - INFO - [logger.py:36] cls: CrawlerRepository, func: onConnectingWebDriver, msg: marcapkospi2021112620211126fdd2d5ca-9196-40a3-ad6d-665e705d24b5
+2021-11-28 07:24:53,148 - INFO - [logger.py:36] cls: MarcapCrawler, func: crawling, msg: create observer and start
+2021-11-28 07:24:56,377 - INFO - [logger.py:36] cls: MarcapCrawler, func: connectWebDriver, msg: create driver
+2021-11-28 07:25:02,846 - INFO - [logger.py:36] cls: TasksRepository, func: updateTask, msg: marcapkospi2021112620211126fdd2d5ca-9196-40a3-ad6d-665e705d24b5
+2021-11-28 07:25:02,869 - INFO - [logger.py:36] cls: CrawlerRepository, func: onStartCrawling, msg: marcapkospi2021112620211126fdd2d5ca-9196-40a3-ad6d-665e705d24b5
+2021-11-28 07:25:03,092 - INFO - [logger.py:36] cls: MarcapCrawler, func: crawling, msg: create downloadTask taskId: marcap market: kospi date: 20211126 taskUniqueId: marcapkospi2021112620211126fdd2d5ca-9196-40a3-ad6d-665e705d24b5
+2021-11-28 07:25:03,106 - INFO - [logger.py:36] cls: TasksRepository, func: updateTask, msg: marcapkospi2021112620211126fdd2d5ca-9196-40a3-ad6d-665e705d24b5
+2021-11-28 07:25:03,165 - INFO - [logger.py:36] cls: CrawlerRepository, func: onDownloadStart, msg: marcapkospi2021112620211126fdd2d5ca-9196-40a3-ad6d-665e705d24b5
+2021-11-28 07:25:03,173 - INFO - [logger.py:33] cls: MarcapCrawler, msg: downloadData
+2021-11-28 07:25:08,904 - INFO - [logger.py:36] cls: TasksRepository, func: updateTask, msg: marcapkospi2021112620211126fdd2d5ca-9196-40a3-ad6d-665e705d24b5
+2021-11-28 07:25:08,939 - INFO - [logger.py:36] cls: CrawlerRepository, func: onDownloadComplete, msg: marcapkospi2021112620211126fdd2d5ca-9196-40a3-ad6d-665e705d24b5
+2021-11-28 07:25:09,522 - INFO - [logger.py:36] cls: MarcapCrawler, func: downloadData, msg: isLock:True timeout:29 taskUniqueId: marcapkospi2021112620211126fdd2d5ca-9196-40a3-ad6d-665e705d24b5
+2021-11-28 07:25:09,524 - INFO - [logger.py:33] cls: MarcapCrawler, msg: isLock:True timeout:29
+2021-11-28 07:25:10,097 - INFO - [logger.py:33] cls: CrawlerRepository, msg: onParsingComplete
+2021-11-28 07:25:10,102 - INFO - [logger.py:33] cls: CrawlerRepository, msg: taskId:marcap taskUniqueIdmarcapkospi2021112620211126fdd2d5ca-9196-40a3-ad6d-665e705d24b5
+2021-11-28 07:25:10,114 - INFO - [logger.py:33] cls: CrawlerRepository, msg: taskDTO: {'marcapkospi2021112620211126fdd2d5ca-9196-40a3-ad6d-665e705d24b5': ProcessTask(count=1, successCount=0, failCount=0, restCount=1, failTasks=[], state='download complete', tasks=['20211126'], tasksRet=[0], index=0, market='kospi', startDateStr='20211126', endDateStr='20211126', taskUniqueId='marcapkospi2021112620211126fdd2d5ca-9196-40a3-ad6d-665e705d24b5', percent=0.0, taskId='marcap', errMsg='')}
+2021-11-28 07:25:10,178 - INFO - [logger.py:36] cls: TasksRepository, func: success, msg: marcapkospi2021112620211126fdd2d5ca-9196-40a3-ad6d-665e705d24b5
+2021-11-28 07:25:10,181 - INFO - [logger.py:36] cls: TasksRepository, func: deleteTask, msg: marcapkospi2021112620211126fdd2d5ca-9196-40a3-ad6d-665e705d24b5
+2021-11-28 07:25:10,194 - INFO - [logger.py:36] cls: TasksRepository, func: updateTask, msg: marcapkospi2021112620211126fdd2d5ca-9196-40a3-ad6d-665e705d24b5
+2021-11-28 07:25:10,304 - INFO - [logger.py:36] cls: TasksRepository, func: completeTask, msg: complete
+2021-11-28 07:25:22,917 - INFO - [logger.py:36] cls: MarcapCrawler, func: parseFile, msg: success, marcapkospi2021112620211126fdd2d5ca-9196-40a3-ad6d-665e705d24b5
+2021-11-28 07:25:22,919 - INFO - [logger.py:33] cls: MarcapCrawler, msg: parseFile...
+2021-11-28 07:25:23,105 - INFO - [logger.py:36] cls: MarcapCrawler, func: downloadData, msg: isLock:False timeout:28 taskUniqueId: marcapkospi2021112620211126fdd2d5ca-9196-40a3-ad6d-665e705d24b5
+2021-11-28 07:25:23,251 - INFO - [logger.py:33] cls: MarcapCrawler, msg: isLock:False timeout:28
+2021-11-28 07:25:24,206 - INFO - [logger.py:36] cls: TaskRunner, func: updatePoolInfo, msg: runCount:0, queueCount:0
+2021-11-28 07:25:24,211 - INFO - [logger.py:36] cls: TasksRepository, func: updatePoolInfo, msg: {"poolSize": 8, "poolCount": 0, "runCount": 0, "queueCount": 0}
+2021-11-28 08:43:30,480 - INFO - [logger.py:36] cls: TasksRepository, func: createTaskRunner, msg: created taskrunner
+2021-11-28 09:01:40,640 - INFO - [logger.py:36] cls: TasksRepository, func: createTaskRunner, msg: created taskrunner
+2021-11-28 09:01:57,517 - INFO - [logger.py:36] cls: TasksRepository, func: createTaskRunner, msg: created taskrunner
+2021-11-28 09:02:58,103 - INFO - [logger.py:36] cls: TasksRepository, func: createTaskRunner, msg: created taskrunner
+2021-11-28 09:03:20,483 - INFO - [logger.py:36] cls: TasksRepository, func: createTaskRunner, msg: created taskrunner
+2021-11-28 09:06:49,843 - INFO - [logger.py:36] cls: TasksRepository, func: createTaskRunner, msg: created taskrunner
+2021-11-28 09:11:47,570 - INFO - [logger.py:36] cls: TasksRepository, func: createTaskRunner, msg: created taskrunner
+2021-11-28 09:21:16,438 - INFO - [logger.py:36] cls: TasksRepository, func: createTaskRunner, msg: created taskrunner
+2021-11-28 09:27:01,528 - INFO - [logger.py:36] cls: TasksRepository, func: createTaskRunner, msg: created taskrunner
+2021-11-28 09:27:18,766 - INFO - [logger.py:36] cls: TasksRepository, func: createTaskRunner, msg: created taskrunner
+2021-11-28 09:33:20,023 - INFO - [logger.py:36] cls: TasksRepository, func: createTaskRunner, msg: created taskrunner
+2021-11-28 09:39:37,473 - INFO - [logger.py:36] cls: TasksRepository, func: createTaskRunner, msg: created taskrunner
+2021-11-28 09:44:46,143 - INFO - [logger.py:36] cls: TasksRepository, func: getCompletedTask, msg: count: 2
+2021-11-28 09:46:59,207 - INFO - [logger.py:36] cls: TasksRepository, func: getCompletedTask, msg: count: 2
+2021-11-28 09:48:17,605 - INFO - [logger.py:36] cls: TasksRepository, func: createTaskRunner, msg: created taskrunner
+2021-11-28 09:48:31,413 - INFO - [logger.py:36] cls: TasksRepository, func: getCompletedTask, msg: count: 2
+2021-11-28 09:51:45,134 - INFO - [logger.py:36] cls: TasksRepository, func: createTaskRunner, msg: created taskrunner
+2021-11-28 09:52:03,069 - INFO - [logger.py:36] cls: TasksRepository, func: getCompletedTask, msg: count: 2
+2021-11-28 09:53:38,618 - INFO - [logger.py:36] cls: TasksRepository, func: getCompletedTask, msg: count: 2
+2021-11-28 09:53:47,022 - INFO - [logger.py:36] cls: TasksRepository, func: getCompletedTask, msg: count: 1
+2021-11-28 09:54:53,171 - INFO - [logger.py:33] cls: FactorService, msg: convertFactorFileToDb
+2021-11-28 09:54:53,309 - INFO - [logger.py:36] cls: TasksRepository, func: addTask, msg: factorFile6fbc90d4-c33b-4aa9-bbf8-c4f087e3e48a
+2021-11-28 09:54:53,320 - INFO - [logger.py:36] cls: TasksRepository, func: updateTask, msg: factorFile6fbc90d4-c33b-4aa9-bbf8-c4f087e3e48a
+2021-11-28 09:54:53,926 - INFO - [logger.py:36] cls: TasksRepository, func: success, msg: factorFile6fbc90d4-c33b-4aa9-bbf8-c4f087e3e48a
+2021-11-28 09:54:53,956 - INFO - [logger.py:36] cls: TasksRepository, func: updateTask, msg: factorFile6fbc90d4-c33b-4aa9-bbf8-c4f087e3e48a
+2021-11-28 09:56:06,535 - INFO - [logger.py:36] cls: TasksRepository, func: getCompletedTask, msg: count: 2
+2021-11-28 09:56:15,798 - INFO - [logger.py:36] cls: TasksRepository, func: getCompletedTask, msg: count: 1
+2021-11-28 09:57:59,095 - INFO - [logger.py:36] cls: TasksRepository, func: createTaskRunner, msg: created taskrunner
+2021-11-28 09:58:18,296 - INFO - [logger.py:36] cls: TasksRepository, func: createTaskRunner, msg: created taskrunner
+2021-11-28 09:58:35,977 - INFO - [logger.py:36] cls: TasksRepository, func: getCompletedTask, msg: count: 2
+2021-11-28 09:59:22,565 - INFO - [logger.py:33] cls: FactorService, msg: convertFactorFileToDb
+2021-11-28 09:59:22,585 - INFO - [logger.py:36] cls: TasksRepository, func: addTask, msg: factorFilec6caac88-77dd-4ca1-8b29-61998fd3f436
+2021-11-28 09:59:22,618 - INFO - [logger.py:36] cls: TasksRepository, func: updateTask, msg: factorFilec6caac88-77dd-4ca1-8b29-61998fd3f436
+2021-11-28 09:59:22,780 - INFO - [logger.py:36] cls: TasksRepository, func: success, msg: factorFilec6caac88-77dd-4ca1-8b29-61998fd3f436
+2021-11-28 09:59:22,795 - INFO - [logger.py:36] cls: TasksRepository, func: updateTask, msg: factorFilec6caac88-77dd-4ca1-8b29-61998fd3f436
+2021-11-28 09:59:26,755 - INFO - [logger.py:33] cls: FactorService, msg: convertFactorFileToDb
+2021-11-28 09:59:26,770 - INFO - [logger.py:36] cls: TasksRepository, func: addTask, msg: factorFileb2422048-b862-497b-baf8-f6c697aace17
+2021-11-28 09:59:26,785 - INFO - [logger.py:36] cls: TasksRepository, func: updateTask, msg: factorFileb2422048-b862-497b-baf8-f6c697aace17
+2021-11-28 09:59:26,850 - INFO - [logger.py:36] cls: TasksRepository, func: success, msg: factorFileb2422048-b862-497b-baf8-f6c697aace17
+2021-11-28 09:59:26,866 - INFO - [logger.py:36] cls: TasksRepository, func: updateTask, msg: factorFileb2422048-b862-497b-baf8-f6c697aace17
+2021-11-28 09:59:34,485 - INFO - [logger.py:33] cls: FactorService, msg: convertFactorFileToDb
+2021-11-28 09:59:34,504 - INFO - [logger.py:36] cls: TasksRepository, func: addTask, msg: factorFilefc68a9b8-6bde-4d6c-b514-362d7a7bc681
+2021-11-28 09:59:34,612 - INFO - [logger.py:36] cls: TasksRepository, func: updateTask, msg: factorFilefc68a9b8-6bde-4d6c-b514-362d7a7bc681
+2021-11-28 09:59:34,801 - INFO - [logger.py:36] cls: TasksRepository, func: success, msg: factorFilefc68a9b8-6bde-4d6c-b514-362d7a7bc681
+2021-11-28 09:59:34,818 - INFO - [logger.py:36] cls: TasksRepository, func: updateTask, msg: factorFilefc68a9b8-6bde-4d6c-b514-362d7a7bc681
+2021-11-28 10:00:57,108 - INFO - [logger.py:36] cls: TasksRepository, func: createTaskRunner, msg: created taskrunner
+2021-11-28 10:01:14,565 - INFO - [logger.py:36] cls: TasksRepository, func: getCompletedTask, msg: count: 2
+2021-11-28 10:01:20,977 - INFO - [logger.py:33] cls: FactorService, msg: convertFactorFileToDb
+2021-11-28 10:01:20,997 - INFO - [logger.py:36] cls: TasksRepository, func: addTask, msg: factorFile55b33cb5-8afe-42ec-ad71-fce7848544c3
+2021-11-28 10:01:21,047 - INFO - [logger.py:36] cls: TasksRepository, func: updateTask, msg: factorFile55b33cb5-8afe-42ec-ad71-fce7848544c3
+2021-11-28 10:01:21,140 - INFO - [logger.py:36] cls: TasksRepository, func: success, msg: factorFile55b33cb5-8afe-42ec-ad71-fce7848544c3
+2021-11-28 10:01:21,148 - INFO - [logger.py:36] cls: TasksRepository, func: updateTask, msg: factorFile55b33cb5-8afe-42ec-ad71-fce7848544c3
+2021-11-28 10:01:21,161 - INFO - [logger.py:36] cls: TasksRepository, func: deleteTask, msg: factorFile55b33cb5-8afe-42ec-ad71-fce7848544c3
+2021-11-28 10:02:48,078 - INFO - [logger.py:36] cls: TasksRepository, func: createTaskRunner, msg: created taskrunner
+2021-11-28 10:02:57,511 - INFO - [logger.py:36] cls: TasksRepository, func: createTaskRunner, msg: created taskrunner
+2021-11-28 10:03:14,648 - INFO - [logger.py:36] cls: TasksRepository, func: getCompletedTask, msg: count: 2
+2021-11-28 10:03:20,204 - INFO - [logger.py:33] cls: FactorService, msg: convertFactorFileToDb
+2021-11-28 10:03:20,216 - INFO - [logger.py:36] cls: TasksRepository, func: addTask, msg: factorFilec5546206-2649-4b53-963a-655828e613d9
+2021-11-28 10:03:20,235 - INFO - [logger.py:36] cls: TasksRepository, func: updateTask, msg: factorFilec5546206-2649-4b53-963a-655828e613d9
+2021-11-28 10:03:20,319 - INFO - [logger.py:36] cls: TasksRepository, func: success, msg: factorFilec5546206-2649-4b53-963a-655828e613d9
+2021-11-28 10:03:20,345 - INFO - [logger.py:36] cls: TasksRepository, func: updateTask, msg: factorFilec5546206-2649-4b53-963a-655828e613d9
+2021-11-28 10:03:20,386 - INFO - [logger.py:36] cls: TasksRepository, func: deleteTask, msg: factorFilec5546206-2649-4b53-963a-655828e613d9
+2021-11-28 10:03:23,693 - INFO - [logger.py:33] cls: FactorService, msg: convertFactorFileToDb
+2021-11-28 10:03:23,706 - INFO - [logger.py:36] cls: TasksRepository, func: addTask, msg: factorFile5e02621c-82a4-412a-a752-478d3ec9e4fd
+2021-11-28 10:03:23,719 - INFO - [logger.py:36] cls: TasksRepository, func: updateTask, msg: factorFile5e02621c-82a4-412a-a752-478d3ec9e4fd
+2021-11-28 10:03:23,818 - INFO - [logger.py:36] cls: TasksRepository, func: success, msg: factorFile5e02621c-82a4-412a-a752-478d3ec9e4fd
+2021-11-28 10:03:23,830 - INFO - [logger.py:36] cls: TasksRepository, func: updateTask, msg: factorFile5e02621c-82a4-412a-a752-478d3ec9e4fd
+2021-11-28 10:03:23,871 - INFO - [logger.py:36] cls: TasksRepository, func: deleteTask, msg: factorFile5e02621c-82a4-412a-a752-478d3ec9e4fd
+2021-11-28 10:03:28,022 - INFO - [logger.py:33] cls: FactorService, msg: convertFactorFileToDb
+2021-11-28 10:03:28,147 - INFO - [logger.py:36] cls: TasksRepository, func: addTask, msg: factorFile9161c2f9-1aed-4f48-8787-e40d8353d59f
+2021-11-28 10:03:28,163 - INFO - [logger.py:36] cls: TasksRepository, func: updateTask, msg: factorFile9161c2f9-1aed-4f48-8787-e40d8353d59f
+2021-11-28 10:03:28,206 - INFO - [logger.py:36] cls: TasksRepository, func: success, msg: factorFile9161c2f9-1aed-4f48-8787-e40d8353d59f
+2021-11-28 10:03:28,211 - INFO - [logger.py:36] cls: TasksRepository, func: updateTask, msg: factorFile9161c2f9-1aed-4f48-8787-e40d8353d59f
+2021-11-28 10:03:28,313 - INFO - [logger.py:36] cls: TasksRepository, func: deleteTask, msg: factorFile9161c2f9-1aed-4f48-8787-e40d8353d59f

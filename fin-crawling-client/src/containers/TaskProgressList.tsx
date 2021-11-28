@@ -1,5 +1,5 @@
 import React from 'react'
-import CrawlingProgressListItem from './CrawlingProgressListItem'
+import TaskProgressListItem from './TaskProgressListItem'
 import LinearProgressBar from '../components/LinearProgressBar'
 import { RootState } from '../data/root/rootReducer'
 import { useSelector } from 'react-redux'
@@ -7,12 +7,12 @@ import { useSelector } from 'react-redux'
 
 export default (props) => {
     const { taskId } = props
-    const { tasks } = useSelector((state: RootState) => state.crawling)
+    const { tasks } = useSelector((state: RootState) => state.task.progress)
     if(tasks && tasks[taskId]){
         const { ids, list } = tasks[taskId]
         return <div className={"relative"}>
             {
-                ids?ids.map(val=><CrawlingProgressListItem key={val} data={{...list[val], taskUniqueId: val}} />):null
+                ids?ids.map(val=><TaskProgressListItem key={val} data={{...list[val], taskUniqueId: val}} />):null
             }
         </div>
     } else {

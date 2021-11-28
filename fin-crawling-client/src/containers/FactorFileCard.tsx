@@ -1,7 +1,9 @@
 import React from 'react'
 import Card from '../components/Card'
+import TaskProgressList from './TaskProgressList'
 import FactorFileExecutionForm from './FactorFileExecutionForm'
 import ToggleTitle from './ToggleTitle'
+import TaskCompleteList from './TaskCompleteList'
 
 export default () => {
     return <>
@@ -10,7 +12,7 @@ export default () => {
             <FactorFileExecutionForm/>
             <div className={"w-full h-px bg-gray-300 mt-8 mb-4"}></div>
             <p>Progress List</p>
-            {/* <CrawlingProgressList taskId={"marcap"}/> */}
+            <TaskProgressList taskId={"factorFile"}/>
             <div className={"w-full h-px bg-gray-300 mt-8 mb-4"}></div>
             {/* <CrawlingSchedulingForm/> */}
             <div className={"w-full h-px bg-gray-300 mt-8 mb-4"}></div>
@@ -18,7 +20,7 @@ export default () => {
                 title={"Task List"}
                 show={
                     <>
-                        {/* <CrawlingTaskScheduleList/> */}
+                        <TaskCompleteList taskId={"factorFile"}/>
                     </>
                 }
                 hide={null}/>

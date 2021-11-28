@@ -59,13 +59,15 @@ class TasksRepository(object):
 
     # 추가된 태스크 정보를 저장한다.
     def addTask(self, task: ProcessTask) -> None:
-        if "marcap" not in self.tasksdto.tasks:
+        if task.taskId not in self.tasksdto.tasks:
             self.tasksdto.tasks[task.taskId] = dict()
             self.tasksdto.tasks[task.taskId]["list"] = dict()
             self.tasksdto.tasks[task.taskId]["ids"] = []
-            self.tasksdto.taskIds.append("marcap")
+            self.tasksdto.taskIds.append(task.taskId)
+        
         self.tasksdto.tasks[task.taskId]["list"][task.taskUniqueId] = task
         self.tasksdto.tasks[task.taskId]["ids"].append(task.taskUniqueId)
+        self.taskEventEmitter.emit(EVENT_TASK_REPO_UPDATE_TASKS, self.tasksdto)
         self.logger.info("addTask", f"{task.taskUniqueId}")
 
     # 갱신 태스크 정보를 저장한다.
@@ -96,7 +98,8 @@ class TasksRepository(object):
     def completeFactorConvertFileToDbTask(self, task: ProcessTask) -> None:
         self.success(task, 1)
         self.updateTask(task)
-        self.taskEventEmitter.emit(EVENT_TASK_REPO_TASK_COMPLETE, "factorFile")
+        self.deleteTask(task)
+        self.taskEventEmitter.emit(EVENT_TASK_REPO_TASK_COMPLETE, "factorFile", None)
 
     # 완료된 태스크 정보를 처린한다.
     def completeStockCrawlingTask(self, isSuccess: bool, retdto: StockMarketCapitalResult, dto: StockCrawlingDownloadTask) -> None:

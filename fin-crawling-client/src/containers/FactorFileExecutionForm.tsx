@@ -10,6 +10,7 @@ import OutLineTextField from '../components/OutLineTextField'
 import Button from '../components/Button'
 import CheckBox from '../components/CheckBox'
 import Select from 'react-select'
+import { addTask } from '../data/task/taskProgressSlice'
 
 export default (props) => {
 
@@ -17,7 +18,8 @@ export default (props) => {
     const handleRunCrawlingButton = () => {
         console.log("play")
         dispatch(
-            convertFileToDb({
+            addTask({
+                taskName: "convertFactorFileToDb",
                 taskId: "factorFile",
             })
         )

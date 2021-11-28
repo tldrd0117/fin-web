@@ -22,6 +22,7 @@ RES_SOCKET_CRAWLING_RUN_CRAWLING = "crawling/runCrawlingRes"
 
 
 class CrawlingService:
+
     def __init__(self, manager: ConnectionManager, tasksRepository: TasksRepository, crawlerRepository: CrawlerRepository, stockRepository: StockRepository) -> None:
         self.tasksRepository = tasksRepository
         self.crawlerRepository = crawlerRepository
@@ -29,9 +30,9 @@ class CrawlingService:
         self.manager = manager
         self.pools: Dict = {}
         self.logger = Logger("CrawlingService")
-        self.createTaskRepositoryListener()
+        # self.createTaskRepositoryListener()
 
-    def runCrawling(self, dtoList: List[RunCrawling]) -> None:
+    def crawlingMarcap(self, dtoList: List[RunCrawling]) -> None:
         for dto in dtoList:
             if dto.taskId == "marcap":
                 async def marcapTaskWorker(runDto: StockRunCrawling, pool: Pool, taskPool: TaskPool) -> None:
@@ -46,12 +47,12 @@ class CrawlingService:
                     await asyncio.create_task(marcapCrawler.crawling(runDto))
                     taskPool.removeTaskPool(pool)
                     self.crawlerRepository.removeCrawler(taskUniqueId)
-                task = Task(marcapTaskWorker, {"runDto": dto})
+                task = Task(dto.taskUniqueId, marcapTaskWorker, {"runDto": dto})
                 self.runMarcapTask(task, dto)
             elif dto.taskId == "factor":
                 async def factorTaskWorker(runDto: FactorRunCrawling, pool: Pool, taskPool: TaskPool) -> None:
                     pass
-                task = Task(factorTaskWorker, {"runDto": dto})
+                task = Task(dto.taskUniqueId, factorTaskWorker, {"runDto": dto})
     
     def runMarcapTask(self, workerTask: Task, dto: StockRunCrawling) -> None:
         if self.tasksRepository.taskRunner:
@@ -73,7 +74,6 @@ class CrawlingService:
             })
             task.state = "find worker"
             self.tasksRepository.addTask(task)
-            self.updateTasks(self.tasksRepository.tasksdto)
             self.tasksRepository.runTask(workerTask)
             self.logger.info("runMarcapTask", f"runTask {task.json()}")
     
@@ -87,26 +87,36 @@ class CrawlingService:
                 self.tasksRepository.deleteTask(task)
         self.manager.sendBroadCast(RES_SOCKET_CRAWLING_FETCH_TASKS, self.tasksRepository.tasksdto.dict())
 
-    def fetchTasks(self, webSocket: WebSocket) -> None:
-        self.manager.send(RES_SOCKET_CRAWLING_FETCH_TASKS, self.tasksRepository.tasksdto.dict(), webSocket)
-    
-    def fetchCompletedTask(self, dto: ListLimitData, webSocket: WebSocket) -> None:
-        listLimitDao = ListLimitDao(**{
-            "offset": dto["offset"],
-            "limit": dto["limit"],
-            "taskId": "marcap"
-        })
-        tasks: ListLimitDataDao = self.tasksRepository.getCompletedTask(listLimitDao)
-        # logger.info("histories:"+tasks.json())
-        self.manager.send(RES_SOCKET_CRAWLING_FETCH_COMPLETED_TASK, tasks.dict(), webSocket)
+    def cancelTask(self, taskId: str, taskUniqueId: str) -> None:
+        if taskId == "marcap":
+            if taskUniqueId in self.crawlerRepository.getCrawlers():
+                self.tasksRepository.taskRunner.cancel(taskUniqueId)
+                self.crawlerRepository.getCrawlers(taskUniqueId).isCancelled = True
+            else:
+                task = self.tasksRepository.getTask(taskId, taskUniqueId)
+                if task is not None:
+                    self.tasksRepository.deleteTask(task)
 
-    def createTaskRepositoryListener(self) -> None:
-        self.tasksRepository.taskEventEmitter.on(EVENT_TASK_REPO_TASK_COMPLETE, self.completeTask)
-        self.tasksRepository.taskEventEmitter.on(EVENT_TASK_REPO_UPDATE_TASKS, self.updateTasks)
+    # def fetchTasks(self, webSocket: WebSocket) -> None:
+    #     self.manager.send(RES_SOCKET_CRAWLING_FETCH_TASKS, self.tasksRepository.tasksdto.dict(), webSocket)
     
-    def updateTasks(self, tasks: ProcessTasks) -> None:
-        # logger.info("tasks:"+tasks.json())
-        self.manager.sendBroadCast(RES_SOCKET_CRAWLING_RUN_CRAWLING, tasks.dict())
+    # def fetchCompletedTask(self, dto: ListLimitData, webSocket: WebSocket) -> None:
+    #     listLimitDao = ListLimitDao(**{
+    #         "offset": dto["offset"],
+    #         "limit": dto["limit"],
+    #         "taskId": "marcap"
+    #     })
+    #     tasks: ListLimitDataDao = self.tasksRepository.getCompletedTask(listLimitDao)
+    #     # logger.info("histories:"+tasks.json())
+    #     self.manager.send(RES_SOCKET_CRAWLING_FETCH_COMPLETED_TASK, tasks.dict(), webSocket)
+
+    # def createTaskRepositoryListener(self) -> None:
+    #     self.tasksRepository.taskEventEmitter.on(EVENT_TASK_REPO_TASK_COMPLETE, self.completeTask)
+    #     self.tasksRepository.taskEventEmitter.on(EVENT_TASK_REPO_UPDATE_TASKS, self.updateTasks)
+    
+    # def updateTasks(self, tasks: ProcessTasks) -> None:
+    #     # logger.info("tasks:"+tasks.json())
+    #     self.manager.sendBroadCast(RES_SOCKET_CRAWLING_RUN_CRAWLING, tasks.dict())
     
     def completeTask(self, marcap: str, stockUpdateState: StockUpdateState) -> None:
         dao = ListLimitDao(**{

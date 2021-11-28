@@ -1,23 +1,32 @@
 
-from typing import List
-from app.model.dto import StockUpdateState, YearData, StockTaskSchedule, StockTaskScheduleList, StockTaskScheduleInfo, StockRunCrawling
-from app.model.task import TaskPoolInfo
-from app.module.locator import Locator
-from app.repo.TasksRepository import TasksRepository, EVENT_TASK_REPO_TASK_COMPLETE, EVENT_TASK_REPO_UPDATE_POOL_INFO
-from app.module.socket.manager import ConnectionManager
-from app.util.DateUtils import getNowDateStr
-from app.scheduler.TaskScheduler import TaskScheduler
+from app.module.logger import Logger
+from typing import Any, List
 from fastapi import WebSocket
-
-from app.service.CrawlingService import CrawlingService
 from uvicorn.config import logger
 import uuid
 
-RES_SOCKET_TASK_FETCH_TASKS = "task/fetchTasksRes"
-RES_SOCKET_TASK_FETCH_TASK_STATE = "task/fetchTaskStateRes"
-RES_SOCKET_TASK_UPDATE_TASK_STATE = "task/updateTaskStateRes"
-RES_SOCKET_TASK_FETCH_TASK_SCHEDULE = "taskSchedule/fetchTaskScheduleRes"
-RES_SOCKET_TASK_FETCH_TASK_POOL_INFO = "task/fetchTaskPoolInfoRes"
+
+from app.service.FactorService import FactorService
+from app.service.CrawlingService import CrawlingService
+from app.model.dto import StockUpdateState, YearData, \
+    StockTaskSchedule, StockTaskScheduleList, \
+    StockTaskScheduleInfo, StockRunCrawling, \
+    ProcessTasks, ListLimitData
+from app.model.task import TaskPoolInfo
+from app.module.locator import Locator
+from app.repo.TasksRepository import TasksRepository, \
+    EVENT_TASK_REPO_TASK_COMPLETE, EVENT_TASK_REPO_UPDATE_POOL_INFO, \
+    EVENT_TASK_REPO_UPDATE_TASKS
+from app.module.socket.manager import ConnectionManager
+from app.util.DateUtils import getNowDateStr
+from app.scheduler.TaskScheduler import TaskScheduler
+
+RES_SOCKET_TASK_FETCH_TASKS = "task/progress/fetchTasksRes"
+RES_SOCKET_TASK_FETCH_COMPLETED_TASK = "task/history/fetchCompletedTaskRes"
+RES_SOCKET_TASK_FETCH_TASK_STATE = "task/calendar/fetchTaskStateRes"
+RES_SOCKET_TASK_UPDATE_TASK_STATE = "task/calendar/updateTaskStateRes"
+RES_SOCKET_TASK_FETCH_TASK_SCHEDULE = "task/schedule/fetchTaskScheduleRes"
+RES_SOCKET_TASK_FETCH_TASK_POOL_INFO = "task/poolInfo/fetchTaskPoolInfoRes"
 
 
 class TaskService:
@@ -26,16 +35,20 @@ class TaskService:
             manager: ConnectionManager,
             tasksRepository: TasksRepository,
             taskScheduler: TaskScheduler,
-            crawlingService: CrawlingService
+            crawlingService: CrawlingService,
+            factorService: FactorService,
             ) -> None:
         self.tasksRepository = tasksRepository
         self.manager = manager
         self.taskScheduler = taskScheduler
         self.crawlingService = crawlingService
+        self.factorService = factorService
+        self.logger = Logger("TaskService")
         self.ee = self.tasksRepository.taskEventEmitter
         self.setupEvents()
     
     def setupEvents(self) -> None:
+        self.ee.on(EVENT_TASK_REPO_UPDATE_TASKS, self.fetchTasks)
         self.ee.on(EVENT_TASK_REPO_TASK_COMPLETE, self.updateTaskState)
         self.ee.on(EVENT_TASK_REPO_UPDATE_POOL_INFO, self.updateTaskPoolInfo)
     
@@ -98,15 +111,22 @@ class TaskService:
         self.taskScheduler.removeJob(id)
         self.getTaskSchedule(webSocket, True)
     
-    def fetchTasks(self) -> None:
-        self.manager.sendBroadCast(RES_SOCKET_TASK_FETCH_TASKS, self.tasksRepository.tasksdto.dict())
+    def fetchTasks(self, data: ProcessTasks = None, websocket: WebSocket = None) -> None:
+        if data is None:
+            data = self.tasksRepository.tasksdto
+        if websocket is None:
+            self.manager.sendBroadCast(RES_SOCKET_TASK_FETCH_TASKS, data.dict())
+        else:
+            self.manager.send(RES_SOCKET_TASK_FETCH_TASKS, data.dict(), websocket)
         
     def getTaskState(self, taskId: str, webSocket: WebSocket) -> None:
         data: YearData = self.tasksRepository.getAllTaskState(taskId)
         self.manager.send(RES_SOCKET_TASK_FETCH_TASK_STATE, data.dict(), webSocket)
 
-    def updateTaskState(self, taskId: str, stockUpdateState: StockUpdateState) -> None:
-        self.manager.sendBroadCast(RES_SOCKET_TASK_UPDATE_TASK_STATE, stockUpdateState.dict())
+    def updateTaskState(self, taskId: str, stockUpdateState: StockUpdateState = None) -> None:
+        if stockUpdateState is not None:
+            self.manager.sendBroadCast(RES_SOCKET_TASK_UPDATE_TASK_STATE, stockUpdateState.dict())
+        self.fetchTasks()
 
     def getTaskPoolInfo(self, webSocket: WebSocket) -> None:
         taskPoolInfo: TaskPoolInfo = self.tasksRepository.getPoolInfo()
@@ -115,4 +135,20 @@ class TaskService:
     def updateTaskPoolInfo(self, poolInfo: TaskPoolInfo) -> None:
         # logger.info(f"updateTaskPoolInfo:{poolInfo.json()}")
         self.manager.sendBroadCast(RES_SOCKET_TASK_FETCH_TASK_POOL_INFO, poolInfo.dict())
+    
+    def addTask(self, taskName: str, dto: Any) -> None:
+        if taskName == "convertFactorFileToDb":
+            self.factorService.convertFactorFileToDb(dto)
+        elif taskName == "crawlingMarcap":
+            self.crawlingService.crawlingMarcap(dto)
+    
+    def cancelTask(self, taskId: str, taskUniqueId: str) -> None:
+        if taskId == "marcap":
+            self.crawlingService.cancelTask()
+    
+    def fetchCompletedTask(self, dto: ListLimitData, webSocket: WebSocket) -> None:
+        tasks = self.tasksRepository.getCompletedTask(dto)
+        self.manager.send(RES_SOCKET_TASK_FETCH_COMPLETED_TASK, tasks.dict(), webSocket)
+        
+
     
