@@ -1,11 +1,14 @@
 from app.repo.FactorRepository import FactorRepository
 from app.repo.TasksRepository import TasksRepository, EVENT_TASK_REPO_TASK_COMPLETE, EVENT_TASK_REPO_UPDATE_TASKS
 from app.module.socket.manager import ConnectionManager
-from app.model.dao import ListLimitDataDao, ListLimitDao
+from app.model.dao import FactorDao
 from fastapi import WebSocket
 from app.module.logger import Logger
+from app.module.task import Pool, Task, TaskPool
 from app.model.dto import ListLimitData, ProcessTask, RunFactorFileConvert, StockCrawlingCompletedTasks
 from typing import TYPE_CHECKING
+import asyncio
+import traceback
 if TYPE_CHECKING:
     from app.service.TaskService import TaskService
 
@@ -27,6 +30,35 @@ class FactorService:
     # file에 있는 factor를 db에 저장한다.
     def convertFactorFileToDb(self, dto: RunFactorFileConvert) -> None:
         self.logger.info("convertFactorFileToDb")
+
+        async def convertFactorFileToDbTask(pool: Pool, taskPool: TaskPool) -> None:
+            try:
+                task = self.tasksRepository.getTask(dto.taskId, dto.taskUniqueId)
+                data = await asyncio.ensure_future(self.factorRepository.getFactorsInFile())
+                task.state = "start insert db"
+                self.tasksRepository.updateTask(task)
+                # update Db
+                daoList = []
+                for one in data:
+                    dao = FactorDao(**{
+                        "code": one["종목코드"],       # 종목코드
+                        "name": one["종목명"],       # 종목이름
+                        "dataYear": one["년"],      # 결산년
+                        "dataMonth": one["결산월"],  # 결산월
+                        "dataName": one["데이터명"],   # 데이터명
+                        "dataValue": (one["데이터값"] * 1000) if one["단위"] == "천원" else one["데이터값"]  # 데이터값
+                    })
+                    daoList.append(dao)
+                await self.factorRepository.insertFactor(daoList)
+                task.state = "complete"
+                self.tasksRepository.completeFactorConvertFileToDbTask(task)
+            except Exception as e:
+                self.logger.error("convertFactorFileToDbTask", f"error: {traceback.format_exc()}")
+                task.state = "error"
+                task.errMsg = traceback.format_exc()
+                self.tasksRepository.updateTask(task)
+            finally:
+                taskPool.removeTaskPool(pool)
         task = ProcessTask(**{
             "market": "",
             "startDateStr": "",
@@ -40,22 +72,10 @@ class FactorService:
             "state": "start get file"
         })
         self.tasksRepository.addTask(task)
-        # data = self.factorRepository.getFactorsInFile()
-        task.state = "start insert db"
-        self.tasksRepository.updateTask(task)
-        # update Db
-        # dao = FactorDao(**{
-        #     "code": data["종목코드"],       # 종목코드
-        #     "name": data["종목명"],       # 종목이름
-        #     "dataYear": data["년"],      # 결산년
-        #     "dataMonth": data["결산월"],  # 결산월
-        #     "dataName": data["데이터명"],   # 데이터명
-        #     "dataValue": (data["데이터값"] * 1000) if data["단위"] == "천원" else data["데이터값"]  # 데이터값
-        # })
-        # self.factorRepository.insertFactor(dao)
-        task.state = "complete"
-        self.tasksRepository.completeFactorConvertFileToDbTask(task)
-    
+        workerTask = Task(dto.taskUniqueId, convertFactorFileToDbTask)
+        self.tasksRepository.runTask(workerTask)
+        
+
     # def createTaskRepositoryListener(self) -> None:
         # self.tasksRepository.taskEventEmitter.on(EVENT_TASK_REPO_TASK_COMPLETE, self.completeTask)
         # self.tasksRepository.taskEventEmitter.on(EVENT_TASK_REPO_UPDATE_TASKS, self.updateTasks)

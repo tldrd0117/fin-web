@@ -14,9 +14,10 @@ class FactorRepository(object):
         self.logger = Logger("FactorRepository")
     
     # 파일에 있는 팩터 데이터를 읽어온다.
-    def getFactorsInFile(self) -> Dict:
-        return self.filed.loadFactorMerge()
+    async def getFactorsInFile(self) -> Dict:
+        return await self.filed.loadFactorMerge()
         
     # 팩터 데이터를 db에 저장한다.
-    def insertFactor(self, li: List[FactorDao]) -> None:
-        self.mongod.insertFactor(li)
+    async def insertFactor(self, li: List[FactorDao]) -> None:
+        await self.mongod.insertFactor(li)
+        

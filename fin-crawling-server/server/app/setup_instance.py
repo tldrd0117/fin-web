@@ -12,6 +12,7 @@ from app.service.StockService import StockService
 from app.service.FactorService import FactorService
 from app.datasource.StockMongoDataSource import StockMongoDataSource
 from app.datasource.FactorFileDataSource import FactorFileDataSource
+from app.datasource.FactorMongoDataSource import FactorMongoDataSource
 from app.router.task import TaskSocketRouter
 from app.router.crawling import CrawlingSocketRouter
 from app.router.factor import FactorSocketRouter
@@ -22,13 +23,14 @@ manager = ConnectionManager()
 
 # DATASOURCE
 stockMongoDataSource = StockMongoDataSource()
+factorMongoDataSource = FactorMongoDataSource()
 factorFileDataSource = FactorFileDataSource()
 
 # REPOSITORY
 tasksRepository = TasksRepository(stockMongoDataSource)
 crawlerRepository = CrawlerRepository(stockMongoDataSource, tasksRepository)
 stockRepository = StockRepository(stockMongoDataSource, tasksRepository)
-factorRepository = FactorRepository(stockMongoDataSource, factorFileDataSource)
+factorRepository = FactorRepository(factorMongoDataSource, factorFileDataSource)
 repositories = {
     "crawlerRepository": crawlerRepository,
     "tasksRepository": tasksRepository,

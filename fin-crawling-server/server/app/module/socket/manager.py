@@ -4,6 +4,7 @@ from pymitter import EventEmitter
 from app.model.dto import SocketResponse
 import asyncio
 from uvicorn.config import logger
+from concurrent.futures import ThreadPoolExecutor
 
 
 class ConnectionManager:
@@ -11,6 +12,7 @@ class ConnectionManager:
         self.ee = EventEmitter()
         self.loop = asyncio.get_running_loop()
         self.active_connections: List[WebSocket] = []
+        # self.threadExcutor = ThreadPoolExecutor(max_workers=10)
 
     async def connect(self, websocket: WebSocket) -> None:
         await websocket.accept()
@@ -21,10 +23,20 @@ class ConnectionManager:
 
     async def _send_personal_message(self, message: str, websocket: WebSocket) -> None:
         await websocket.send_text(message)
+    
+    def __send_personal_message(self, message: str, websocket: WebSocket) -> None:
+        print(f"__send_personal_message: ")
+        asyncio.create_task(self._send_personal_message, message, websocket)
 
     async def _broadcast(self, message: str) -> None:
         for connection in self.active_connections:
             await connection.send_text(message)
+
+    def __broadcast(self, message: str) -> None:
+        print(f"__broadcast: ")
+        asyncio.create_task(self._broadcast, message)
+        # for connection in self.active_connections:
+        #     asyncio.create_task(connection.send_text(message))
     
     async def eventHandle(self, websocket: WebSocket, data: dict) -> None:
         logger.info("receive:"+str(data))
@@ -37,6 +49,9 @@ class ConnectionManager:
             "payload": payload
         })
         logger.info("send:"+res.json())
+        # with ThreadPoolExecutor() as ex:
+        #     ex.submit(self.__send_personal_message, res.json(), websocket)
+        # asyncio.ensure_future(self._send_personal_message(res.json(), websocket))
         self.loop.create_task(self._send_personal_message(res.json(), websocket))
     
     def sendBroadCast(self, event: str, payload: dict) -> None:
@@ -45,4 +60,7 @@ class ConnectionManager:
             "payload": payload
         })
         logger.info("sendBroadCast:"+res.json())
+        # with ThreadPoolExecutor() as ex:
+        #     ex.submit(self.__broadcast, res.json())
+        # asyncio.ensure_future(self._broadcast(res.json()))
         self.loop.create_task(self._broadcast(res.json()))

@@ -85,7 +85,6 @@ export function* watchOnConnect() {
         console.log("watchOnConnect", socket)
         if(socket.isConnected){
             console.log("isConnected fetchTasks")
-
             yield put(fetchTasks({}))
         } else {
 
@@ -98,6 +97,9 @@ export function* watchOnSocketConnect(socketConnection) {
     while(isDoing){
         const channel = yield take(socketConnection)
         if(channel.eventType == "onopen"){
+            while(channel.data.readyState !== 1){
+                yield delay(1000)
+            }
             yield put(connect({ socket: channel.data, socketConnection }))
         } 
         else if(channel.eventType == "onclose"){

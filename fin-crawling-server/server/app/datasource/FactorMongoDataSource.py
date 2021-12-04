@@ -11,7 +11,7 @@ class FactorMongoDataSource(MongoDataSource):
     def __init__(self) -> None:
         super().__init__()
 
-    def insertFactor(self, li: List[FactorDao]) -> None:
+    async def insertFactor(self, li: List[FactorDao]) -> None:
         try:
             if not self.isSetupMarcap():
                 self.setupMarcap()

@@ -114,6 +114,7 @@ class TaskService:
     def fetchTasks(self, data: ProcessTasks = None, websocket: WebSocket = None) -> None:
         if data is None:
             data = self.tasksRepository.tasksdto
+        self.logger.info("fetchTasks", data.json())
         if websocket is None:
             self.manager.sendBroadCast(RES_SOCKET_TASK_FETCH_TASKS, data.dict())
         else:
