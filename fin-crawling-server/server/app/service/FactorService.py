@@ -6,7 +6,7 @@ from fastapi import WebSocket
 from app.module.logger import Logger
 from app.module.task import Pool, Task, TaskPool
 from app.model.dto import ListLimitData, ProcessTask, RunFactorFileConvert, StockCrawlingCompletedTasks
-from typing import TYPE_CHECKING
+from typing import TYPE_CHECKING, Dict, List
 import asyncio
 import traceback
 if TYPE_CHECKING:
@@ -34,21 +34,10 @@ class FactorService:
         async def convertFactorFileToDbTask(pool: Pool, taskPool: TaskPool) -> None:
             try:
                 task = self.tasksRepository.getTask(dto.taskId, dto.taskUniqueId)
-                data = await asyncio.ensure_future(self.factorRepository.getFactorsInFile())
+                data = await asyncio.create_task(self.factorRepository.getFactorsInFile())
                 task.state = "start insert db"
                 self.tasksRepository.updateTask(task)
-                # update Db
-                daoList = []
-                for one in data:
-                    dao = FactorDao(**{
-                        "code": one["종목코드"],       # 종목코드
-                        "name": one["종목명"],       # 종목이름
-                        "dataYear": one["년"],      # 결산년
-                        "dataMonth": one["결산월"],  # 결산월
-                        "dataName": one["데이터명"],   # 데이터명
-                        "dataValue": (one["데이터값"] * 1000) if one["단위"] == "천원" else one["데이터값"]  # 데이터값
-                    })
-                    daoList.append(dao)
+                daoList = await asyncio.create_task(self.makeFactorDaoList(data))
                 await self.factorRepository.insertFactor(daoList)
                 task.state = "complete"
                 self.tasksRepository.completeFactorConvertFileToDbTask(task)
@@ -74,7 +63,20 @@ class FactorService:
         self.tasksRepository.addTask(task)
         workerTask = Task(dto.taskUniqueId, convertFactorFileToDbTask)
         self.tasksRepository.runTask(workerTask)
-        
+    
+    async def makeFactorDaoList(self, data: Dict) -> List[FactorDao]:
+        daoList = []
+        for one in data:
+            dao = FactorDao(**{
+                "code": one["종목코드"],       # 종목코드
+                "name": one["종목명"],       # 종목이름
+                "dataYear": one["년"],      # 결산년
+                "dataMonth": one["결산월"],  # 결산월
+                "dataName": one["데이터명"],   # 데이터명
+                "dataValue": (one["데이터값"] * 1000) if one["단위"] == "천원" else one["데이터값"]  # 데이터값
+            })
+            daoList.append(dao)
+        return daoList
 
     # def createTaskRepositoryListener(self) -> None:
         # self.tasksRepository.taskEventEmitter.on(EVENT_TASK_REPO_TASK_COMPLETE, self.completeTask)

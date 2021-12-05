@@ -48,6 +48,7 @@ class MongoDataSource():
         self.marcap = self.getCollection("marcap")
         self.task = self.getCollection("task")
         self.factor = self.getCollection("factor")
+        
         print(self.marcap.index_information())
         try:
             self.marcap.create_index([("date", ASCENDING), ("code", ASCENDING), ("market", ASCENDING)], unique=True, name="marcapIndex")

@@ -77,6 +77,8 @@ class TasksRepository(object):
         self.mongod.upsertTask(task.dict())
         self.taskEventEmitter.emit(EVENT_TASK_REPO_UPDATE_TASKS, self.tasksdto)
     
+    
+    
     # 저장된 테스크 정보를 반환한다.
     def getTask(self, taskId: str, taskUniqueId: str) -> ProcessTask:
         if self.isExistTask(taskId, taskUniqueId):

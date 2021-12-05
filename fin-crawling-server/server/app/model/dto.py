@@ -60,6 +60,13 @@ class StockRunCrawling(RunCrawling):
     endDateStr: str
 
 
+class DartApiCrawling(BaseModel):
+    apiKey: str
+    isCodeNew: bool
+    startYear: int
+    endYear: int
+
+
 class StockTaskSchedule(BaseModel):
     id: str = ""
     year: str
