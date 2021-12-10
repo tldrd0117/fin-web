@@ -7,13 +7,14 @@ import uuid
 
 
 from app.service.FactorService import FactorService
-from app.service.CrawlingService import CrawlingService
+from app.service.StockService import StockService
 from app.model.dto import StockUpdateState, YearData, \
     StockTaskSchedule, StockTaskScheduleList, \
     StockTaskScheduleInfo, StockRunCrawling, \
-    ProcessTasks, ListLimitData
+    ProcessTasks, ListLimitData, RunFactorFileConvert
 from app.model.task import TaskPoolInfo
 from app.module.locator import Locator
+from app.repo.CrawlerRepository import CrawlerRepository
 from app.repo.TasksRepository import TasksRepository, \
     EVENT_TASK_REPO_TASK_COMPLETE, EVENT_TASK_REPO_UPDATE_POOL_INFO, \
     EVENT_TASK_REPO_UPDATE_TASKS
@@ -35,14 +36,16 @@ class TaskService:
             manager: ConnectionManager,
             tasksRepository: TasksRepository,
             taskScheduler: TaskScheduler,
-            crawlingService: CrawlingService,
             factorService: FactorService,
+            stockService: StockService,
+            crawlerRepository: CrawlerRepository
             ) -> None:
         self.tasksRepository = tasksRepository
+        self.crawlerRepository = crawlerRepository
         self.manager = manager
         self.taskScheduler = taskScheduler
-        self.crawlingService = crawlingService
         self.factorService = factorService
+        self.stockService = stockService
         self.logger = Logger("TaskService")
         self.ee = self.tasksRepository.taskEventEmitter
         self.setupEvents()
@@ -77,7 +80,7 @@ class TaskService:
     
     @staticmethod
     def marcapJob(marcapDtos: List[StockRunCrawling]) -> None:
-        service: CrawlingService = Locator.getInstance().get(CrawlingService)
+        service: StockService = Locator.getInstance().get(StockService)
         for dto in marcapDtos:
             logger.info("#### schedule job start ####")
             logger.info("command" + dto.startDateStr + "~" + dto.endDateStr)
@@ -86,7 +89,7 @@ class TaskService:
                 dto.startDateStr = getNowDateStr()
                 dto.endDateStr = getNowDateStr()
             logger.info("real:" + dto.startDateStr + "~" + dto.endDateStr)
-        service.runCrawling(marcapDtos)
+        service.crawlingMarcapStockData(marcapDtos)
     
     def addTaskSchedule(self, scheduleDto: StockTaskSchedule, runCrawlingDto: List[StockRunCrawling], webSocket: WebSocket) -> None:
         marcapDtos = []
@@ -138,14 +141,41 @@ class TaskService:
         self.manager.sendBroadCast(RES_SOCKET_TASK_FETCH_TASK_POOL_INFO, poolInfo.dict())
     
     def addTask(self, taskName: str, dto: Any) -> None:
+        if isinstance(dto, dict):
+            if taskName == "crawlingMarcapStockData":
+                data = []
+                for market in dto["market"]:
+                    taskUniqueId = dto["taskId"]+market+dto["startDate"]+dto["endDate"]+str(uuid.uuid4())
+                    dtoOne = StockRunCrawling(**{
+                        "driverAddr": "http://fin-carwling-webdriver:4444",
+                        "market": market,
+                        "startDateStr": dto["startDate"],
+                        "endDateStr": dto["endDate"],
+                        "taskId": dto["taskId"],
+                        "taskUniqueId": taskUniqueId
+                    })
+                    data.append(dtoOne)
+            elif taskName == "convertFactorFileToDb":
+                data = RunFactorFileConvert(**{
+                    "taskId": dto["taskId"],
+                    "taskUniqueId": dto["taskId"] + str(uuid.uuid4())
+                })
+        else:
+            data = dto
         if taskName == "convertFactorFileToDb":
-            self.factorService.convertFactorFileToDb(dto)
-        elif taskName == "crawlingMarcap":
-            self.crawlingService.crawlingMarcap(dto)
+            self.factorService.convertFactorFileToDb(data)
+        elif taskName == "crawlingMarcapStockData":
+            self.stockService.crawlingMarcapStockData(data)
     
     def cancelTask(self, taskId: str, taskUniqueId: str) -> None:
         if taskId == "marcap":
-            self.crawlingService.cancelTask()
+            if taskUniqueId in self.crawlerRepository.getCrawlers():
+                self.tasksRepository.taskRunner.cancel(taskUniqueId)
+                self.crawlerRepository.getCrawlers(taskUniqueId).isCancelled = True
+            else:
+                task = self.tasksRepository.getTask(taskId, taskUniqueId)
+                if task is not None:
+                    self.tasksRepository.deleteTask(task)
     
     def fetchCompletedTask(self, dto: ListLimitData, webSocket: WebSocket) -> None:
         tasks = self.tasksRepository.getCompletedTask(dto)

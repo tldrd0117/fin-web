@@ -1,7 +1,6 @@
 from app.module.socket.manager import ConnectionManager
 from app.module.locator import Locator
 from app.scheduler.TaskScheduler import TaskScheduler
-from app.service.CrawlingService import CrawlingService
 from app.repo.CrawlerRepository import CrawlerRepository
 from app.repo.TasksRepository import TasksRepository
 from app.repo.StockRepository import StockRepository
@@ -13,9 +12,9 @@ from app.service.FactorService import FactorService
 from app.datasource.StockMongoDataSource import StockMongoDataSource
 from app.datasource.FactorFileDataSource import FactorFileDataSource
 from app.datasource.FactorMongoDataSource import FactorMongoDataSource
-from app.router.task import TaskSocketRouter
-from app.router.crawling import CrawlingSocketRouter
-from app.router.factor import FactorSocketRouter
+from app.router.socket.task import TaskSocketRouter
+from app.router.socket.stock import StockSocketRouter
+from app.router.socket.factor import FactorSocketRouter
 
 
 locator = Locator.getInstance()
@@ -43,20 +42,18 @@ taskScheduler = TaskScheduler(stockMongoDataSource.client)
 
 # SERVICE
 userService = UserService()
-crawlingService = CrawlingService(manager, tasksRepository, crawlerRepository, stockRepository)
-stockService = StockService(stockRepository)
+stockService = StockService(stockRepository, tasksRepository, crawlerRepository)
 factorService = FactorService(manager, factorRepository, tasksRepository, None)
-taskService = TaskService(manager, tasksRepository, taskScheduler, crawlingService, factorService)
+taskService = TaskService(manager, tasksRepository, taskScheduler, factorService, stockService, crawlerRepository)
 factorService.taskService = taskService
 
 
-taskSocketRouter = TaskSocketRouter(crawlingService, taskService, manager)
-crawlingSocketRouter = CrawlingSocketRouter(crawlingService, manager)
+taskSocketRouter = TaskSocketRouter(taskService, manager)
 factorSocketRouter = FactorSocketRouter(factorService, manager)
+stockSocketRouter = StockSocketRouter(stockService, manager)
 
 
 locator.register(manager)
-locator.register(crawlingService)
 locator.register(tasksRepository)
 locator.register(crawlerRepository)
 locator.register(tasksRepository)
@@ -68,7 +65,7 @@ locator.register(stockMongoDataSource)
 locator.register(factorFileDataSource)
 locator.register(taskScheduler)
 locator.register(taskSocketRouter)
-locator.register(crawlingSocketRouter)
+locator.register(stockSocketRouter)
 locator.register(stockRepository)
 locator.register(stockService)
 locator.register(factorSocketRouter)

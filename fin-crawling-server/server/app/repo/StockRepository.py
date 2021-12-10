@@ -5,8 +5,6 @@ from pymitter import EventEmitter
 from app.repo.TasksRepository import TasksRepository
 from app.module.logger import Logger
 
-from app.crawler.MarcapCrawler import EVENT_MARCAP_CRAWLING_ON_RESULT_OF_STOCK_DATA
-
 
 class StockRepository(object):
     def __init__(self, mongod: StockMongoDataSource, tasksRepository: TasksRepository) -> None:
@@ -20,11 +18,5 @@ class StockRepository(object):
     def getStockData(self, market: str, startDate: str, endDate: str) -> List[StockMarketCapital]:
         return self.mongod.getMarcap(market, startDate, endDate)
 
-    def createListners(self, ee: EventEmitter) -> None:
-        ee.on(EVENT_MARCAP_CRAWLING_ON_RESULT_OF_STOCK_DATA, self.onResultOfStockData)
-    
-    # 주식 종목 데이터 크롤링 결과값을 db에 저장한다.
-    def onResultOfStockData(self, dto: StockMarketCapitalResult) -> None:
+    def insertMarcap(self, dto: StockMarketCapitalResult) -> None:
         self.mongod.insertMarcap(dto.data)
-    
-    

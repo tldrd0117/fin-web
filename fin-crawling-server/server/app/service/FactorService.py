@@ -1,11 +1,10 @@
 from app.repo.FactorRepository import FactorRepository
-from app.repo.TasksRepository import TasksRepository, EVENT_TASK_REPO_TASK_COMPLETE, EVENT_TASK_REPO_UPDATE_TASKS
+from app.repo.TasksRepository import TasksRepository
 from app.module.socket.manager import ConnectionManager
 from app.model.dao import FactorDao
-from fastapi import WebSocket
 from app.module.logger import Logger
 from app.module.task import Pool, Task, TaskPool
-from app.model.dto import ListLimitData, ProcessTask, RunFactorFileConvert, StockCrawlingCompletedTasks
+from app.model.dto import ProcessTask, RunFactorFileConvert
 from typing import TYPE_CHECKING, Dict, List
 import asyncio
 import traceback
@@ -41,7 +40,7 @@ class FactorService:
                 await self.factorRepository.insertFactor(daoList)
                 task.state = "complete"
                 self.tasksRepository.completeFactorConvertFileToDbTask(task)
-            except Exception as e:
+            except Exception:
                 self.logger.error("convertFactorFileToDbTask", f"error: {traceback.format_exc()}")
                 task.state = "error"
                 task.errMsg = traceback.format_exc()

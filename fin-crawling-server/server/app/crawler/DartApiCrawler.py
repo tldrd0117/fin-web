@@ -26,14 +26,8 @@ import pandas as pd
 
 T = TypeVar("T")
 
-EVENT_MARCAP_CRAWLING_ON_CONNECTING_WEBDRIVER: Final = "marcapCrawler/onConnectingWebdriver"
-EVENT_MARCAP_CRAWLING_ON_START_CRAWLING: Final = "marcapCrawler/onStartCrawling"
-EVENT_MARCAP_CRAWLING_ON_DOWNLOAD_START: Final = "marcapCrawler/onDownloadStart"
-EVENT_MARCAP_CRAWLING_ON_DOWNLOAD_COMPLETE: Final = "marcapCrawler/onDownloadComplete"
-EVENT_MARCAP_CRAWLING_ON_PARSING_COMPLETE: Final = "marcapCrawler/onParsingComplete"
-EVENT_MARCAP_CRAWLING_ON_CANCEL: Final = "marcapCrawler/cancel"
-EVENT_MARCAP_CRAWLING_ON_ERROR: Final = "marcapCrawler/error"
-EVENT_MARCAP_CRAWLING_ON_RESULT_OF_STOCK_DATA: Final = "marcapCrawler/onResultOfStockData"
+EVENT_DART_API_CRAWLING_ON_DOWNLOADING_CODES: Final = "dartApiCrawler/onDownloadingCodes"
+EVENT_DART_API_CRAWLING_ON_CRAWLING_FACTOR_DATA: Final = "dartApiCrawler/onCrawlingFactorData"
 
 
 class DartApiCrawler(object):
@@ -43,12 +37,12 @@ class DartApiCrawler(object):
         self.ee = EventEmitter()
         self.isLock = False
         self.isError = False
-        self.logger = Logger("MarcapCrawler")
+        self.logger = Logger("DartApiCrawler")
 
     def createUUID(self) -> str:
         return str(uuid.uuid4())
 
-    async def downloadCodes(self, isCodeNew: bool ,apiKey: str) -> Dict:
+    async def downloadCodes(self, isCodeNew: bool, apiKey: str) -> Dict:
         savepath = Path('app/static/factors/codes.zip')
         loadpath = Path('app/static/factors/codes')
         datapath = Path("app/static/factors/codes/CORPCODE.xml")
@@ -66,7 +60,11 @@ class DartApiCrawler(object):
         return codes
 
     async def crawling(self, dto: DartApiCrawling) -> Dict:
+        if dto.startYear < 2015:
+            dto.startYear = 2015
+        self.ee.emit(EVENT_DART_API_CRAWLING_ON_DOWNLOADING_CODES)
         codes = await self.downloadCodes(dto.isCodeNew, dto.apiKey)
+        self.ee.emit(EVENT_DART_API_CRAWLING_ON_CRAWLING_FACTOR_DATA)
         dart: OpenDartReader = OpenDartReader(dto.apiKey)
         sumDf = pd.DataFrame()
         for year in range(dto.startYear, dto.endYear+1):

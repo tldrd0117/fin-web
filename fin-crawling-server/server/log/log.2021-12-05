@@ -1,0 +1,36 @@
+2021-12-05 06:53:09,491 - INFO - [logger.py:36] cls: TaskRunner, func: _put, msg: task put
+2021-12-05 06:53:09,779 - INFO - [logger.py:36] cls: Pool, func: run, msg: task pool run
+2021-12-05 06:53:09,799 - INFO - [logger.py:36] cls: TaskRunner, func: updatePoolInfo, msg: runCount:1, queueCount:0
+2021-12-05 06:56:06,747 - INFO - [logger.py:36] cls: TaskRunner, func: updatePoolInfo, msg: runCount:0, queueCount:0
+2021-12-05 06:58:25,220 - INFO - [logger.py:36] cls: TasksRepository, func: createTaskRunner, msg: created taskrunner
+2021-12-05 06:58:26,613 - INFO - [logger.py:36] cls: TaskService, func: fetchTasks, msg: {"tasks": {}, "taskIds": []}
+2021-12-05 07:01:06,649 - INFO - [logger.py:36] cls: TasksRepository, func: createTaskRunner, msg: created taskrunner
+2021-12-05 07:01:06,935 - INFO - [logger.py:36] cls: TaskService, func: fetchTasks, msg: {"tasks": {}, "taskIds": []}
+2021-12-05 07:01:10,149 - INFO - [logger.py:33] cls: FactorService, msg: convertFactorFileToDb
+2021-12-05 07:01:10,159 - INFO - [logger.py:36] cls: TaskService, func: fetchTasks, msg: {"tasks": {"factorFile": {"list": {"factorFile8a252fb2-a210-48b1-bb1f-ebcf8445a7c2": {"count": 1, "successCount": 0, "failCount": 0, "restCount": 1, "failTasks": [], "state": "start get file", "tasks": ["convert"], "tasksRet": [0], "index": 0, "market": "", "startDateStr": "", "endDateStr": "", "taskUniqueId": "factorFile8a252fb2-a210-48b1-bb1f-ebcf8445a7c2", "percent": 0.0, "taskId": "factorFile", "errMsg": ""}}, "ids": ["factorFile8a252fb2-a210-48b1-bb1f-ebcf8445a7c2"]}}, "taskIds": ["factorFile"]}
+2021-12-05 07:01:10,164 - INFO - [logger.py:36] cls: TasksRepository, func: addTask, msg: factorFile8a252fb2-a210-48b1-bb1f-ebcf8445a7c2
+2021-12-05 07:01:10,206 - INFO - [logger.py:36] cls: TaskRunner, func: _put, msg: task put
+2021-12-05 07:01:10,257 - INFO - [logger.py:36] cls: Pool, func: run, msg: task pool run
+2021-12-05 07:01:10,265 - INFO - [logger.py:36] cls: TaskRunner, func: updatePoolInfo, msg: runCount:1, queueCount:0
+2021-12-05 07:01:10,338 - INFO - [logger.py:36] cls: TasksRepository, func: updatePoolInfo, msg: {"poolSize": 8, "poolCount": 1, "runCount": 1, "queueCount": 0}
+2021-12-05 07:01:10,341 - INFO - [logger.py:36] cls: Task, func: run, msg: task run
+2021-12-05 07:02:00,864 - INFO - [logger.py:36] cls: TasksRepository, func: updateTask, msg: factorFile8a252fb2-a210-48b1-bb1f-ebcf8445a7c2
+2021-12-05 07:02:00,896 - INFO - [logger.py:36] cls: TaskService, func: fetchTasks, msg: {"tasks": {"factorFile": {"list": {"factorFile8a252fb2-a210-48b1-bb1f-ebcf8445a7c2": {"count": 1, "successCount": 0, "failCount": 0, "restCount": 1, "failTasks": [], "state": "start insert db", "tasks": ["convert"], "tasksRet": [0], "index": 0, "market": "", "startDateStr": "", "endDateStr": "", "taskUniqueId": "factorFile8a252fb2-a210-48b1-bb1f-ebcf8445a7c2", "percent": 0.0, "taskId": "factorFile", "errMsg": ""}}, "ids": ["factorFile8a252fb2-a210-48b1-bb1f-ebcf8445a7c2"]}}, "taskIds": ["factorFile"]}
+2021-12-05 07:03:32,580 - INFO - [logger.py:36] cls: TasksRepository, func: success, msg: factorFile8a252fb2-a210-48b1-bb1f-ebcf8445a7c2
+2021-12-05 07:03:32,588 - INFO - [logger.py:36] cls: TasksRepository, func: updateTask, msg: factorFile8a252fb2-a210-48b1-bb1f-ebcf8445a7c2
+2021-12-05 07:03:32,741 - INFO - [logger.py:36] cls: TaskService, func: fetchTasks, msg: {"tasks": {"factorFile": {"list": {"factorFile8a252fb2-a210-48b1-bb1f-ebcf8445a7c2": {"count": 1, "successCount": 1, "failCount": 0, "restCount": 0, "failTasks": [], "state": "success", "tasks": ["convert"], "tasksRet": [1], "index": 1, "market": "", "startDateStr": "", "endDateStr": "", "taskUniqueId": "factorFile8a252fb2-a210-48b1-bb1f-ebcf8445a7c2", "percent": 100.0, "taskId": "factorFile", "errMsg": ""}}, "ids": ["factorFile8a252fb2-a210-48b1-bb1f-ebcf8445a7c2"]}}, "taskIds": ["factorFile"]}
+2021-12-05 07:03:32,772 - INFO - [logger.py:36] cls: TasksRepository, func: deleteTask, msg: factorFile8a252fb2-a210-48b1-bb1f-ebcf8445a7c2
+2021-12-05 07:03:32,776 - INFO - [logger.py:36] cls: TaskService, func: fetchTasks, msg: {"tasks": {"factorFile": {"list": {}, "ids": []}}, "taskIds": ["factorFile"]}
+2021-12-05 07:03:32,781 - INFO - [logger.py:36] cls: TaskRunner, func: updatePoolInfo, msg: runCount:0, queueCount:0
+2021-12-05 07:03:32,787 - INFO - [logger.py:36] cls: TasksRepository, func: updatePoolInfo, msg: {"poolSize": 8, "poolCount": 0, "runCount": 0, "queueCount": 0}
+2021-12-05 07:03:38,731 - INFO - [logger.py:36] cls: TaskService, func: fetchTasks, msg: {"tasks": {"factorFile": {"list": {}, "ids": []}}, "taskIds": ["factorFile"]}
+2021-12-05 08:58:59,945 - INFO - [logger.py:36] cls: TasksRepository, func: createTaskRunner, msg: created taskrunner
+2021-12-05 09:00:23,086 - INFO - [logger.py:36] cls: TasksRepository, func: createTaskRunner, msg: created taskrunner
+2021-12-05 09:32:14,144 - INFO - [logger.py:36] cls: TasksRepository, func: createTaskRunner, msg: created taskrunner
+2021-12-05 09:38:48,510 - INFO - [logger.py:36] cls: TasksRepository, func: createTaskRunner, msg: created taskrunner
+2021-12-05 09:39:00,390 - INFO - [logger.py:36] cls: TasksRepository, func: createTaskRunner, msg: created taskrunner
+2021-12-05 09:39:11,169 - INFO - [logger.py:36] cls: TasksRepository, func: createTaskRunner, msg: created taskrunner
+2021-12-05 09:40:13,218 - INFO - [logger.py:36] cls: TasksRepository, func: createTaskRunner, msg: created taskrunner
+2021-12-05 09:42:55,002 - INFO - [logger.py:36] cls: TasksRepository, func: createTaskRunner, msg: created taskrunner
+2021-12-05 09:49:52,877 - INFO - [logger.py:36] cls: TasksRepository, func: createTaskRunner, msg: created taskrunner
+2021-12-05 09:58:47,526 - INFO - [logger.py:36] cls: TasksRepository, func: createTaskRunner, msg: created taskrunner

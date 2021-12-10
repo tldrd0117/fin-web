@@ -1,7 +1,6 @@
 
 from fastapi import WebSocket
 from app.model.dto import StockRunCrawling, StockTaskSchedule, RunFactorFileConvert, ListLimitData
-from app.service.CrawlingService import CrawlingService
 from app.service.TaskService import TaskService
 from app.module.socket.manager import ConnectionManager
 import uuid
@@ -17,9 +16,8 @@ REQ_SOCKET_TASK_FETCH_COMPLETED_TASK = "task/history/fetchCompletedTask"
 
 
 class TaskSocketRouter(object):
-    def __init__(self, crawlingService: CrawlingService, taskService: TaskService, manager: ConnectionManager) -> None:
+    def __init__(self, taskService: TaskService, manager: ConnectionManager) -> None:
         super().__init__()
-        self.crawlingService = crawlingService
         self.taskService = taskService
         self.manager = manager
         self.ee = self.manager.ee
@@ -47,27 +45,7 @@ class TaskSocketRouter(object):
         self.taskService.getTaskSchedule(websocket)
     
     def addTask(self, data: dict, websocket: WebSocket) -> None:
-        taskName = data["taskName"]
-        if taskName == "crawlingMarcap":
-            dtoList = []
-            for market in data["market"]:
-                taskUniqueId = data["taskId"]+market+data["startDate"]+data["endDate"]+str(uuid.uuid4())
-                dto = StockRunCrawling(**{
-                    "driverAddr": "http://fin-carwling-webdriver:4444",
-                    "market": market,
-                    "startDateStr": data["startDate"],
-                    "endDateStr": data["endDate"],
-                    "taskId": data["taskId"],
-                    "taskUniqueId": taskUniqueId
-                })
-                dtoList.append(dto)
-            self.taskService.addTask(taskName, dtoList)
-        elif taskName == "convertFactorFileToDb":
-            dto = RunFactorFileConvert(**{
-                "taskId": data["taskId"],
-                "taskUniqueId": data["taskId"] + str(uuid.uuid4())
-            })
-            self.taskService.addTask(taskName, dto)
+        self.taskService.addTask(data["taskName"], data)
 
     def addTaskSchedule(self, data: dict, websocket: WebSocket) -> None:
         # if data["startDate"] == "*":

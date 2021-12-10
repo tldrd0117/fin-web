@@ -1,9 +1,9 @@
 from fastapi import FastAPI
 from app.module.locator import Locator
 from app.setup_instance import locator
-from app.router.socketEndpoint import router as socketRouter
-from app.router.user import router as userRouter
-from app.router.stock import router as stockRouter
+from app.router.socket.socketEndpoint import router as socketRouter
+from app.router.api.user import router as userRouter
+from app.router.api.stock import router as stockRouter
 from app.scheduler.TaskScheduler import TaskScheduler
 from fastapi.middleware.cors import CORSMiddleware
 import asyncio

@@ -31,8 +31,8 @@ class Pool(object):
         super().__init__()
         self.isRun = False
         self.logger = Logger("Pool")
-        self.task = None
-        self.taskId = None
+        self.task: Optional[Task] = None
+        self.taskId = ""
     
     def setTask(self, task: Task) -> None:
         self.task = task
@@ -40,7 +40,8 @@ class Pool(object):
     def run(self, taskPool: TaskPool) -> None:
         self.isRun = True
         self.logger.info("run", "task pool run")
-        self.poolTask = asyncio.ensure_future(self.task.run(taskPool, self))
+        if self.task is not None:
+            self.poolTask = asyncio.ensure_future(self.task.run(taskPool, self))
     
     def cancel(self) -> None:
         self.isRun = False
@@ -66,12 +67,11 @@ class TaskPool(object):
         if isNotify:
             self.updatePoolInfo()
     
-    def findPool(self, id: str) -> Pool:
+    def findPool(self, id: str) -> Optional[Pool]:
         for pool in self.taskPool:
             if pool.taskId == id:
                 return pool
         return None
-
     
     def poolCount(self) -> int:
         return len(self.taskPool)
@@ -122,7 +122,7 @@ class TaskRunner(object):
             self.updatePoolInfo()
     
     def cancel(self, id: str) -> None:
-        pool: Pool = self.pool.findPool(id)
+        pool: Optional[Pool] = self.pool.findPool(id)
         if pool is not None:
             pool.cancel()
             self.pool.removeTaskPool(pool)

@@ -1,12 +1,11 @@
-from typing import List
-from fastapi import APIRouter
+
+from fastapi import APIRouter, WebSocket
 
 from app.module.locator import Locator
 
 from app.service.UserService import UserService
 from app.service.StockService import StockService
 from app.model.dto import StockMarketCapitalResponse
-
 
 router = APIRouter(prefix="/stock")
 userService: UserService = Locator.getInstance().get(UserService)
