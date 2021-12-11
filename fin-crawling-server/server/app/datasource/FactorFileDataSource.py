@@ -1,13 +1,15 @@
+from typing import List
 import pandas as pd
 from pathlib import Path
 import os.path
+import sys
 
 
 class FactorFileDataSource:
     def __init__(self) -> None:
         super().__init__()
 
-    async def loadFactorMerge(self) -> dict:
+    async def loadFactorMerge(self) -> List:
         factor1 = self.loadFactor(2018)
         factor2 = self.loadFactor(2019)
         beforeFactor = factor1[factor1["년"] <= 2009]
@@ -22,7 +24,10 @@ class FactorFileDataSource:
         factorDf = pd.DataFrame()
         for upCode in upCodes:
             for factor in factors:
-                path = Path('app/static/factors/'+str(year)+'/'+upCode+'_'+factor+'.xlsx')
+                if "pytest" in sys.modules:
+                    path = Path('../app/static/factors/'+str(year)+'/'+upCode+'_'+factor+'.xlsx')
+                else:
+                    path = Path('app/static/factors/'+str(year)+'/'+upCode+'_'+factor+'.xlsx')
                 print(path.resolve())
                 print(os.path.dirname(__file__))
                 name = path.resolve()

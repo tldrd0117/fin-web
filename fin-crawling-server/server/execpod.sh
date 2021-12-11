@@ -1,0 +1,1 @@
+kubectl exec --stdin --tty fin-crawling-server-app-757bb77bcf-nzfts -c fin-crawling-server -- /bin/bash

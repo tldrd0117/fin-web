@@ -113,7 +113,7 @@ class TasksRepository(object):
         task.errMsg = retdto.errorMsg
         task.state = "complete"
         self.updateTask(task)
-        self.logger.info("completeTask", "complete")
+        self.logger.info("completeStockCrawlingTask", "complete")
         self.taskEventEmitter.emit(EVENT_TASK_REPO_TASK_COMPLETE, "marcap", StockUpdateState(**{
             "taskId": dto.taskId,
             "market": dto.market,

@@ -4,7 +4,8 @@ from app.module.socket.manager import ConnectionManager
 from app.model.dao import FactorDao
 from app.module.logger import Logger
 from app.module.task import Pool, Task, TaskPool
-from app.model.dto import ProcessTask, RunFactorFileConvert
+from app.model.dto import ProcessTask, RunFactorFileConvert, DartApiCrawling
+from app.crawler.DartApiCrawler import DartApiCrawler
 from typing import TYPE_CHECKING, Dict, List
 import asyncio
 import traceback
@@ -25,28 +26,12 @@ class FactorService:
         self.tasksRepository = tasksRepository
         self.taskService = taskService
         self.logger = Logger("FactorService")
-    
-    # file에 있는 factor를 db에 저장한다.
-    def convertFactorFileToDb(self, dto: RunFactorFileConvert) -> None:
-        self.logger.info("convertFactorFileToDb")
 
-        async def convertFactorFileToDbTask(pool: Pool, taskPool: TaskPool) -> None:
-            try:
-                task = self.tasksRepository.getTask(dto.taskId, dto.taskUniqueId)
-                data = await asyncio.create_task(self.factorRepository.getFactorsInFile())
-                task.state = "start insert db"
-                self.tasksRepository.updateTask(task)
-                daoList = await asyncio.create_task(self.makeFactorDaoList(data))
-                await self.factorRepository.insertFactor(daoList)
-                task.state = "complete"
-                self.tasksRepository.completeFactorConvertFileToDbTask(task)
-            except Exception:
-                self.logger.error("convertFactorFileToDbTask", f"error: {traceback.format_exc()}")
-                task.state = "error"
-                task.errMsg = traceback.format_exc()
-                self.tasksRepository.updateTask(task)
-            finally:
-                taskPool.removeTaskPool(pool)
+    def crawlingFactorDartData(self, dto: DartApiCrawling) -> None:
+        async def crawlingFactorDartDataTask(pool: Pool, taskPool: TaskPool) -> None:
+            task = self.tasksRepository.getTask(dto.taskId, dto.taskUniqueId)
+            crawler = DartApiCrawler()
+            crawler.crawling(dto)
         task = ProcessTask(**{
             "market": "",
             "startDateStr": "",
@@ -60,10 +45,48 @@ class FactorService:
             "state": "start get file"
         })
         self.tasksRepository.addTask(task)
+        workerTask = Task(dto.taskUniqueId, crawlingFactorDartDataTask)
+        self.tasksRepository.runTask(workerTask)
+    
+    # file에 있는 factor를 db에 저장한다.
+    def convertFactorFileToDb(self, dto: RunFactorFileConvert) -> None:
+        self.logger.info("convertFactorFileToDb")
+
+        async def convertFactorFileToDbTask(pool: Pool, taskPool: TaskPool) -> None:
+            try:
+                task = self.tasksRepository.getTask(dto.taskId, dto.taskUniqueId)
+                data = await asyncio.create_task(self.factorRepository.getFactorsInFile())
+                task.state = "start insert db"
+                self.tasksRepository.updateTask(task)
+                daoList = await asyncio.create_task(self.makeFactorDaoList(data))
+                self.logger.info("convertFactorFileToDbTask", f"insertCount: {str(len(daoList))}")
+                await self.factorRepository.insertFactor(daoList)
+                task.state = "complete"
+                self.tasksRepository.completeFactorConvertFileToDbTask(task)
+            except Exception:
+                self.logger.error("convertFactorFileToDbTask", f"error: {traceback.format_exc()}")
+                task.state = "error"
+                task.errMsg = traceback.format_exc()
+                self.tasksRepository.updateTask(task)
+            finally:
+                taskPool.removeTaskPool(pool)
+        task = ProcessTask(**{
+            "market": "",
+            "startDateStr": "2007-01-01",
+            "endDateStr": "2019-12-31",
+            "taskUniqueId": dto.taskUniqueId,
+            "taskId": dto.taskId,
+            "count": 1,
+            "tasks": ["convert"],
+            "restCount": 1,
+            "tasksRet": [0],
+            "state": "start get file"
+        })
+        self.tasksRepository.addTask(task)
         workerTask = Task(dto.taskUniqueId, convertFactorFileToDbTask)
         self.tasksRepository.runTask(workerTask)
     
-    async def makeFactorDaoList(self, data: Dict) -> List[FactorDao]:
+    async def makeFactorDaoList(self, data: List[Dict]) -> List[FactorDao]:
         daoList = []
         for one in data:
             dao = FactorDao(**{

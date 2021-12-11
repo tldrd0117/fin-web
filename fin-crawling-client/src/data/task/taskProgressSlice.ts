@@ -104,7 +104,7 @@ interface CancelTaskPayload{
     taskUniqueId: string
 }
 
-export const cancelTask = createAction<CancelTaskPayload>("task/progress/cancelCrawling")
+export const cancelTask = createAction<CancelTaskPayload>("task/progress/cancelTask")
 export const fetchTasks = createAction<any>("task/progress/fetchTasks")
 const { actions, reducer } = taskProgressSlice
 export const { addTask, fetchTasksRes, reset } = actions

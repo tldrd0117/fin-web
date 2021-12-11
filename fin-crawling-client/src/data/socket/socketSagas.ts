@@ -5,7 +5,6 @@ import { fetchTasks, reset } from '../task/taskProgressSlice'
 import { connect, disconnect, endConnection, startConnection, destory, create } from '../socket/socketSlice'
 import { RootState } from '../root/rootReducer'
 import { data } from 'autoprefixer'
-import { fetchCompletedTask } from '../crawling/crawlingHistorySlice'
 import { push } from 'connected-react-router'
 
 // const socket = io("ws://localhost:8000/ws/"+Date.now(),{

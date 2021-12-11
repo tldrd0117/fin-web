@@ -176,6 +176,11 @@ class TaskService:
                 task = self.tasksRepository.getTask(taskId, taskUniqueId)
                 if task is not None:
                     self.tasksRepository.deleteTask(task)
+        else:
+            self.tasksRepository.taskRunner.cancel(taskUniqueId)
+            task = self.tasksRepository.getTask(taskId, taskUniqueId)
+            if task is not None:
+                self.tasksRepository.deleteTask(task)
     
     def fetchCompletedTask(self, dto: ListLimitData, webSocket: WebSocket) -> None:
         tasks = self.tasksRepository.getCompletedTask(dto)

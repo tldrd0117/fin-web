@@ -12,6 +12,7 @@ REQ_SOCKET_TASK_ADD_TASK_SCHEDULE = "task/schedule/addTaskSchedule"
 REQ_SOCKET_TASK_REMOVE_TASK_SCHEDULE = "task/schedule/removeTaskSchedule"
 REQ_SOCKET_TASK_ADD_TASK = "task/progress/addTask"
 REQ_SOCKET_TASK_FETCH_TASKS = "task/progress/fetchTasks"
+REQ_SOCKET_TASK_CANCEL_TASK = "task/progress/cancelTask"
 REQ_SOCKET_TASK_FETCH_COMPLETED_TASK = "task/history/fetchCompletedTask"
 
 
@@ -31,6 +32,7 @@ class TaskSocketRouter(object):
         self.ee.on(REQ_SOCKET_TASK_ADD_TASK, self.addTask)
         self.ee.on(REQ_SOCKET_TASK_FETCH_TASKS, self.fetchTasks)
         self.ee.on(REQ_SOCKET_TASK_FETCH_COMPLETED_TASK, self.fetchCompletedTask)
+        self.ee.on(REQ_SOCKET_TASK_CANCEL_TASK, self.cancelTask)
     
     def fetchTasks(self, data: dict, websocket: WebSocket) -> None:
         self.taskService.fetchTasks(websocket=websocket)
@@ -85,3 +87,6 @@ class TaskSocketRouter(object):
             "taskId": data["taskId"]
         })
         self.taskService.fetchCompletedTask(dto, websocket)
+    
+    def cancelTask(self, data: dict, websocket: WebSocket) -> None:
+        self.taskService.cancelTask(data["taskId"], data["taskUniqueId"])

@@ -2,7 +2,8 @@
 from watchdog.events import FileSystemEventHandler, FileSystemEvent, FileMovedEvent, FileCreatedEvent, FileDeletedEvent, FileModifiedEvent
 from app.model.dto import StockCrawlingDownloadTask
 from pymitter import EventEmitter
-from typing import Callable, Final
+from typing import Callable
+from typing_extensions import Final
 
 FILE_SYSTEM_HANDLER: Final[Callable] = lambda uuid: f"{uuid}/downloadComplete"
 

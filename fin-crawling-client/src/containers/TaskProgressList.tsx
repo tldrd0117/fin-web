@@ -12,7 +12,8 @@ export default (props) => {
         const { ids, list } = tasks[taskId]
         return <div className={"relative"}>
             {
-                ids?ids.map(val=><TaskProgressListItem key={val} data={{...list[val], taskUniqueId: val}} />):null
+                ids?ids.map(val=><TaskProgressListItem key={val} data={{...list[val], taskUniqueId: val}} />):
+                <div>Empty Task</div>
             }
         </div>
     } else {

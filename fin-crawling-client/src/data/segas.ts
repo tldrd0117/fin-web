@@ -3,7 +3,6 @@ import { all, put, takeEvery } from 'redux-saga/effects'
 import { watchOnSocket } from './socket/socketSagas'
 import { addTodo } from './todos/todosSlice'
 import { watchOnToken } from './user/userSagas'
-import { watchCrawlingReq } from './crawling/crawlingSaga'
 import { watchTasks } from './task/taskSagas'
 import { watchFactorReq } from './factor/factorSaga'
 
@@ -30,7 +29,6 @@ export default function* rootSaga(){
         watchIncrementAsync(),
         watchOnSocket(),
         watchOnToken(),
-        watchCrawlingReq(),
         watchTasks(),
         watchFactorReq()
     ])

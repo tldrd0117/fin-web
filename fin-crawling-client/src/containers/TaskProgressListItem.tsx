@@ -2,7 +2,7 @@ import React from 'react'
 import { useDispatch } from 'react-redux'
 import Button from '../components/Button'
 import LinearProgressBar from '../components/LinearProgressBar'
-import { cancelCrawling } from '../data/crawling/crawlingSlice'
+import { cancelTask } from '../data/task/taskProgressSlice'
 import {getDateHipen} from '../utils/DateUtils'
 
 export default (props) => {
@@ -31,11 +31,8 @@ export default (props) => {
     } = props
 
     const handleCancel = () => {
-        dispatch(cancelCrawling({
+        dispatch(cancelTask({
             taskId,
-            market,
-            startDate: startDateStr,
-            endDate: endDateStr,
             taskUniqueId,
         }))
     }

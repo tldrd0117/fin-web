@@ -1,7 +1,5 @@
 import { combineReducers } from "redux";
 import todosReducer from "../todos/todosSlice";
-import crawlingReducer from "../crawling/crawlingSlice";
-import crawlingHistoryReducer from "../crawling/crawlingHistorySlice";
 import socketReducer from "../socket/socketSlice"
 import userReducer from "../user/userSlice"
 import taskCalendarReducer from "../task/taskCalendarSlice"
@@ -24,8 +22,6 @@ const task = combineReducers({
 
 const rootReducer = combineReducers({
     todos: todosReducer,
-    crawling: crawlingReducer,
-    crawlingHistory: crawlingHistoryReducer,
     socket: socketReducer,
     user: userReducer,
     router: connectRouter(history),

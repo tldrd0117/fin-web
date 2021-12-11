@@ -1,0 +1,21 @@
+2021-12-11 01:14:01,235 - INFO - [logger.py:36] cls: TasksRepository, func: createTaskRunner, msg: created taskrunner
+2021-12-11 01:43:16,123 - INFO - [logger.py:36] cls: TaskService, func: fetchTasks, msg: {"tasks": {}, "taskIds": []}
+2021-12-11 01:43:16,205 - INFO - [logger.py:36] cls: TasksRepository, func: getCompletedTask, msg: count: 1
+2021-12-11 01:43:45,058 - INFO - [logger.py:33] cls: FactorService, msg: convertFactorFileToDb
+2021-12-11 01:43:45,063 - INFO - [logger.py:36] cls: TaskService, func: fetchTasks, msg: {"tasks": {"factorFile": {"list": {"factorFileec9885c1-1d95-4caa-9af5-cdd419271cd7": {"count": 1, "successCount": 0, "failCount": 0, "restCount": 1, "failTasks": [], "state": "start get file", "tasks": ["convert"], "tasksRet": [0], "index": 0, "market": "", "startDateStr": "", "endDateStr": "", "taskUniqueId": "factorFileec9885c1-1d95-4caa-9af5-cdd419271cd7", "percent": 0.0, "taskId": "factorFile", "errMsg": ""}}, "ids": ["factorFileec9885c1-1d95-4caa-9af5-cdd419271cd7"]}}, "taskIds": ["factorFile"]}
+2021-12-11 01:43:45,068 - INFO - [logger.py:36] cls: TasksRepository, func: addTask, msg: factorFileec9885c1-1d95-4caa-9af5-cdd419271cd7
+2021-12-11 01:43:45,117 - INFO - [logger.py:36] cls: TasksRepository, func: updatePoolInfo, msg: {"poolSize": 8, "poolCount": 1, "runCount": 1, "queueCount": 0}
+2021-12-11 01:43:45,119 - INFO - [logger.py:36] cls: Task, func: run, msg: task run
+2021-12-11 01:44:32,288 - INFO - [logger.py:36] cls: TasksRepository, func: updateTask, msg: factorFileec9885c1-1d95-4caa-9af5-cdd419271cd7
+2021-12-11 01:44:32,363 - INFO - [logger.py:36] cls: TaskService, func: fetchTasks, msg: {"tasks": {"factorFile": {"list": {"factorFileec9885c1-1d95-4caa-9af5-cdd419271cd7": {"count": 1, "successCount": 0, "failCount": 0, "restCount": 1, "failTasks": [], "state": "start insert db", "tasks": ["convert"], "tasksRet": [0], "index": 0, "market": "", "startDateStr": "", "endDateStr": "", "taskUniqueId": "factorFileec9885c1-1d95-4caa-9af5-cdd419271cd7", "percent": 0.0, "taskId": "factorFile", "errMsg": ""}}, "ids": ["factorFileec9885c1-1d95-4caa-9af5-cdd419271cd7"]}}, "taskIds": ["factorFile"]}
+2021-12-11 01:45:33,959 - INFO - [logger.py:36] cls: TasksRepository, func: success, msg: factorFileec9885c1-1d95-4caa-9af5-cdd419271cd7
+2021-12-11 01:45:33,962 - INFO - [logger.py:36] cls: TasksRepository, func: updateTask, msg: factorFileec9885c1-1d95-4caa-9af5-cdd419271cd7
+2021-12-11 01:45:34,028 - INFO - [logger.py:36] cls: TaskService, func: fetchTasks, msg: {"tasks": {"factorFile": {"list": {"factorFileec9885c1-1d95-4caa-9af5-cdd419271cd7": {"count": 1, "successCount": 1, "failCount": 0, "restCount": 0, "failTasks": [], "state": "success", "tasks": ["convert"], "tasksRet": [1], "index": 1, "market": "", "startDateStr": "", "endDateStr": "", "taskUniqueId": "factorFileec9885c1-1d95-4caa-9af5-cdd419271cd7", "percent": 100.0, "taskId": "factorFile", "errMsg": ""}}, "ids": ["factorFileec9885c1-1d95-4caa-9af5-cdd419271cd7"]}}, "taskIds": ["factorFile"]}
+2021-12-11 01:45:34,046 - INFO - [logger.py:36] cls: TasksRepository, func: deleteTask, msg: factorFileec9885c1-1d95-4caa-9af5-cdd419271cd7
+2021-12-11 01:45:34,053 - INFO - [logger.py:36] cls: TaskService, func: fetchTasks, msg: {"tasks": {"factorFile": {"list": {}, "ids": []}}, "taskIds": ["factorFile"]}
+2021-12-11 01:45:34,061 - INFO - [logger.py:36] cls: TasksRepository, func: updatePoolInfo, msg: {"poolSize": 8, "poolCount": 0, "runCount": 0, "queueCount": 0}
+2021-12-11 01:45:42,388 - INFO - [logger.py:36] cls: TaskService, func: fetchTasks, msg: {"tasks": {"factorFile": {"list": {}, "ids": []}}, "taskIds": ["factorFile"]}
+2021-12-11 02:16:15,346 - INFO - [logger.py:36] cls: TaskService, func: fetchTasks, msg: {"tasks": {"factorFile": {"list": {}, "ids": []}}, "taskIds": ["factorFile"]}
+2021-12-11 02:16:15,728 - INFO - [logger.py:36] cls: TasksRepository, func: getCompletedTask, msg: count: 1
+2021-12-11 02:16:19,817 - INFO - [logger.py:36] cls: TasksRepository, func: getCompletedTask, msg: count: 1
+2021-12-11 02:16:21,795 - INFO - [logger.py:36] cls: TasksRepository, func: getCompletedTask, msg: count: 1

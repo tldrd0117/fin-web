@@ -1,16 +1,12 @@
 from __future__ import annotations
-import asyncio
 import os
-import traceback
 
-from datetime import datetime, timedelta
 from typing import Dict, TypeVar
 from typing_extensions import Final
 
 from pymitter import EventEmitter
 import uuid
 
-from app.observer.CmdFileSystemEventHandler import FILE_SYSTEM_HANDLER
 from app.module.logger import Logger
 
 # from pathlib import Path
@@ -23,6 +19,7 @@ import xml.etree.ElementTree as ET
 
 import OpenDartReader
 import pandas as pd
+import sys
 
 T = TypeVar("T")
 
@@ -43,9 +40,14 @@ class DartApiCrawler(object):
         return str(uuid.uuid4())
 
     async def downloadCodes(self, isCodeNew: bool, apiKey: str) -> Dict:
-        savepath = Path('app/static/factors/codes.zip')
-        loadpath = Path('app/static/factors/codes')
-        datapath = Path("app/static/factors/codes/CORPCODE.xml")
+        if "pytest" in sys.modules:
+            savepath = Path('factors/codes.zip')
+            loadpath = Path('factors/codes')
+            datapath = Path("factors/codes/CORPCODE.xml")
+        else:
+            savepath = Path('app/static/factors/codes.zip')
+            loadpath = Path('app/static/factors/codes')
+            datapath = Path("app/static/factors/codes/CORPCODE.xml")
 
         if isCodeNew or not os.path.exists(datapath.resolve()):
             url = f"https://opendart.fss.or.kr/api/corpCode.xml?crtfc_key={apiKey}"
@@ -54,9 +56,13 @@ class DartApiCrawler(object):
         tree = ET.parse(datapath.resolve())
         codes = {}
         for li in tree.findall("list"):
-            stockCode = li.find("stock_code").text
-            if len(stockCode) == 6:
-                codes[stockCode] = li.find("corp_code").text
+            el = li.find("stock_code")
+            if el is not None:
+                stockCode = el.text
+                if isinstance(stockCode, str) and len(stockCode) == 6:
+                    codeEl = li.find("corp_code")
+                    if codeEl is not None:
+                        codes[stockCode] = codeEl.text
         return codes
 
     async def crawling(self, dto: DartApiCrawling) -> Dict:
@@ -66,13 +72,15 @@ class DartApiCrawler(object):
         codes = await self.downloadCodes(dto.isCodeNew, dto.apiKey)
         self.ee.emit(EVENT_DART_API_CRAWLING_ON_CRAWLING_FACTOR_DATA)
         dart: OpenDartReader = OpenDartReader(dto.apiKey)
+        
         sumDf = pd.DataFrame()
         for year in range(dto.startYear, dto.endYear+1):
             for code in codes:
                 df = dart.finstate_all(code, year)
-                df["crawling_year"] = year
-                df["crawling_code"] = code
-                sumDf = pd.concat([sumDf, df])
+                if df is not None:
+                    df["crawling_year"] = year
+                    df["crawling_code"] = code
+                    sumDf = pd.concat([sumDf, df])
         return sumDf.to_dict("records")
 
         

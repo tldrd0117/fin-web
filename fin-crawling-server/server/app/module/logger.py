@@ -1,9 +1,9 @@
 
 import logging
 import logging.handlers
-from app.util.DateUtils import getNowDateStr
 import pathlib
 from uvicorn.config import logger
+import sys
 
 
 class Logger:
@@ -11,6 +11,9 @@ class Logger:
     def __init__(self, cls: str, name: str = "log") -> None:
         self.logger = logging.getLogger("logger"+cls)
         self.logger.setLevel(logging.INFO)
+        if "pytest" in sys.modules:
+            print("logger..pytest")
+            return
         
         self.cls = cls
         path = pathlib.Path(f"../app/log/{name}")
