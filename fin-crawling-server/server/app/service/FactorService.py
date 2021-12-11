@@ -72,8 +72,8 @@ class FactorService:
                 taskPool.removeTaskPool(pool)
         task = ProcessTask(**{
             "market": "",
-            "startDateStr": "2007-01-01",
-            "endDateStr": "2019-12-31",
+            "startDateStr": "20070101",
+            "endDateStr": "20191231",
             "taskUniqueId": dto.taskUniqueId,
             "taskId": dto.taskId,
             "count": 1,
