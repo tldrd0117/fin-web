@@ -8,7 +8,7 @@ from app.model.dao import FactorDao
 
 
 class FactorRepository(object):
-    def __init__(self, factorMongod: FactorMongoDataSource, factorDartMongod: FactorDartMongoDataSource,filed: FactorFileDataSource) -> None:
+    def __init__(self, factorMongod: FactorMongoDataSource, factorDartMongod: FactorDartMongoDataSource, filed: FactorFileDataSource) -> None:
         super().__init__()
         self.factorMongod = factorMongod
         self.factorDartMongod = factorDartMongod
