@@ -14,3 +14,4 @@ fin-db/mongodb-oper.yaml
 fin-crawling-server/server/downloads
 .env
 .venv
+log
