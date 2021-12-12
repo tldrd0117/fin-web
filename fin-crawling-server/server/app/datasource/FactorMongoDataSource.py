@@ -1,4 +1,4 @@
-from typing import List
+from typing import Dict, List
 
 from app.model.dao import FactorDao
 from app.util.DateUtils import getNow
@@ -18,17 +18,20 @@ class FactorMongoDataSource(MongoDataSource):
             for one in li:
                 data = one.dict()
                 data["updatedAt"] = getNow()
-                self.factor.update_one({
-                    "code": data["code"],
-                    "dataYear": data["dataYear"],
-                    "dataMonth": data["dataMonth"],
-                    "dataName": data["dataName"],
-                }, {
-                    "$set": data,
-                    "$setOnInsert": {"createdAt": getNow()}
-                }, upsert=True)
+                await self.insertFactorOne(data)
         except Exception as e:
             print(e)
+    
+    async def insertFactorOne(self, data: Dict) -> None:
+        self.factor.update_one({
+            "code": data["code"],
+            "dataYear": data["dataYear"],
+            "dataMonth": data["dataMonth"],
+            "dataName": data["dataName"],
+        }, {
+            "$set": data,
+            "$setOnInsert": {"createdAt": getNow()}
+        }, upsert=True)
 
     def getCompletedTask(self, dto: ListLimitData) -> ListLimitResponse:
         try:
