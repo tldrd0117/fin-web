@@ -100,6 +100,21 @@ class TasksRepository(object):
         self.updateTask(task)
         self.deleteTask(task)
         self.taskEventEmitter.emit(EVENT_TASK_REPO_TASK_COMPLETE, "factorFile", None)
+    
+    def completeFactorDart(self, task: ProcessTask, year: int) -> None:
+        self.success(task, 1)
+        self.updateTask(task)
+        if task.restCount <= 0:
+            self.deleteTask(task)
+        task.state = "complete"
+        self.updateTask(task)
+        self.logger.info("completeStockCrawlingTask", "complete")
+        self.taskEventEmitter.emit(EVENT_TASK_REPO_TASK_COMPLETE, "factorDart", StockUpdateState(**{
+            "taskId": task.taskId,
+            "market": task.market,
+            "date": year,
+            "ret": 1
+        }))
 
     # 완료된 태스크 정보를 처린한다.
     def completeStockCrawlingTask(self, isSuccess: bool, retdto: StockMarketCapitalResult, dto: StockCrawlingDownloadTask) -> None:

@@ -11,7 +11,7 @@ from app.service.StockService import StockService
 from app.model.dto import StockUpdateState, YearData, \
     StockTaskSchedule, StockTaskScheduleList, \
     StockTaskScheduleInfo, StockRunCrawling, \
-    ProcessTasks, ListLimitData, RunFactorFileConvert
+    ProcessTasks, ListLimitData, RunFactorFileConvert, DartApiCrawling
 from app.model.task import TaskPoolInfo
 from app.module.locator import Locator
 from app.repo.CrawlerRepository import CrawlerRepository
@@ -160,12 +160,23 @@ class TaskService:
                     "taskId": dto["taskId"],
                     "taskUniqueId": dto["taskId"] + str(uuid.uuid4())
                 })
+            elif taskName == "crawlingFactorDartData":
+                data = DartApiCrawling(**{
+                    "apiKey": dto["apiKey"],
+                    "isCodeNew": dto["isCodeNew"],
+                    "startYear": dto["startYear"],
+                    "endYear": dto["endYear"],
+                    "taskId": dto["taskId"],
+                    "taskUniqueId": dto["taskId"] + dto["startYear"] + dto["endYear"] + str(uuid.uuid4())
+                })
         else:
             data = dto
         if taskName == "convertFactorFileToDb":
             self.factorService.convertFactorFileToDb(data)
         elif taskName == "crawlingMarcapStockData":
             self.stockService.crawlingMarcapStockData(data)
+        elif taskName == "crawlingFactorDartData":
+            self.factorService.crawlingFactorDartData(data)
     
     def cancelTask(self, taskId: str, taskUniqueId: str) -> None:
         if taskId == "marcap":

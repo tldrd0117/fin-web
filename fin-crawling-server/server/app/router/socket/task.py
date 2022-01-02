@@ -1,9 +1,8 @@
 
 from fastapi import WebSocket
-from app.model.dto import StockRunCrawling, StockTaskSchedule, RunFactorFileConvert, ListLimitData
+from app.model.dto import StockRunCrawling, StockTaskSchedule, ListLimitData
 from app.service.TaskService import TaskService
 from app.module.socket.manager import ConnectionManager
-import uuid
 
 REQ_SOCKET_TASK_FETCH_TASK_STATE = "task/calendar/fetchTaskState"
 REQ_SOCKET_TASK_FETCH_TASK_POOL_INFO = "task/poolInfo/fetchTaskPoolInfo"

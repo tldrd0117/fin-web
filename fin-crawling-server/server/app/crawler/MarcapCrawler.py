@@ -77,7 +77,7 @@ class MarcapCrawler(object):
     async def crawling(self, dto: StockRunCrawling) -> None:
         driver = None
         uuid = self.createUUID()
-        self.logger.info("crawling",uuid)
+        self.logger.info("crawling", uuid)
         downloadObserver = None
         try:
             self.ee.emit(EVENT_MARCAP_CRAWLING_ON_CONNECTING_WEBDRIVER, dto)
@@ -120,13 +120,11 @@ class MarcapCrawler(object):
                 date = date + timedelta(days=1)
         except asyncio.CancelledError as ce:
             print(f"CancelledError: {str(ce)}")
-            self.logger.error("crawling",f"CancelledError: {str(ce)}")
+            self.logger.error("crawling", f"CancelledError: {str(ce)}")
             self.ee.emit(EVENT_MARCAP_CRAWLING_ON_CANCEL, dto)
-        except Exception as e:
+        except Exception:
             self.isError = True
-            self.ee.emit(EVENT_MARCAP_CRAWLING_ON_ERROR, dto)
-            print(f"error: {str(e)}")
-            print(traceback.format_exc())
+            self.ee.emit(EVENT_MARCAP_CRAWLING_ON_ERROR, dto, traceback.format_exc())
             self.logger.error("crawling", f"error: {traceback.format_exc()}")
         finally:
             if downloadObserver:
@@ -268,7 +266,7 @@ class MarcapCrawler(object):
             self.ee.emit(EVENT_MARCAP_CRAWLING_ON_RESULT_OF_STOCK_DATA, retdto)
             self.isLock = False
             self.logger.info("parseFile", f"success, {downloadTask.taskUniqueId}")
-        except Exception as e:
+        except Exception:
             retdto.result = "fail"
             retdto.errorMsg = traceback.format_exc()
             self.ee.emit(EVENT_MARCAP_CRAWLING_ON_PARSING_COMPLETE, isSuccess, retdto, downloadTask)

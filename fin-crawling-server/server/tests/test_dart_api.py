@@ -1,19 +1,24 @@
 from app.crawler.DartApiCrawler import DartApiCrawler
 from app.model.dto import DartApiCrawling
 import asyncio
+import uuid
 
 
 async def getCodes(dart: DartApiCrawler) -> None:
-    codes = await dart.downloadCodes(True, "48a43d39558cf752bc8d8e52709da34569a80372")
+    #c211a43e6a9af3078ba60fc66708a51523a16bbf
+    #48a43d39558cf752bc8d8e52709da34569a80372
+    codes = await dart.downloadCodes(False, "c211a43e6a9af3078ba60fc66708a51523a16bbf")
     print(codes)
 
 
 async def crawling(dart: DartApiCrawler) -> None:
     dto: DartApiCrawling = DartApiCrawling(**{
-        "apiKey": "48a43d39558cf752bc8d8e52709da34569a80372",
+        "apiKey": "c211a43e6a9af3078ba60fc66708a51523a16bbf",
         "isCodeNew": False,
         "startYear": 2015,
-        "endYear": 2015
+        "endYear": 2015,
+        "taskId": "factorDart",
+        "taskUniqueId": str(uuid.uuid4())
     })
     result = await dart.crawling(dto)
     print(result)

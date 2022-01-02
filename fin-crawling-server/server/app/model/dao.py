@@ -64,5 +64,6 @@ class FactorDao(Dao):
     dataYear: str   # 결산월
     dataMonth: str  # 결산년
     dataName: str   # 데이터명
-    dataValue: str  # 데이터값
+    dataId: str = ""    # 데이터 아이디
+    dataValue: str      # 데이터값
 

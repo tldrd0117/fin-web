@@ -142,10 +142,11 @@ class StockService:
         self.logger.info("onCancelled", task.taskUniqueId)
     
     # 크롤링이 에러가났을 때 이벤트
-    def onError(self, dto: StockRunCrawling) -> None:
+    def onError(self, dto: StockRunCrawling, errorMsg: str) -> None:
         task = self.tasksRepository.getTask(dto.taskId, dto.taskUniqueId)
         self.tasksRepository.fail(task, task.restCount)
         task.state = "error"
+        task.errMsg = errorMsg
         self.tasksRepository.updateTask(task)
         self.logger.error("onError", task.taskUniqueId)
 

@@ -1,7 +1,7 @@
 from __future__ import annotations
 import os
 
-from typing import Dict, TypeVar
+from typing import Any, Dict, TypeVar
 from typing_extensions import Final
 
 from pymitter import EventEmitter
@@ -25,6 +25,8 @@ T = TypeVar("T")
 
 EVENT_DART_API_CRAWLING_ON_DOWNLOADING_CODES: Final = "dartApiCrawler/onDownloadingCodes"
 EVENT_DART_API_CRAWLING_ON_CRAWLING_FACTOR_DATA: Final = "dartApiCrawler/onCrawlingFactorData"
+EVENT_DART_API_CRAWLING_ON_COMPLETE_YEAR: Final = "dartApiCrawler/onCompleteYear"
+EVENT_DART_API_CRAWLING_ON_RESULT_OF_FACTOR: Final = "dartApiCrawler/onResultOfFactor"
 
 
 class DartApiCrawler(object):
@@ -54,34 +56,50 @@ class DartApiCrawler(object):
             request.urlretrieve(url, savepath.resolve())
             ZipFile(file=savepath.resolve()).extractall(loadpath.resolve())
         tree = ET.parse(datapath.resolve())
-        codes = {}
+        codes: Dict[str, Any] = {}
         for li in tree.findall("list"):
             el = li.find("stock_code")
             if el is not None:
                 stockCode = el.text
                 if isinstance(stockCode, str) and len(stockCode) == 6:
                     codeEl = li.find("corp_code")
+                    nameEl = li.find("corp_name")
                     if codeEl is not None:
-                        codes[stockCode] = codeEl.text
+                        codes[stockCode] = {}
+                        codes[stockCode]["corp_code"] = codeEl.text
+                        if nameEl is not None:
+                            codes[stockCode]["corp_name"] = nameEl.text
         return codes
 
     async def crawling(self, dto: DartApiCrawling) -> Dict:
         if dto.startYear < 2015:
             dto.startYear = 2015
-        self.ee.emit(EVENT_DART_API_CRAWLING_ON_DOWNLOADING_CODES)
+        self.ee.emit(EVENT_DART_API_CRAWLING_ON_DOWNLOADING_CODES, dto)
         codes = await self.downloadCodes(dto.isCodeNew, dto.apiKey)
-        self.ee.emit(EVENT_DART_API_CRAWLING_ON_CRAWLING_FACTOR_DATA)
+        self.ee.emit(EVENT_DART_API_CRAWLING_ON_CRAWLING_FACTOR_DATA, dto)
         dart: OpenDartReader = OpenDartReader(dto.apiKey)
         
         sumDf = pd.DataFrame()
         for year in range(dto.startYear, dto.endYear+1):
+            self.ee.emit(EVENT_DART_API_CRAWLING_ON_CRAWLING_FACTOR_DATA, dto)
+            yearDf = pd.DataFrame()
             for code in codes:
-                df = dart.finstate_all(code, year)
-                if df is not None:
-                    df["crawling_year"] = year
-                    df["crawling_code"] = code
-                    sumDf = pd.concat([sumDf, df])
+                yearDf = await self.getYearDf(dart, code, codes, year, yearDf)
+            self.ee.emit(EVENT_DART_API_CRAWLING_ON_COMPLETE_YEAR, dto, year)
+            self.ee.emit(EVENT_DART_API_CRAWLING_ON_RESULT_OF_FACTOR, dto, year, yearDf.to_dict("records"))
+            sumDf = pd.concat([sumDf, yearDf])
         return sumDf.to_dict("records")
+    
+    async def getYearDf(self, dart: OpenDartReader, code: str, codes: Dict, year: int, yearDf: pd.DataFrame) -> pd.DataFrame:
+        df = dart.finstate_all(code, year)
+        if df is not None:
+            df["crawling_year"] = year
+            df["crawling_code"] = code
+            df["crawling_name"] = codes[code]["corp_name"]
+            yearDf = pd.concat([yearDf, df])
+            return yearDf
+        return False
+
 
         
 

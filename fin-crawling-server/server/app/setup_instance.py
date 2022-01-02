@@ -45,7 +45,7 @@ taskScheduler = TaskScheduler(stockMongoDataSource.client)
 # SERVICE
 userService = UserService()
 stockService = StockService(stockRepository, tasksRepository, crawlerRepository)
-factorService = FactorService(manager, factorRepository, tasksRepository, None)
+factorService = FactorService(manager, factorRepository, tasksRepository, crawlerRepository, None)
 taskService = TaskService(manager, tasksRepository, taskScheduler, factorService, stockService, crawlerRepository)
 factorService.taskService = taskService
 

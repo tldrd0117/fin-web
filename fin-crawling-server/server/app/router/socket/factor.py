@@ -29,6 +29,8 @@ class FactorSocketRouter(object):
         })
         self.factorService.convertFactorFileToDb(dto)
     
+    
+    
     def fetchCompletedTask(self, data: dict, websocket: WebSocket) -> None:
         dto = ListLimitData(**{
             "offset": data["offset"],
