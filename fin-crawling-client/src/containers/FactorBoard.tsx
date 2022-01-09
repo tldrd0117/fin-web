@@ -1,7 +1,6 @@
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import Breadcrumb from '../components/Breadcrumb';
-import { fetchCompletedTask } from '../data/crawling/crawlingHistorySlice';
 import { RootState } from '../data/root/rootReducer';
 import { fetchTaskSchedule } from '../data/task/taskScheduleSlice';
 import { fetchTaskState } from '../data/task/taskCalendarSlice';

@@ -182,7 +182,7 @@ class TaskService:
         if taskId == "marcap":
             if taskUniqueId in self.crawlerRepository.getCrawlers():
                 self.tasksRepository.taskRunner.cancel(taskUniqueId)
-                self.crawlerRepository.getCrawlers(taskUniqueId).isCancelled = True
+                self.crawlerRepository.getCrawler(taskUniqueId).isCancelled = True
             else:
                 task = self.tasksRepository.getTask(taskId, taskUniqueId)
                 if task is not None:

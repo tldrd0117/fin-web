@@ -1,9 +1,5 @@
 import React from 'react'
 
-
-
-
-
 export default (props) => {
     console.log(props)
     return <div className="container mx-auto px-4 sm:px-8">
@@ -19,7 +15,7 @@ export default (props) => {
                             <thead>
                                 {
                                     props.header.map(v=>
-                                        <tr>
+                                        <tr key={v.length?v[0]:0}>
                                             {v.map(v=><th
                                                 className="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-center text-xs font-semibold text-gray-600 uppercase tracking-wider">
                                                 {v}
@@ -31,13 +27,13 @@ export default (props) => {
                             </thead>
                             <tbody>
                                 {
-                                    props.body.map(v=>
-                                        <tr>
+                                    props.body.map((v,i)=>
+                                        <tr key={v?v[0]:i}>
                                             {
                                                 v instanceof Array?
-                                                v.map(v=><td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
+                                                v.slice(1).map((v2, i)=><td key={v[0]+i} className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
                                                 <p className="text-gray-900 whitespace-no-wrap text-center">
-                                                    {v}
+                                                    {v2}
                                                     </p>
                                              </td>):v}
                                         </tr>

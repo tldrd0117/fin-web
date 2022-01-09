@@ -78,6 +78,13 @@ class FactorService:
             task = self.tasksRepository.getTask(dto.taskId, dto.taskUniqueId)
             if task is not None:
                 self.tasksRepository.deleteTask(task)
+    
+    def cancelFactorFileToDb(self, dto: RunFactorFileConvert) -> None:
+        if self.tasksRepository.taskRunner.isExist(dto.taskUniqueId):
+            self.tasksRepository.taskRunner.cancel(dto.taskUniqueId)
+        task = self.tasksRepository.getTask(dto.taskId, dto.taskUniqueId)
+        if task is not None:
+            self.tasksRepository.deleteTask(task)
         
     # file에 있는 factor를 db에 저장한다.
     def convertFactorFileToDb(self, dto: RunFactorFileConvert) -> None:
@@ -167,6 +174,7 @@ class FactorService:
         }), obj))
         asyncio.create_task(self.factorRepository.insertFactorDart(listOfFactorDao))
 
+    
     # def createTaskRepositoryListener(self) -> None:
         # self.tasksRepository.taskEventEmitter.on(EVENT_TASK_REPO_TASK_COMPLETE, self.completeTask)
         # self.tasksRepository.taskEventEmitter.on(EVENT_TASK_REPO_UPDATE_TASKS, self.updateTasks)

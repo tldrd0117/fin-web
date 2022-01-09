@@ -93,8 +93,15 @@ class StockService:
         ee.on(EVENT_MARCAP_CRAWLING_ON_CANCEL, self.onCancelled)
     
     # 주식 종목 데이터 크롤링 결과값을 db에 저장한다.
-    def onResultOfStockData(self, dto: StockMarketCapitalResult) -> None:
-        self.stockRepository.insertMarcap(dto)
+    def onResultOfStockData(self, dto: StockCrawlingDownloadTask, retDto: StockMarketCapitalResult) -> None:
+        task = self.tasksRepository.getTask(dto.taskId, dto.taskUniqueId)
+        task.state = "insert to database"
+        self.tasksRepository.updateTask(task)
+        
+        async def completeMarcapTask() -> None:
+            await self.stockRepository.insertMarcap(retDto)
+            self.tasksRepository.completeStockCrawlingTask(True, retDto, dto)
+        asyncio.create_task(completeMarcapTask())
 
     # 크롤링 중 웹드라이버와 연결되었을 때 이벤트
     def onConnectingWebDriver(self, dto: StockRunCrawling) -> None:
@@ -131,7 +138,8 @@ class StockService:
         self.logger.info(f"taskId:{dto.taskId} taskUniqueId{dto.taskUniqueId}")
         tar = self.tasksRepository.tasksdto.tasks[dto.taskId]["list"]
         self.logger.info(f"taskDTO: {tar}")
-        self.tasksRepository.completeStockCrawlingTask(isSuccess, retdto, dto)
+        if not isSuccess:
+            self.tasksRepository.completeStockCrawlingTask(isSuccess, retdto, dto)
     
     # 크롤링이 취소되었을 때 이벤트
     def onCancelled(self, dto: StockRunCrawling) -> None:

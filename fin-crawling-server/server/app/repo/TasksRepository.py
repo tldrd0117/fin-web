@@ -125,8 +125,9 @@ class TasksRepository(object):
             self.fail(task, 1)
         if task.restCount <= 0:
             self.deleteTask(task)
-        task.errMsg = retdto.errorMsg
-        task.state = "complete"
+        if retdto:
+            task.errMsg = retdto.errorMsg
+        task.state = "success"
         self.updateTask(task)
         self.logger.info("completeStockCrawlingTask", "complete")
         self.taskEventEmitter.emit(EVENT_TASK_REPO_TASK_COMPLETE, "marcap", StockUpdateState(**{

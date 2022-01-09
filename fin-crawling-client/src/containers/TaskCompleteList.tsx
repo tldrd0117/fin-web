@@ -1,7 +1,7 @@
 import React from 'react'
 import { RootState } from '../data/root/rootReducer'
 import { useDispatch, useSelector } from 'react-redux'
-import CrawlingCompleteListItem from './TaskCompleteListItem'
+import TaskCompleteListItem from './TaskCompleteListItem'
 import HeaderTable from '../components/HeaderTable'
 import { fetchCompletedTask } from '../data/task/taskHistorySlice'
 
@@ -36,10 +36,11 @@ export default (props) => {
                         count,
                         successCount,
                         failCount,
-                        percent
+                        percent,
+                        _id
                     } = list[val];
                     return [
-                    `${startDateStr} ~ ${endDateStr}`, market, count, successCount, failCount, percent
+                        _id,`${startDateStr} ~ ${endDateStr}`, market, count, successCount, failCount, percent
                 ]}), count <= offset + limit? null : <td onClick={handleNext} className={"text-center text-sm p-4 cursor-pointer"} colSpan={6}>더보기</td>]}
             />
         </div>

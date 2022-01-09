@@ -27,7 +27,6 @@ export default (props) => {
             updatedAt,
             taskUniqueId
         },
-        key
     } = props
 
     const handleCancel = () => {

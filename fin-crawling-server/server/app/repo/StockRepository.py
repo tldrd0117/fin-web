@@ -18,5 +18,5 @@ class StockRepository(object):
     def getStockData(self, market: str, startDate: str, endDate: str) -> List[StockMarketCapital]:
         return self.mongod.getMarcap(market, startDate, endDate)
 
-    def insertMarcap(self, dto: StockMarketCapitalResult) -> None:
-        self.mongod.insertMarcap(dto.data)
+    async def insertMarcap(self, dto: StockMarketCapitalResult) -> None:
+        await self.mongod.insertMarcap(dto.data)

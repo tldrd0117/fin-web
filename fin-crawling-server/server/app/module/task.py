@@ -6,7 +6,7 @@ from app.module.logger import Logger
 
 from app.model.task import TaskPoolInfo
 
-DEFAULT_POOL_SIZE = 8
+DEFAULT_POOL_SIZE = 5
 
 
 class Task(object):
@@ -36,6 +36,7 @@ class Pool(object):
     
     def setTask(self, task: Task) -> None:
         self.task = task
+        self.taskId = task.id
     
     def run(self, taskPool: TaskPool) -> None:
         self.isRun = True
@@ -124,8 +125,12 @@ class TaskRunner(object):
     def cancel(self, id: str) -> None:
         pool: Optional[Pool] = self.pool.findPool(id)
         if pool is not None:
+            self.logger.info("cancel", id)  
             pool.cancel()
             self.pool.removeTaskPool(pool)
+    
+    def isExist(self, id: str) -> bool:
+        return self.pool.findPool(id) is not None
     
     async def notifyToPool(self) -> None:
         try:

@@ -1,7 +1,7 @@
 import React, { MouseEventHandler, useRef, useState } from 'react';
 
 export default ({label="", ...props }) => {
-    const [checked, setChecked] = useState(props.checked)
+    const [checked, setChecked] = useState(props.checked||true)
     const checkRef = useRef(null)
     const handleClick = (...args) => {
         if(checkRef.current){
@@ -10,9 +10,9 @@ export default ({label="", ...props }) => {
             }else{
                 setChecked(checkRef.current.checked)
             }
-            if(props.onCheck) props.onCheck(!checked)
+            if(props && props.onCheck) props.onCheck(!checked)
         }
-        if(props.onClick) props.onClick(...args)
+        if(props && props.onClick) props.onClick(...args)
     }
     return <>
         <style jsx>{`
@@ -33,7 +33,7 @@ export default ({label="", ...props }) => {
             }
         `}</style>
         <div {...props} onClick={handleClick} className={`relative flex checkComponent items-center ${props.className?props.className:""}`} >
-            <input ref={checkRef} checked={checked} type={"checkbox"} className={`checkBox relative appearance-none h-6 w-6 border border-gray-300 rounded-md checked:bg-blue-600 checked:border-transparent focus:outline-none`} />
+            <input ref={checkRef} type={"checkbox"} className={`checkBox relative appearance-none h-6 w-6 border border-gray-300 rounded-md checked:bg-blue-600 checked:border-transparent focus:outline-none`} />
             {
                 checked?
                 <div className={"checkBox flex items-center justify-center absolute pointer-events-none"}>

@@ -1,6 +1,6 @@
 from pymitter import EventEmitter
 from app.crawler.MarcapCrawler import MarcapCrawler
-from app.model.dto import StockCrawlingRunCrawling, StockCrawlingDownloadTask, StockMarketCapitalResult
+from app.model.dto import StockRunCrawling, StockCrawlingDownloadTask, StockMarketCapitalResult
 import asyncio
 import os
 from app.crawler.MarcapCrawler import EVENT_MARCAP_CRAWLING_ON_CONNECTING_WEBDRIVER, \
@@ -14,12 +14,12 @@ from app.crawler.MarcapCrawler import EVENT_MARCAP_CRAWLING_ON_CONNECTING_WEBDRI
 
 def createListener(ee: EventEmitter) -> None:
     @ee.on(EVENT_MARCAP_CRAWLING_ON_CONNECTING_WEBDRIVER)
-    def onConnectingWebDriver(dto: StockCrawlingRunCrawling) -> None:
+    def onConnectingWebDriver(dto: StockRunCrawling) -> None:
         print("onConnectingWebDriver")
         print(dto)
 
     @ee.on(EVENT_MARCAP_CRAWLING_ON_START_CRAWLING)
-    def onStartCrawling(dto: StockCrawlingRunCrawling) -> None:
+    def onStartCrawling(dto: StockRunCrawling) -> None:
         print("onStartCrawling")
         print(dto)
 
@@ -39,19 +39,19 @@ def createListener(ee: EventEmitter) -> None:
         print(dto)
 
     @ee.on(EVENT_MARCAP_CRAWLING_ON_CANCEL)
-    def onCancelled(dto: StockCrawlingRunCrawling) -> None:
+    def onCancelled(dto: StockRunCrawling) -> None:
         print("onCancelled")
         print(dto)
 
     @ee.on(EVENT_MARCAP_CRAWLING_ON_ERROR)
-    def onError(dto: StockCrawlingRunCrawling) -> None:
+    def onError(dto: StockRunCrawling) -> None:
         print("onError")
         print(dto)
 
 
 async def runTest(loop: asyncio.AbstractEventLoop) -> None:
     print("runTest")
-    runDto = StockCrawlingRunCrawling(**{
+    runDto = StockRunCrawling(**{
         "driverAddr": "http://localhost:30006",
         "market": "kospi",
         "startDateStr": "20210826",
@@ -64,6 +64,7 @@ async def runTest(loop: asyncio.AbstractEventLoop) -> None:
     createListener(marcapCrawler.ee)
     print("task")
     await loop.create_task(marcapCrawler.crawling(runDto))
+
 
 # pytest -s test_marcap_crawler_local.py
 def test() -> None:

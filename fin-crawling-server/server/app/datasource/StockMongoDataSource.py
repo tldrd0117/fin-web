@@ -5,30 +5,40 @@ from app.model.dto import StockMarketCapital, ListLimitData, ListLimitResponse
 from app.util.DateUtils import getNow
 from app.datasource.MongoDataSource import MongoDataSource
 from pymongo import DESCENDING
+from app.module.logger import Logger
+import traceback
+import asyncio
 
 
 class StockMongoDataSource(MongoDataSource):
     def __init__(self) -> None:
         super().__init__()
+        self.logger = Logger("StockMongoDataSource")
 
-    def insertMarcap(self, li: List[StockMarketCapital]) -> None:
+    async def insertMarcap(self, li: List[StockMarketCapital]) -> None:
         try:
             if not self.isSetupMarcap():
                 self.setupMarcap()
             for one in li:
-                data = one.dict()
-                data["updatedAt"] = getNow()
-                self.marcap.update_one({
-                    "code": data["code"],
-                    "date": data["date"],
-                    "market": data["market"]
-                }, {
-                    "$set": data,
-                    "$setOnInsert": {"createdAt": getNow()}
-                }, upsert=True)
+                asyncio.create_task(self.insertMarpcapOne(one))
         except Exception as e:
             print(e)
     
+    async def insertMarpcapOne(self, one: StockMarketCapital) -> None:
+        try:
+            data = one.dict()
+            data["updatedAt"] = getNow()
+            self.marcap.update_one({
+                "code": data["code"],
+                "date": data["date"],
+                "market": data["market"]
+            }, {
+                "$set": data,
+                "$setOnInsert": {"createdAt": getNow()}
+            }, upsert=True)
+        except Exception:
+            self.logger.error("insertMarpcapOne", traceback.format_exc())
+        
     def getMarcap(self, market: str, startDate: str, endDate: str) -> List[StockMarketCapital]:
         try:
             if not self.isSetupMarcap():
@@ -58,16 +68,18 @@ class StockMongoDataSource(MongoDataSource):
         try:
             data = dto.dict()
             cursor = self.task.find({"$or": [
-                        {"state": "success"}, 
-                        {"state": "fail"}
+                        {"state": "complete"}, 
+                        {"state": "error"},
+                        {"state": "cancelled"}
                     ]}
                 ).sort("createdAt", DESCENDING)\
                 .skip(data["offset"])\
                 .limit(data["limit"])
             
             count = self.task.find({"$or": [
-                        {"state": "success"}, 
-                        {"state": "fail"}
+                        {"state": "complete"}, 
+                        {"state": "error"},
+                        {"state": "cancelled"}
                     ]}
                 ).count()
             

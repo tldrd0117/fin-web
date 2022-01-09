@@ -47,7 +47,7 @@ class MarcapCrawler(object):
     def createUUID(self) -> str:
         return str(uuid.uuid4())
 
-    def connectWebDriver(self, addr: str, uuid: str) -> WebDriver:
+    async def connectWebDriver(self, addr: str, uuid: str) -> WebDriver:
         chrome_options = webdriver.ChromeOptions()
         prefs = {
             'profile.default_content_setting_values.automatic_downloads': 1,
@@ -59,8 +59,8 @@ class MarcapCrawler(object):
             options=chrome_options,
 
         )
-        driver.set_page_load_timeout(20)
-        driver.set_script_timeout(20)
+        driver.set_page_load_timeout(60)
+        driver.set_script_timeout(60)
         self.logger.info("connectWebDriver", "create driver")
         return driver
 
@@ -88,7 +88,7 @@ class MarcapCrawler(object):
             self.logger.info("crawling", "create observer and start")
             print("startObserver")
 
-            driver = self.connectWebDriver(dto.driverAddr, uuid)
+            driver = await self.connectWebDriver(dto.driverAddr, uuid)
             print("connectWebDriver")
             driver.get("http://data.krx.co.kr/contents/MDC/MDI/mdiLoader/index.cmd?menuId=MDC0201020101")
             try:
@@ -263,7 +263,7 @@ class MarcapCrawler(object):
             retdto.result = "success"
             isSuccess = True
             self.ee.emit(EVENT_MARCAP_CRAWLING_ON_PARSING_COMPLETE, isSuccess, retdto, downloadTask)
-            self.ee.emit(EVENT_MARCAP_CRAWLING_ON_RESULT_OF_STOCK_DATA, retdto)
+            self.ee.emit(EVENT_MARCAP_CRAWLING_ON_RESULT_OF_STOCK_DATA, downloadTask, retdto)
             self.isLock = False
             self.logger.info("parseFile", f"success, {downloadTask.taskUniqueId}")
         except Exception:

@@ -1,5 +1,5 @@
 
-from typing import Dict, List
+from typing import List
 from app.datasource.FactorMongoDataSource import FactorMongoDataSource
 from app.datasource.FactorDartMongoDataSource import FactorDartMongoDataSource
 from app.datasource.FactorFileDataSource import FactorFileDataSource
