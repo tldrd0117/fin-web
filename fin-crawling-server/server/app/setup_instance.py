@@ -13,6 +13,7 @@ from app.datasource.StockMongoDataSource import StockMongoDataSource
 from app.datasource.FactorFileDataSource import FactorFileDataSource
 from app.datasource.FactorMongoDataSource import FactorMongoDataSource
 from app.datasource.FactorDartMongoDataSource import FactorDartMongoDataSource
+from app.datasource.TaskMongoDataSource import TaskMongoDataSource
 from app.router.socket.task import TaskSocketRouter
 from app.router.socket.stock import StockSocketRouter
 from app.router.socket.factor import FactorSocketRouter
@@ -26,9 +27,10 @@ stockMongoDataSource = StockMongoDataSource()
 factorMongoDataSource = FactorMongoDataSource()
 factorFileDataSource = FactorFileDataSource()
 factorDartMongoDataSource = FactorDartMongoDataSource()
+taskMongoDataSource = TaskMongoDataSource()
 
 # REPOSITORY
-tasksRepository = TasksRepository(stockMongoDataSource)
+tasksRepository = TasksRepository(taskMongoDataSource)
 crawlerRepository = CrawlerRepository(stockMongoDataSource, tasksRepository)
 stockRepository = StockRepository(stockMongoDataSource, tasksRepository)
 factorRepository = FactorRepository(factorMongoDataSource, factorDartMongoDataSource, factorFileDataSource)

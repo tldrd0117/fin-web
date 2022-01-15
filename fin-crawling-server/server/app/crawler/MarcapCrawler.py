@@ -19,6 +19,7 @@ import uuid
 from app.observer.DownloadObserver import DownloadObserver
 from app.observer.CmdFileSystemEventHandler import FILE_SYSTEM_HANDLER
 from app.module.logger import Logger
+from app.util.AsyncUtil import asyncRetry
 
 # from pathlib import Path
 from app.model.dto import StockCrawlingDownloadTask, StockRunCrawling, StockMarketCapitalResult, StockMarketCapital
@@ -116,7 +117,8 @@ class MarcapCrawler(object):
                 print(downloadTask.json())
                 downloadObserver.event_handler.setDownloadTask(downloadTask)
                 self.ee.emit(EVENT_MARCAP_CRAWLING_ON_DOWNLOAD_START, downloadTask)
-                await self.downloadData(downloadTask, downloadObserver, driver)
+                await asyncRetry(5, 1, self.downloadData, downloadTask, downloadObserver, driver)
+                # await self.downloadData(downloadTask, downloadObserver, driver)
                 date = date + timedelta(days=1)
         except asyncio.CancelledError as ce:
             print(f"CancelledError: {str(ce)}")
@@ -169,7 +171,7 @@ class MarcapCrawler(object):
         @self.ee.once(FILE_SYSTEM_HANDLER(downloadTask.uuid))
         def downloadComplete(event: FileCreatedEvent, downloadTask: StockCrawlingDownloadTask) -> None:
             self.ee.emit(EVENT_MARCAP_CRAWLING_ON_DOWNLOAD_COMPLETE, downloadTask)
-            mainThreadLoop.create_task(self.parseFile(event, downloadTask, downloadObserver))
+            mainThreadLoop.create_task(self.makeMarcapData(event, downloadTask))
 
         timeout = 30
         while self.isLock:
@@ -241,35 +243,39 @@ class MarcapCrawler(object):
             restTimes -= 1
         return isExist
     
-    async def parseFile(self, event: FileCreatedEvent, downloadTask: StockCrawlingDownloadTask, downloadObserver: DownloadObserver) -> None:
+    async def parseReceivedFile(self, event: FileCreatedEvent, downloadTask: StockCrawlingDownloadTask) -> None:
         isSuccess = False
         retdto = StockMarketCapitalResult()
+        date = downloadTask.dateStr
+        market = downloadTask.market
+        retdto.date = date
+        retdto.market = market
+        isExist = await self.isExistFile(event.src_path)
+        if not isExist:
+            return
+        print("created: " + date)
+        await asyncio.sleep(0.5)
+        dest_path = f'{os.path.dirname(event.src_path)}/{market+"-"+date}.csv'
+        if os.path.isfile(dest_path):
+            return
+        self.changeCharSet(event.src_path)
+        os.rename(event.src_path, dest_path)
+        self.convertFileToDto(dest_path, retdto)
+        retdto.result = "success"
+        isSuccess = True
+        self.ee.emit(EVENT_MARCAP_CRAWLING_ON_PARSING_COMPLETE, isSuccess, retdto, downloadTask)
+        self.ee.emit(EVENT_MARCAP_CRAWLING_ON_RESULT_OF_STOCK_DATA, downloadTask, retdto)
+        self.isLock = False
+        self.logger.info("parseFile", f"success, {downloadTask.taskUniqueId}")
+    
+    async def makeMarcapData(self, event: FileCreatedEvent, downloadTask: StockCrawlingDownloadTask) -> None:
         try:
-            date = downloadTask.dateStr
-            market = downloadTask.market
-            retdto.date = date
-            retdto.market = market
-            isExist = await self.isExistFile(event.src_path)
-            if not isExist:
-                return
-            print("created: " + date)
-            await asyncio.sleep(0.5)
-            dest_path = f'{os.path.dirname(event.src_path)}/{market+"-"+date}.csv'
-            if os.path.isfile(dest_path):
-                return
-            self.changeCharSet(event.src_path)
-            os.rename(event.src_path, dest_path)
-            self.convertFileToDto(dest_path, retdto)
-            retdto.result = "success"
-            isSuccess = True
-            self.ee.emit(EVENT_MARCAP_CRAWLING_ON_PARSING_COMPLETE, isSuccess, retdto, downloadTask)
-            self.ee.emit(EVENT_MARCAP_CRAWLING_ON_RESULT_OF_STOCK_DATA, downloadTask, retdto)
-            self.isLock = False
-            self.logger.info("parseFile", f"success, {downloadTask.taskUniqueId}")
+            await asyncRetry(3, 1, self.parseReceivedFile, event, downloadTask)
         except Exception:
+            retdto = StockMarketCapitalResult()
             retdto.result = "fail"
             retdto.errorMsg = traceback.format_exc()
-            self.ee.emit(EVENT_MARCAP_CRAWLING_ON_PARSING_COMPLETE, isSuccess, retdto, downloadTask)
+            self.ee.emit(EVENT_MARCAP_CRAWLING_ON_PARSING_COMPLETE, False, retdto, downloadTask)
             self.isLock = False
             self.logger.error("parseFile", f"fail, {downloadTask.taskUniqueId} error: {traceback.format_exc()}")
         finally:

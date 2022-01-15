@@ -174,6 +174,7 @@ class TasksRepository(object):
     # 완료된 태스크 정보를 반환한다.
     def getCompletedTask(self, dto: ListLimitDao) -> ListLimitDataDao:
         taskData = self.mongod.getCompletedTask(dto)
+        print(taskData)
         tasks: Dict = dict()
         taskIds = []
         for task in taskData.data:

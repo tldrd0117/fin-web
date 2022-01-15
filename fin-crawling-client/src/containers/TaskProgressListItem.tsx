@@ -42,7 +42,7 @@ export default (props) => {
                 </label>
                 <div>
                     <label className="block text-gray-400 text-sm font-bold mb-2 mt-2" >
-                        진행
+                        현재진행: <span className="ml-2 font-bold"> {tasks&&tasks[index] ? `${getDateHipen(tasks[index])}` : ""}</span>
                     </label>
                     <span>{`전체: ${count||"0"}`}</span>
                     <span className={"text-green-400 ml-2"}>{`성공: ${successCount||"0"}`}</span>

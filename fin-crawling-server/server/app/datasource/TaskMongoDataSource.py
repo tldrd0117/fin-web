@@ -15,7 +15,10 @@ class TaskMongoDataSource(MongoDataSource):
             data = dto.dict()
             cursor = self.task.find({"$or": [
                         {"state": "success"}, 
-                        {"state": "fail"}
+                        {"state": "fail"},
+                        {"state": "complete"}, 
+                        {"state": "error"},
+                        {"state": "cancelled"}
                     ]}
                 ).sort("createdAt", DESCENDING)\
                 .skip(data["offset"])\
@@ -23,18 +26,20 @@ class TaskMongoDataSource(MongoDataSource):
             
             count = self.task.find({"$or": [
                         {"state": "success"}, 
-                        {"state": "fail"}
+                        {"state": "fail"},
+                        {"state": "complete"}, 
+                        {"state": "error"},
+                        {"state": "cancelled"}
                     ]}
                 ).count()
-            
+            print("res:start")
             res = ListLimitDataDao(**{
-                "taskId": dto["taskId"],
+                "taskId": data["taskId"],
                 "count": count,
                 "offset": data["offset"],
                 "limit": data["limit"],
                 "data": self.exceptId(list(cursor))
             })
-            
             return res
         except Exception as e:
             print(e)

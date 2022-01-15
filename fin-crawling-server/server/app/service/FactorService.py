@@ -174,7 +174,6 @@ class FactorService:
         }), obj))
         asyncio.create_task(self.factorRepository.insertFactorDart(listOfFactorDao))
 
-    
     # def createTaskRepositoryListener(self) -> None:
         # self.tasksRepository.taskEventEmitter.on(EVENT_TASK_REPO_TASK_COMPLETE, self.completeTask)
         # self.tasksRepository.taskEventEmitter.on(EVENT_TASK_REPO_UPDATE_TASKS, self.updateTasks)

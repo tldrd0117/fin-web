@@ -13,6 +13,7 @@ from app.model.dto import StockUpdateState, YearData, \
     StockTaskScheduleInfo, StockRunCrawling, \
     ProcessTasks, ListLimitData, RunFactorFileConvert, DartApiCrawling
 from app.model.task import TaskPoolInfo
+from app.model.dao import ListLimitDao
 from app.module.locator import Locator
 from app.repo.CrawlerRepository import CrawlerRepository
 from app.repo.TasksRepository import TasksRepository, \
@@ -194,7 +195,12 @@ class TaskService:
                 self.tasksRepository.deleteTask(task)
     
     def fetchCompletedTask(self, dto: ListLimitData, webSocket: WebSocket) -> None:
-        tasks = self.tasksRepository.getCompletedTask(dto)
+        dao = ListLimitDao(**{
+            "limit": dto.limit,
+            "offset": dto.offset,
+            "taskId": dto.taskId
+        })
+        tasks = self.tasksRepository.getCompletedTask(dao)
         self.manager.send(RES_SOCKET_TASK_FETCH_COMPLETED_TASK, tasks.dict(), webSocket)
         
 
