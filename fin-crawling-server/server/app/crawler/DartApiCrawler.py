@@ -21,6 +21,8 @@ import OpenDartReader
 import pandas as pd
 import sys
 
+from app.util.AsyncUtil import asyncRetry
+
 T = TypeVar("T")
 
 EVENT_DART_API_CRAWLING_ON_DOWNLOADING_CODES: Final = "dartApiCrawler/onDownloadingCodes"
@@ -75,7 +77,8 @@ class DartApiCrawler(object):
         if dto.startYear < 2015:
             dto.startYear = 2015
         self.ee.emit(EVENT_DART_API_CRAWLING_ON_DOWNLOADING_CODES, dto)
-        codes = await self.downloadCodes(dto.isCodeNew, dto.apiKey)
+        codes = await asyncRetry(5, 1, self.downloadCodes, dto.isCodeNew, dto.apiKey)
+        # codes = await self.downloadCodes(dto.isCodeNew, dto.apiKey)
         self.ee.emit(EVENT_DART_API_CRAWLING_ON_CRAWLING_FACTOR_DATA, dto)
         dart: OpenDartReader = OpenDartReader(dto.apiKey)
         
@@ -84,7 +87,8 @@ class DartApiCrawler(object):
             self.ee.emit(EVENT_DART_API_CRAWLING_ON_CRAWLING_FACTOR_DATA, dto)
             yearDf = pd.DataFrame()
             for code in codes:
-                yearDf = await self.getYearDf(dart, code, codes, year, yearDf)
+                yearDf = await asyncRetry(5, 1, self.getYearDf, dart, code, codes, year, yearDf)
+                # yearDf = await self.getYearDf(dart, code, codes, year, yearDf)
             self.ee.emit(EVENT_DART_API_CRAWLING_ON_COMPLETE_YEAR, dto, year)
             self.ee.emit(EVENT_DART_API_CRAWLING_ON_RESULT_OF_FACTOR, dto, year, yearDf.to_dict("records"))
             sumDf = pd.concat([sumDf, yearDf])
