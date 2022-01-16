@@ -1,6 +1,5 @@
 from typing import List
 
-from uvicorn.config import logger
 from app.model.dto import StockMarketCapital, ListLimitData, ListLimitResponse
 from app.util.DateUtils import getNow
 from app.datasource.MongoDataSource import MongoDataSource
@@ -21,8 +20,8 @@ class StockMongoDataSource(MongoDataSource):
                 self.setupMarcap()
             for one in li:
                 asyncio.create_task(self.insertMarpcapOne(one))
-        except Exception as e:
-            print(e)
+        except Exception:
+            self.logger.error("insertMarcap", traceback.format_exc())
     
     async def insertMarpcapOne(self, one: StockMarketCapital) -> None:
         try:
@@ -60,8 +59,8 @@ class StockMongoDataSource(MongoDataSource):
                 "marcap": data["marcap"],
                 "number": data["number"]
             }), list(cursor)))
-        except Exception as e:
-            print(e)
+        except Exception:
+            self.logger.error("getMarcap", traceback.format_exc())
             return list()
 
     def getCompletedTask(self, dto: ListLimitData) -> ListLimitResponse:
@@ -91,8 +90,8 @@ class StockMongoDataSource(MongoDataSource):
             })
             
             return res
-        except Exception as e:
-            print(e)
+        except Exception:
+            self.logger.error("getCompletedTask", traceback.format_exc())
         return []
     
     def getAllTaskState(self, taskId: str, market: str) -> list:
@@ -103,20 +102,18 @@ class StockMongoDataSource(MongoDataSource):
                 # "$or": [{"state": "success"}, {"state": "fail"}, {"state": "error"}]
             }, projection=["tasks", "tasksRet"])
             return list(cursor)
-        except Exception as e:
-            print(e)
+        except Exception:
+            self.logger.error("getAllTaskState", traceback.format_exc())
         return []
 
     def upsertTask(self, value: dict) -> None:
         try:
             value["updatedAt"] = getNow()
-            logger.info("upsertTask: "+str(value))
             self.task.update_one({
                 "taskUniqueId": value["taskUniqueId"]
             }, {
                 "$set": value,
                 "$setOnInsert": {"createdAt": getNow()}
             }, upsert=True)
-        except Exception as e:
-            logger.error(str(e))
-            print(e)
+        except Exception:
+            self.logger.error("upsertTask", traceback.format_exc())

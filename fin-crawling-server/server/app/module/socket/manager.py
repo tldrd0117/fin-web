@@ -4,7 +4,6 @@ from pymitter import EventEmitter
 from app.model.dto import SocketResponse
 import asyncio
 from uvicorn.config import logger
-from concurrent.futures import ThreadPoolExecutor
 
 
 class ConnectionManager:
@@ -25,7 +24,6 @@ class ConnectionManager:
         await websocket.send_text(message)
     
     def __send_personal_message(self, message: str, websocket: WebSocket) -> None:
-        print(f"__send_personal_message: ")
         asyncio.create_task(self._send_personal_message, message, websocket)
 
     async def _broadcast(self, message: str) -> None:
@@ -33,7 +31,6 @@ class ConnectionManager:
             await connection.send_text(message)
 
     def __broadcast(self, message: str) -> None:
-        print(f"__broadcast: ")
         asyncio.create_task(self._broadcast, message)
         # for connection in self.active_connections:
         #     asyncio.create_task(connection.send_text(message))

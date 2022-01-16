@@ -22,17 +22,24 @@ class Logger:
             path = pathlib.Path(f"../app/log/{name}")
             logger.info(path.resolve())
 
-            fileHandler = logging.handlers.TimedRotatingFileHandler(
+            # fileHandler = logging.handlers.TimedRotatingFileHandler(
+            #     filename=path.resolve(),
+            #     when='midnight',
+            #     interval=1
+            # )
+
+            fileHandler2 = logging.handlers.RotatingFileHandler(
                 filename=path.resolve(),
-                when='midnight',
-                interval=1
-            )
-            logger.addHandler(fileHandler)
+                maxBytes=1000000,
+                backupCount=100
+            )  
+
+            logger.addHandler(fileHandler2)
             
             formatter = logging.Formatter(
                 '%(asctime)s - %(levelname)s - [%(filename)s:%(lineno)d] %(message)s'
             )
-            fileHandler.setFormatter(formatter)    # 핸들러에 로깅 포맷 할당
+            fileHandler2.setFormatter(formatter)    # 핸들러에 로깅 포맷 할당
 
             cls.__loggers[name] = logger
         return cls.__loggers[name]
@@ -43,11 +50,12 @@ class Logger:
     
     def info(self, func: str, msg: str = None) -> None:
         if msg is None:
-            self.logger.info(f"cls: {self.cls}, msg: {func}")
+            info = (f"cls: {self.cls}, msg: {func}")[:200]
+            self.logger.info(info)
             return
-
-        self.logger.info(f"cls: {self.cls}, func: {func}, msg: {msg}")
-        logger.info(f"cls: {self.cls}, func: {func}, msg: {msg}")
+        info = (f"cls: {self.cls}, func: {func}, msg: {msg}")[:200]
+        self.logger.info(info)
+        logger.info(info)
     
     def error(self, func: str, msg: str) -> None:
         self.logger.error(f"cls: {self.cls}, func: {func}, msg {msg}")

@@ -11,8 +11,6 @@ from app.module.task import Task, TaskRunner
 from app.module.logger import Logger
 
 
-from uvicorn.config import logger
-
 SUCCESS: Final = 1
 FAIL: Final = 2
 WAIT: Final = 0
@@ -42,7 +40,6 @@ class TasksRepository(object):
     # 태스크 풀 정보가 업데이트 될 떄 이벤트를 날린다.
     def onUpdatePoolInfo(self, poolInfo: TaskPoolInfo) -> None:
         self.taskEventEmitter.emit(EVENT_TASK_REPO_UPDATE_POOL_INFO, poolInfo)
-        logger.info(f"updatePoolInfo:{poolInfo.json()}, {str(self)}")
         self.logger.info("updatePoolInfo", f"{poolInfo.json()}")
     
     # 테스크 풀 정보를 가져온다.

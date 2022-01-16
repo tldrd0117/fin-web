@@ -14,13 +14,16 @@ config = dotenv_values('.env')
 class CommandLogger(monitoring.CommandListener):
 
     def started(self, event: CommandStartedEvent) -> None:
-        log.info("started", "Command {0.command_name} with request id ""{0.request_id} started on server ""{0.connection_id}".format(event))
+        pass
+        # log.info("started", "Command {0.command_name} with request id ""{0.request_id} started on server ""{0.connection_id}".format(event))
 
     def succeeded(self, event: CommandSucceededEvent) -> None:
-        log.info("succeeded", "Command {0.command_name} with request id ""{0.request_id} on server {0.connection_id} ""succeeded in {0.duration_micros} ""microseconds".format(event))
+        pass
+        # log.info("succeeded", "Command {0.command_name} with request id ""{0.request_id} on server {0.connection_id} ""succeeded in {0.duration_micros} ""microseconds".format(event))
 
     def failed(self, event: CommandFailedEvent) -> None:
-        log.info("failed", "Command {0.command_name} with request id ""{0.request_id} on server {0.connection_id} ""failed in {0.duration_micros} ""microseconds".format(event))
+        pass
+        # log.info("failed", "Command {0.command_name} with request id ""{0.request_id} on server {0.connection_id} ""failed in {0.duration_micros} ""microseconds".format(event))
 
 
 monitoring.register(CommandLogger())

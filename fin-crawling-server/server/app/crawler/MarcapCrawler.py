@@ -121,7 +121,6 @@ class MarcapCrawler(object):
                 # await self.downloadData(downloadTask, downloadObserver, driver)
                 date = date + timedelta(days=1)
         except asyncio.CancelledError as ce:
-            print(f"CancelledError: {str(ce)}")
             self.logger.error("crawling", f"CancelledError: {str(ce)}")
             self.ee.emit(EVENT_MARCAP_CRAWLING_ON_CANCEL, dto)
         except Exception:
