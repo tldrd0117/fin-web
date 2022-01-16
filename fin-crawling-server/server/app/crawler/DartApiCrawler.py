@@ -77,7 +77,7 @@ class DartApiCrawler(object):
         if dto.startYear < 2015:
             dto.startYear = 2015
         self.ee.emit(EVENT_DART_API_CRAWLING_ON_DOWNLOADING_CODES, dto)
-        codes = await asyncRetry(5, 1, self.downloadCodes, dto.isCodeNew, dto.apiKey)
+        codes = await asyncRetry(5, 1, self.downloadCodes, isCodeNew=dto.isCodeNew, apiKey=dto.apiKey)
         # codes = await self.downloadCodes(dto.isCodeNew, dto.apiKey)
         self.ee.emit(EVENT_DART_API_CRAWLING_ON_CRAWLING_FACTOR_DATA, dto)
         dart: OpenDartReader = OpenDartReader(dto.apiKey)
