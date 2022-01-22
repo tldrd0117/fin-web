@@ -2,7 +2,6 @@ import React, { useState } from 'react'
 import { useDispatch } from 'react-redux'
 import DatePicker from '../components/DatePicker'
 import PlayButton from '../components/PlayButton'
-import { runCrawling } from '../data/crawling/crawlingSlice'
 import { addTaskSchedule } from '../data/task/taskScheduleSlice'
 import { getDateString } from '../utils/DateUtils'
 import colors from 'tailwindcss/colors'
@@ -43,7 +42,7 @@ export default (props) => {
     }
 
     const hanldeReservedDateCheck = (isCheck: boolean) => {
-        setReservedDateFix(isCheck)
+        setReservedDateFix(!isReservedDateFix)
     }
 
     const handleMarketChangeOnReserved = (arr) => {

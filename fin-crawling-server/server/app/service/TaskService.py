@@ -2,7 +2,6 @@
 from app.module.logger import Logger
 from typing import Any, List
 from fastapi import WebSocket
-from uvicorn.config import logger
 import uuid
 
 
@@ -62,7 +61,7 @@ class TaskService:
         for i in range(len(jobs)):
             fields = jobs[i].trigger.fields
             id = jobs[i].id
-            logger.info(f"jobargs: {str(jobs[i].args[0])}")
+            self.logger.info(f"jobargs: {str(jobs[i].args[0])}")
             stockTaskScheduleList.list.append(StockTaskScheduleInfo(**{
                 "id": id,
                 "year": str(fields[0]),
@@ -82,10 +81,11 @@ class TaskService:
     @staticmethod
     def marcapJob(marcapDtos: List[StockRunCrawling]) -> None:
         service: StockService = Locator.getInstance().get(StockService)
+        logger = Logger("TaskService_marcapJob")
         for dto in marcapDtos:
             logger.info("#### schedule job start ####")
             logger.info("command" + dto.startDateStr + "~" + dto.endDateStr)
-            dto.taskUniqueId = dto.taskId+dto.market+dto.startDateStr+dto.endDateStr+str(uuid.uuid4())
+            dto.taskUniqueId = dto.taskId + dto.market+dto.startDateStr + dto.endDateStr + str(uuid.uuid4())
             if dto.startDateStr == "*" or dto.endDateStr == "*":
                 dto.startDateStr = getNowDateStr()
                 dto.endDateStr = getNowDateStr()

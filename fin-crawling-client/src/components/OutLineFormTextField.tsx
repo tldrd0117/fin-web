@@ -85,7 +85,7 @@ export default ({label, height = 40, wrapperClassName, formik, ...props}) => {
             />
             <label htmlFor={props.id || props.name} 
                 style={getLabelStyle()}
-                className={`absolute text-gray-400 ${isFocus?"text-blue-500 focusClass":""}`}>{label}</label>
+                className={`select-none pointer-events-none absolute text-gray-400 ${isFocus?"text-blue-500 focusClass":""}`}>{label}</label>
             {meta.touched && meta.error ? (
                 <div className="text-sm text-red-500 mt-2">{meta.error}</div>
             ) : ""}

@@ -53,7 +53,7 @@ export default (props: OutLineTextFieldProps) => {
                 onChange={props.onChange} 
                 type={"text"} 
                 className={`border-solid border border-light-blue-500 w-full`}/>
-            <label className={"label absolute text-gray-400"}>{props.label}</label>
+            <label className={"select-none pointer-events-none label absolute text-gray-400"}>{props.label}</label>
         </div>
     </>
 }

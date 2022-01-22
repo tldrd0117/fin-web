@@ -24,12 +24,12 @@ export default (props) => {
                     <p className={"mt-2"}>{v.id}</p>
                     <HeaderTable
                         header={[["년","월","일","시","분","초"]]}
-                        body={[[v.year,v.month,v.day,v.hour,v.minute,v.second]]}
+                        body={[[v.year, v.year,v.month,v.day,v.hour,v.minute,v.second]]}
                     />
                     <HeaderTable
                         header={[["작업번호","시장","시작날짜","종료날짜"]]}
                         body={[...v.taskList.map((v,i)=>{
-                            return [i,v.market,v.startDateStr, v.endDateStr]
+                            return [i, i,v.market,v.startDateStr, v.endDateStr]
                         })]}
                     />
                     <Button onClick={() => handleRemove(v.id)} className={"bg-red-400 hover:bg-red-500 text-white text-sm mt-4"}>삭제</Button>

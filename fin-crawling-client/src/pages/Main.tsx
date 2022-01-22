@@ -27,7 +27,13 @@ export default ( {SubComponent = null}) => {
                 background: white;
             }
             .menu-layout{
+                height: calc(100% - 60px);
                 margin-top: 60px;
+                @apply flex flex-row flex-grow fixed;
+            }
+            .content-layout{
+                margin-top: 60px;
+                height: calc(100% - 60px);
                 @apply flex flex-row flex-grow;
             }
             .top-down-layout{
@@ -52,17 +58,19 @@ export default ( {SubComponent = null}) => {
                 }
                 
             </AppBar>
-            <div className={"menu-layout"}>
-                <Menu className={"hidden sm:block"} menus={menus}/>
+            
+            <div className={"w-full ml-0 sm:ml-[250px] sm:w-[calc(100%_-_250px)]"}>
                  {SubComponent? <SubComponent/>:null}
+            </div>
+
+            <div className={"menu-layout w-[250px]"}>
+                <Menu className={"hidden sm:block"} menus={menus}/>
             </div>
             {
                 isMenuOpen?<div className={"sm:hidden fixed z-50 w-full h-full menu-layout-2"}>
                     <Menu onClick={()=>setMenuOpen(!isMenuOpen)} menus={menus}/>
                 </div>:null
             }
-            
-
         </div>
     </>
 }

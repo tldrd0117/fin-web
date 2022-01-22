@@ -13,7 +13,7 @@ export default ({ menus, className = "", width="300px", onClick=null }) => {
     return <>
         <style jsx>{`
             .menu{
-                width: ${width};
+                width: 100%;
                 height: 100%;
                 overflow: auto;
                 padding-top: 20px;

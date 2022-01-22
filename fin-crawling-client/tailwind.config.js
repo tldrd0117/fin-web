@@ -1,10 +1,9 @@
 module.exports = {
-  purge: {
-    enabled: process.env.mode=="production",
-    content: ['./src/**/*.html','./src/**/*.tsx'
-    ,'./src/**/*.jsx','./src/**/*.js','./src/**/*.css'],
-  },
-  darkMode: false, // or 'media' or 'class'
+  // content: process.env.mode=="production"?['./src/**/*.html','./src/**/*.tsx'
+  // ,'./src/**/*.jsx','./src/**/*.js','./src/**/*.css']:null,
+
+  content: ['./src/**/*.html','./src/**/*.tsx'
+  ,'./src/**/*.jsx','./src/**/*.js','./src/**/*.css'],
   theme: {
     extend: {},
   },
