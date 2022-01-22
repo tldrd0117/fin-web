@@ -21,7 +21,6 @@ if TYPE_CHECKING:
 
 
 RES_SOCKET_FACTOR_UPDATE_STATE_RES = "factor/updateConvertStateRes"
-
 RES_SOCKET_FACTOR_FETCH_COMPLETED_TASK = "factor/fetchCompletedTaskRes"
 RES_SOCKET_FACTOR_FETCH_TASKS = "factor/fetchTasksRes"
 
@@ -43,7 +42,7 @@ class FactorService:
                 self.crawlerRepository.addCrawler(dto.taskUniqueId, crawler)
                 self.createFactorDartListener(crawler.ee)
                 await crawler.crawling(dto)
-                self.crawlerRepository.removeCrawler(crawler)
+                self.crawlerRepository.removeCrawler(dto.taskUniqueId)
             except Exception:
                 self.logger.error("crawlingFactorDartDataTask", f"error: {traceback.format_exc()}")
                 task = self.tasksRepository.getTask(dto.taskId, dto.taskUniqueId)

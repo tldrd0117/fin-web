@@ -23,18 +23,10 @@ class ConnectionManager:
     async def _send_personal_message(self, message: str, websocket: WebSocket) -> None:
         await websocket.send_text(message)
     
-    def __send_personal_message(self, message: str, websocket: WebSocket) -> None:
-        asyncio.create_task(self._send_personal_message, message, websocket)
-
     async def _broadcast(self, message: str) -> None:
         for connection in self.active_connections:
             await connection.send_text(message)
 
-    def __broadcast(self, message: str) -> None:
-        asyncio.create_task(self._broadcast, message)
-        # for connection in self.active_connections:
-        #     asyncio.create_task(connection.send_text(message))
-    
     async def eventHandle(self, websocket: WebSocket, data: dict) -> None:
         logger.info("receive:"+str(data))
         self.ee.emit(data["event"], data["payload"], websocket)

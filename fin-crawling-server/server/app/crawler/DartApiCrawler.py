@@ -1,5 +1,6 @@
 from __future__ import annotations
 import os
+import traceback
 
 from typing import Any, Dict, TypeVar
 from typing_extensions import Final
@@ -21,6 +22,8 @@ import OpenDartReader
 import pandas as pd
 import sys
 
+import concurrent.futures
+import asyncio
 from app.util.AsyncUtil import asyncRetry
 
 T = TypeVar("T")
@@ -38,7 +41,9 @@ class DartApiCrawler(object):
         self.ee = EventEmitter()
         self.isLock = False
         self.isError = False
+        self.isCancelled = False
         self.logger = Logger("DartApiCrawler")
+        self.pool = concurrent.futures.ProcessPoolExecutor()
 
     def createUUID(self) -> str:
         return str(uuid.uuid4())
@@ -73,36 +78,45 @@ class DartApiCrawler(object):
                             codes[stockCode]["corp_name"] = nameEl.text
         return codes
 
-    async def crawling(self, dto: DartApiCrawling) -> Dict:
+    async def crawling(self, dto: DartApiCrawling) -> None:
+        # cpu bound 작업
         if dto.startYear < 2015:
             dto.startYear = 2015
         self.ee.emit(EVENT_DART_API_CRAWLING_ON_DOWNLOADING_CODES, dto)
         codes = await asyncRetry(5, 1, self.downloadCodes, isCodeNew=dto.isCodeNew, apiKey=dto.apiKey)
-        # codes = await self.downloadCodes(dto.isCodeNew, dto.apiKey)
+        # codes = self.downloadCodes(dto.isCodeNew, dto.apiKey)
         self.ee.emit(EVENT_DART_API_CRAWLING_ON_CRAWLING_FACTOR_DATA, dto)
         dart: OpenDartReader = OpenDartReader(dto.apiKey)
-        
-        sumDf = pd.DataFrame()
         for year in range(dto.startYear, dto.endYear+1):
             self.ee.emit(EVENT_DART_API_CRAWLING_ON_CRAWLING_FACTOR_DATA, dto)
-            yearDf = pd.DataFrame()
+            self.logger.info("crawling", str(len(codes)))
             for code in codes:
-                yearDf = await asyncRetry(5, 1, self.getYearDf, dart, code, codes, year, yearDf)
+                # newDf = self.getYearDf(dart, code, codes, year)
+                newDf = await asyncRetry(5, 1, self.getYearDf, dart, code, codes, year)
+                if newDf is not None:
+                    self.logger.info("crawling", code)
+                    self.ee.emit(EVENT_DART_API_CRAWLING_ON_RESULT_OF_FACTOR, dto, year, newDf.to_dict("records"))
                 # yearDf = await self.getYearDf(dart, code, codes, year, yearDf)
             self.ee.emit(EVENT_DART_API_CRAWLING_ON_COMPLETE_YEAR, dto, year)
-            self.ee.emit(EVENT_DART_API_CRAWLING_ON_RESULT_OF_FACTOR, dto, year, yearDf.to_dict("records"))
-            sumDf = pd.concat([sumDf, yearDf])
-        return sumDf.to_dict("records")
-    
-    async def getYearDf(self, dart: OpenDartReader, code: str, codes: Dict, year: int, yearDf: pd.DataFrame) -> pd.DataFrame:
-        df = dart.finstate_all(code, year)
+            self.logger.info("crawling", str(year))
+        
+    async def getYearDf(self, dart: OpenDartReader, code: str, codes: Dict, year: int) -> pd.DataFrame:
+        df = None
+        try:
+            await asyncio.get_running_loop().run_in_executor(self.pool, dart.finstate_all, code, year)
+            # df = dart.finstate_all(code, year)
+        except Exception:
+            self.logger.error("getYearDf", traceback.format_exc())
         if df is not None:
             df["crawling_year"] = year
             df["crawling_code"] = code
             df["crawling_name"] = codes[code]["corp_name"]
-            yearDf = pd.concat([yearDf, df])
-            return yearDf
-        return False
+            name = codes[code]["corp_name"]
+            self.logger.info("getYearDf", f"{str(year)} {str(code)} {str(name)}")
+            return df
+            # allCodeDf = pd.concat([allCodeDf, df])
+            # return allCodeDf
+        return None
 
 
         
