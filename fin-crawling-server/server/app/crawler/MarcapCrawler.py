@@ -42,7 +42,6 @@ class MarcapCrawler(object):
         super().__init__()
         self.ee = EventEmitter()
         self.isLock = False
-        self.isError = False
         self.logger = Logger("MarcapCrawler")
 
     def createUUID(self) -> str:
@@ -77,10 +76,10 @@ class MarcapCrawler(object):
 
     async def crawling(self, dto: StockRunCrawling) -> None:
         driver = None
-        uuid = self.createUUID()
-        self.logger.info("crawling", uuid)
         downloadObserver = None
         try:
+            uuid = self.createUUID()
+            self.logger.info("crawling", uuid)
             self.ee.emit(EVENT_MARCAP_CRAWLING_ON_CONNECTING_WEBDRIVER, dto)
             
             downloadObserver = DownloadObserver()
@@ -120,13 +119,8 @@ class MarcapCrawler(object):
                 await asyncRetry(5, 1, self.downloadData, downloadTask, downloadObserver, driver)
                 # await self.downloadData(downloadTask, downloadObserver, driver)
                 date = date + timedelta(days=1)
-        except asyncio.CancelledError as ce:
-            self.logger.error("crawling", f"CancelledError: {str(ce)}")
-            self.ee.emit(EVENT_MARCAP_CRAWLING_ON_CANCEL, dto)
-        except Exception:
-            self.isError = True
-            self.ee.emit(EVENT_MARCAP_CRAWLING_ON_ERROR, dto, traceback.format_exc())
-            self.logger.error("crawling", f"error: {traceback.format_exc()}")
+        except Exception as e:
+            raise e
         finally:
             if downloadObserver:
                 downloadObserver.stopObserver()

@@ -11,7 +11,8 @@ from app.crawler.DartApiCrawler import DartApiCrawler, \
     EVENT_DART_API_CRAWLING_ON_DOWNLOADING_CODES, \
     EVENT_DART_API_CRAWLING_ON_CRAWLING_FACTOR_DATA, \
     EVENT_DART_API_CRAWLING_ON_COMPLETE_YEAR, \
-    EVENT_DART_API_CRAWLING_ON_RESULT_OF_FACTOR
+    EVENT_DART_API_CRAWLING_ON_RESULT_OF_FACTOR, \
+    EVENT_DART_API_CRAWLING_ON_CANCEL
 from app.util.DartUtils import getMonthFromReprtCode
 from typing import TYPE_CHECKING, Dict, List
 import asyncio
@@ -43,12 +44,11 @@ class FactorService:
                 self.createFactorDartListener(crawler.ee)
                 await crawler.crawling(dto)
                 self.crawlerRepository.removeCrawler(dto.taskUniqueId)
+            except asyncio.CancelledError:
+                self.logger.info("crawlingFactorDartDataTask", "cancel")
             except Exception:
                 self.logger.error("crawlingFactorDartDataTask", f"error: {traceback.format_exc()}")
-                task = self.tasksRepository.getTask(dto.taskId, dto.taskUniqueId)
-                task.state = "error"
-                task.errMsg = traceback.format_exc()
-                self.tasksRepository.updateTask(task)
+                self.tasksRepository.errorTask(dto, traceback.format_exc())
             finally:
                 taskPool.removeTaskPool(pool)
 
@@ -59,7 +59,7 @@ class FactorService:
             "endDateStr": dto.endYear,
             "taskUniqueId": dto.taskUniqueId,
             "taskId": dto.taskId,
-            "count": 1,
+            "count": count,
             "tasks": list(range(dto.startYear, dto.endYear+1)),
             "restCount": count,
             "tasksRet": [0]*count,
@@ -68,22 +68,6 @@ class FactorService:
         self.tasksRepository.addTask(task)
         workerTask = Task(dto.taskUniqueId, crawlingFactorDartDataTask)
         self.tasksRepository.runTask(workerTask)
-    
-    def cancelCrawling(self, dto: DartApiCrawling) -> None:
-        if dto.taskUniqueId in self.crawlerRepository.getCrawlers():
-            self.tasksRepository.taskRunner.cancel(dto.taskUniqueId)
-            self.crawlerRepository.getCrawler(dto.taskUniqueId).isCancelled = True
-        else:
-            task = self.tasksRepository.getTask(dto.taskId, dto.taskUniqueId)
-            if task is not None:
-                self.tasksRepository.deleteTask(task)
-    
-    def cancelFactorFileToDb(self, dto: RunFactorFileConvert) -> None:
-        if self.tasksRepository.taskRunner.isExist(dto.taskUniqueId):
-            self.tasksRepository.taskRunner.cancel(dto.taskUniqueId)
-        task = self.tasksRepository.getTask(dto.taskId, dto.taskUniqueId)
-        if task is not None:
-            self.tasksRepository.deleteTask(task)
         
     # file에 있는 factor를 db에 저장한다.
     def convertFactorFileToDb(self, dto: RunFactorFileConvert) -> None:
@@ -100,11 +84,11 @@ class FactorService:
                 await self.factorRepository.insertFactor(daoList)
                 task.state = "complete"
                 self.tasksRepository.completeFactorConvertFileToDbTask(task)
+            except asyncio.CancelledError:
+                self.logger.info("convertFactorFileToDbTask", "cancel")
             except Exception:
                 self.logger.error("convertFactorFileToDbTask", f"error: {traceback.format_exc()}")
-                task.state = "error"
-                task.errMsg = traceback.format_exc()
-                self.tasksRepository.updateTask(task)
+                self.tasksRepository.errorTask(dto, traceback.format_exc())
             finally:
                 taskPool.removeTaskPool(pool)
         task = ProcessTask(**{
@@ -142,6 +126,7 @@ class FactorService:
         ee.on(EVENT_DART_API_CRAWLING_ON_CRAWLING_FACTOR_DATA, self.onCrawlingFactorData)
         ee.on(EVENT_DART_API_CRAWLING_ON_COMPLETE_YEAR, self.onCompleteYear)
         ee.on(EVENT_DART_API_CRAWLING_ON_RESULT_OF_FACTOR, self.onResultOfFactor)
+        ee.on(EVENT_DART_API_CRAWLING_ON_CANCEL, self.onCancelled)
     
     def onDownloadingCodes(self, dto: DartApiCrawling) -> None:
         self.logger.info("onDownloadingCodes", dto.taskUniqueId)
@@ -172,6 +157,16 @@ class FactorService:
             "dataId": one["account_id"]
         }), obj))
         asyncio.create_task(self.factorRepository.insertFactorDart(listOfFactorDao))
+    
+    def onCancelled(self, dto: DartApiCrawling) -> None:
+        self.logger.info("onCancelled")
+        # self.logger.info("tasks", self.tasksRepository.tasksdto.json())
+        # task = self.tasksRepository.getTask(dto.taskId, dto.taskUniqueId)
+        # self.logger.info("task", task.json())
+        # self.tasksRepository.fail(task, task.restCount)
+        # task.state = "cancelled"
+        # self.tasksRepository.updateTask(task)
+        # self.logger.info("onCancelled", task.taskUniqueId)
 
     # def createTaskRepositoryListener(self) -> None:
         # self.tasksRepository.taskEventEmitter.on(EVENT_TASK_REPO_TASK_COMPLETE, self.completeTask)

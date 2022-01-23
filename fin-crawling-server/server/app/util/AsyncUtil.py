@@ -23,6 +23,9 @@ async def asyncRetry(count: int, delay: int, asyncFunction: Callable, *args: tup
     for i in range(count):
         try:
             return await asyncFunction(*args, **kwargs)
+        except asyncio.CancelledError as e:
+            #취소 시에는 바로 중단
+            raise e
         except Exception as e:
             latestError = e
             await asyncio.sleep(delay)

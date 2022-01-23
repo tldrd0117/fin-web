@@ -38,7 +38,7 @@ class ListLimitResponse(BaseModel):
     count: int
 
 
-class RunCrawling(BaseModel):
+class TaskModel(BaseModel):
     taskId: str
     taskUniqueId: str
 
@@ -53,14 +53,14 @@ class FactorRunCrawling(BaseModel):
     year: str
 
 
-class StockRunCrawling(RunCrawling):
+class StockRunCrawling(TaskModel):
     driverAddr: str
     market: str
     startDateStr: str
     endDateStr: str
 
 
-class DartApiCrawling(RunCrawling):
+class DartApiCrawling(TaskModel):
     apiKey: str
     isCodeNew: bool
     startYear: int

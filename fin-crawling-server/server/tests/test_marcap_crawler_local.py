@@ -2,7 +2,6 @@ from pymitter import EventEmitter
 from app.crawler.MarcapCrawler import MarcapCrawler
 from app.model.dto import StockRunCrawling, StockCrawlingDownloadTask, StockMarketCapitalResult
 import asyncio
-import os
 from app.crawler.MarcapCrawler import EVENT_MARCAP_CRAWLING_ON_CONNECTING_WEBDRIVER, \
     EVENT_MARCAP_CRAWLING_ON_DOWNLOAD_COMPLETE, \
     EVENT_MARCAP_CRAWLING_ON_DOWNLOAD_START, \

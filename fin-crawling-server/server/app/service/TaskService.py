@@ -180,19 +180,17 @@ class TaskService:
             self.factorService.crawlingFactorDartData(data)
     
     def cancelTask(self, taskId: str, taskUniqueId: str) -> None:
-        if taskId == "marcap":
-            if taskUniqueId in self.crawlerRepository.getCrawlers():
-                self.tasksRepository.taskRunner.cancel(taskUniqueId)
-                self.crawlerRepository.getCrawler(taskUniqueId).isCancelled = True
-            else:
-                task = self.tasksRepository.getTask(taskId, taskUniqueId)
-                if task is not None:
-                    self.tasksRepository.deleteTask(task)
-        else:
-            self.tasksRepository.taskRunner.cancel(taskUniqueId)
-            task = self.tasksRepository.getTask(taskId, taskUniqueId)
-            if task is not None:
+        if taskUniqueId in self.crawlerRepository.getCrawlers():
+            self.crawlerRepository.getCrawler(taskUniqueId).isCancelled = True
+        self.tasksRepository.taskRunner.cancel(taskUniqueId)
+        task = self.tasksRepository.getTask(taskId, taskUniqueId)
+        if task is not None:
+            if task.state == "cancel":
                 self.tasksRepository.deleteTask(task)
+                self.tasksRepository.updateAllTask()
+            else:
+                task.state = "cancel"
+                self.tasksRepository.updateTask(task)
     
     def fetchCompletedTask(self, dto: ListLimitData, webSocket: WebSocket) -> None:
         dao = ListLimitDao(**{

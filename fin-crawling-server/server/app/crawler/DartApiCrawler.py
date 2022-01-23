@@ -32,6 +32,7 @@ EVENT_DART_API_CRAWLING_ON_DOWNLOADING_CODES: Final = "dartApiCrawler/onDownload
 EVENT_DART_API_CRAWLING_ON_CRAWLING_FACTOR_DATA: Final = "dartApiCrawler/onCrawlingFactorData"
 EVENT_DART_API_CRAWLING_ON_COMPLETE_YEAR: Final = "dartApiCrawler/onCompleteYear"
 EVENT_DART_API_CRAWLING_ON_RESULT_OF_FACTOR: Final = "dartApiCrawler/onResultOfFactor"
+EVENT_DART_API_CRAWLING_ON_CANCEL: Final = "dartApiCrawler/onCancel"
 
 
 class DartApiCrawler(object):
@@ -40,7 +41,6 @@ class DartApiCrawler(object):
         super().__init__()
         self.ee = EventEmitter()
         self.isLock = False
-        self.isError = False
         self.isCancelled = False
         self.logger = Logger("DartApiCrawler")
         self.pool = concurrent.futures.ProcessPoolExecutor()
@@ -80,33 +80,42 @@ class DartApiCrawler(object):
 
     async def crawling(self, dto: DartApiCrawling) -> None:
         # cpu bound 작업
-        if dto.startYear < 2015:
-            dto.startYear = 2015
-        self.ee.emit(EVENT_DART_API_CRAWLING_ON_DOWNLOADING_CODES, dto)
-        codes = await asyncRetry(5, 1, self.downloadCodes, isCodeNew=dto.isCodeNew, apiKey=dto.apiKey)
-        # codes = self.downloadCodes(dto.isCodeNew, dto.apiKey)
-        self.ee.emit(EVENT_DART_API_CRAWLING_ON_CRAWLING_FACTOR_DATA, dto)
-        dart: OpenDartReader = OpenDartReader(dto.apiKey)
-        for year in range(dto.startYear, dto.endYear+1):
+        try:
+            if dto.startYear < 2015:
+                dto.startYear = 2015
+            self.ee.emit(EVENT_DART_API_CRAWLING_ON_DOWNLOADING_CODES, dto)
+            codes = await asyncRetry(5, 1, self.downloadCodes, isCodeNew=dto.isCodeNew, apiKey=dto.apiKey)
+            # codes = self.downloadCodes(dto.isCodeNew, dto.apiKey)
             self.ee.emit(EVENT_DART_API_CRAWLING_ON_CRAWLING_FACTOR_DATA, dto)
-            self.logger.info("crawling", str(len(codes)))
-            for code in codes:
-                # newDf = self.getYearDf(dart, code, codes, year)
-                newDf = await asyncRetry(5, 1, self.getYearDf, dart, code, codes, year)
-                if newDf is not None:
-                    self.logger.info("crawling", code)
-                    self.ee.emit(EVENT_DART_API_CRAWLING_ON_RESULT_OF_FACTOR, dto, year, newDf.to_dict("records"))
-                # yearDf = await self.getYearDf(dart, code, codes, year, yearDf)
-            self.ee.emit(EVENT_DART_API_CRAWLING_ON_COMPLETE_YEAR, dto, year)
-            self.logger.info("crawling", str(year))
+            dart: OpenDartReader = OpenDartReader(dto.apiKey)
+            for year in range(dto.startYear, dto.endYear+1):
+                self.ee.emit(EVENT_DART_API_CRAWLING_ON_CRAWLING_FACTOR_DATA, dto)
+                self.logger.info("crawling", str(len(codes)))
+                for code in codes:
+                    # newDf = self.getYearDf(dart, code, codes, year)
+                    newDf = await asyncRetry(5, 1, self.getYearDf, dart, code, codes, year)
+                    if self.isCancelled:
+                        self.ee.emit(EVENT_DART_API_CRAWLING_ON_CANCEL, dto)
+                    if newDf is not None:
+                        self.logger.info("crawling", code)
+                        self.ee.emit(EVENT_DART_API_CRAWLING_ON_RESULT_OF_FACTOR, dto, year, newDf.to_dict("records"))
+                    # yearDf = await self.getYearDf(dart, code, codes, year, yearDf)
+                self.ee.emit(EVENT_DART_API_CRAWLING_ON_COMPLETE_YEAR, dto, year)
+                self.logger.info("crawling", str(year))
+        except Exception as e:
+            raise e
+        finally:
+            self.pool.shutdown()
         
     async def getYearDf(self, dart: OpenDartReader, code: str, codes: Dict, year: int) -> pd.DataFrame:
         df = None
+        loop = asyncio.get_running_loop()
         try:
-            await asyncio.get_running_loop().run_in_executor(self.pool, dart.finstate_all, code, year)
-            # df = dart.finstate_all(code, year)
-        except Exception:
+            df = await loop.run_in_executor(self.pool, dart.finstate_all, code, year)
+        except Exception as e:
             self.logger.error("getYearDf", traceback.format_exc())
+            raise e
+        self.logger.info("df", str(df))
         if df is not None:
             df["crawling_year"] = year
             df["crawling_code"] = code

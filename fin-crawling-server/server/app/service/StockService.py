@@ -13,6 +13,7 @@ from app.module.logger import Logger
 import asyncio
 from datetime import datetime, timedelta
 from collections import deque
+import traceback
 
 from app.crawler.MarcapCrawler import EVENT_MARCAP_CRAWLING_ON_CONNECTING_WEBDRIVER, \
     EVENT_MARCAP_CRAWLING_ON_DOWNLOAD_COMPLETE, \
@@ -39,15 +40,21 @@ class StockService:
         for dto in dtoList:
             if dto.taskId == "marcap":
                 async def marcapTaskWorker(runDto: StockRunCrawling, pool: Pool, taskPool: TaskPool) -> None:
-                    self.logger.info("runCrawling&marcapTaskWorker", "start")
-                    marcapCrawler = MarcapCrawler()
-                    taskUniqueId = runDto.taskUniqueId
-                    self.crawlerRepository.addCrawler(taskUniqueId, marcapCrawler)
-                    self.createListners(marcapCrawler.ee)
-                    self.logger.info("runCrawling&marcapTaskWorker", f"taskWorker:{taskUniqueId}")
-                    await asyncio.create_task(marcapCrawler.crawling(runDto))
-                    taskPool.removeTaskPool(pool)
-                    self.crawlerRepository.removeCrawler(taskUniqueId)
+                    try:
+                        self.logger.info("runCrawling&marcapTaskWorker", "start")
+                        marcapCrawler = MarcapCrawler()
+                        taskUniqueId = runDto.taskUniqueId
+                        self.crawlerRepository.addCrawler(taskUniqueId, marcapCrawler)
+                        self.createListners(marcapCrawler.ee)
+                        self.logger.info("runCrawling&marcapTaskWorker", f"taskWorker:{taskUniqueId}")
+                        await marcapCrawler.crawling(runDto)
+                        taskPool.removeTaskPool(pool)
+                        self.crawlerRepository.removeCrawler(taskUniqueId)
+                    except asyncio.CancelledError:
+                        self.logger.info("convertFactorFileToDbTask", "cancel")
+                    except Exception:
+                        self.logger.error("convertFactorFileToDbTask", f"error: {traceback.format_exc()}")
+                        self.tasksRepository.errorTask(runDto, traceback.format_exc())
                 workerTask = Task(dto.taskUniqueId, marcapTaskWorker, {"runDto": dto})
                 if self.tasksRepository.taskRunner:
                     if self.tasksRepository.isExistTask(dto.taskId, dto.taskUniqueId):
@@ -70,16 +77,6 @@ class StockService:
                     self.tasksRepository.addTask(task)
                     self.tasksRepository.runTask(workerTask)
                     self.logger.info("runMarcapTask", f"runTask {task.json()}")
-
-    def cancelCrawling(self, dto: StockRunCrawling) -> None:
-        if dto.taskUniqueId in self.crawlerRepository.getCrawlers():
-            self.tasksRepository.taskRunner.cancel(dto.taskUniqueId)
-            self.crawlerRepository.getCrawler(dto.taskUniqueId).isCancelled = True
-        else:
-            task = self.tasksRepository.getTask(dto.taskId, dto.taskUniqueId)
-            if task is not None:
-                self.tasksRepository.deleteTask(task)
-        # self.manager.sendBroadCast(RES_SOCKET_CRAWLING_FETCH_TASKS, self.tasksRepository.tasksdto.dict())
     
     def createListners(self, ee: EventEmitter) -> None:
         ee.on(EVENT_MARCAP_CRAWLING_ON_RESULT_OF_STOCK_DATA, self.onResultOfStockData)
@@ -143,11 +140,13 @@ class StockService:
     
     # 크롤링이 취소되었을 때 이벤트
     def onCancelled(self, dto: StockRunCrawling) -> None:
-        task = self.tasksRepository.getTask(dto.taskId, dto.taskUniqueId)
-        self.tasksRepository.fail(task, task.restCount)
-        task.state = "cancelled"
-        self.tasksRepository.updateTask(task)
-        self.logger.info("onCancelled", task.taskUniqueId)
+        self.logger.info("onCancelled")
+        # self.tasksRepository.updateAllTask()
+        # task = self.tasksRepository.getTask(dto.taskId, dto.taskUniqueId)
+        # self.tasksRepository.fail(task, task.restCount)
+        # task.state = "cancelled"
+        # self.tasksRepository.updateTask(task)
+        # self.logger.info("onCancelled", task.taskUniqueId)
     
     # 크롤링이 에러가났을 때 이벤트
     def onError(self, dto: StockRunCrawling, errorMsg: str) -> None:

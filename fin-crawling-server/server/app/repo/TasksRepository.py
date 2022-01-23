@@ -4,7 +4,7 @@ from typing_extensions import Final
 from pymitter import EventEmitter
 from app.datasource.TaskMongoDataSource import TaskMongoDataSource
 from app.model.dto import StockCrawlingCompletedTasks, StockMarketCapitalResult, StockCrawlingDownloadTask, StockUpdateState, \
-    ProcessTasks, ProcessTask, StockTaskState, YearData
+    ProcessTasks, ProcessTask, StockTaskState, YearData, TaskModel
 from app.model.dao import ListLimitDao, ListLimitDataDao
 from app.model.task import TaskPoolInfo
 from app.module.task import Task, TaskRunner
@@ -74,6 +74,9 @@ class TasksRepository(object):
         self.mongod.upsertTask(task.dict())
         self.taskEventEmitter.emit(EVENT_TASK_REPO_UPDATE_TASKS, self.tasksdto)
     
+    def updateAllTask(self) -> None:
+        self.taskEventEmitter.emit(EVENT_TASK_REPO_UPDATE_TASKS, self.tasksdto)
+    
     # 저장된 테스크 정보를 반환한다.
     def getTask(self, taskId: str, taskUniqueId: str) -> ProcessTask:
         if self.isExistTask(taskId, taskUniqueId):
@@ -91,6 +94,12 @@ class TasksRepository(object):
                 del self.tasksdto.tasks[task.taskId]["list"][task.taskUniqueId]
                 self.tasksdto.tasks[task.taskId]["ids"].remove(task.taskUniqueId)
                 self.logger.info("deleteTask", f"{task.taskUniqueId}")
+    
+    def errorTask(self, dto: TaskModel, errMsg: str) -> None:
+        task = self.getTask(dto.taskId, dto.taskUniqueId)
+        task.state = "error"
+        task.errMsg = errMsg
+        self.updateTask(task)
     
     def completeFactorConvertFileToDbTask(self, task: ProcessTask) -> None:
         self.success(task, 1)
