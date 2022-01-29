@@ -105,7 +105,7 @@ class DartApiCrawler(object):
     async def getYearDf(self, dart: OpenDartReader, code: str, codes: Dict, year: int) -> pd.DataFrame:
         df = None
         try:
-            df = await dart.finstate_all(code, year)
+            df = dart.finstate_all(code, year)
             # df = await asyncio.create_task(dart.finstate_all(code, year))
             # df = await loop.run_in_executor(self.pool, dart.finstate_all, code, year)
         except Exception as e:
