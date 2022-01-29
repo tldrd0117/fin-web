@@ -58,6 +58,7 @@ class StockRunCrawling(TaskModel):
     market: str
     startDateStr: str
     endDateStr: str
+    isNow: bool = False
 
 
 class DartApiCrawling(TaskModel):

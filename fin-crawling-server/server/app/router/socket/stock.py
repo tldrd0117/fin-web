@@ -7,7 +7,6 @@ from uvicorn.config import logger
 import uuid
 
 
-
 REQ_SOCKET_STOCK_CRAWLING_MARCAP_STOCK_DATA = "stock/crawlingMarcapStockData"
 REQ_SOCKET_STOCK_CANCEL_CRAWLING = "stock/cancelCrawling"
 

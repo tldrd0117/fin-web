@@ -22,9 +22,7 @@ import OpenDartReader
 import pandas as pd
 import sys
 
-import concurrent.futures
-import asyncio
-from app.util.AsyncUtil import asyncRetry
+from app.util.AsyncUtil import asyncRetryNonBlock
 
 T = TypeVar("T")
 
@@ -43,7 +41,6 @@ class DartApiCrawler(object):
         self.isLock = False
         self.isCancelled = False
         self.logger = Logger("DartApiCrawler")
-        self.pool = concurrent.futures.ProcessPoolExecutor()
 
     def createUUID(self) -> str:
         return str(uuid.uuid4())
@@ -84,7 +81,7 @@ class DartApiCrawler(object):
             if dto.startYear < 2015:
                 dto.startYear = 2015
             self.ee.emit(EVENT_DART_API_CRAWLING_ON_DOWNLOADING_CODES, dto)
-            codes = await asyncRetry(5, 1, self.downloadCodes, isCodeNew=dto.isCodeNew, apiKey=dto.apiKey)
+            codes = await asyncRetryNonBlock(5, 1, self.downloadCodes, isCodeNew=dto.isCodeNew, apiKey=dto.apiKey)
             # codes = self.downloadCodes(dto.isCodeNew, dto.apiKey)
             self.ee.emit(EVENT_DART_API_CRAWLING_ON_CRAWLING_FACTOR_DATA, dto)
             dart: OpenDartReader = OpenDartReader(dto.apiKey)
@@ -93,7 +90,7 @@ class DartApiCrawler(object):
                 self.logger.info("crawling", str(len(codes)))
                 for code in codes:
                     # newDf = self.getYearDf(dart, code, codes, year)
-                    newDf = await asyncRetry(5, 1, self.getYearDf, dart, code, codes, year)
+                    newDf = await asyncRetryNonBlock(5, 1, self.getYearDf, dart, code, codes, year)
                     if self.isCancelled:
                         self.ee.emit(EVENT_DART_API_CRAWLING_ON_CANCEL, dto)
                     if newDf is not None:
@@ -104,14 +101,13 @@ class DartApiCrawler(object):
                 self.logger.info("crawling", str(year))
         except Exception as e:
             raise e
-        finally:
-            self.pool.shutdown()
         
     async def getYearDf(self, dart: OpenDartReader, code: str, codes: Dict, year: int) -> pd.DataFrame:
         df = None
-        loop = asyncio.get_running_loop()
         try:
-            df = await loop.run_in_executor(self.pool, dart.finstate_all, code, year)
+            df = await dart.finstate_all(code, year)
+            # df = await asyncio.create_task(dart.finstate_all(code, year))
+            # df = await loop.run_in_executor(self.pool, dart.finstate_all, code, year)
         except Exception as e:
             self.logger.error("getYearDf", traceback.format_exc())
             raise e

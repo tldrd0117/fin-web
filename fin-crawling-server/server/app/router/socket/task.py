@@ -71,6 +71,7 @@ class TaskSocketRouter(object):
                 "startDateStr": data["startDate"],
                 "endDateStr": data["endDate"],
                 "taskId": data["taskId"],
+                "isNow": data["isNow"],
                 "taskUniqueId": ""
             })
             dtoList.append(dto)

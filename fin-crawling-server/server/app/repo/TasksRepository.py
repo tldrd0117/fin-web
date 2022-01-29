@@ -114,7 +114,7 @@ class TasksRepository(object):
             self.deleteTask(task)
         task.state = "complete"
         self.updateTask(task)
-        self.logger.info("completeStockCrawlingTask", "complete")
+        self.logger.info("completeFactorDart", "complete")
         self.taskEventEmitter.emit(EVENT_TASK_REPO_TASK_COMPLETE, "factorDart", StockUpdateState(**{
             "taskId": task.taskId,
             "market": task.market,
@@ -123,7 +123,8 @@ class TasksRepository(object):
         }))
 
     # 완료된 태스크 정보를 처린한다.
-    def completeStockCrawlingTask(self, isSuccess: bool, retdto: StockMarketCapitalResult, dto: StockCrawlingDownloadTask) -> None:
+    def completeStockCrawlingTask(self, isSuccess: bool, retdto: StockMarketCapitalResult, dto: StockCrawlingDownloadTask) -> None:    
+        self.logger.info("##############completeStockCrawlingTask", str(isSuccess))
         task = self.getTask(dto.taskId, dto.taskUniqueId)
         if isSuccess:
             self.success(task, 1)

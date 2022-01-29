@@ -19,7 +19,7 @@ import uuid
 from app.observer.DownloadObserver import DownloadObserver
 from app.observer.CmdFileSystemEventHandler import FILE_SYSTEM_HANDLER
 from app.module.logger import Logger
-from app.util.AsyncUtil import asyncRetry
+from app.util.AsyncUtil import asyncRetry, asyncRetryNonBlock, sleepNonBlock
 
 # from pathlib import Path
 from app.model.dto import StockCrawlingDownloadTask, StockRunCrawling, StockMarketCapitalResult, StockMarketCapital
@@ -41,7 +41,6 @@ class MarcapCrawler(object):
     def __init__(self) -> None:
         super().__init__()
         self.ee = EventEmitter()
-        self.isLock = False
         self.logger = Logger("MarcapCrawler")
 
     def createUUID(self) -> str:
@@ -83,12 +82,12 @@ class MarcapCrawler(object):
             self.ee.emit(EVENT_MARCAP_CRAWLING_ON_CONNECTING_WEBDRIVER, dto)
             
             downloadObserver = DownloadObserver()
-            path = await downloadObserver.makePath(uuid)
+            path = await asyncRetryNonBlock(5, 1, downloadObserver.makePath, uuid)
             downloadObserver.startObserver(path, self.ee)
             self.logger.info("crawling", "create observer and start")
             print("startObserver")
 
-            driver = await self.connectWebDriver(dto.driverAddr, uuid)
+            driver = await asyncRetryNonBlock(5, 1, self.connectWebDriver, dto.driverAddr, uuid)
             print("connectWebDriver")
             driver.get("http://data.krx.co.kr/contents/MDC/MDI/mdiLoader/index.cmd?menuId=MDC0201020101")
             try:
@@ -116,7 +115,7 @@ class MarcapCrawler(object):
                 print(downloadTask.json())
                 downloadObserver.event_handler.setDownloadTask(downloadTask)
                 self.ee.emit(EVENT_MARCAP_CRAWLING_ON_DOWNLOAD_START, downloadTask)
-                await asyncRetry(5, 1, self.downloadData, downloadTask, downloadObserver, driver)
+                await asyncRetryNonBlock(5, 1, self.downloadData, downloadTask, downloadObserver, driver)
                 # await self.downloadData(downloadTask, downloadObserver, driver)
                 date = date + timedelta(days=1)
         except Exception as e:
@@ -147,39 +146,39 @@ class MarcapCrawler(object):
         after = before
         while before == after:
             after = driver.execute_script('return $(".CI-MDI-UNIT-TIME").text()')
-            await asyncio.sleep(0.5)
+            await sleepNonBlock(0.5)
         #     driver.implicitly_wait(1)
         print("before:"+before)
         print("after:"+after)
-        await asyncio.sleep(3)
+        await sleepNonBlock(3)
         WebDriverWait(driver, timeout=10, poll_frequency=2).until(EC.element_to_be_clickable((By.CSS_SELECTOR, "*[class='CI-MDI-UNIT-DOWNLOAD']")))
         driver.execute_script("$('[class=\"CI-MDI-UNIT-DOWNLOAD\"]').click()")
         WebDriverWait(driver, timeout=10, poll_frequency=2).until(EC.element_to_be_clickable((By.CSS_SELECTOR, "*[data-type='csv']")))
         driver.execute_script("$(\"[data-type='csv']\").click()")
         print("wait:"+downloadTask.dateStr)
-        self.isLock = True
 
-        mainThreadLoop = asyncio.get_running_loop()
+        loop = asyncio.get_running_loop()
+        queue: asyncio.Queue = asyncio.Queue(maxsize=1, loop=loop)
+
+        async def fileResultOfData(event: FileCreatedEvent, downloadTask: StockCrawlingDownloadTask) -> None:
+            result = {}
+            result["event"] = event
+            result["downloadTask"] = downloadTask
+            await queue.put(result)
 
         @self.ee.once(FILE_SYSTEM_HANDLER(downloadTask.uuid))
         def downloadComplete(event: FileCreatedEvent, downloadTask: StockCrawlingDownloadTask) -> None:
+            loop.create_task(fileResultOfData(event, downloadTask))
+            
+        try:
+            result = await asyncio.wait_for(queue.get(), timeout=30)
             self.ee.emit(EVENT_MARCAP_CRAWLING_ON_DOWNLOAD_COMPLETE, downloadTask)
-            mainThreadLoop.create_task(self.makeMarcapData(event, downloadTask))
+            await asyncio.create_task(self.makeMarcapData(result["event"], result["downloadTask"]))
+        except Exception as e:
+            raise e
+        finally:
+            queue.task_done()
 
-        timeout = 30
-        while self.isLock:
-            timeout = timeout - 1
-            if timeout <= 0:
-                retdto = StockMarketCapitalResult()
-                retdto.result = "fail"
-                retdto.errorMsg = "timeout"
-                self.ee.emit(EVENT_MARCAP_CRAWLING_ON_PARSING_COMPLETE, False, retdto, downloadTask)
-                return
-            await asyncio.sleep(1, loop=mainThreadLoop)
-            self.logger.info("downloadData", f"isLock:{str(self.isLock)} timeout:{timeout} taskUniqueId: {downloadTask.taskUniqueId}")
-            print(f"isLock:{str(self.isLock)} timeout:{timeout}")
-            self.logger.info(f"isLock:{str(self.isLock)} timeout:{timeout}")
-    
     def convertFileToDto(self, path: str, dto: StockMarketCapitalResult) -> None:
         lines = []
         with open(path, "r", encoding="utf-8") as f:
@@ -231,13 +230,12 @@ class MarcapCrawler(object):
         isExist = path.endswith(ext)
         restTimes = 3
         while not isExist and restTimes >= 0:
-            await asyncio.sleep(1)
+            await sleepNonBlock(1)
             isExist = path.endswith(ext)
             restTimes -= 1
         return isExist
     
     async def parseReceivedFile(self, event: FileCreatedEvent, downloadTask: StockCrawlingDownloadTask) -> None:
-        isSuccess = False
         retdto = StockMarketCapitalResult()
         date = downloadTask.dateStr
         market = downloadTask.market
@@ -247,7 +245,7 @@ class MarcapCrawler(object):
         if not isExist:
             return
         print("created: " + date)
-        await asyncio.sleep(0.5)
+        await sleepNonBlock(0.5)
         dest_path = f'{os.path.dirname(event.src_path)}/{market+"-"+date}.csv'
         if os.path.isfile(dest_path):
             return
@@ -255,10 +253,8 @@ class MarcapCrawler(object):
         os.rename(event.src_path, dest_path)
         self.convertFileToDto(dest_path, retdto)
         retdto.result = "success"
-        isSuccess = True
-        self.ee.emit(EVENT_MARCAP_CRAWLING_ON_PARSING_COMPLETE, isSuccess, retdto, downloadTask)
+        self.ee.emit(EVENT_MARCAP_CRAWLING_ON_PARSING_COMPLETE, True, retdto, downloadTask)
         self.ee.emit(EVENT_MARCAP_CRAWLING_ON_RESULT_OF_STOCK_DATA, downloadTask, retdto)
-        self.isLock = False
         self.logger.info("parseFile", f"success, {downloadTask.taskUniqueId}")
     
     async def makeMarcapData(self, event: FileCreatedEvent, downloadTask: StockCrawlingDownloadTask) -> None:
@@ -269,7 +265,6 @@ class MarcapCrawler(object):
             retdto.result = "fail"
             retdto.errorMsg = traceback.format_exc()
             self.ee.emit(EVENT_MARCAP_CRAWLING_ON_PARSING_COMPLETE, False, retdto, downloadTask)
-            self.isLock = False
             self.logger.error("parseFile", f"fail, {downloadTask.taskUniqueId} error: {traceback.format_exc()}")
         finally:
             self.logger.info("parseFile...")

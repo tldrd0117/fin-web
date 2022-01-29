@@ -28,15 +28,16 @@ export default (props) => {
     const dispatch = useDispatch()
 
     const handleScheduleButton = () => {
-        const startDate = isReservedDateFix?"*":getDateString(reservedStartDate)
-        const endDate = isReservedDateFix?"*":getDateString(reservedEndDate)
+        const startDate = getDateString(reservedStartDate)
+        const endDate = getDateString(reservedEndDate)
         dispatch(
             addTaskSchedule({
                 year, month, day, hour, minute, second, dayOfWeek,
                 taskId: "marcap",
                 market: reservedMarket,
                 startDate,
-                endDate
+                endDate,
+                isNow: isReservedDateFix
             })
         )
     }

@@ -136,6 +136,7 @@ class TaskRunner(object):
         try:
             if self.queue.qsize() > 0 and (self.pool.poolSize - self.pool.poolCount()) > 0:
                 pool = self.pool.addTaskPool(Pool(), False)
+                # timeout이 있으면 nonblocking으로 움직임
                 task: Task = await asyncio.wait_for(self.queue.get(), timeout=1)
                 if task:
                     pool.setTask(task)

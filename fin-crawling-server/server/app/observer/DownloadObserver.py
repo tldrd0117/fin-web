@@ -1,5 +1,4 @@
 import os
-from pathlib import Path
 from watchdog.observers import Observer
 from pymitter import EventEmitter
 from app.observer.CmdFileSystemEventHandler import CmdFileSystemEventHandler
@@ -21,6 +20,7 @@ class DownloadObserver(object):
                 print(stderr.decode())
         except Exception as e:
             print(f"makePath error: {e}")
+            raise e
         
         return path
 

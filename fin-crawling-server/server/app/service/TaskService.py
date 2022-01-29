@@ -86,7 +86,7 @@ class TaskService:
             logger.info("#### schedule job start ####")
             logger.info("command" + dto.startDateStr + "~" + dto.endDateStr)
             dto.taskUniqueId = dto.taskId + dto.market+dto.startDateStr + dto.endDateStr + str(uuid.uuid4())
-            if dto.startDateStr == "*" or dto.endDateStr == "*":
+            if dto.isNow:
                 dto.startDateStr = getNowDateStr()
                 dto.endDateStr = getNowDateStr()
             logger.info("real:" + dto.startDateStr + "~" + dto.endDateStr)
