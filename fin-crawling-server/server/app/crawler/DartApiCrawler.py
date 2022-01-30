@@ -58,7 +58,7 @@ class DartApiCrawler(object):
             datapath = Path("app/static/factors/codes/CORPCODE.xml")
 
         if isCodeNew or not os.path.exists(datapath.resolve()):
-            user_agent = UserAgent()
+            user_agent = UserAgent(use_cache_server=True)
             headers = {'User-Agent': user_agent.random}
             params = {"crtfc_key": apiKey}
             url = "https://opendart.fss.or.kr/api/corpCode.xml"
@@ -115,7 +115,7 @@ class DartApiCrawler(object):
 
             url = 'https://opendart.fss.or.kr/api/fnlttSinglAcntAll.json'
 
-            user_agent = UserAgent()
+            user_agent = UserAgent(use_cache_server=True)
             headers = {'User-Agent': user_agent.random}
             params = {
                 'crtfc_key': apiKey,
