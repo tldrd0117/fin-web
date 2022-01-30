@@ -22,7 +22,7 @@ import sys
 import aiohttp
 import io
 
-from fake_useragent import UserAgent
+# from fake_useragent import UserAgent
 
 from app.util.AsyncUtil import asyncRetryNonBlock
 
@@ -58,8 +58,8 @@ class DartApiCrawler(object):
             datapath = Path("app/static/factors/codes/CORPCODE.xml")
 
         if isCodeNew or not os.path.exists(datapath.resolve()):
-            user_agent = UserAgent(cache=False, use_cache_server=True)
-            headers = {'User-Agent': user_agent.random}
+            # user_agent = UserAgent(cache=False, use_cache_server=True)
+            headers = {'User-Agent': "Mozilla/5.0 (Windows NT 6.1) AppleWebKit/537.2 (KHTML, like Gecko) Chrome/22.0.1216.0 Safari/537.2'"}
             params = {"crtfc_key": apiKey}
             url = "https://opendart.fss.or.kr/api/corpCode.xml"
             async with aiohttp.ClientSession() as session:
@@ -115,8 +115,8 @@ class DartApiCrawler(object):
 
             url = 'https://opendart.fss.or.kr/api/fnlttSinglAcntAll.json'
 
-            user_agent = UserAgent(cache=False, use_cache_server=True)
-            headers = {'User-Agent': user_agent.random}
+            # user_agent = UserAgent(cache=False, use_cache_server=True)
+            headers = {'User-Agent': "Mozilla/5.0 (Windows NT 6.1) AppleWebKit/537.2 (KHTML, like Gecko) Chrome/22.0.1216.0 Safari/537.2'"}
             params = {
                 'crtfc_key': apiKey,
                 'corp_code': codes[code]["corp_code"],
