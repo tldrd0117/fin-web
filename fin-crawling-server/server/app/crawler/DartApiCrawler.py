@@ -124,7 +124,8 @@ class DartApiCrawler(object):
                 'reprt_code': "11011",  # "11011": 사업보고서
                 'fs_div': "CFS",  # "CFS":연결재무제표, "OFS":재무제표
             }
-            async with aiohttp.ClientSession() as session:
+            connector = aiohttp.TCPConnector(limit=50, force_close=True)
+            async with aiohttp.ClientSession(connector=connector) as session:
                 timeout = aiohttp.ClientTimeout(total=15)
                 # async with session.get(url, params=params, headers=headers) as response:
                 async with session.get(url, params=params, timeout=timeout, headers=headers) as response:
