@@ -188,6 +188,9 @@ class TaskService:
             if task.state == "cancel":
                 self.tasksRepository.deleteTask(task)
                 self.tasksRepository.updateAllTask()
+            elif task.state == "error":
+                self.tasksRepository.deleteTask(task)
+                self.tasksRepository.updateAllTask()
             else:
                 task.state = "cancel"
                 self.tasksRepository.updateTask(task)

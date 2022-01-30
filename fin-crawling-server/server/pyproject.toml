@@ -25,6 +25,8 @@ openpyxl = "^3.0.9"
 python-dotenv = "^0.19.2"
 OpenDartReader = "^0.1.6"
 bs4 = "^0.0.1"
+aiohttp = "^3.8.1"
+fake-useragent = "^0.1.11"
 
 [tool.poetry.dev-dependencies]
 pytest = "^5.2"

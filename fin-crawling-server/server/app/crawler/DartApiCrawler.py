@@ -14,13 +14,15 @@ from app.module.logger import Logger
 from app.model.dto import DartApiCrawling
 from pathlib import Path
 
-from urllib import request
 from zipfile import ZipFile
 import xml.etree.ElementTree as ET
 
-import OpenDartReader
 import pandas as pd
 import sys
+import aiohttp
+import io
+
+from fake_useragent import UserAgent
 
 from app.util.AsyncUtil import asyncRetryNonBlock
 
@@ -47,18 +49,23 @@ class DartApiCrawler(object):
 
     async def downloadCodes(self, isCodeNew: bool, apiKey: str) -> Dict:
         if "pytest" in sys.modules:
-            savepath = Path('factors/codes.zip')
+            # savepath = Path('factors/codes.zip')
             loadpath = Path('factors/codes')
             datapath = Path("factors/codes/CORPCODE.xml")
         else:
-            savepath = Path('app/static/factors/codes.zip')
+            # savepath = Path('app/static/factors/codes.zip')
             loadpath = Path('app/static/factors/codes')
             datapath = Path("app/static/factors/codes/CORPCODE.xml")
 
         if isCodeNew or not os.path.exists(datapath.resolve()):
-            url = f"https://opendart.fss.or.kr/api/corpCode.xml?crtfc_key={apiKey}"
-            request.urlretrieve(url, savepath.resolve())
-            ZipFile(file=savepath.resolve()).extractall(loadpath.resolve())
+            user_agent = UserAgent()
+            headers = {'User-Agent': user_agent.random}
+            params = {"crtfc_key": apiKey}
+            url = "https://opendart.fss.or.kr/api/corpCode.xml"
+            async with aiohttp.ClientSession() as session:
+                async with session.get(url, params=params, headers=headers) as response:
+                    data = await response.read()
+                    ZipFile(io.BytesIO(data)).extractall(loadpath.resolve())
         tree = ET.parse(datapath.resolve())
         codes: Dict[str, Any] = {}
         for li in tree.findall("list"):
@@ -84,13 +91,12 @@ class DartApiCrawler(object):
             codes = await asyncRetryNonBlock(5, 1, self.downloadCodes, isCodeNew=dto.isCodeNew, apiKey=dto.apiKey)
             # codes = self.downloadCodes(dto.isCodeNew, dto.apiKey)
             self.ee.emit(EVENT_DART_API_CRAWLING_ON_CRAWLING_FACTOR_DATA, dto)
-            dart: OpenDartReader = OpenDartReader(dto.apiKey)
             for year in range(dto.startYear, dto.endYear+1):
                 self.ee.emit(EVENT_DART_API_CRAWLING_ON_CRAWLING_FACTOR_DATA, dto)
                 self.logger.info("crawling", str(len(codes)))
                 for code in codes:
                     # newDf = self.getYearDf(dart, code, codes, year)
-                    newDf = await asyncRetryNonBlock(5, 1, self.getYearDf, dart, code, codes, year)
+                    newDf = await asyncRetryNonBlock(5, 1, self.getYearDf, dto.apiKey, code, codes, year)
                     if self.isCancelled:
                         self.ee.emit(EVENT_DART_API_CRAWLING_ON_CANCEL, dto)
                     if newDf is not None:
@@ -102,10 +108,31 @@ class DartApiCrawler(object):
         except Exception as e:
             raise e
         
-    async def getYearDf(self, dart: OpenDartReader, code: str, codes: Dict, year: int) -> pd.DataFrame:
+    async def getYearDf(self, apiKey: str, code: str, codes: Dict, year: int) -> pd.DataFrame:
+        self.logger.info("getYearDf", f"crawling: {code}")
         df = None
         try:
-            df = dart.finstate_all(code, year)
+
+            url = 'https://opendart.fss.or.kr/api/fnlttSinglAcntAll.json'
+
+            user_agent = UserAgent()
+            headers = {'User-Agent': user_agent.random}
+            params = {
+                'crtfc_key': apiKey,
+                'corp_code': codes[code]["corp_code"],
+                'bsns_year':  year,   # 사업년도
+                'reprt_code': "11011",  # "11011": 사업보고서
+                'fs_div': "CFS",  # "CFS":연결재무제표, "OFS":재무제표
+            }
+            async with aiohttp.ClientSession() as session:
+                timeout = aiohttp.ClientTimeout(total=15)
+                # async with session.get(url, params=params, headers=headers) as response:
+                async with session.get(url, params=params, timeout=timeout, headers=headers) as response:
+                    data = await response.json()
+                    if 'list' not in data:
+                        return None
+                    df = pd.json_normalize(data, 'list')
+            # df = dart.finstate_all(code, year)
             # df = await asyncio.create_task(dart.finstate_all(code, year))
             # df = await loop.run_in_executor(self.pool, dart.finstate_all, code, year)
         except Exception as e:
