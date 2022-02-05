@@ -89,5 +89,4 @@ class TaskSocketRouter(object):
         self.taskService.fetchCompletedTask(dto, websocket)
     
     def cancelTask(self, data: dict, websocket: WebSocket) -> None:
-        pass
-        # self.taskService.cancelTask(data["taskId"], data["taskUniqueId"])
+        self.taskService.cancelTask(data["taskId"], data["taskUniqueId"])

@@ -194,6 +194,8 @@ class TaskService:
             else:
                 task.state = "cancel"
                 self.tasksRepository.updateTask(task)
+        else:
+            self.tasksRepository.updateAllTask()
     
     def fetchCompletedTask(self, dto: ListLimitData, webSocket: WebSocket) -> None:
         dao = ListLimitDao(**{

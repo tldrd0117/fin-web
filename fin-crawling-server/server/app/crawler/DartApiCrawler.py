@@ -59,7 +59,10 @@ class DartApiCrawler(object):
 
         if isCodeNew or not os.path.exists(datapath.resolve()):
             # user_agent = UserAgent(cache=False, use_cache_server=True)
-            headers = {'User-Agent': "Mozilla/5.0 (Windows NT 6.1) AppleWebKit/537.2 (KHTML, like Gecko) Chrome/22.0.1216.0 Safari/537.2'"}
+            headers = {
+                'User-Agent': "Mozilla/5.0 (Windows NT 6.1) AppleWebKit/537.2 (KHTML, like Gecko) Chrome/22.0.1216.0 Safari/537.2'",
+                'accept-language': 'ko'
+            }
             params = {"crtfc_key": apiKey}
             url = "https://opendart.fss.or.kr/api/corpCode.xml"
             async with aiohttp.ClientSession() as session:
@@ -116,7 +119,10 @@ class DartApiCrawler(object):
             url = 'https://opendart.fss.or.kr/api/fnlttSinglAcntAll.json'
 
             # user_agent = UserAgent(cache=False, use_cache_server=True)
-            headers = {'User-Agent': "Mozilla/5.0 (Windows NT 6.1) AppleWebKit/537.2 (KHTML, like Gecko) Chrome/22.0.1216.0 Safari/537.2'"}
+            headers = {
+                'User-Agent': "Mozilla/5.0 (Windows NT 6.1) AppleWebKit/537.2 (KHTML, like Gecko) Chrome/22.0.1216.0 Safari/537.2'",
+                'accept-language': 'ko',
+            }
             params = {
                 'crtfc_key': apiKey,
                 'corp_code': codes[code]["corp_code"],

@@ -64,7 +64,10 @@ class TaskPool(object):
         return pool
     
     def removeTaskPool(self, pool: Pool, isNotify: bool = True) -> None:
-        self.taskPool.remove(pool)
+        for po in self.taskPool:
+            if po.taskId == pool.taskId:
+                self.taskPool.remove(pool)
+                break
         if isNotify:
             self.updatePoolInfo()
     
@@ -128,6 +131,8 @@ class TaskRunner(object):
             self.logger.info("cancel", id)  
             pool.cancel()
             self.pool.removeTaskPool(pool)
+        else:
+            self.logger.info("cancel", "pool is not exist")  
     
     def isExist(self, id: str) -> bool:
         return self.pool.findPool(id) is not None
