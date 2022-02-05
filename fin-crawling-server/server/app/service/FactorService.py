@@ -6,7 +6,7 @@ from app.module.socket.manager import ConnectionManager
 from app.model.dao import FactorDao
 from app.module.logger import Logger
 from app.module.task import Pool, Task, TaskPool
-from app.model.dto import ProcessTask, RunFactorFileConvert, DartApiCrawling
+from app.model.dto import ProcessTask, RunFactorFileConvert, DartApiCrawling, FactorData
 from app.crawler.DartApiCrawler import DartApiCrawler, \
     EVENT_DART_API_CRAWLING_ON_DOWNLOADING_CODES, \
     EVENT_DART_API_CRAWLING_ON_CRAWLING_FACTOR_DATA, \
@@ -14,6 +14,7 @@ from app.crawler.DartApiCrawler import DartApiCrawler, \
     EVENT_DART_API_CRAWLING_ON_RESULT_OF_FACTOR, \
     EVENT_DART_API_CRAWLING_ON_CANCEL
 from app.util.DartUtils import getMonthFromReprtCode
+from app.util.AsyncUtil import batchFunction
 from typing import TYPE_CHECKING, Dict, List
 import asyncio
 import traceback
@@ -34,6 +35,9 @@ class FactorService:
         self.crawlerRepository = crawlerRepository
         self.taskService = taskService
         self.logger = Logger("FactorService")
+    
+    async def getFactor(self, code: str, year: str, month: str, source: str) -> List[FactorData]:
+        return await self.factorRepository.getFactor(code, year, month, source)
 
     def crawlingFactorDartData(self, dto: DartApiCrawling) -> None:
         async def crawlingFactorDartDataTask(pool: Pool, taskPool: TaskPool) -> None:
@@ -76,10 +80,12 @@ class FactorService:
         async def convertFactorFileToDbTask(pool: Pool, taskPool: TaskPool) -> None:
             try:
                 task = self.tasksRepository.getTask(dto.taskId, dto.taskUniqueId)
-                data = await self.factorRepository.getFactorsInFile()
+                data = await asyncio.create_task(self.factorRepository.getFactorsInFile())
+                task.state = "make Factor Object"
+                self.tasksRepository.updateTask(task)
+                daoList = await batchFunction(100, data, self.makeFactorDaoList)
                 task.state = "start insert db"
                 self.tasksRepository.updateTask(task)
-                daoList = await self.makeFactorDaoList(data)
                 self.logger.info("convertFactorFileToDbTask", f"insertCount: {str(len(daoList))}")
                 await self.factorRepository.insertFactor(daoList)
                 task.state = "complete"

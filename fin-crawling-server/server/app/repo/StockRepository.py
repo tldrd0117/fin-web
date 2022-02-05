@@ -15,8 +15,8 @@ class StockRepository(object):
         self.ee = EventEmitter()
 
     # db의 주식 시가총액 데이터를 반환한다.
-    def getStockData(self, market: str, startDate: str, endDate: str) -> List[StockMarketCapital]:
-        return self.mongod.getMarcap(market, startDate, endDate)
+    async def getStockData(self, market: str, startDate: str, endDate: str) -> List[StockMarketCapital]:
+        return await self.mongod.getMarcap(market, startDate, endDate)
 
     async def insertMarcap(self, dto: StockMarketCapitalResult) -> None:
         await self.mongod.insertMarcap(dto.data)

@@ -1,15 +1,31 @@
-from typing import List
+from typing import Any, Dict, List
 
 from app.model.dao import FactorDao
 from app.util.DateUtils import getNow
 from app.datasource.MongoDataSource import MongoDataSource
-from app.model.dto import ListLimitData, ListLimitResponse
+from app.model.dto import ListLimitData, ListLimitResponse, FactorData
+from app.module.logger import Logger
 from pymongo import DESCENDING
+import traceback
 
 
 class FactorDartMongoDataSource(MongoDataSource):
     def __init__(self) -> None:
         super().__init__()
+        self.logger = Logger("FactorDartMongoDataSource")
+    
+    async def getFactor(self, year: str = "*", month: str = "*", code: str = "*") -> list:
+        try:
+            findObj: Dict[str, Any] = {}
+            self.mergeFindObj(findObj, "dataYear", year)
+            self.mergeFindObj(findObj, "dataMonth", month)
+            self.mergeFindObj(findObj, "code", code)
+            cursor = self.factorDart.find(findObj)
+            fields = ["code", "dataMonth", "dataName", "dataYear", "dataId", "dataValue", "name"]
+            return list(map(lambda data: FactorData(**{field: data[field] for field in fields}), list(cursor)))
+        except Exception:
+            self.logger.error("getFactor", traceback.format_exc())
+            return list()
 
     async def insertFactor(self, li: List[FactorDao]) -> None:
         try:
@@ -27,8 +43,8 @@ class FactorDartMongoDataSource(MongoDataSource):
                     "$set": data,
                     "$setOnInsert": {"createdAt": getNow()}
                 }, upsert=True)
-        except Exception as e:
-            print(e)
+        except Exception:
+            self.logger.error("insertFactor", traceback.format_exc())
 
     def getCompletedTask(self, dto: ListLimitData) -> ListLimitResponse:
         try:
@@ -55,6 +71,6 @@ class FactorDartMongoDataSource(MongoDataSource):
             })
             
             return res
-        except Exception as e:
-            print(e)
+        except Exception:
+            self.logger.error("getCompletedTask", traceback.format_exc())
         return []

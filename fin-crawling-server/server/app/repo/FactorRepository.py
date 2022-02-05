@@ -5,6 +5,7 @@ from app.datasource.FactorDartMongoDataSource import FactorDartMongoDataSource
 from app.datasource.FactorFileDataSource import FactorFileDataSource
 from app.module.logger import Logger
 from app.model.dao import FactorDao
+from app.model.dto import FactorData
 
 
 class FactorRepository(object):
@@ -14,6 +15,13 @@ class FactorRepository(object):
         self.factorDartMongod = factorDartMongod
         self.filed = filed
         self.logger = Logger("FactorRepository")
+    
+    async def getFactor(self, code: str, year: str, month: str, source: str) -> List[FactorData]:
+        if(source == "factor"):
+            return await self.factorMongod.getFactor(year, month, code)
+        elif(source == "factorDart"):
+            return await self.factorDartMongod.getFactor(year, month, code)
+        return list()
     
     # 파일에 있는 팩터 데이터를 읽어온다.
     async def getFactorsInFile(self) -> List:

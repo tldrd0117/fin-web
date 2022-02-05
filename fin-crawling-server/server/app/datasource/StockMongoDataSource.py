@@ -38,7 +38,7 @@ class StockMongoDataSource(MongoDataSource):
         except Exception:
             self.logger.error("insertMarpcapOne", traceback.format_exc())
         
-    def getMarcap(self, market: str, startDate: str, endDate: str) -> List[StockMarketCapital]:
+    async def getMarcap(self, market: str, startDate: str, endDate: str) -> List[StockMarketCapital]:
         try:
             if not self.isSetupMarcap():
                 self.setupMarcap()

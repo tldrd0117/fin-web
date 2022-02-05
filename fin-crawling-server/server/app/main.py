@@ -4,6 +4,7 @@ from app.setup_instance import locator
 from app.router.socket.socketEndpoint import router as socketRouter
 from app.router.api.user import router as userRouter
 from app.router.api.stock import router as stockRouter
+from app.router.api.factor import router as factorRouter
 from app.scheduler.TaskScheduler import TaskScheduler
 from fastapi.middleware.cors import CORSMiddleware
 import asyncio
@@ -24,6 +25,7 @@ app = FastAPI()
 app.include_router(socketRouter)
 app.include_router(userRouter)
 app.include_router(stockRouter)
+app.include_router(factorRouter)
 app.add_middleware(
     CORSMiddleware,
     allow_origins=origins,

@@ -32,8 +32,8 @@ class StockService:
         self.crawlerRepository = crawlerRepository
         self.logger = Logger("StockService")
 
-    def getStockData(self, market: str, startDate: str, endDate: str) -> List[StockMarketCapital]:
-        return self.stockRepository.getStockData(market, startDate, endDate)
+    async def getStockData(self, market: str, startDate: str, endDate: str) -> List[StockMarketCapital]:
+        return await self.stockRepository.getStockData(market, startDate, endDate)
 
     def crawlingMarcapStockData(self, dtoList: List[StockRunCrawling]) -> None:
         self.logger.info("crawlingMarcapStockData", str(len(dtoList)))

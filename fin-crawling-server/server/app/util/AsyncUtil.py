@@ -1,5 +1,5 @@
 import asyncio
-from typing import Any, Callable, Dict
+from typing import Any, Callable, Dict, List
 
 
 def retry(count: int, gen: Callable, *args: tuple, **kwargs: Dict[str, Any]) -> Any:
@@ -52,3 +52,16 @@ async def asyncRetryNonBlock(count: int, delay: int, asyncFunction: Callable, *a
     if latestError is not None:
         raise latestError
     return None
+
+
+def batch(iterable: Any, n: int = 1) -> Any:
+    count = len(iterable)
+    for ndx in range(0, count, n):
+        yield iterable[ndx:min(ndx + n, count)]
+
+
+async def batchFunction(batchCount: int, batchArray: List, asyncFunction: Callable, *args: tuple, **kwargs: Dict[str, Any]) -> Any:
+    data = []
+    for step in batch(batchArray, batchCount):
+        data.extend(await asyncio.create_task(asyncFunction(step, *args, **kwargs)))
+    return data

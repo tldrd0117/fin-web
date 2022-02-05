@@ -13,6 +13,16 @@ class ListLimitData(BaseModel):
     taskId: str
 
 
+class FactorData(BaseModel):
+    code: str
+    dataMonth: str
+    dataName: str
+    dataYear: str
+    dataId: str
+    dataValue: str
+    name: str
+
+
 class StockTaskState(BaseModel):
     market: str
     taskId: str
@@ -160,6 +170,11 @@ class StockMarketCapitalResult(BaseModel):
 
 class StockMarketCapitalResponse(BaseModel):
     list: List[StockMarketCapital]
+    count: int
+
+
+class FactorDataResponse(BaseModel):
+    list: List[FactorData]
     count: int
 
 

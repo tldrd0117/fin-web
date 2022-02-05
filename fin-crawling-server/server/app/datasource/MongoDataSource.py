@@ -1,3 +1,4 @@
+from typing import Dict
 from app.module.logger import Logger
 from pymongo import ASCENDING, MongoClient, monitoring
 from pymongo.collection import Collection
@@ -71,6 +72,12 @@ class MongoDataSource():
 
     def getCollection(self, name: str) -> Collection:
         return self.getDatabase()[name]
+    
+    def mergeFindObj(self, target: Dict, inputKey: str, inputValue: str = "*") -> Dict:
+        if inputValue == "*":
+            return target
+        target[inputKey] = inputValue
+        return target
     
     def exceptId(self, data: list) -> list:
         newdata = []

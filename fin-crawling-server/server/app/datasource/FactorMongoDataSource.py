@@ -1,15 +1,33 @@
-from typing import Dict, List
+from typing import Any, Dict, List
 
 from app.model.dao import FactorDao
 from app.util.DateUtils import getNow
 from app.datasource.MongoDataSource import MongoDataSource
-from app.model.dto import ListLimitData, ListLimitResponse
+from app.model.dto import ListLimitData, ListLimitResponse, FactorData
+from app.module.logger import Logger
 from pymongo import DESCENDING
+import traceback
+import asyncio
 
 
 class FactorMongoDataSource(MongoDataSource):
     def __init__(self) -> None:
         super().__init__()
+        self.logger = Logger("FactorMongoDataSource")
+
+    async def getFactor(self, year: str = "*", month: str = "*", code: str = "*") -> list:
+        try:
+            findObj: Dict[str, Any] = {}
+            self.mergeFindObj(findObj, "dataYear", str(float(year)))
+            self.mergeFindObj(findObj, "dataMonth", month)
+            self.mergeFindObj(findObj, "code", code)
+            self.logger.info("getFactor", str(findObj))
+            cursor = self.factor.find(findObj)
+            fields = ["code", "dataMonth", "dataName", "dataYear", "dataId", "dataValue", "name"]
+            return list(map(lambda data: FactorData(**{field: data[field] for field in fields}), list(cursor)))
+        except Exception:
+            self.logger.error("getFactor", traceback.format_exc())
+            return list()
 
     async def insertFactor(self, li: List[FactorDao]) -> None:
         try:
@@ -18,9 +36,9 @@ class FactorMongoDataSource(MongoDataSource):
             for one in li:
                 data = one.dict()
                 data["updatedAt"] = getNow()
-                await self.insertFactorOne(data)
-        except Exception as e:
-            print(e)
+                await asyncio.create_task(self.insertFactorOne(data))
+        except Exception:
+            self.logger.error("insertFactor", traceback.format_exc())
     
     async def insertFactorOne(self, data: Dict) -> None:
         self.factor.update_one({
@@ -58,6 +76,6 @@ class FactorMongoDataSource(MongoDataSource):
             })
             
             return res
-        except Exception as e:
-            print(e)
+        except Exception:
+            self.logger.error("getFactor", traceback.format_exc())
         return []

@@ -1,5 +1,5 @@
 
-from fastapi import APIRouter, WebSocket
+from fastapi import APIRouter
 
 from app.module.locator import Locator
 
@@ -14,7 +14,7 @@ stockService: StockService = Locator.getInstance().get(StockService)
 
 @router.get("/marcap")
 async def getStockData(market: str, startDate: str, endDate: str) -> StockMarketCapitalResponse:
-    li = stockService.getStockData(market, startDate, endDate)
+    li = await stockService.getStockData(market, startDate, endDate)
     return StockMarketCapitalResponse(**{
         "list": li,
         "count": len(li)
