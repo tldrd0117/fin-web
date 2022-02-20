@@ -1,6 +1,6 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-
+from app.router.http.test import router as testRouter
 
 origins = [
     "http://localhost",
@@ -21,7 +21,4 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-
-@app.get("/hello")
-async def hello() -> dict:
-    return {"message": "Hello World"}
+app.include_router(testRouter)
