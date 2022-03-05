@@ -12,6 +12,8 @@ Dockerfile
 fin-db/mongodb-express.yaml
 fin-db/mongodb-oper.yaml
 fin-crawling-server/server/downloads
+fin-simulator-server/luigi
+fin-simulator-server/server/data
 .env
 .venv
 log

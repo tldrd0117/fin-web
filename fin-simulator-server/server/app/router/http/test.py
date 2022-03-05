@@ -1,6 +1,6 @@
 
 from fastapi import APIRouter
-from app.tasks.my_module import TestTask, SubTask, GetFactorYearTask, GetStockMonthTask, GetMarcap, GetStockFilteredByFactor
+from app.tasks.stockTasks import TestTask, SubTask, GetFactorYearTask, GetStockMonthTask, GetMarcap, GetStockFilteredByFactor
 import luigi
 import json
 
