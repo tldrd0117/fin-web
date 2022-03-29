@@ -7,6 +7,7 @@ from pymongo.monitoring import (CommandFailedEvent, CommandStartedEvent,
                                 CommandSucceededEvent)
 
 from dotenv import dotenv_values
+from app.base.BaseComponent import BaseComponent
 
 log = Logger("MongoDataSource", "mongoDb")
 config = dotenv_values('.env')
@@ -36,6 +37,10 @@ class MongoDataSource():
         self.port = config["mongodbPort"]
         self.userName = config["mongodbUserName"]
         self.password = config["mongodbPassword"]
+        # self.host = "localhost"
+        # self.port = "30001"
+        # self.userName = "root"
+        # self.password = "tester00"
         self.path = f'mongodb://{self.userName}:{self.password}@{self.host}:{self.port}'
         self.logger = log
         log.info("__init__", f"db connecting... {self.path}")

@@ -3,13 +3,13 @@ from fastapi import APIRouter
 
 from app.module.locator import Locator
 
-from app.service.UserService import UserService
-from app.service.FactorService import FactorService
+from app.service.api.UserApiService import UserApiService
+from app.service.api.FactorApiService import FactorApiService
 from app.model.dto import FactorDataResponse
 
 router = APIRouter(prefix="/factor")
-userService: UserService = Locator.getInstance().get(UserService)
-factorService: FactorService = Locator.getInstance().get(FactorService)
+userService: UserApiService = Locator.getInstance().get(UserApiService)
+factorService: FactorApiService = Locator.getInstance().get(FactorApiService)
 
 
 @router.get("/get")

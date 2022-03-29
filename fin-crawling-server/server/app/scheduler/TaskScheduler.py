@@ -4,16 +4,20 @@ from apscheduler.jobstores.mongodb import MongoDBJobStore
 from apscheduler.triggers.cron import CronTrigger
 from apscheduler.job import Job
 from pymongo.mongo_client import MongoClient
+from app.base.BaseComponent import BaseComponent
+from app.datasource.StockMongoDataSource import StockMongoDataSource
 
 
-class TaskScheduler(object):
-    def __init__(self, client: MongoClient) -> None:
-        super().__init__()
-        self.store = MongoDBJobStore(client=client)
+class TaskScheduler(BaseComponent):
+    
+    def onComponentResisted(self) -> None:
+        mongod = self.get(StockMongoDataSource)
+        self.store = MongoDBJobStore(client=mongod.client)
         self.scheduler = AsyncIOScheduler()
         self.scheduler.add_jobstore(self.store)
         self.jobs: list = []
         self.jobLengthMax = 0
+        return super().onComponentResisted()
     
     def addJob(self, job: Callable, year: str, month: str, dayOfWeek: str, day: str, hour: str, minute: str, second: str, target: str, args: List = None) -> Job:
         trigger = CronTrigger(year=year, month=month, day_of_week=dayOfWeek, day=day, hour=hour, minute=minute, second=second)

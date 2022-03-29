@@ -5,6 +5,7 @@ from app.datasource.MongoDataSource import MongoDataSource
 from app.module.logger import Logger
 from pymongo import DESCENDING
 import traceback
+from app.base.BaseComponent import BaseComponent
 
 
 class TaskMongoDataSource(MongoDataSource):

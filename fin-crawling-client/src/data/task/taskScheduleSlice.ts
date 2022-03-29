@@ -38,7 +38,8 @@ export interface AddTaskSchedulePayload{
     market: Array<string> 
     startDate: string 
     endDate: string 
-    taskId: string,
+    taskId: string
+    taskName: string
     isNow: boolean
 }
 

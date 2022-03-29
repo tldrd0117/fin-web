@@ -7,6 +7,7 @@ from app.model.dto import ListLimitData, ListLimitResponse, FactorData
 from app.module.logger import Logger
 from pymongo import DESCENDING
 import traceback
+from app.base.BaseComponent import BaseComponent
 
 
 class FactorDartMongoDataSource(MongoDataSource):

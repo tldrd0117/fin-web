@@ -5,6 +5,7 @@ from app.datasource.StockMongoDataSource import StockMongoDataSource
 from pymitter import EventEmitter
 from app.repo.TasksRepository import TasksRepository
 from app.module.logger import Logger
+from app.base.BaseComponent import BaseComponent
 
 
 EVENT_TASK_REPO_UPDATE_TASKS = "taskRepo/updateTasks"
@@ -13,14 +14,15 @@ EVENT_TASK_REPO_UPDATE_POOL_INFO = "taskRepo/updatePoolInfo"
 EVENT_CRAWLING_REPO_ON_CRAWLING_COMPLETE: Final = "crawlingRepo/onCrawlingComplete"
 
 
-class CrawlerRepository(object):
-    def __init__(self, mongod: StockMongoDataSource, tasksRepository: TasksRepository) -> None:
-        super().__init__()
-        self.mongod = mongod
+class CrawlerRepository(BaseComponent):
+
+    def onComponentResisted(self) -> None:
+        self.mongod = self.get(StockMongoDataSource)
+        self.tasksRepository = self.get(TasksRepository)
         self.ee = EventEmitter()
         self.logger = Logger("CrawlerRepository")
-        self.tasksRepository = tasksRepository
         self.crawlers: Dict = dict()
+        return super().onComponentResisted()
 
     def createListener(self, ee: EventEmitter) -> None:
         pass

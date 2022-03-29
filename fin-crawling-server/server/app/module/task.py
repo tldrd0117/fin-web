@@ -4,23 +4,25 @@ from asyncio.events import AbstractEventLoop
 import asyncio
 from app.module.logger import Logger
 
-from app.model.task import TaskPoolInfo
+from app.model.task.model import TaskPoolInfo
 
 DEFAULT_POOL_SIZE = 5
 
 
 class Task(object):
-    def __init__(self, id: str, func: Callable, param: Any = {}) -> None:
+    def __init__(self, id: str, func: Callable, **args) -> None:
         super().__init__()
         self.id = id
         self.func = func
-        self.param = param
+        self.param = args
         self.logger = Logger("Task")
         self.loop: Optional[AbstractEventLoop] = None
 
     async def run(self, taskPool: TaskPool, pool: Pool) -> None:
         self.logger.info("run", "task run")
         if self.loop:
+            if self.param is None:
+                self.param = {}
             self.param["taskPool"] = taskPool
             self.param["pool"] = pool
             await self.loop.create_task(self.func(**self.param))

@@ -8,6 +8,7 @@ from app.module.logger import Logger
 from pymongo import DESCENDING
 import traceback
 import asyncio
+from app.base.BaseComponent import BaseComponent
 
 
 class FactorMongoDataSource(MongoDataSource):

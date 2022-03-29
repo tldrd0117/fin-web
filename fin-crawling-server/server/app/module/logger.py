@@ -50,10 +50,10 @@ class Logger:
     
     def info(self, func: str, msg: str = None) -> None:
         if msg is None:
-            info = (f"cls: {self.cls}, msg: {func}")[:200]
+            info = (f"cls: {self.cls}, msg: {func}")[:500]
             self.logger.info(info)
             return
-        info = (f"cls: {self.cls}, func: {func}, msg: {msg}")[:200]
+        info = (f"cls: {self.cls}, func: {func}, msg: {msg}")[:500]
         self.logger.info(info)
         logger.info(info)
     

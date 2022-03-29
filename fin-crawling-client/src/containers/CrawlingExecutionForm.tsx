@@ -20,13 +20,14 @@ export default (props) => {
     const handleRunCrawlingButton = () => {
         dispatch(
             addTask({
-                taskName: "crawlingMarcapStockData",
+                taskName: "marcapScrapService",
                 taskId: "marcap",
                 market,
                 startDate: getDateString(startDate),
                 endDate: getDateString(endDate),
             })
         )
+        
         console.log(market, getDateString(startDate), getDateString(endDate))
     }
 

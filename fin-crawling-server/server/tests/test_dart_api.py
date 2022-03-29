@@ -1,32 +1,65 @@
-from app.crawler.DartApiCrawler import DartApiCrawler
-from app.model.dto import DartApiCrawling
+from typing import List
+from app.scrap.FactorDartScraper import FactorDartScraper
+from app.model.scrap.model import FactorDartRunScrap
 import asyncio
 import uuid
+from app.util.decorator import eventsDecorator
+from dotenv import dotenv_values
+
+config = dotenv_values('.env')
 
 
-async def getCodes(dart: DartApiCrawler) -> None:
-    #c211a43e6a9af3078ba60fc66708a51523a16bbf
-    #48a43d39558cf752bc8d8e52709da34569a80372
-    codes = await dart.downloadCodes(False, "c211a43e6a9af3078ba60fc66708a51523a16bbf")
+class EventsTest:
+    def __init__(self) -> None:
+        pass
+
+    @eventsDecorator.on(FactorDartScraper.FACTOR_DART_CRAWLER_ON_DOWNLOADING_CODES)
+    def onDownloadingCodes(self, dto: FactorDartRunScrap) -> None:
+        print("FACTOR_DART_CRAWLER_ON_DOWNLOADING_CODES")
+    
+    @eventsDecorator.on(FactorDartScraper.FACTOR_DART_CRAWLER_ON_CRAWLING_FACTOR_DATA)
+    def onCrawlingFactorData(self, dto: FactorDartRunScrap) -> None:
+        print("FACTOR_DART_CRAWLER_ON_CRAWLING_FACTOR_DATA")
+    
+    @eventsDecorator.on(FactorDartScraper.FACTOR_DART_CRAWLER_ON_COMPLETE_YEAR)
+    def onCompleteYear(self, dto: FactorDartRunScrap, year: int) -> None:
+        print("FACTOR_DART_CRAWLER_ON_COMPLETE_YEAR")
+        print(year)
+    
+    @eventsDecorator.on(FactorDartScraper.FACTOR_DART_CRAWLER_ON_RESULT_OF_FACTOR)
+    def onResultOfFactor(self, dto: FactorDartRunScrap, year: int, obj: List) -> None:
+        print("FACTOR_DART_CRAWLER_ON_RESULT_OF_FACTOR")
+        print(obj)
+        
+    
+    @eventsDecorator.on(FactorDartScraper.FACTOR_DART_CRAWLER_ON_CANCEL)
+    def onCancel(self, dto: FactorDartRunScrap) -> None:
+        print("FACTOR_DART_CRAWLER_ON_CANCEL")
+        print(dto)
+
+
+async def getCodes(dart: FactorDartScraper) -> None:
+    codes = await dart.downloadCodes(False, config["apiKey"])
     print(codes)
 
 
-async def crawling(dart: DartApiCrawler) -> None:
-    dto: DartApiCrawling = DartApiCrawling(**{
-        "apiKey": "c211a43e6a9af3078ba60fc66708a51523a16bbf",
+async def crawling(dart: FactorDartScraper) -> None:
+    dto: FactorDartRunScrap = FactorDartRunScrap(**{
+        "apiKey": config["apiKey"],
         "isCodeNew": False,
-        "startYear": 2015,
-        "endYear": 2015,
+        "startYear": 2021,
+        "endYear": 2021,
         "taskId": "factorDart",
         "taskUniqueId": str(uuid.uuid4())
     })
-    result = await dart.crawling(dto)
-    print(result)
+    print(dto)
+    eventsDecorator.register(EventsTest(), dart.ee)
+    await dart.crawling(dto)
 
 
 # pytest -s test_dart_api.py
 def test() -> None:
     loop = asyncio.get_event_loop()
-    dart = DartApiCrawler()
+    dart = FactorDartScraper()
     loop.run_until_complete(crawling(dart))
     loop.close()

@@ -6,15 +6,17 @@ from app.datasource.FactorFileDataSource import FactorFileDataSource
 from app.module.logger import Logger
 from app.model.dao import FactorDao
 from app.model.dto import FactorData
+from app.base.BaseComponent import BaseComponent
 
 
-class FactorRepository(object):
-    def __init__(self, factorMongod: FactorMongoDataSource, factorDartMongod: FactorDartMongoDataSource, filed: FactorFileDataSource) -> None:
-        super().__init__()
-        self.factorMongod = factorMongod
-        self.factorDartMongod = factorDartMongod
-        self.filed = filed
+class FactorRepository(BaseComponent):
+    
+    def onComponentResisted(self) -> None:
+        self.factorMongod = self.get(FactorMongoDataSource)
+        self.factorDartMongod = self.get(FactorDartMongoDataSource)
+        self.filed = self.get(FactorFileDataSource)
         self.logger = Logger("FactorRepository")
+        return super().onComponentResisted()
     
     async def getFactor(self, code: str, year: str, month: str, source: str) -> List[FactorData]:
         if(source == "factor"):

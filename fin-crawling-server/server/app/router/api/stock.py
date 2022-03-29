@@ -3,13 +3,13 @@ from fastapi import APIRouter
 
 from app.module.locator import Locator
 
-from app.service.UserService import UserService
-from app.service.StockService import StockService
+from app.service.api.UserApiService import UserApiService
+from app.service.api.StockApiService import StockApiService
 from app.model.dto import StockMarketCapitalResponse
 
 router = APIRouter(prefix="/stock")
-userService: UserService = Locator.getInstance().get(UserService)
-stockService: StockService = Locator.getInstance().get(StockService)
+userService: UserApiService = Locator.getInstance().get(UserApiService)
+stockService: StockApiService = Locator.getInstance().get(StockApiService)
 
 
 @router.get("/marcap")

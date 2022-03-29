@@ -14,6 +14,7 @@ import {history, RootState} from "./data/root/rootReducer"
 import PrivateRouter from './components/PrivateRouter'
 import CrawlingBoard from './containers/CrawlingBoard';
 import FactorBoard from './containers/FactorBoard';
+import SeibroBoard from './containers/SeibroBoard';
 
 export default () => {
     return <>
@@ -24,6 +25,9 @@ export default () => {
                 </PrivateRouter>
                 <PrivateRouter path="/factor" exect>
                     <Main SubComponent={FactorBoard}/>
+                </PrivateRouter>
+                <PrivateRouter path="/seibro" exect>
+                    <Main SubComponent={SeibroBoard}/>
                 </PrivateRouter>
                 <Route path="/login">
                     <Login />

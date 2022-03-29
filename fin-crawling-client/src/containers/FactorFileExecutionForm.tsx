@@ -19,7 +19,7 @@ export default (props) => {
         console.log("play")
         dispatch(
             addTask({
-                taskName: "convertFactorFileToDb",
+                taskName: "factorFileScrapService",
                 taskId: "factorFile",
             })
         )

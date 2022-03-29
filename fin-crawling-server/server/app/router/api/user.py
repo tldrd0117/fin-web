@@ -7,11 +7,11 @@ from fastapi.security import OAuth2PasswordRequestForm
 from app.datasource.UserDataSource import fake_users_db
 from app.module.locator import Locator
 
-from app.service.UserService import UserService
+from app.service.api.UserApiService import UserApiService
 
 
 router = APIRouter(prefix="/user")
-userService: UserService = Locator.getInstance().get(UserService)
+userService: UserApiService = Locator.getInstance().get(UserApiService)
 
 
 @router.post("/token")

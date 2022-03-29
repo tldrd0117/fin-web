@@ -7,6 +7,7 @@ from pymongo import DESCENDING
 from app.module.logger import Logger
 import traceback
 import asyncio
+from app.base.BaseComponent import BaseComponent
 
 
 class StockMongoDataSource(MongoDataSource):
@@ -59,6 +60,17 @@ class StockMongoDataSource(MongoDataSource):
                 "marcap": data["marcap"],
                 "number": data["number"]
             }), list(cursor)))
+        except Exception:
+            self.logger.error("getMarcap", traceback.format_exc())
+            return list()
+    
+
+    async def getMarcapCodes(self, startDate: str, endDate: str) -> List[str]:
+        try:
+            if not self.isSetupMarcap():
+                self.setupMarcap()
+            cursor = self.marcap.find({"$and": [{"date": {"$gte": startDate, "$lte": endDate}}]}, ["code"]).distinct("code")
+            return list(cursor)
         except Exception:
             self.logger.error("getMarcap", traceback.format_exc())
             return list()

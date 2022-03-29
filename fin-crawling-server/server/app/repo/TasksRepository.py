@@ -6,9 +6,10 @@ from app.datasource.TaskMongoDataSource import TaskMongoDataSource
 from app.model.dto import StockCrawlingCompletedTasks, StockMarketCapitalResult, StockCrawlingDownloadTask, StockUpdateState, \
     ProcessTasks, ProcessTask, StockTaskState, YearData, TaskModel
 from app.model.dao import ListLimitDao, ListLimitDataDao
-from app.model.task import TaskPoolInfo
+from app.model.task.model import TaskPoolInfo
 from app.module.task import Task, TaskRunner
 from app.module.logger import Logger
+from app.base.BaseComponent import BaseComponent
 
 
 SUCCESS: Final = 1
@@ -20,15 +21,16 @@ EVENT_TASK_REPO_TASK_COMPLETE = "taskRepo/completeTask"
 EVENT_TASK_REPO_UPDATE_POOL_INFO = "taskRepo/updatePoolInfo"
 
 
-class TasksRepository(object):
-    def __init__(self, mongod: TaskMongoDataSource) -> None:
-        super().__init__()
-        self.mongod = mongod
+class TasksRepository(BaseComponent):
+    
+    def onComponentResisted(self) -> None:
+        self.mongod = self.get(TaskMongoDataSource)
         self.logger = Logger("TasksRepository")
-        self.taskEventEmitter = EventEmitter()
+        self.ee = EventEmitter()
         self.tasksdto = ProcessTasks()
         self.taskRunner: Optional[TaskRunner] = None
         self.createTaskRunner()
+        return super().onComponentResisted()
     
     # 태스크 러너를 만든다.
     def createTaskRunner(self) -> None:
@@ -39,14 +41,14 @@ class TasksRepository(object):
 
     # 태스크 풀 정보가 업데이트 될 떄 이벤트를 날린다.
     def onUpdatePoolInfo(self, poolInfo: TaskPoolInfo) -> None:
-        self.taskEventEmitter.emit(EVENT_TASK_REPO_UPDATE_POOL_INFO, poolInfo)
+        self.ee.emit(EVENT_TASK_REPO_UPDATE_POOL_INFO, poolInfo)
         self.logger.info("updatePoolInfo", f"{poolInfo.json()}")
     
     # 테스크 풀 정보를 가져온다.
     def getPoolInfo(self) -> None:
         if self.taskRunner:
             poolInfo = self.taskRunner.getPoolInfo()
-            self.taskEventEmitter.emit(EVENT_TASK_REPO_UPDATE_POOL_INFO, poolInfo)
+            self.ee.emit(EVENT_TASK_REPO_UPDATE_POOL_INFO, poolInfo)
     
     # 태스크 풀에 태스크를 등록한다.
     def runTask(self, task: Task) -> None:
@@ -64,7 +66,7 @@ class TasksRepository(object):
         
         self.tasksdto.tasks[task.taskId]["list"][task.taskUniqueId] = task
         self.tasksdto.tasks[task.taskId]["ids"].append(task.taskUniqueId)
-        self.taskEventEmitter.emit(EVENT_TASK_REPO_UPDATE_TASKS, self.tasksdto)
+        self.ee.emit(EVENT_TASK_REPO_UPDATE_TASKS, self.tasksdto)
         self.logger.info("addTask", f"{task.taskUniqueId}")
 
     # 갱신 태스크 정보를 저장한다.
@@ -72,10 +74,10 @@ class TasksRepository(object):
         self.tasksdto.tasks[task.taskId]["list"][task.taskUniqueId] = task
         self.logger.info("updateTask", f"{task.taskUniqueId}")
         self.mongod.upsertTask(task.dict())
-        self.taskEventEmitter.emit(EVENT_TASK_REPO_UPDATE_TASKS, self.tasksdto)
+        self.ee.emit(EVENT_TASK_REPO_UPDATE_TASKS, self.tasksdto)
     
     def updateAllTask(self) -> None:
-        self.taskEventEmitter.emit(EVENT_TASK_REPO_UPDATE_TASKS, self.tasksdto)
+        self.ee.emit(EVENT_TASK_REPO_UPDATE_TASKS, self.tasksdto)
     
     # 저장된 테스크 정보를 반환한다.
     def getTask(self, taskId: str, taskUniqueId: str) -> ProcessTask:
@@ -101,11 +103,18 @@ class TasksRepository(object):
         task.errMsg = errMsg
         self.updateTask(task)
     
-    def completeFactorConvertFileToDbTask(self, task: ProcessTask) -> None:
+    def completeFactorConvertFileToDbTask(self, task: ProcessTask, year: int) -> None:
         self.success(task, 1)
         self.updateTask(task)
         self.deleteTask(task)
-        self.taskEventEmitter.emit(EVENT_TASK_REPO_TASK_COMPLETE, "factorFile", None)
+        task.state = "complete"
+        self.updateTask(task)
+        self.ee.emit(EVENT_TASK_REPO_TASK_COMPLETE, "factorFile", StockUpdateState(**{
+            "taskId": task.taskId,
+            "market": task.market,
+            "date": year,
+            "ret": 1
+        }))
     
     def completeFactorDart(self, task: ProcessTask, year: int) -> None:
         self.success(task, 1)
@@ -115,7 +124,7 @@ class TasksRepository(object):
         task.state = "complete"
         self.updateTask(task)
         self.logger.info("completeFactorDart", "complete")
-        self.taskEventEmitter.emit(EVENT_TASK_REPO_TASK_COMPLETE, "factorDart", StockUpdateState(**{
+        self.ee.emit(EVENT_TASK_REPO_TASK_COMPLETE, "factorDart", StockUpdateState(**{
             "taskId": task.taskId,
             "market": task.market,
             "date": year,
@@ -137,7 +146,7 @@ class TasksRepository(object):
         task.state = "success"
         self.updateTask(task)
         self.logger.info("completeStockCrawlingTask", "complete")
-        self.taskEventEmitter.emit(EVENT_TASK_REPO_TASK_COMPLETE, "marcap", StockUpdateState(**{
+        self.ee.emit(EVENT_TASK_REPO_TASK_COMPLETE, "marcap", StockUpdateState(**{
             "taskId": dto.taskId,
             "market": dto.market,
             "date": dto.dateStr,

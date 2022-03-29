@@ -26,19 +26,19 @@ class DownloadObserver(object):
 
     def startObserver(self, path: str, ee: EventEmitter) -> None:
         # curdir = os.path.dirname(__file__)
-        
         self.event_handler = CmdFileSystemEventHandler(ee)
         # self.event_handler.setDownloadTask(downloadTask)
         # log_handler = LoggingEventHandler()
-        print(f"observePath:{path}")
-        self.observer = Observer()
-        self.observer.schedule(self.event_handler, path, recursive=True)
-        # observer.schedule(log_handler, path, recursive=False)
-        self.observer.daemon = False
-        self.observer.start()
+        # print(f"observePath:{path}")
+        # self.observer = Observer()
+        # self.observer.schedule(self.event_handler, path, recursive=True)
+        # # observer.schedule(log_handler, path, recursive=False)
+        # self.observer.daemon = False
+        # self.observer.start()
 
     def stopObserver(self) -> None:
-        print("stopObserver")
-        self.observer.stop()
-        self.observer.join()
-        self.observer = None
+        pass
+        # print("stopObserver")
+        # self.observer.stop()
+        # self.observer.join()
+        # self.observer = None

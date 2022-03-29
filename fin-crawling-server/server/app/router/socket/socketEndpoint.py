@@ -6,12 +6,12 @@ from fastapi.params import Depends, Query
 from app.module.socket.manager import ConnectionManager
 from app.module.locator import Locator
 
-from app.service.UserService import UserService
+from app.service.api.UserApiService import UserApiService
 from uvicorn.config import logger
 
 
 router = APIRouter()
-userService: UserService = Locator.getInstance().get(UserService)
+userService: UserApiService = Locator.getInstance().get(UserApiService)
 manager: ConnectionManager = Locator.getInstance().get(ConnectionManager)
 
 

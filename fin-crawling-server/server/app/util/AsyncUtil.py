@@ -19,8 +19,17 @@ def retry(count: int, gen: Callable, *args: tuple, **kwargs: Dict[str, Any]) -> 
 
 
 async def sleepNonBlock(delay: float, loop: asyncio.AbstractEventLoop = None) -> Any:
-    return asyncio.create_task(asyncio.sleep(delay, loop=loop))
+    return await asyncio.create_task(asyncio.sleep(delay, loop=loop))
 
+
+async def delayTime(timeout: float):
+    loop = asyncio.get_running_loop()
+    end_time = loop.time() + timeout
+    while True:
+        print(loop.time() + 1.0)
+        if (loop.time()) >= end_time:
+            break
+        await asyncio.sleep(1)
 
 async def asyncRetry(count: int, delay: int, asyncFunction: Callable, *args: tuple, **kwargs: Dict[str, Any]) -> Any:
     latestError = None

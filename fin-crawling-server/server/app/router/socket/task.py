@@ -1,53 +1,45 @@
 
+import asyncio
 from fastapi import WebSocket
 from app.model.dto import StockRunCrawling, StockTaskSchedule, ListLimitData
-from app.service.TaskService import TaskService
+from app.service.api.TaskApiService import TaskApiService
 from app.module.socket.manager import ConnectionManager
-
-REQ_SOCKET_TASK_FETCH_TASK_STATE = "task/calendar/fetchTaskState"
-REQ_SOCKET_TASK_FETCH_TASK_POOL_INFO = "task/poolInfo/fetchTaskPoolInfo"
-REQ_SOCKET_TASK_FETCH_TASK_SCHEDULE = "task/schedule/fetchTaskSchedule"
-REQ_SOCKET_TASK_ADD_TASK_SCHEDULE = "task/schedule/addTaskSchedule"
-REQ_SOCKET_TASK_REMOVE_TASK_SCHEDULE = "task/schedule/removeTaskSchedule"
-REQ_SOCKET_TASK_ADD_TASK = "task/progress/addTask"
-REQ_SOCKET_TASK_FETCH_TASKS = "task/progress/fetchTasks"
-REQ_SOCKET_TASK_CANCEL_TASK = "task/progress/cancelTask"
-REQ_SOCKET_TASK_FETCH_COMPLETED_TASK = "task/history/fetchCompletedTask"
+from app.base.BaseComponent import BaseComponent
+from pymitter import EventEmitter
+from app.util.decorator import eventsDecorator as ed
 
 
-class TaskSocketRouter(object):
-    def __init__(self, taskService: TaskService, manager: ConnectionManager) -> None:
-        super().__init__()
-        self.taskService = taskService
-        self.manager = manager
-        self.ee = self.manager.ee
-        self.setupEvents()
+class TaskSocketRouter(BaseComponent):
+
+    def onComponentResisted(self) -> None:
+        self.taskApiService = self.get(TaskApiService)
+        self.manager = self.get(ConnectionManager)
+        self.ee: EventEmitter = self.manager.ee
+        ed.register(self, self.ee)
+        return super().onComponentResisted()
     
-    def setupEvents(self) -> None:
-        self.ee.on(REQ_SOCKET_TASK_FETCH_TASK_STATE, self.fetchTaskState)
-        self.ee.on(REQ_SOCKET_TASK_FETCH_TASK_SCHEDULE, self.fetchTaskSchedule)
-        self.ee.on(REQ_SOCKET_TASK_ADD_TASK_SCHEDULE, self.addTaskSchedule)
-        self.ee.on(REQ_SOCKET_TASK_REMOVE_TASK_SCHEDULE, self.removeTaskSchedule)
-        self.ee.on(REQ_SOCKET_TASK_ADD_TASK, self.addTask)
-        self.ee.on(REQ_SOCKET_TASK_FETCH_TASKS, self.fetchTasks)
-        self.ee.on(REQ_SOCKET_TASK_FETCH_COMPLETED_TASK, self.fetchCompletedTask)
-        self.ee.on(REQ_SOCKET_TASK_CANCEL_TASK, self.cancelTask)
     
+    @ed.on("task/progress/fetchTasks")
     def fetchTasks(self, data: dict, websocket: WebSocket) -> None:
-        self.taskService.fetchTasks(websocket=websocket)
+        self.taskApiService.fetchTasks(websocket=websocket)
 
+    @ed.on("task/calendar/fetchTaskState")
     def fetchTaskState(self, data: dict, websocket: WebSocket) -> None:
-        self.taskService.getTaskState(data["taskId"], websocket)
+        self.taskApiService.getTaskState(data["taskId"], websocket)
     
+    @ed.on("task/poolInfo/fetchTaskPoolInfo")
     def fetchTaskPoolInfo(self, data: dict, websocket: WebSocket) -> None:
-        self.taskService.getTaskPoolInfo(websocket)
+        self.taskApiService.getTaskPoolInfo(websocket)
 
+    @ed.on("task/schedule/fetchTaskSchedule")
     def fetchTaskSchedule(self, data: dict, websocket: WebSocket) -> None:
-        self.taskService.getTaskSchedule(websocket)
+        self.taskApiService.getTaskSchedule(websocket)
     
+    @ed.on("task/progress/addTask")
     def addTask(self, data: dict, websocket: WebSocket) -> None:
-        self.taskService.addTask(data["taskName"], data)
+        asyncio.create_task(self.taskApiService.addTask(data["taskName"], data))
 
+    @ed.on("task/schedule/addTaskSchedule")
     def addTaskSchedule(self, data: dict, websocket: WebSocket) -> None:
         # if data["startDate"] == "*":
         #     data["startDate"] = getNowDateStr()
@@ -63,30 +55,21 @@ class TaskSocketRouter(object):
             "second": data["second"]
         })
 
-        dtoList = []
-        for market in data["market"]:
-            dto = StockRunCrawling(**{
-                "driverAddr": "http://fin-carwling-webdriver:4444",
-                "market": market,
-                "startDateStr": data["startDate"],
-                "endDateStr": data["endDate"],
-                "taskId": data["taskId"],
-                "isNow": data["isNow"],
-                "taskUniqueId": ""
-            })
-            dtoList.append(dto)
-        self.taskService.addTaskSchedule(scheduleDto, dtoList, websocket)
+        self.taskApiService.addTaskSchedule(data["taskName"], scheduleDto, data, websocket)
 
+    @ed.on("task/schedule/removeTaskSchedule")
     def removeTaskSchedule(self, data: dict, websocket: WebSocket) -> None:
-        self.taskService.removeTaskSchedule(data["id"], websocket)
+        self.taskApiService.removeTaskSchedule(data["id"], websocket)
 
+    @ed.on("task/history/fetchCompletedTask")
     def fetchCompletedTask(self, data: dict, websocket: WebSocket) -> None:
         dto = ListLimitData(**{
             "offset": data["offset"],
             "limit": data["limit"],
             "taskId": data["taskId"]
         })
-        self.taskService.fetchCompletedTask(dto, websocket)
+        self.taskApiService.fetchCompletedTask(dto, websocket)
     
+    @ed.on("task/progress/cancelTask")
     def cancelTask(self, data: dict, websocket: WebSocket) -> None:
-        self.taskService.cancelTask(data["taskId"], data["taskUniqueId"])
+        self.taskApiService.cancelTask(data["taskId"], data["taskUniqueId"])

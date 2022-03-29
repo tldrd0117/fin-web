@@ -4,6 +4,7 @@ import pandas as pd
 from pathlib import Path
 import os.path
 import sys
+from app.base.BaseComponent import BaseComponent
 
 
 class FactorFileDataSource:
