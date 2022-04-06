@@ -6,7 +6,6 @@ from typing import Any, Dict, List, TypeVar, TYPE_CHECKING
 from typing_extensions import Final
 from app.module.locator import Locator
 
-from app.util.decorator import EventEmitter, eventsDecorator
 import uuid
 
 from app.module.logger import Logger
@@ -37,7 +36,6 @@ class FactorFileScraper(Scraper):
     EVENT_FACTOR_FILE_ON_GET_FACTORS_INFILE: Final ="FactorFileCrawler/getFactorsInFile"
     EVENT_FACTOR_FILE_ON_MAKE_FACTOR_DATA: Final ="FactorFileCrawler/makeFactorData"
     EVENT_FACTOR_FILE_ON_RESULT_OF_FACTOR: Final ="FactorFileCrawler/onResultOfFactor"
-    EVENT_FACTOR_FILE_ON_CANCEL: Final ="FactorFileCrawler/onCancel"
 
     def __init__(self, service: FactorFileScrapService) -> None:
         super().__init__()
@@ -47,11 +45,11 @@ class FactorFileScraper(Scraper):
 
     async def crawling(self, runCrawling: DartApiCrawling) -> None:
         try:
-            self.ee.emit(self.EVENT_FACTOR_FILE_ON_GET_FACTORS_INFILE, runCrawling)
+            await self.ee.emit(self.EVENT_FACTOR_FILE_ON_GET_FACTORS_INFILE, runCrawling)
             li = await self.service.crawlingFactorsInFile()
-            self.ee.emit(self.EVENT_FACTOR_FILE_ON_MAKE_FACTOR_DATA, runCrawling)
+            await self.ee.emit(self.EVENT_FACTOR_FILE_ON_MAKE_FACTOR_DATA, runCrawling)
             factorData = await self.service.makeFactorLists(li)
-            self.ee.emit(self.EVENT_FACTOR_FILE_ON_RESULT_OF_FACTOR, runCrawling, factorData)
+            await self.ee.emit(self.EVENT_FACTOR_FILE_ON_RESULT_OF_FACTOR, runCrawling, factorData)
         except Exception as e:
             raise e
         

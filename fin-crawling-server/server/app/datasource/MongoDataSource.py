@@ -58,13 +58,19 @@ class MongoDataSource():
         self.task = self.getCollection("task")
         self.factor = self.getCollection("factor")
         self.factorDart = self.getCollection("factorDart")
+        self.seibroDividend = self.getCollection("seibroDividend")
         
         print(self.marcap.index_information())
         try:
             self.marcap.create_index([("date", ASCENDING), ("code", ASCENDING), ("market", ASCENDING)], unique=True, name="marcapIndex")
             self.task.create_index([("taskUniqueId", ASCENDING)], unique=True, name="taskIndex")
             self.factor.create_index([("dataYear", ASCENDING), ("dataMonth", ASCENDING), ("code", ASCENDING), ("dataName", ASCENDING)], unique=True, name="factorIndex")
-            self.factorDart.create_index([("dataYear", ASCENDING), ("dataMonth", ASCENDING), ("code", ASCENDING), ("dataName", ASCENDING)], unique=True, name="factorIndex")
+            for index in self.factorDart.list_indexes():
+                if index["name"] == "factorIndex":
+                    self.factorDart.drop_index("factorIndex")
+            self.factorDart.create_index([("dataYear", ASCENDING), ("dataMonth", ASCENDING), ("code", ASCENDING), ("dataName", ASCENDING)], unique=True, name="factorDartIndex")
+            self.seibroDividend.create_index([("배정기준일", ASCENDING),("현금배당 지급일", ASCENDING),\
+                ("결산월", ASCENDING),("배당구분", ASCENDING),("시장구분", ASCENDING),("종목코드", ASCENDING)], unique=True, name="seibroDiviendIndex")
         except Exception as e:
             print(e)
         print(self.marcap.index_information())

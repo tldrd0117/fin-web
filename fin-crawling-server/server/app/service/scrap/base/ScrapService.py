@@ -1,4 +1,4 @@
-from typing import Any, Dict, List
+from typing import Any, Awaitable, Coroutine, Dict, List
 
 from app.module.locator import Locator
 from app.base.BaseComponent import BaseComponent
@@ -6,8 +6,8 @@ from app.repo.TasksRepository import TasksRepository
 from app.repo.CrawlerRepository import CrawlerRepository
 from app.model.scrap.model import RunScrap
 from app.scrap.base.Scraper import Scraper
-from app.model.dto import ProcessTask
-from app.util.decorator import EventEmitter, eventsDecorator
+from app.model.task.model import ProcessTask, RunTask
+from app.util.decorator import eventsDecorator
 from app.module.task import Pool, Task, TaskPool
 from app.module.logger import Logger
 from app.service.base.TaskService import TaskService
@@ -44,6 +44,7 @@ class ScrapService(TaskService):
             eventsDecorator.unregist(self, crawler.getEventEmitter())
         except asyncio.CancelledError:
             self.crawlingServiceLogger.info("taskJob", "cancel")
+            self.tasksRepository.cancelTask(runDto)
         except Exception:
             self.crawlingServiceLogger.error("taskJob", f"error: {traceback.format_exc()}")
             self.tasksRepository.errorTask(runDto, traceback.format_exc())
@@ -59,8 +60,8 @@ class ScrapService(TaskService):
                 for runScrap in data:
                     await self.addTask(runScrap)
                 return
-            elif isinstance(data, dict):
-                runScrap = await self.convertRunDto(dto)
+            elif isinstance(data, RunScrap):
+                runScrap = data
 
         workerTask = Task(runScrap.taskUniqueId, self.taskJob, runDto=runScrap)
         if self.tasksRepository.taskRunner:

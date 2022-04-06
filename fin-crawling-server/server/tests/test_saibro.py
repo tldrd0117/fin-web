@@ -9,7 +9,7 @@ async def runTest(loop: asyncio.AbstractEventLoop) -> None:
     try:
         runDto: SeibroDividendRunScrap = SeibroDividendRunScrap(**{
             "driverAddr": "http://localhost:30006",
-            "startDate": "20180101",
+            "startDate": "19700101",
             "endDate": "20190101",
             "codes": ["005930"],
             "taskId":"test_saibro",
@@ -23,7 +23,8 @@ async def runTest(loop: asyncio.AbstractEventLoop) -> None:
         print(e)
 
 
-# pytest -s test_saibro.py
+# cd /Users/iseongjae/Documents/projects/fin-web/fin-crawling-server/server
+# poetry run python -m pytest -s tests/test_saibro.py
 def test() -> None:
     print("run test")
     loop = asyncio.get_event_loop()

@@ -6,7 +6,7 @@ from app.datasource.TaskMongoDataSource import TaskMongoDataSource
 from app.model.dto import StockCrawlingCompletedTasks, StockMarketCapitalResult, StockCrawlingDownloadTask, StockUpdateState, \
     ProcessTasks, ProcessTask, StockTaskState, YearData, TaskModel
 from app.model.dao import ListLimitDao, ListLimitDataDao
-from app.model.task.model import TaskPoolInfo
+from app.model.task.model import TaskPoolInfo, RunTask
 from app.module.task import Task, TaskRunner
 from app.module.logger import Logger
 from app.base.BaseComponent import BaseComponent
@@ -97,61 +97,34 @@ class TasksRepository(BaseComponent):
                 self.tasksdto.tasks[task.taskId]["ids"].remove(task.taskUniqueId)
                 self.logger.info("deleteTask", f"{task.taskUniqueId}")
     
-    def errorTask(self, dto: TaskModel, errMsg: str) -> None:
+    def errorTask(self, dto: RunTask, errMsg: str) -> None:
         task = self.getTask(dto.taskId, dto.taskUniqueId)
         task.state = "error"
         task.errMsg = errMsg
         self.updateTask(task)
     
-    def completeFactorConvertFileToDbTask(self, task: ProcessTask, year: int) -> None:
-        self.success(task, 1)
-        self.updateTask(task)
-        self.deleteTask(task)
-        task.state = "complete"
-        self.updateTask(task)
-        self.ee.emit(EVENT_TASK_REPO_TASK_COMPLETE, "factorFile", StockUpdateState(**{
-            "taskId": task.taskId,
-            "market": task.market,
-            "date": year,
-            "ret": 1
-        }))
-    
-    def completeFactorDart(self, task: ProcessTask, year: int) -> None:
-        self.success(task, 1)
-        self.updateTask(task)
-        if task.restCount <= 0:
-            self.deleteTask(task)
-        task.state = "complete"
-        self.updateTask(task)
-        self.logger.info("completeFactorDart", "complete")
-        self.ee.emit(EVENT_TASK_REPO_TASK_COMPLETE, "factorDart", StockUpdateState(**{
-            "taskId": task.taskId,
-            "market": task.market,
-            "date": year,
-            "ret": 1
-        }))
 
-    # 완료된 태스크 정보를 처린한다.
-    def completeStockCrawlingTask(self, isSuccess: bool, retdto: StockMarketCapitalResult, dto: StockCrawlingDownloadTask) -> None:    
-        self.logger.info("##############completeStockCrawlingTask", str(isSuccess))
+    def cancelTask(self, dto: RunTask) -> None:
         task = self.getTask(dto.taskId, dto.taskUniqueId)
-        if isSuccess:
-            self.success(task, 1)
-        else:
-            self.fail(task, 1)
+        task.state = "cancel"
+        task.errMsg = "user cancel"
+        self.updateTask(task)
+    
+
+    def completeTask(self, task: ProcessTask, date: str) -> None:
+        self.success(task, 1)
+        self.updateTask(task)
         if task.restCount <= 0:
             self.deleteTask(task)
-        if retdto:
-            task.errMsg = retdto.errorMsg
-        task.state = "success"
-        self.updateTask(task)
-        self.logger.info("completeStockCrawlingTask", "complete")
-        self.ee.emit(EVENT_TASK_REPO_TASK_COMPLETE, "marcap", StockUpdateState(**{
-            "taskId": dto.taskId,
-            "market": dto.market,
-            "date": dto.dateStr,
-            "ret": 1 if isSuccess else 2
-        }))
+            task.state = "complete"
+            self.updateTask(task)
+            self.ee.emit(EVENT_TASK_REPO_TASK_COMPLETE, StockUpdateState(**{
+                "taskId": task.taskId,
+                "market": task.market,
+                "date": date,
+                "ret": 1
+            }))
+    
     
     # 성공한 태스크 정보를 처리한다.
     def success(self, task: ProcessTask, count: int) -> None:

@@ -82,28 +82,29 @@ class FactorDartScrapService(ScrapService):
         return daoList
     
     @eventsDecorator.on(FactorDartScraper.FACTOR_DART_CRAWLER_ON_DOWNLOADING_CODES)
-    def onDownloadingCodes(self, dto: DartApiCrawling) -> None:
+    async def onDownloadingCodes(self, dto: DartApiCrawling) -> None:
         self.logger.info("onDownloadingCodes", dto.taskUniqueId)
         task = self.tasksRepository.getTask(dto.taskId, dto.taskUniqueId)
         task.state = "download Codes"
         self.tasksRepository.updateTask(task)
     
     @eventsDecorator.on(FactorDartScraper.FACTOR_DART_CRAWLER_ON_CRAWLING_FACTOR_DATA)
-    def onCrawlingFactorData(self, dto: DartApiCrawling) -> None:
+    async def onCrawlingFactorData(self, dto: DartApiCrawling) -> None:
         self.logger.info("onCrawlingFactorData", dto.taskUniqueId)
         task = self.tasksRepository.getTask(dto.taskId, dto.taskUniqueId)
         task.state = "crawling factor data"
         self.tasksRepository.updateTask(task)
     
     @eventsDecorator.on(FactorDartScraper.FACTOR_DART_CRAWLER_ON_COMPLETE_YEAR)
-    def onCompleteYear(self, dto: DartApiCrawling, year: int) -> None:
+    async def onCompleteYear(self, dto: DartApiCrawling, year: int) -> None:
         self.logger.info("onCompleteYear", dto.taskUniqueId)
         task = self.tasksRepository.getTask(dto.taskId, dto.taskUniqueId)
-        self.tasksRepository.completeFactorDart(task, year)
+        self.tasksRepository.completeTask(task, str(year))
     
     @eventsDecorator.on(FactorDartScraper.FACTOR_DART_CRAWLER_ON_RESULT_OF_FACTOR)
-    def onResultOfFactor(self, dto: DartApiCrawling, year: int, obj: List) -> None:
+    async def onResultOfFactor(self, dto: DartApiCrawling, year: int, obj: List) -> None:
         self.logger.info("onResultOfFactor", dto.taskUniqueId)
+        task = self.tasksRepository.getTask(dto.taskId, dto.taskUniqueId)
         listOfFactorDao = list(map(lambda one: FactorDao(**{
             "code": one["crawling_code"],
             "name": one["crawling_name"],
@@ -115,9 +116,9 @@ class FactorDartScrapService(ScrapService):
         }), obj))
         asyncio.create_task(self.factorRepository.insertFactorDart(listOfFactorDao))
     
-    @eventsDecorator.on(FactorDartScraper.FACTOR_DART_CRAWLER_ON_CANCEL)
-    def onCancel(self, dto: DartApiCrawling) -> None:
-        self.logger.info("onCancelled")
+    # @eventsDecorator.on(FactorDartScraper.FACTOR_DART_CRAWLER_ON_CANCEL)
+    # def onCancel(self, dto: DartApiCrawling) -> None:
+    #     self.logger.info("onCancelled")
         # self.logger.info("tasks", self.tasksRepository.tasksdto.json())
         # task = self.tasksRepository.getTask(dto.taskId, dto.taskUniqueId)
         # self.logger.info("task", task.json())

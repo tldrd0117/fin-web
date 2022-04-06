@@ -8,6 +8,7 @@ import uuid
 from app.service.scrap.FactorDartScrapService import FactorDartScrapService
 from app.service.scrap.FactorFileScrapService import FactorFileScrapService
 from app.service.scrap.MarcapScrapService import MarcapScrapService
+from app.service.scrap.SeibroDividendScrapService import SeibroDividendScrapService
 from app.model.dto import StockUpdateState, YearData, \
     StockTaskSchedule, StockTaskScheduleList, \
     StockTaskScheduleInfo, StockRunCrawling, \
@@ -41,8 +42,13 @@ class TaskApiService(BaseComponent):
         self.crawlerRepository = self.get(CrawlerRepository)
         self.manager = self.get(ConnectionManager)
         self.taskScheduler = self.get(TaskScheduler)
-        self.marcapScrapService = self.get(MarcapScrapService)
         self.taskApiService = self.get(TaskApiService)
+        self.taskServices = {
+            "MarcapScrapService": self.get(MarcapScrapService),
+            "FactorDartScrapService": self.get(FactorDartScrapService),
+            "FactorFileScrapService": self.get(FactorFileScrapService),
+            "SeibroDividendScrapService": self.get(SeibroDividendScrapService)
+        }
 
         self.logger = Logger("TaskService")
         self.ee = self.tasksRepository.ee
@@ -117,7 +123,7 @@ class TaskApiService(BaseComponent):
         data: YearData = self.tasksRepository.getAllTaskState(taskId)
         self.manager.send(RES_SOCKET_TASK_FETCH_TASK_STATE, data.dict(), webSocket)
 
-    def updateTaskState(self, taskId: str, stockUpdateState: StockUpdateState = None) -> None:
+    def updateTaskState(self, stockUpdateState: StockUpdateState = None) -> None:
         if stockUpdateState is not None:
             self.manager.sendBroadCast(RES_SOCKET_TASK_UPDATE_TASK_STATE, stockUpdateState.dict())
         self.fetchTasks()
@@ -133,9 +139,12 @@ class TaskApiService(BaseComponent):
     async def addTask(self, taskName: str, dto: Dict) -> None:
         # data = dto
         print(taskName)
-        taskFunc: TaskService = getattr(self, taskName)
-        if taskFunc is not None:
-            await asyncio.create_task(taskFunc.addTask(dto))
+        if taskName in self.taskServices:
+            taskFunc: TaskService = self.taskServices[taskName]
+            if taskFunc is not None:
+                await asyncio.create_task(taskFunc.addTask(dto))
+        else:
+            self.logger.error("addTask", "not exist service")
         # if taskName == "convertFactorFileToDb":
         #     asyncio.create_task(self.factorFileScrapService.addCrawlingTask(dto))
         # elif taskName == "crawlingMarcapStockData":

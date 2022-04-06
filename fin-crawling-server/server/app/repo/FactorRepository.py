@@ -3,6 +3,7 @@ from typing import List
 from app.datasource.FactorMongoDataSource import FactorMongoDataSource
 from app.datasource.FactorDartMongoDataSource import FactorDartMongoDataSource
 from app.datasource.FactorFileDataSource import FactorFileDataSource
+from app.datasource.SeibroDividendDataSource import SeibroDividendDataSource
 from app.module.logger import Logger
 from app.model.dao import FactorDao
 from app.model.dto import FactorData
@@ -14,6 +15,7 @@ class FactorRepository(BaseComponent):
     def onComponentResisted(self) -> None:
         self.factorMongod = self.get(FactorMongoDataSource)
         self.factorDartMongod = self.get(FactorDartMongoDataSource)
+        self.seibroDiviendMongod = self.get(SeibroDividendDataSource)
         self.filed = self.get(FactorFileDataSource)
         self.logger = Logger("FactorRepository")
         return super().onComponentResisted()
@@ -36,4 +38,6 @@ class FactorRepository(BaseComponent):
     async def insertFactorDart(self, li: List[FactorDao]) -> None:
         await self.factorDartMongod.insertFactor(li)
 
+    async def insertFactorSeibroDiviend(self, li: List) -> None:
+        await self.seibroDiviendMongod.insertSeibrodiviendData(li)
         

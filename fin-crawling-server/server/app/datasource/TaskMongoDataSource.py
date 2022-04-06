@@ -16,24 +16,38 @@ class TaskMongoDataSource(MongoDataSource):
     def getCompletedTask(self, dto: ListLimitDao) -> ListLimitDataDao:
         try:
             data = dto.dict()
-            cursor = self.task.find({"$or": [
-                        {"state": "success"}, 
-                        {"state": "fail"},
-                        {"state": "complete"}, 
-                        {"state": "error"},
-                        {"state": "cancelled"}
-                    ]}
+            cursor = self.task.find({
+                        "$and": [{
+                            "$or": [
+                                {"state": "success"}, 
+                                {"state": "fail"},
+                                {"state": "complete"}, 
+                                {"state": "error"},
+                                {"state": "cancelled"},
+                                {"state": "cancel"},
+                            ]
+                        },{
+                            "taskId": dto.taskId
+                        }]
+                    }
                 ).sort("createdAt", DESCENDING)\
                 .skip(data["offset"])\
                 .limit(data["limit"])
             
-            count = self.task.find({"$or": [
-                        {"state": "success"}, 
-                        {"state": "fail"},
-                        {"state": "complete"}, 
-                        {"state": "error"},
-                        {"state": "cancelled"}
-                    ]}
+            count = self.task.find({
+                        "$and": [{
+                            "$or": [
+                                {"state": "success"}, 
+                                {"state": "fail"},
+                                {"state": "complete"}, 
+                                {"state": "error"},
+                                {"state": "cancelled"},
+                                {"state": "cancel"},
+                            ]
+                        },{
+                            "taskId": dto.taskId
+                        }]
+                    }
                 ).count()
             print("res:start")
             res = ListLimitDataDao(**{

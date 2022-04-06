@@ -87,26 +87,26 @@ class FactorFileScrapService(ScrapService):
 
     
     @eventsDecorator.on(FactorFileScraper.EVENT_FACTOR_FILE_ON_GET_FACTORS_INFILE)
-    def getFactorsInFile(self, runCrawling: RunScrap):
+    async def getFactorsInFile(self, runCrawling: RunScrap):
         task = self.tasksRepository.getTask(runCrawling.taskId, runCrawling.taskUniqueId)
         task.state = "get factors in file"
         self.tasksRepository.updateTask(task)
 
     @eventsDecorator.on(FactorFileScraper.EVENT_FACTOR_FILE_ON_MAKE_FACTOR_DATA)
-    def makeFactorData(self, runCrawling: RunScrap):
+    async def makeFactorData(self, runCrawling: RunScrap):
         task = self.tasksRepository.getTask(runCrawling.taskId, runCrawling.taskUniqueId)
         task.state = "make factor data"
         self.tasksRepository.updateTask(task)
 
     @eventsDecorator.on(FactorFileScraper.EVENT_FACTOR_FILE_ON_RESULT_OF_FACTOR)
-    def onResultOfFactor(self, runCrawling: RunScrap, factorList: List):
+    async def onResultOfFactor(self, runCrawling: RunScrap, factorList: List):
         task = self.tasksRepository.getTask(runCrawling.taskId, runCrawling.taskUniqueId)
         task.state = "insert factor in db"
 
-        async def completeMarcapTask() -> None:
+        async def insertTask() -> None:
             await self.factorRepository.insertFactor(factorList)
-            self.tasksRepository.completeFactorConvertFileToDbTask(task, "all")
-        asyncio.create_task(completeMarcapTask())
+            self.tasksRepository.completeTask(task, "all")
+        asyncio.create_task(insertTask())
     
 
     

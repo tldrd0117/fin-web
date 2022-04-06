@@ -7,7 +7,6 @@ from datetime import datetime, timedelta
 from typing import Dict, List, TypeVar
 from typing_extensions import Final
 
-from app.util.decorator import EventEmitter, eventsDecorator
 from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.remote.webdriver import WebDriver
@@ -33,8 +32,6 @@ class MarcapScraper(WebDriverScraper):
     EVENT_MARCAP_CRAWLING_ON_DOWNLOAD_START: Final ="MarcapScraper/onDownloadStart"
     EVENT_MARCAP_CRAWLING_ON_DOWNLOAD_COMPLETE: Final ="MarcapScraper/onDownloadComplete"
     EVENT_MARCAP_CRAWLING_ON_PARSING_COMPLETE: Final ="MarcapScraper/onParsingComplete"
-    EVENT_MARCAP_CRAWLING_ON_CANCEL: Final ="MarcapScraper/onCancel"
-    EVENT_MARCAP_CRAWLING_ON_ERROR: Final ="MarcapScraper/onError"
     EVENT_MARCAP_CRAWLING_ON_RESULT_OF_STOCK_DATA: Final ="MarcapScraper/onResultOfStockData"
     
     def __init__(self) -> None:
@@ -57,7 +54,7 @@ class MarcapScraper(WebDriverScraper):
         try:
             uuid = self.createUUID()
             self.logger.info("crawling", uuid)
-            self.ee.emit(self.EVENT_MARCAP_CRAWLING_ON_CONNECTING_WEBDRIVER, dto)
+            await self.ee.emit(self.EVENT_MARCAP_CRAWLING_ON_CONNECTING_WEBDRIVER, dto)
             
             downloadObserver = DownloadObserver()
             path = await asyncRetryNonBlock(5, 1, downloadObserver.makePath, uuid)
@@ -67,7 +64,7 @@ class MarcapScraper(WebDriverScraper):
 
             driver: WebDriver = await asyncRetryNonBlock(5, 1, self.connectWebDriver, dto.driverAddr, uuid)
             print("connectWebDriver")
-            self.ee.emit(self.EVENT_MARCAP_CRAWLING_ON_START_CRAWLING, dto)
+            await self.ee.emit(self.EVENT_MARCAP_CRAWLING_ON_START_CRAWLING, dto)
 
 
             date = datetime.strptime(dto.startDateStr, "%Y%m%d")
@@ -85,7 +82,7 @@ class MarcapScraper(WebDriverScraper):
                 self.logger.info("crawling", f"create downloadTask taskId: {dto.taskId} market: {dto.market} date: {dateStr} taskUniqueId: {dto.taskUniqueId}")
                 print(downloadTask.json())
                 downloadObserver.event_handler.setDownloadTask(downloadTask)
-                self.ee.emit(self.EVENT_MARCAP_CRAWLING_ON_DOWNLOAD_START, downloadTask)
+                await self.ee.emit(self.EVENT_MARCAP_CRAWLING_ON_DOWNLOAD_START, downloadTask)
                 await asyncRetryNonBlock(5, 1, self.downloadData, downloadTask, downloadObserver, driver)
                 # await self.downloadData(downloadTask, downloadObserver, driver)
                 date = date + timedelta(days=1)
@@ -146,8 +143,9 @@ class MarcapScraper(WebDriverScraper):
             print(f"timeout: {timeout} afterFileLength: {afterFilesLength}")
             self.logger.info(f"afterFileLength: {afterFilesLength}")
             if afterFilesLength > 0 and beforeFilesLength != afterFilesLength:
-                self.ee.emit(self.EVENT_MARCAP_CRAWLING_ON_DOWNLOAD_COMPLETE, downloadTask)
-                await asyncio.create_task(self.makeMarcapData(afterFiles[0], downloadTask))
+                await self.ee.emit(self.EVENT_MARCAP_CRAWLING_ON_DOWNLOAD_COMPLETE, downloadTask)
+                await asyncRetryNonBlock(3, 1, self.parseReceivedFile, afterFiles[0], downloadTask)
+                # await asyncio.create_task(self.makeMarcapData(afterFiles[0], downloadTask))
                 isWaiting = False
                 break
             timeout = timeout + 1
@@ -232,21 +230,10 @@ class MarcapScraper(WebDriverScraper):
         os.rename(path, dest_path)
         self.convertFileToDto(dest_path, retdto)
         retdto.result = "success"
-        self.ee.emit(self.EVENT_MARCAP_CRAWLING_ON_PARSING_COMPLETE, True, retdto, downloadTask)
-        self.ee.emit(self.EVENT_MARCAP_CRAWLING_ON_RESULT_OF_STOCK_DATA, downloadTask, retdto)
+        await self.ee.emit(self.EVENT_MARCAP_CRAWLING_ON_PARSING_COMPLETE, True, retdto, downloadTask)
+        await self.ee.emit(self.EVENT_MARCAP_CRAWLING_ON_RESULT_OF_STOCK_DATA, downloadTask, retdto)
         self.logger.info("parseFile", f"success, {downloadTask.taskUniqueId}")
     
-    async def makeMarcapData(self, path: str, downloadTask: StockCrawlingDownloadTask) -> None:
-        try:
-            await asyncRetry(3, 1, self.parseReceivedFile, path, downloadTask)
-        except Exception:
-            retdto = StockMarketCapitalResult()
-            retdto.result = "fail"
-            retdto.errorMsg = traceback.format_exc()
-            self.ee.emit(self.EVENT_MARCAP_CRAWLING_ON_PARSING_COMPLETE, False, retdto, downloadTask)
-            self.logger.error("parseFile", f"fail, {downloadTask.taskUniqueId} error: {traceback.format_exc()}")
-        finally:
-            self.logger.info("parseFile...")
 
     def changeCharSet(self, path: str) -> None:
         lines = None

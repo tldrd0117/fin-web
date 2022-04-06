@@ -5,7 +5,6 @@ import traceback
 from typing import Any, Dict, List, TypeVar
 from typing_extensions import Final
 
-from app.util.decorator import EventEmitter, eventsDecorator
 
 import uuid
 
@@ -39,7 +38,6 @@ class FactorDartScraper(Scraper):
     FACTOR_DART_CRAWLER_ON_CRAWLING_FACTOR_DATA: Final ="FactorDartCrawler/onCrawlingFactorData"
     FACTOR_DART_CRAWLER_ON_COMPLETE_YEAR: Final ="FactorDartCrawler/onCompleteYear"
     FACTOR_DART_CRAWLER_ON_RESULT_OF_FACTOR: Final ="FactorDartCrawler/onResultOfFactor"
-    FACTOR_DART_CRAWLER_ON_CANCEL: Final ="FactorDartCrawler/onCancel"
 
     def __init__(self) -> None:
         super().__init__()
@@ -91,23 +89,23 @@ class FactorDartScraper(Scraper):
         try:
             if dto.startYear < 2015:
                 dto.startYear = 2015
-            self.ee.emit(self.FACTOR_DART_CRAWLER_ON_DOWNLOADING_CODES, dto)
+            await self.ee.emit(self.FACTOR_DART_CRAWLER_ON_DOWNLOADING_CODES, dto)
             codes = await asyncRetryNonBlock(5, 1, self.downloadCodes, isCodeNew=dto.isCodeNew, apiKey=dto.apiKey)
             # codes = self.downloadCodes(dto.isCodeNew, dto.apiKey)
-            self.ee.emit(self.FACTOR_DART_CRAWLER_ON_CRAWLING_FACTOR_DATA, dto)
+            await self.ee.emit(self.FACTOR_DART_CRAWLER_ON_CRAWLING_FACTOR_DATA, dto)
             for year in range(dto.startYear, dto.endYear+1):
-                self.ee.emit(self.FACTOR_DART_CRAWLER_ON_CRAWLING_FACTOR_DATA, dto)
+                await self.ee.emit(self.FACTOR_DART_CRAWLER_ON_CRAWLING_FACTOR_DATA, dto)
                 self.logger.info("crawling", str(len(codes)))
                 for code in codes:
                     # newDf = self.getYearDf(dart, code, codes, year)
                     newDf = await asyncRetryNonBlock(5, 1, self.getYearDf, dto.apiKey, code, codes, year)
                     if self.isCancelled:
-                        self.ee.emit(self.FACTOR_DART_CRAWLER_ON_CANCEL, dto)
+                        await self.ee.emit(self.FACTOR_DART_CRAWLER_ON_CANCEL, dto)
                     if newDf is not None:
                         self.logger.info("crawling", code)
-                        self.ee.emit(self.FACTOR_DART_CRAWLER_ON_RESULT_OF_FACTOR, dto, year, newDf.to_dict("records"))
+                        await self.ee.emit(self.FACTOR_DART_CRAWLER_ON_RESULT_OF_FACTOR, dto, year, newDf.to_dict("records"))
                     # yearDf = await self.getYearDf(dart, code, codes, year, yearDf)
-                self.ee.emit(self.FACTOR_DART_CRAWLER_ON_COMPLETE_YEAR, dto, year)
+                await self.ee.emit(self.FACTOR_DART_CRAWLER_ON_COMPLETE_YEAR, dto, year)
                 self.logger.info("crawling", str(year))
         except Exception as e:
             raise e

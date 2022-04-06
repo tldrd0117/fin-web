@@ -20,27 +20,27 @@ class TaskSocketRouter(BaseComponent):
     
     
     @ed.on("task/progress/fetchTasks")
-    def fetchTasks(self, data: dict, websocket: WebSocket) -> None:
+    async def fetchTasks(self, data: dict, websocket: WebSocket) -> None:
         self.taskApiService.fetchTasks(websocket=websocket)
 
     @ed.on("task/calendar/fetchTaskState")
-    def fetchTaskState(self, data: dict, websocket: WebSocket) -> None:
+    async def fetchTaskState(self, data: dict, websocket: WebSocket) -> None:
         self.taskApiService.getTaskState(data["taskId"], websocket)
     
     @ed.on("task/poolInfo/fetchTaskPoolInfo")
-    def fetchTaskPoolInfo(self, data: dict, websocket: WebSocket) -> None:
+    async def fetchTaskPoolInfo(self, data: dict, websocket: WebSocket) -> None:
         self.taskApiService.getTaskPoolInfo(websocket)
 
     @ed.on("task/schedule/fetchTaskSchedule")
-    def fetchTaskSchedule(self, data: dict, websocket: WebSocket) -> None:
+    async def fetchTaskSchedule(self, data: dict, websocket: WebSocket) -> None:
         self.taskApiService.getTaskSchedule(websocket)
     
     @ed.on("task/progress/addTask")
-    def addTask(self, data: dict, websocket: WebSocket) -> None:
+    async def addTask(self, data: dict, websocket: WebSocket) -> None:
         asyncio.create_task(self.taskApiService.addTask(data["taskName"], data))
 
     @ed.on("task/schedule/addTaskSchedule")
-    def addTaskSchedule(self, data: dict, websocket: WebSocket) -> None:
+    async def addTaskSchedule(self, data: dict, websocket: WebSocket) -> None:
         # if data["startDate"] == "*":
         #     data["startDate"] = getNowDateStr()
         #     data["endDate"] = getNowDateStr()
@@ -58,11 +58,11 @@ class TaskSocketRouter(BaseComponent):
         self.taskApiService.addTaskSchedule(data["taskName"], scheduleDto, data, websocket)
 
     @ed.on("task/schedule/removeTaskSchedule")
-    def removeTaskSchedule(self, data: dict, websocket: WebSocket) -> None:
+    async def removeTaskSchedule(self, data: dict, websocket: WebSocket) -> None:
         self.taskApiService.removeTaskSchedule(data["id"], websocket)
 
     @ed.on("task/history/fetchCompletedTask")
-    def fetchCompletedTask(self, data: dict, websocket: WebSocket) -> None:
+    async def fetchCompletedTask(self, data: dict, websocket: WebSocket) -> None:
         dto = ListLimitData(**{
             "offset": data["offset"],
             "limit": data["limit"],
@@ -71,5 +71,5 @@ class TaskSocketRouter(BaseComponent):
         self.taskApiService.fetchCompletedTask(dto, websocket)
     
     @ed.on("task/progress/cancelTask")
-    def cancelTask(self, data: dict, websocket: WebSocket) -> None:
+    async def cancelTask(self, data: dict, websocket: WebSocket) -> None:
         self.taskApiService.cancelTask(data["taskId"], data["taskUniqueId"])

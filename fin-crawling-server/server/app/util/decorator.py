@@ -1,6 +1,6 @@
 
-from typing import Any, Callable
-from pymitter import EventEmitter
+from typing import Any, Awaitable, Callable
+from .events import eventManage
 
 def makeRegisteringDecorator(foreignDecorator):
     def newDecorator(func):
@@ -38,14 +38,14 @@ class eventsDecorator:
     classes = set()
     @staticmethod
     def on(eventName: str):
-        def decorator(func: Callable):
+        def decorator(func: Awaitable):
             return func
         newDeco = makeRegisteringDecorator(decorator)
         eventsDecorator.events[eventName] = newDeco
         return newDeco
 
     @staticmethod
-    def register(instance: Any, ee: EventEmitter):
+    def register(instance: Any, ee: eventManage):
         if instance.__class__ is None or instance.__class__.__name__ is None:
             return
         eventKey = str(id(instance)) + str(id(ee))
@@ -59,12 +59,13 @@ class eventsDecorator:
             if func is None:
                 continue
             func = getattr(instance, func.__name__)
+            
             print("onEvent:"+key+" func:"+str(func))
             ee.on(key, func)
         return keys
     
     @staticmethod
-    def unregist(instance: Any, ee: EventEmitter):
+    def unregist(instance: Any, ee: eventManage):
         eventKey = str(id(instance)) + str(id(ee))
         if eventKey in eventsDecorator.classes:
             eventsDecorator.classes.remove(eventKey)
