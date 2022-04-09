@@ -16,7 +16,7 @@ from app.model.scrap.model import SeibroDividendRunScrap
 
 # https://seibro.or.kr/websquare/control.jsp?w2xPath=/IPORTAL/user/company/BIP_CNTS01041V.xml&menuNo=285
 
-
+# 배당관련 정보
 class SeibroDividendScraper(WebDriverScraper):
     EVENT_SEIBRO_DIVIDEND_ON_CONNECTING_WEBDRIVER: Final = "SeibroDividendScraper/onConnectingWebdriver"
     EVENT_SEIBRO_DIVIDEND_ON_START_CRAWLING: Final = "SeibroDividendScraper/onStartCrawling"
@@ -24,7 +24,7 @@ class SeibroDividendScraper(WebDriverScraper):
     EVENT_SEIBRO_DIVIDEND_ON_RESULT_OF_DATA: Final = "SeibroDividendScraper/onResultOfData"
     def __init__(self) -> None:
         super().__init__()
-        self.logger = Logger("MarcapCrawler")
+        self.logger = Logger("SeibroDividendScraper")
     
 
     async def crawling(self, dto: SeibroDividendRunScrap) -> None:
@@ -86,5 +86,6 @@ class SeibroDividendScraper(WebDriverScraper):
         html = driver.execute_script('return $("#grid1_body_table")[0].outerHTML')
         df: pd.DataFrame = pd.read_html(html, converters={('종목코드', '종목코드'):str})[0]
         df.columns = list(map(lambda c: c[0], df.columns))
+        df["배정기준일"] = df["배정기준일"].apply(lambda v : str(v).replace("/",""))
+        df["현금배당 지급일"] = df["현금배당 지급일"].apply(lambda v : str(v).replace("/",""))
         return df.to_dict("records")
-

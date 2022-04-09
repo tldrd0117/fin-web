@@ -4,6 +4,7 @@ from app.datasource.FactorMongoDataSource import FactorMongoDataSource
 from app.datasource.FactorDartMongoDataSource import FactorDartMongoDataSource
 from app.datasource.FactorFileDataSource import FactorFileDataSource
 from app.datasource.SeibroDividendDataSource import SeibroDividendDataSource
+from app.datasource.SeibroStockNumDataSource import SeibroStockNumDataSource
 from app.module.logger import Logger
 from app.model.dao import FactorDao
 from app.model.dto import FactorData
@@ -16,6 +17,7 @@ class FactorRepository(BaseComponent):
         self.factorMongod = self.get(FactorMongoDataSource)
         self.factorDartMongod = self.get(FactorDartMongoDataSource)
         self.seibroDiviendMongod = self.get(SeibroDividendDataSource)
+        self.seibroStockNumMongod = self.get(SeibroStockNumDataSource)
         self.filed = self.get(FactorFileDataSource)
         self.logger = Logger("FactorRepository")
         return super().onComponentResisted()
@@ -40,4 +42,7 @@ class FactorRepository(BaseComponent):
 
     async def insertFactorSeibroDiviend(self, li: List) -> None:
         await self.seibroDiviendMongod.insertSeibrodiviendData(li)
+        
+    async def insertFactorSeibroStockNum(self, li: List) -> None:
+        await self.seibroStockNumMongod.insertSeibroStockNumData(li)
         

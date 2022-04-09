@@ -59,6 +59,7 @@ class MongoDataSource():
         self.factor = self.getCollection("factor")
         self.factorDart = self.getCollection("factorDart")
         self.seibroDividend = self.getCollection("seibroDividend")
+        self.seibroStockNum = self.getCollection("seibroStockNum")
         
         print(self.marcap.index_information())
         try:
@@ -71,6 +72,7 @@ class MongoDataSource():
             self.factorDart.create_index([("dataYear", ASCENDING), ("dataMonth", ASCENDING), ("code", ASCENDING), ("dataName", ASCENDING)], unique=True, name="factorDartIndex")
             self.seibroDividend.create_index([("배정기준일", ASCENDING),("현금배당 지급일", ASCENDING),\
                 ("결산월", ASCENDING),("배당구분", ASCENDING),("시장구분", ASCENDING),("종목코드", ASCENDING)], unique=True, name="seibroDiviendIndex")
+            self.seibroStockNum.create_index([("발행일", ASCENDING), ("기업명", ASCENDING), ("주식종류", ASCENDING), ("발행사유", ASCENDING), ("상장일", ASCENDING), ("발행주식수", ASCENDING)], unique=False, name="seibroStockNumIndex")
         except Exception as e:
             print(e)
         print(self.marcap.index_information())

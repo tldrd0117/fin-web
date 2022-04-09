@@ -9,6 +9,7 @@ from app.service.scrap.FactorDartScrapService import FactorDartScrapService
 from app.service.scrap.FactorFileScrapService import FactorFileScrapService
 from app.service.scrap.MarcapScrapService import MarcapScrapService
 from app.service.scrap.SeibroDividendScrapService import SeibroDividendScrapService
+from app.service.scrap.SeibroStockNumScrapService import SeibroStockNumScrapService
 from app.model.dto import StockUpdateState, YearData, \
     StockTaskSchedule, StockTaskScheduleList, \
     StockTaskScheduleInfo, StockRunCrawling, \
@@ -47,7 +48,8 @@ class TaskApiService(BaseComponent):
             "MarcapScrapService": self.get(MarcapScrapService),
             "FactorDartScrapService": self.get(FactorDartScrapService),
             "FactorFileScrapService": self.get(FactorFileScrapService),
-            "SeibroDividendScrapService": self.get(SeibroDividendScrapService)
+            "SeibroDividendScrapService": self.get(SeibroDividendScrapService),
+            "SeibroStockNumScrapService": self.get(SeibroStockNumScrapService)
         }
 
         self.logger = Logger("TaskService")

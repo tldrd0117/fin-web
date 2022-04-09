@@ -13,11 +13,13 @@ from app.service.scrap.FactorDartScrapService import FactorDartScrapService
 from app.service.scrap.FactorFileScrapService import FactorFileScrapService
 from app.service.scrap.MarcapScrapService import MarcapScrapService
 from app.service.scrap.SeibroDividendScrapService import SeibroDividendScrapService
+from app.service.scrap.SeibroStockNumScrapService import SeibroStockNumScrapService
 from app.datasource.StockMongoDataSource import StockMongoDataSource
 from app.datasource.FactorFileDataSource import FactorFileDataSource
 from app.datasource.FactorMongoDataSource import FactorMongoDataSource
 from app.datasource.FactorDartMongoDataSource import FactorDartMongoDataSource
 from app.datasource.SeibroDividendDataSource import SeibroDividendDataSource
+from app.datasource.SeibroStockNumDataSource import SeibroStockNumDataSource
 from app.datasource.TaskMongoDataSource import TaskMongoDataSource
 from app.router.socket.task import TaskSocketRouter
 
@@ -33,6 +35,7 @@ locator.registerAll([
     FactorDartMongoDataSource(),
     TaskMongoDataSource(),
     SeibroDividendDataSource(),
+    SeibroStockNumDataSource(),
     # REPOSITORY
     TasksRepository(),
     CrawlerRepository(),
@@ -48,6 +51,7 @@ locator.registerAll([
     FactorDartScrapService(),
     FactorFileScrapService(),
     SeibroDividendScrapService(),
+    SeibroStockNumScrapService(),
     MarcapScrapService(),
     TaskSocketRouter()
 ])

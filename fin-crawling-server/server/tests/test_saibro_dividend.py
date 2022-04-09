@@ -24,7 +24,7 @@ async def runTest(loop: asyncio.AbstractEventLoop) -> None:
 
 
 # cd /Users/iseongjae/Documents/projects/fin-web/fin-crawling-server/server
-# poetry run python -m pytest -s tests/test_saibro.py
+# poetry run python -m pytest -s tests/test_saibro_dividend.py
 def test() -> None:
     print("run test")
     loop = asyncio.get_event_loop()

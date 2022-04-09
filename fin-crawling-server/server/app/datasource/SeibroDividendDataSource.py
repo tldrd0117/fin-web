@@ -41,5 +41,5 @@ class SeibroDividendDataSource(MongoDataSource):
                 "$setOnInsert": {"createdAt": getNow()}
             }, upsert=True)
         except Exception as e:
-            self.logger.error("seibroDividend", traceback.format_exc())
+            self.logger.error("insertSeibrodiviendDataOne", traceback.format_exc())
             raise e
