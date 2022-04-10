@@ -34,7 +34,7 @@ export default (props) => {
             addTaskSchedule({
                 year, month, day, hour, minute, second, dayOfWeek,
                 taskId: "marcap",
-                taskName: "marcapScrapService",
+                taskName: "MarcapScrapService",
                 market: reservedMarket,
                 startDate,
                 endDate,

@@ -5,12 +5,15 @@ import { RootState } from '../data/root/rootReducer';
 import { fetchTaskSchedule } from '../data/task/taskScheduleSlice';
 import { fetchTaskState } from '../data/task/taskCalendarSlice';
 import SeibroList from './SeibroList';
+import { fetchCompletedTask } from '../data/task/taskHistorySlice';
 
 export default (props) => {
     const {isConnected} = useSelector((state: RootState)=>state.socket)
     const dispatch = useDispatch()
     useEffect(()=>{
         if(isConnected){
+            dispatch(fetchCompletedTask({offset:0, limit:20, taskId:"seibroDividend"}))
+            dispatch(fetchCompletedTask({offset:0, limit:20, taskId:"seibroStockNum"}))
             // dispatch(fetchCompletedTask({offset:0, limit:20}))
             // dispatch(fetchTaskState({ taskId: "marcap"}))
             // dispatch(fetchTaskSchedule({}))

@@ -34,9 +34,9 @@ const taskHistory = createSlice({
             state.offset = offset
             state.limit = limit
             state.count = count
-            if(offset == 0){
-                state.data = data
-            } else {
+            // if(offset == 0){
+                // state.data = data
+            // } else {
                 data.historyIds.forEach(col => {
                     if(!state.data.historyIds.includes(col)){
                         state.data.historyIds.push(col)
@@ -55,7 +55,7 @@ const taskHistory = createSlice({
                         
                     }
                 })
-            }
+            // }
         }
     },
 })

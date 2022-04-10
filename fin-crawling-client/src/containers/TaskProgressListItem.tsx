@@ -5,6 +5,17 @@ import LinearProgressBar from '../components/LinearProgressBar'
 import { cancelTask } from '../data/task/taskProgressSlice'
 import {getDateHipen} from '../utils/DateUtils'
 
+
+
+const progressState = (taskId: string, value: string) => {
+    console.log(taskId)
+    if(taskId == "seibroDividend" || taskId == "seibroStockNum"){
+        return value
+    } else {
+        return getDateHipen(value)
+    }
+}
+
 export default (props) => {
     const dispatch = useDispatch()
     const {
@@ -42,7 +53,7 @@ export default (props) => {
                 </label>
                 <div>
                     <label className="block text-gray-400 text-sm font-bold mb-2 mt-2" >
-                        현재진행: <span className="ml-2 font-bold"> {tasks&&tasks[index] ? `${getDateHipen(tasks[index])}` : ""}</span>
+                        현재진행: <span className="ml-2 font-bold"> {tasks&&tasks[index] ? `${progressState(taskId, tasks[index])}` : ""}</span>
                     </label>
                     <span>{`전체: ${count||"0"}`}</span>
                     <span className={"text-green-400 ml-2"}>{`성공: ${successCount||"0"}`}</span>

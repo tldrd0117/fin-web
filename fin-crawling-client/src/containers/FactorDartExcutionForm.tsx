@@ -36,7 +36,7 @@ export default (props) => {
         console.log("play")
         dispatch(
             addTask({
-                taskName: "factorDartScrapService",
+                taskName: "FactorDartScrapService",
                 taskId: "factorDart",
                 startYear,
                 endYear,

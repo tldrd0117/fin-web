@@ -27,8 +27,9 @@ export default (props) => {
                 }
             `}</style>
             <HeaderTable
-                header={[["시작일자 ~ 종료일자","시장","전체","성공","실패","퍼센트"]]}
+                header={[["시작일자 ~ 종료일자","시장","상태","전체","성공","실패","퍼센트"]]}
                 body={[...ids.map(val=>{
+                    console.log(list[val])
                     const {
                         startDateStr,
                         endDateStr,
@@ -37,10 +38,11 @@ export default (props) => {
                         successCount,
                         failCount,
                         percent,
+                        state,
                         _id
                     } = list[val];
                     return [
-                        _id,`${startDateStr} ~ ${endDateStr}`, market, count, successCount, failCount, percent
+                        _id,`${startDateStr} ~ ${endDateStr}`, market, state, count, successCount, failCount, percent
                 ]}), count <= offset + limit? null : <td onClick={handleNext} className={"text-center text-sm p-4 cursor-pointer"} colSpan={6}>더보기</td>]}
             />
         </div>

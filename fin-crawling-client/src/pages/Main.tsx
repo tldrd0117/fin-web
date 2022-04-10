@@ -41,17 +41,25 @@ export default ( {SubComponent = null}) => {
                 @apply overflow-auto;
             }
             .connect{
+                font-family: 'LAB디지털';
                 @apply absolute right-2;
             }
             .menu-layout-2{
                 margin-top: 60px;
+            }
+
+            @font-face {
+                font-family: 'LAB디지털';
+                src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_20-07@1.0/LAB디지털.woff') format('woff');
+                font-weight: normal;
+                font-style: normal;
             }
         `}</style>
         <div className={"top-down-layout"}>
             <AppBar
                 onMenuIconClick={()=>setMenuOpen(!isMenuOpen)}
                 className={"w-full appbar"} 
-                title={"Fin Crawling App"}>
+                title={"스크래핑을 위한 스크래핑"}>
                 {
                     isConnected?<div className={"connect text-green-500"}>연결</div>:
                     <div className={"connect text-red-500"}>연결끊김</div>

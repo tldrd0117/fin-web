@@ -8,7 +8,10 @@ export default (props) => {
             .title{
                 padding: 30px;
                 margin: 0px;
+                font-size: 20px;
+                font-family: 'LAB디지털';
             }
+            
         `}</style>
         <div className={`flex items-center shadow-lg ${className?className:""}`}>
             <MenuIcon

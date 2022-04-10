@@ -6,12 +6,15 @@ import { fetchTaskSchedule } from '../data/task/taskScheduleSlice';
 import { fetchTaskState } from '../data/task/taskCalendarSlice';
 import CrawlingList from './CrawlingList';
 import FactorList from './FactorList';
+import { fetchCompletedTask } from '../data/task/taskHistorySlice';
 
 export default (props) => {
     const {isConnected} = useSelector((state: RootState)=>state.socket)
     const dispatch = useDispatch()
     useEffect(()=>{
         if(isConnected){
+            dispatch(fetchCompletedTask({offset:0, limit:20, taskId:"factorFile"}))
+            dispatch(fetchCompletedTask({offset:0, limit:20, taskId:"factorDart"}))
             // dispatch(fetchCompletedTask({offset:0, limit:20}))
             // dispatch(fetchTaskState({ taskId: "marcap"}))
             // dispatch(fetchTaskSchedule({}))
