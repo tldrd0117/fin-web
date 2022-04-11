@@ -70,6 +70,8 @@ class SeibroDividendScraper(WebDriverScraper):
         driver.execute_script(f"$(\"*[alt='마지막 페이지'],*[alt='last page']\").click()")
         WebDriverWait(driver, timeout=20, poll_frequency=1).until(EC.invisibility_of_element((By.ID, "___processbar2")))
         size = driver.execute_script('return $(".w2pageList_label_selected").text()')
+        if size == "":
+            return None
         size = int(size)
         self.logger.info(f"changed! size:{str(size)}")
         driver.execute_script(f"$(\"*[alt='첫 페이지'],*[alt='first page']\").click()")
