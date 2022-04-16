@@ -78,6 +78,8 @@ class SeibroDividendScrapService(ScrapService):
             self.tasksRepository.completeTask(task, "")
         if data is not None:
             await asyncio.create_task(insertTask())
+        else:
+            self.tasksRepository.completeTask(task, "")
 
 
     # 크롤링 중 웹드라이버와 연결되었을 때 이벤트
