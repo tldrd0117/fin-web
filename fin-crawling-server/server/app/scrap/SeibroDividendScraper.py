@@ -90,4 +90,10 @@ class SeibroDividendScraper(WebDriverScraper):
         df.columns = list(map(lambda c: c[0], df.columns))
         df["배정기준일"] = df["배정기준일"].apply(lambda v : str(v).replace("/",""))
         df["현금배당 지급일"] = df["현금배당 지급일"].apply(lambda v : str(v).replace("/",""))
+        df["주당배당금(일반)"] = df["주당배당금"].iloc[:, 0]
+        df["주당배당금(차등)"] = df["주당배당금"].iloc[:, 1]
+        df["주당배당률(일반,현금)"] = df["주당배당률(일반)"].iloc[:, 0]
+        df["주당배당률(일반,주식)"] = df["주당배당률(일반)"].iloc[:, 1]
+        df["주당배당률(차등,현금)"] = df["주당배당률(차등)"].iloc[:, 0]
+        df["주당배당률(차등,주식)"] = df["주당배당률(차등)"].iloc[:, 1]
         return df.to_dict("records")
