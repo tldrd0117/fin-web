@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import {
     Router,
     Switch,
@@ -8,15 +8,21 @@ import {
 } from "react-router-dom";
 import Login from './pages/Login'
 import Main from './pages/Main';
-import {useSelector} from 'react-redux'
+import Join from './pages/Join'
+import {useDispatch, useSelector} from 'react-redux'
 import { ConnectedRouter } from 'connected-react-router';
 import {history, RootState} from "./data/root/rootReducer"
 import PrivateRouter from './components/PrivateRouter'
 import CrawlingBoard from './containers/CrawlingBoard';
 import FactorBoard from './containers/FactorBoard';
 import SeibroBoard from './containers/SeibroBoard';
+import { fetchPublicKey } from './data/user/userSlice';
 
 export default () => {
+    const dispatch = useDispatch()
+    useEffect(()=>{
+        dispatch(fetchPublicKey({}))
+    },[])
     return <>
         <ConnectedRouter history={history}>
             <Switch>
@@ -32,6 +38,10 @@ export default () => {
                 <Route path="/login">
                     <Login />
                 </Route>
+                <Route path="/join">
+                    <Join />
+                </Route>
+
                 <Redirect path={"/"} to={"/marcap"}/>
             </Switch>
         </ConnectedRouter>

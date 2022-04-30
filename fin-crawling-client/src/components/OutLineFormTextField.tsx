@@ -79,7 +79,7 @@ export default ({label, height = 40, wrapperClassName, formik, ...props}) => {
                 onBlur={handleBlur}
                 onPaste={handleChange}
                 value={formik.values[props.name]}
-                className={`border-solid border border-light-blue-500 w-full px-3`}
+                className={`border-solid border border-light-blue-500 w-full px-3 ring-transparent`}
                 style={{height}}
                 ref={first}
             />

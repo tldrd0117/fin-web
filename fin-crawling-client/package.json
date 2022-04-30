@@ -20,10 +20,11 @@
     "@babel/preset-typescript": "^7.13.0",
     "@fullhuman/postcss-purgecss": "^4.0.2",
     "@storybook/addon-actions": "^6.2.0-beta.4",
-    "@storybook/addon-essentials": "^6.2.0-beta.4",
+    "@storybook/addon-essentials": "^6.4.22",
     "@storybook/addon-links": "^6.2.0-beta.4",
     "@storybook/addon-postcss": "^2.0.0",
-    "@storybook/react": "^6.2.0-beta.4",
+    "@storybook/react": "^6.1.21",
+    "@types/crypto-js": "^4.1.1",
     "@types/html-webpack-plugin": "^3.2.4",
     "@types/lodash": "^4.14.168",
     "@types/react-modal": "^3.12.0",
@@ -43,7 +44,7 @@
     "typescript": "^4.1.5",
     "webpack": "^5.21.2",
     "webpack-cli": "^4.9.0",
-    "webpack-dev-server": "^3.11.2"
+    "webpack-dev-server": "^4.8.1"
   },
   "dependencies": {
     "@reduxjs/toolkit": "^1.5.0",
@@ -52,7 +53,9 @@
     "@types/react-router-dom": "^5.1.7",
     "@types/styled-jsx": "^2.2.8",
     "connected-react-router": "^6.9.1",
+    "crypto-js": "^4.1.1",
     "formik": "^2.2.6",
+    "jsencrypt": "^3.2.1",
     "react": "^17.0.1",
     "react-datepicker": "^3.6.0",
     "react-dom": "^17.0.1",
@@ -68,6 +71,7 @@
     "regenerator-transform": "^0.14.5",
     "socket.io-client": "^4.0.0",
     "styled-jsx-plugin-postcss": "^4.0.1",
+    "tinycolor2": "^1.4.2",
     "yup": "^0.32.9"
   }
 }

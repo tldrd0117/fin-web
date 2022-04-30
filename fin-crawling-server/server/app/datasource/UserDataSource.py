@@ -1,3 +1,9 @@
+from app.module.logger import Logger
+from app.datasource.MongoDataSource import MongoDataSource
+from app.model.user import User
+import traceback
+from app.util.DateUtils import getNow
+
 fake_users_db = {
     "johndoe": {
         "username": "johndoe",
@@ -21,3 +27,44 @@ fake_users_db = {
         "disabled": True,
     },
 }
+
+class UserDataSource(MongoDataSource):
+    def __init__(self) -> None:
+        super().__init__()
+        self.logger = Logger("UserDataSource")
+    
+
+    def getUser(self, email: str):
+        try:
+            cursor = self.user.find({"email":email})
+            return list(cursor)
+        except:
+            self.logger.error("getUser", traceback.format_exc())
+    
+    def getUserFromUsername(self, email: str):
+        try:
+            cursor = self.user.find({"username":email})
+            return list(cursor)
+        except:
+            self.logger.error("getUser", traceback.format_exc())
+
+    
+    def isDupUser(self, user: User):
+        result = self.user.find_one({"email": user.email})
+        return result is not None
+
+
+    def updateUser(self, user: User):
+        try:
+            userDict = user.dict()
+            userDict["updatedAt"] =  getNow()
+            result = self.user.update_one({
+                "username": user.username,
+                "email": user.email
+            }, {
+                "$set": userDict,
+                "$setOnInsert": {"createdAt": getNow()}
+            }, upsert=True)
+            return str(result.upserted_id)
+        except Exception:
+            self.logger.error("updateUser", traceback.format_exc())

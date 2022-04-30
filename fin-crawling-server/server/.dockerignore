@@ -1,1 +1,8 @@
 .venv
+log
+tests
+downloads
+factors
+docs_cache
+sock
+.pytest_cache

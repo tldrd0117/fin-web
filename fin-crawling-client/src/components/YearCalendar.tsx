@@ -6,8 +6,9 @@ import { ColorInput } from 'tinycolor2';
 import { GridLoader } from 'react-spinners';
 
 
+// import '../styles/calendar.css'
+import styles from '../styles/calendar.css';
 
-import * as styles from '../styles/calendar.css';
 
 import {
   DEFAULT_THEME,

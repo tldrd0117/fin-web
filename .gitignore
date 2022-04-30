@@ -10,6 +10,7 @@ server-webdriver.yaml
 Dockerfile
 .python-version
 fin-db/mongodb-express.yaml
+fin-db/mongodb-express-pro.yaml
 fin-db/mongodb-oper.yaml
 fin-crawling-server/server/downloads
 fin-simulator-server/luigi

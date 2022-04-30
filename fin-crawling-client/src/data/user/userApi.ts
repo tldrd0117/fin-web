@@ -10,6 +10,21 @@ const commonHeader = {
 
 }
 
+export const getPublicKey = async () => {
+    try{
+        console.log("getPublicKey")
+        const response: Response = await fetch(`${BASEURL}publicKey`, {
+            method: "POST",
+            body: ""
+        })
+        const json = await response.json()
+        return {response: json}
+    } catch(e) {
+        console.log(e)
+        return {error: e};
+    }
+}
+
 
 export const getToken = async (username: string, password: string) => {
     const formData = new FormData()
@@ -24,6 +39,26 @@ export const getToken = async (username: string, password: string) => {
         const json = await response.json()
         return {response: json}
     } catch(e){
+        console.log(e)
+        return {error: e};
+    }
+}
+
+export const join = async (username: string, hashedPassword: string, email: string, salt: string) => {
+    // const formData = new FormData()
+    // formData.append("username", username);
+    // formData.append("password", password);
+    // formData.append("email", email);
+    try{
+        const response: Response = await fetch(`${BASEURL}join`, {
+            method: "POST",
+            body: JSON.stringify({
+                username, hashedPassword, email, salt
+            })
+        })
+        const json = await response.json()
+        return {response: json}
+    } catch(e) {
         console.log(e)
         return {error: e};
     }

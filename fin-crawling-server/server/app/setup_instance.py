@@ -5,6 +5,7 @@ from app.repo.CrawlerRepository import CrawlerRepository
 from app.repo.TasksRepository import TasksRepository
 from app.repo.StockRepository import StockRepository
 from app.repo.FactorRepository import FactorRepository
+from app.repo.UserRepository import UserRepository
 from app.service.api.UserApiService import UserApiService
 from app.service.api.TaskApiService import TaskApiService
 from app.service.api.StockApiService import StockApiService
@@ -21,6 +22,7 @@ from app.datasource.FactorDartMongoDataSource import FactorDartMongoDataSource
 from app.datasource.SeibroDividendDataSource import SeibroDividendDataSource
 from app.datasource.SeibroStockNumDataSource import SeibroStockNumDataSource
 from app.datasource.TaskMongoDataSource import TaskMongoDataSource
+from app.datasource.UserDataSource import UserDataSource
 from app.router.socket.task import TaskSocketRouter
 
 
@@ -36,11 +38,13 @@ locator.registerAll([
     TaskMongoDataSource(),
     SeibroDividendDataSource(),
     SeibroStockNumDataSource(),
+    UserDataSource(),
     # REPOSITORY
     TasksRepository(),
     CrawlerRepository(),
     StockRepository(),
     FactorRepository(),
+    UserRepository(),
     # SCHEDULER
     TaskScheduler(),
     # SERVICE

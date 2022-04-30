@@ -6,6 +6,7 @@ import Menu from '../containers/Menu';
 import { RootState } from '../data/root/rootReducer'
 import { endConnection, startConnection } from '../data/socket/socketSlice';
 import { menus } from '../constants/Menu'
+import { fetchPublicKey } from '../data/user/userSlice';
 
 export default ( {SubComponent = null}) => {
     const { isConnected } = useSelector((state: RootState)=>state.socket)

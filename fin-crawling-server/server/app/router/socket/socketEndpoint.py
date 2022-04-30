@@ -7,6 +7,7 @@ from app.module.socket.manager import ConnectionManager
 from app.module.locator import Locator
 
 from app.service.api.UserApiService import UserApiService
+from app.model.user import User
 from uvicorn.config import logger
 
 
@@ -27,11 +28,10 @@ async def get_token(
 
 
 @router.websocket("/ws/{client_id}")
-async def websocket_endpoint(websocket: WebSocket, client_id: int, token: Any = Depends(get_token)) -> None:
-    if token is None:
+async def websocket_endpoint(websocket: WebSocket, client_id: int, user: User = Depends(userService.validateToken)) -> None:
+    if user is None:
         return
     await manager.connect(websocket)
-    
     try:
         while True:
             data = await websocket.receive_json()

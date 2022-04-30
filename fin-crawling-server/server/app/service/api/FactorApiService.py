@@ -11,3 +11,9 @@ class FactorApiService(BaseComponent):
 
     async def getFactor(self, code: str, year: str, month: str, source: str) -> List[FactorData]:
         return await self.factorRepository.getFactor(code, year, month, source)
+    
+    async def getDividendFactor(self, dividendCode: str, startDate: str, endDate: str, code: str):
+        return
+    
+    async def getStockNumFactor(self, reason: str, startDate: str, endDate: str, corpName: str, stockType: str):
+        return

@@ -43,6 +43,16 @@ class BaseTask(luigi.Task):
     def output(self) -> luigi.LocalTarget:
         return luigi.LocalTarget(self.makePath())
     
+    def outputOfPath(self) -> str:
+        return self.output().path
+    
+    def outputOfpd(self) -> Any:
+        path = self.output().path
+        return pd.read_hdf(path)
+    
+    def outputOfList(self) -> List:
+        return self.outputOfpd().to_list()
+    
     def makePath(self) -> str:
         pass
 
@@ -124,7 +134,7 @@ class GetStockDayTask(BaseTask):
     """
     date = luigi.OptionalParameter("")
     markets = luigi.OptionalParameter("")
-    targets = luigi.OptionalParameter("")
+    targetPath = luigi.OptionalParameter("")
 
     def makeQuery(self) -> Dict:
         query = {"$and":[]}
@@ -137,7 +147,7 @@ class GetStockDayTask(BaseTask):
 
     def run(self) -> Generator:
         path = self.makeDirs()
-        targets = pathToList(self.targets)
+        targets = pathToList(self.targetPath)
         client = yield MongoGetCollectionTask(index="stock", collection="marcap")
         collection = client.get_collection()
         cursor = collection.find(self.makeQuery())
@@ -148,7 +158,7 @@ class GetStockDayTask(BaseTask):
         print(df)
 
     def makePath(self) -> str:
-        return f'data/stock/day/GetStockDayTask-{self.date}-{encMd5(f"{self.markets}{self.targets}")}'
+        return f'data/stock/day/GetStockDayTask-{self.date}-{encMd5(f"{self.markets}{pathToStr(self.targetPath)}")}'
 
 
 class GetStockRangeTask(BaseTask):
@@ -158,11 +168,15 @@ class GetStockRangeTask(BaseTask):
     startDate = luigi.OptionalParameter("")
     endDate = luigi.OptionalParameter("")
     markets = luigi.OptionalParameter("")
-    targets = luigi.OptionalParameter("")
+    targetPath = luigi.OptionalParameter("")
+    targetJson = luigi.OptionalParameter("")
 
     def run(self) -> Generator:
         path = self.makeDirs()
-        targets = pathToList(self.targets)
+        if len(self.targetJson) > 0:
+            targets = json.loads(self.targetJson)
+        else:
+            targets = pathToList(self.targetPath)
         markets = json.loads(self.markets)
         client = yield MongoGetCollectionTask(index="stock", collection="marcap")
         collection = client.get_collection()
@@ -182,8 +196,30 @@ class GetStockRangeTask(BaseTask):
         print(df)
     
     def makePath(self) -> str:
-        return f'data/stock/range/GetStockRangeTask-{self.startDate}-{self.endDate}-{encMd5(f"{self.markets}{self.targets}")}'
+        return f'data/stock/range/GetStockRangeTask-{self.startDate}-{self.endDate}-{encMd5(f"{self.markets}{pathToStr(self.targetPath)}")}'
 
+
+class GetStockAdjustedPriceRangeTask(BaseTask):
+    startDate = luigi.OptionalParameter("")
+    endDate = luigi.OptionalParameter("")
+    markets = luigi.OptionalParameter("")
+    targetPath = luigi.OptionalParameter("")
+    targetJson = luigi.OptionalParameter("")
+
+    def requires(self):
+        return {
+            "GetStockRangeTask": GetStockRangeTask(markets=self.markets, startDate=self.startDate, endDate=self.endDate, targetJson=self.targetJson)
+        }
+    
+    def run(self):
+        path = self.makeDirs()
+        indata = self.input()
+        df = pd.read_hdf(indata["GetStockRangeTask"].path)
+        
+
+    
+    def makePath(self) -> str:
+        return f""
 
 
 class GetFactorYearTask(BaseTask):
@@ -192,38 +228,68 @@ class GetFactorYearTask(BaseTask):
     """
     year = luigi.OptionalParameter("")
     month = luigi.OptionalParameter("12")
-    name = luigi.OptionalParameter("")
-    exact = luigi.BoolParameter(False)
+    names = luigi.OptionalParameter("")
+    dataIds = luigi.OptionalParameter("")
+    exact = luigi.BoolParameter(True)
+    standardYear = luigi.IntParameter(2019)
 
-    def makeAndQuery(self) -> List:
+    def makeAndQuery(self, isDart) -> List:
         query = []
+        nameQuery = []
+        names = json.loads(self.names) if self.names is not None and len(self.names) > 0 else ""
+        dataIds = json.loads(self.dataIds) if self.dataIds is not None and len(self.dataIds) > 0 else ""
         if len(self.year) > 0:
             query.append({
-                "dataYear": "{:.1f}".format(int(self.year))
+                "dataYear": str(self.year) if isDart else "{:.1f}".format(int(self.year))
             })
         if len(self.month) > 0:
             query.append({
                 "dataMonth": self.month
             })
-        if len(self.name) > 0:
+        nameQuery = {"$or":[]}            
+        if len(names) == 1:
             if self.exact:
-                query.append({
-                    "dataName": self.name
+                nameQuery["$or"].append({
+                    "dataName": names[0]
                 })
             else:
-                query.append({
-                    "dataName": {"$regex": self.name}
+                nameQuery["$or"].append({
+                    "dataName": {"$regex": names[0]}
                 })
+        elif len(names) > 1:
+            if self.exact:
+                nameQuery["$or"].append({
+                    "$or": list(map(lambda name: {"dataName": str(name)}, names))
+                })
+            else:
+                nameQuery["$or"].append({
+                    "$or": list(map(lambda name: {"dataName": {"$regex": name} }, names))
+                })
+        if len(dataIds) == 1:
+            nameQuery["$or"].append({
+                "dataId": dataIds[0]
+            })
+        elif len(dataIds) > 1:
+            nameQuery["$or"].append({
+                "$dataId": list(map(lambda dataId: {"dataId": str(dataId)}, dataIds))
+            })
+        query.append(nameQuery)
         print(query)
         return query
 
     def run(self) -> Generator:
         path = self.makeDirs()
-        client = yield MongoGetCollectionTask(index="stock", collection="factor")
+        isDart = False
+        if int(self.year) >= self.standardYear:
+            isDart = True
+            client = yield MongoGetCollectionTask(index="stock", collection="factorDart")
+        else:
+            client = yield MongoGetCollectionTask(index="stock", collection="factor")
         collection = client.get_collection()
-        cursor = collection.find({"$and": self.makeAndQuery()})
+        cursor = collection.find({"$and": self.makeAndQuery(isDart)})
         
         df = pd.DataFrame(list(cursor))
+        print(df)
         # errors를 coerce로 하면 숫자로 못바꾸는 항목은 NaN으로 설정
         df["_id"] = df["_id"].astype(str)
         df["createdAt"] = df["createdAt"].astype(str)
@@ -231,17 +297,21 @@ class GetFactorYearTask(BaseTask):
         df["dataValue"] = pd.to_numeric(df["dataValue"], errors="coerce")
         df.dropna(subset=['dataValue'])
         df.to_hdf(path, key='df', mode='w')
-        print(df)
+        print(df["dataName"].drop_duplicates())
+        print(df["dataId"].drop_duplicates())
     
     def makePath(self) -> str:
-        path = 'data/factor/fnguide/year/factor-fnguide'
+        path = 'data/factor/year/factor-'
         strYear = str(self.year)
         strMonth = str(self.month)
-        strName = str(self.name)
+        strStandardYear = str(self.standardYear)
+        strName = encMd5(str(self.names))
         if len(strYear) > 0:
             path = path + f"-{strYear}"
         if len(strMonth) > 0:
             path = path + f"-{strMonth}"
+        if len(strStandardYear) > 0:
+            path = path + f"-{strStandardYear}"
         if len(strName) > 0:
             path = path + f"-{strName}"
         return path
@@ -254,11 +324,11 @@ class GetMarcapDayTask(BaseTask):
     markets = luigi.OptionalParameter("")
     date = luigi.OptionalParameter("")
     dataName = luigi.OptionalParameter("")
-    targets = luigi.OptionalParameter("")
+    targetPath = luigi.OptionalParameter("")
 
     def requires(self):
         return {
-            "GetStockDayTask": GetStockDayTask(date=self.date, targets=self.targets, markets=self.markets)
+            "GetStockDayTask": GetStockDayTask(date=self.date, targetPath=self.targetPath, markets=self.markets)
         }
 
     def run(self) -> Generator:
@@ -280,7 +350,7 @@ class GetMarcapDayTask(BaseTask):
             df.to_hdf(path, key='df', mode='w')
     
     def makePath(self) -> str:
-        return f'data/marcap/day/GetMarcapDayTask-{self.date}-{self.dataName}-{encMd5(f"{self.markets}{self.targets}")}'
+        return f'data/marcap/day/GetMarcapDayTask-{self.date}-{self.dataName}-{encMd5(f"{self.markets}{pathToStr(self.targetPath)}")}'
 
 
 class GetMarcapRangeTask(BaseTask):
@@ -291,12 +361,12 @@ class GetMarcapRangeTask(BaseTask):
     startDate = luigi.OptionalParameter("")
     endDate = luigi.OptionalParameter("")
     dataName = luigi.OptionalParameter("")
-    targets = luigi.OptionalParameter("")
+    targetPath = luigi.OptionalParameter("")
 
     def requires(self):
         return {
             "GetStockRangeTask": GetStockRangeTask(startDate=self.startDate, endDate=self.endDate, 
-                targets=self.targets, markets=self.markets)
+                targetPath=self.targetPath, markets=self.markets)
         }
 
     def run(self) -> Generator:
@@ -323,7 +393,7 @@ class GetMarcapRangeTask(BaseTask):
             df.to_hdf(path, key='df', mode='w')
     
     def makePath(self) -> str:
-        return f'data/marcap/range/GetMarcapRangeTask-{self.startDate}-{self.endDate}-{self.dataName}-{encMd5(f"{self.markets}{self.targets}")}'
+        return f'data/marcap/range/GetMarcapRangeTask-{self.startDate}-{self.endDate}-{self.dataName}-{encMd5(f"{self.markets}{pathToStr(self.targetPath)}")}'
 
 
 class GetMarcapCodes(BaseTask):
@@ -366,54 +436,58 @@ class GetStockCodeFilteringByFactorRankAndMinMax(BaseTask):
     targets(종목 코드 리스트)에서 해당 팩터를 정렬하여 limit안의 Rank에 속한 종목코드 리스트를 반환한다(includeSame이 True일 경우 동점자도 포함이다)
     """
     date = luigi.OptionalParameter("")
-    factor = luigi.OptionalParameter("")
+    factors = luigi.OptionalParameter("")
+    factorIds = luigi.OptionalParameter("")
     markets = luigi.OptionalParameter("")
-    targets = luigi.OptionalParameter("")
+    targetPath = luigi.OptionalParameter("")
     isAscending = luigi.BoolParameter(True)
     limit = luigi.IntParameter(sys.maxsize)
     isIncludeSame = luigi.BoolParameter(True)
     minValue = luigi.FloatParameter(-float("inf"))
     maxValue = luigi.FloatParameter(float("inf"))
 
-    def run(self) -> Generator:
-        path = self.makeDirs()
+    def requires(self):
         year = int(self.date[:4])
         month = int(self.date[4:6])
-        markets = json.loads(self.markets)
-        limit = int(self.limit)
-        targets = pathToList(self.targets)
-
-        factorTarget = None
         if month <= 4:
-            factorTarget = yield GetFactorYearTask(year=str(year - 1), name=self.factor)
+            factorTarget = GetFactorYearTask(year=str(year - 1), names=self.factors, dataIds=self.factorIds)
         else:
-            factorTarget = yield GetFactorYearTask(year=str(year), name=self.factor)
-        factorDf: pd.DataFrame = pd.read_hdf(factorTarget.path)
+            factorTarget = GetFactorYearTask(year=str(year), names=self.factors, dataIds=self.factorIds)
+        return {
+            "GetFactorYearTask": factorTarget
+        }
+
+    def run(self) -> Generator:
+        path = self.makeDirs()
+        limit = int(self.limit)
+        targets = pathToList(self.targetPath)
+        indata = self.input()
+        factorDf: pd.DataFrame = pd.read_hdf(indata["GetFactorYearTask"].path)
         if factorDf.empty:
             return
         newDf = factorDf[factorDf["code"].isin(targets)]
         newDf.sort_values(by="dataValue", ascending=self.isAscending, inplace=True)
         newDf = newDf[newDf["dataValue"]>=self.minValue]
-        newDf = newDf[newDf["dataValue"]>=self.maxValue]
+        newDf = newDf[newDf["dataValue"]<=self.maxValue]
 
         if not self.isIncludeSame:
             newDf = newDf.iloc[0:int(limit)]
         else:
             newDf["rank"] = newDf["dataValue"].rank(method="min", ascending=self.isAscending)
             newDf = newDf[newDf["rank"] <= limit]
-            
-        newDf.to_hdf(path, key='df', mode='w')
+        newDf["code"].to_hdf(path, key='df', mode='w')
+        # newDf.to_hdf(path, key='df', mode='w')
         print(newDf)
         print(path)
 
     def makePath(self) -> str:
-        return f"data/simul/factor/GetStockCodeFilteringByFactorRank-{self.date}-{self.factor}-{self.isAscending}-{self.isIncludeSame}-{self.limit}-{self.minValue}-{self.maxValue}-{encMd5(f'{self.markets}{self.targets}')}"
+        return f"data/simul/factor/GetStockCodeFilteringByFactorRank-{self.date}-{self.isAscending}-{self.isIncludeSame}-{self.limit}-{self.minValue}-{self.maxValue}-{encMd5(f'{self.factors}{self.markets}{pathToStr(self.targetPath)}')}"
 
 
 class GetStockCodeFilteringByVarientRank(BaseTask):
     date = luigi.OptionalParameter("")
     beforeMonth = luigi.IntParameter(-12)
-    targets = luigi.OptionalParameter("")
+    targetPath = luigi.OptionalParameter("")
     markets = luigi.OptionalParameter("")
     isAscending = luigi.BoolParameter(True)
     limit = luigi.IntParameter(sys.maxsize)
@@ -425,13 +499,13 @@ class GetStockCodeFilteringByVarientRank(BaseTask):
         startDate = moveMonth(current, self.beforeMonth, current.day)
         endDate = current - pd.Timedelta(-1, "D")
         return {
-            "marcapClose": GetMarcapRangeTask(dataName="close", startDate=dateToStr(startDate), endDate=dateToStr(endDate), markets=self.markets, targets=self.targets),
+            "marcapClose": GetMarcapRangeTask(dataName="close", startDate=dateToStr(startDate), endDate=dateToStr(endDate), markets=self.markets, targetPath=self.targetPath),
         }
 
     def run(self) -> None:
         path = self.makeDirs()
         indata = self.input()
-        targets = pathToList(self.targets)
+        targets = pathToList(self.targetPath)
         dataDf = pd.read_hdf(indata["marcapClose"].path)
         dataDf: pd.DataFrame = dataDf[dataDf["code"].isin(targets)]
         dataDf = dataDf.pivot(index="date", columns="code", values="dataValue")
@@ -442,25 +516,25 @@ class GetStockCodeFilteringByVarientRank(BaseTask):
         pd.Series(result).to_hdf(path, key="df", mode="w")
     
     def makePath(self) -> str:
-        return f"data/simul/stock/GetStockCodeFilteringByVarientRank-{self.date}-{self.beforeMonth}-{self.isAscending}-{self.limit}"
+        return f"data/simul/stock/GetStockCodeFilteringByVarientRank-{self.date}-{self.beforeMonth}-{self.isAscending}-{self.limit}-{pathToStr(self.targetPath)}"
 
 
 class GetStockCodeFilteringMarcapDataRankAndMinMax(BaseTask):
     """
     """
     date = luigi.OptionalParameter("")
-    targets = luigi.OptionalParameter("")
+    targetPath = luigi.OptionalParameter("")
     markets = luigi.OptionalParameter("")
     dataName = luigi.OptionalParameter("")
     isAscending = luigi.BoolParameter(True)
-    limit = luigi.IntParameter(30)
+    limit = luigi.IntParameter(sys.maxsize)
     minValue = luigi.FloatParameter(-float("inf"))
     maxValue = luigi.FloatParameter(-float("inf"))
     isIncludeSame = luigi.BoolParameter(True)
 
     def requires(self):
         return {
-            "GetMarcapDayTask": GetMarcapDayTask(date=self.date, markets=self.markets, targets=self.targets, dataName=self.dataName)
+            "GetMarcapDayTask": GetMarcapDayTask(date=self.date, markets=self.markets, targetPath=self.targetPath, dataName=self.dataName)
         }
     
     def run(self):
@@ -482,9 +556,53 @@ class GetStockCodeFilteringMarcapDataRankAndMinMax(BaseTask):
 
     
     def makePath(self):
-        md5 = encMd5(f"{self.markets}{self.targets}")
+        md5 = encMd5(f"{self.markets}{pathToStr(self.targetPath)}")
         return f"data/simul/stock/GetStockCodeFilteringMarcapDataRank-{self.date}-{self.dataName}-{self.isAscending}-{self.limit}-{self.minValue}-{self.maxValue}-{md5}"
 
+#
+class GetFilteringMarcapDataPerFactor(BaseTask):
+    date = luigi.OptionalParameter("")
+    markets = luigi.OptionalParameter("")
+    type1 = luigi.OptionalParameter("")
+    type2 = luigi.OptionalParameter("")
+    dataName1 = luigi.OptionalParameter("")
+    dataName2 = luigi.OptionalParameter("")
+    op = luigi.OptionalParameter("")
+    targetPath = luigi.OptionalParameter("")
+    isAscending = luigi.BoolParameter(True)
+    limit = luigi.IntParameter(sys.maxsize)
+    minValue = luigi.FloatParameter(-float("inf"))
+    maxValue = luigi.FloatParameter(-float("inf"))
+    isIncludeSame = luigi.BoolParameter(True)
+
+
+    def getTask(self, type, dataName):
+        data = None
+        if type == "marcap":
+            data = GetMarcapDayTask(date=self.date, markets=self.markets, targetPath=self.targetPath, dataName=dataName)
+        elif type == "factor":
+            year = int(self.date[:4])
+            month = int(self.date[4:6])
+            dataNameArr = json.dumps([dataName])
+            if month <= 4:
+                data = GetFactorYearTask(year=str(year - 1), names=dataNameArr, dataIds=dataNameArr)
+            else:
+                data = GetFactorYearTask(year=str(year), names=dataNameArr, dataIds=dataNameArr)
+        return data
+
+    def requires(self):
+        return {
+            "data1": self.getTask(self.type1, self.dataName1),
+            "data2": self.getTask(self.type2, self.dataName2),
+        }
+    
+    def run(self):
+        path = self.makeDirs()
+        indata = self.input()
+    
+    def makePath(self):
+        md5 = encMd5(f"{self.markets}{pathToStr(self.targetPath)}")
+        return f"data/simul/factor/GetFilteringMarcapDataPerFactor-{self.date}-{self.type1}-{self.dataName1}-{self.op}-{self.type2}-{self.dataName2}-{md5}"
 
 
 class GetStockCodeFilteringAltmanZScore(BaseTask):
@@ -493,7 +611,7 @@ class GetStockCodeFilteringAltmanZScore(BaseTask):
     """
     date = luigi.OptionalParameter("")
     minValue = luigi.FloatParameter(1.81)
-    targets = luigi.OptionalParameter("")
+    targetPath = luigi.OptionalParameter("")
     markets = luigi.OptionalParameter("")
 
     def requires(self):
@@ -512,14 +630,14 @@ class GetStockCodeFilteringAltmanZScore(BaseTask):
             "retainedEarning": GetFactorYearTask(year=(factorYear), name="이익잉여금", exact=True),
             "sales": GetFactorYearTask(year=(factorYear), name="매출액", exact=True),
             "ebit": GetFactorYearTask(year=(factorYear), name="ebit", exact=True),
-            "marketValueOfEquity": GetMarcapDayTask(year=str(year), month=str(month), day=str(day), markets=self.markets, dataName="marcap"),
+            "marketValueOfEquity": GetMarcapDayTask(date=self.date, markets=self.markets, dataName="marcap", targetPath=self.targetPath),
         }
 
 
     def run(self) -> None:
         path = self.makeDirs()
         indata = self.input()
-        targets = pathToList(self.targets)
+        targets = pathToList(self.targetPath)
 
         floatingAsset = pd.read_hdf(indata["floatingAsset"].path)
         floatingLiablilities = pd.read_hdf(indata["floatingLiablilities"].path)
@@ -545,8 +663,7 @@ class GetStockCodeFilteringAltmanZScore(BaseTask):
 
         altmanZ = op(x1, op(x2, op(x3, op(x4, x5, "+", "v1"), "+", "v2"), "+", "v3"), "+", "altmanZ")
         altmanZ = altmanZ[altmanZ["dataValue"]>=self.minValue]
-        altmanZ.to_hdf(path, key='df', mode='w')
-        print(altmanZ)
+        altmanZ["code"].to_hdf(path, key='df', mode='w')
 
         # x1 = (floatingAssetDf - floatingLiablilitiesDf) / totalAssetDf
         # x2 = retainedEarningDf / totalAssetDf
@@ -557,4 +674,4 @@ class GetStockCodeFilteringAltmanZScore(BaseTask):
         # print(altmanZ)
     
     def makePath(self):
-        return f"data/simul/factor/GetStockCodeFilteringAltmanZScore-{self.date}"
+        return f"data/simul/factor/GetStockCodeFilteringAltmanZScore-{self.date}-{pathToStr(self.targetPath)}"

@@ -36,3 +36,6 @@ def dateToStr(date: pd.Timestamp) -> str:
 
 def strToDate(string: str) -> pd.Timedelta:
     return pd.to_datetime(string, format='%Y%m%d')
+
+def pathToStr(path: str) -> str:
+    return path.replace("/", "_")

@@ -1,5 +1,5 @@
 
-from app.tasks.stockTasks import GetStockCodeFilteringByVarientRank, GetStockDayTask, GetMarcapCodes, GetStockCodeFilteringByFactorMinMax, GetStockCodeFilteringByFactorRank, GetStockCodeFilteringAltmanZScore
+from app.tasks.stockTasks import GetStockCodeFilteringByVarientRank, GetStockDayTask, GetMarcapCodes, GetStockCodeFilteringByFactorRankAndMinMax, GetStockCodeFilteringAltmanZScore
 import luigi
 import json
 import pandas as pd
@@ -56,10 +56,29 @@ def test_GetMarcap() -> None:
 #     luigi.build([task], workers=1, detailed_summary=True)
 
 
-def test_GetStockCodeFilteringByVarientRank() -> None:
+# def test_GetStockCodeFilteringByVarientRank() -> None:
+#     markets = json.dumps(["kospi", "kosdaq"])
+#     task = GetStockCodeFilteringByVarientRank(date="20151123", markets=markets, targets=test_GetMarcap())
+#     luigi.build([task], workers=1, detailed_summary=True)
+
+def test_GetStockCodeFilteringByFactorRankAndMinMax() -> None:
+    date = "20151101"
+    factors = json.dumps(["영업활동으로인한현금흐름"])
+    factorIds = json.dumps(["ifrs-full_CashFlowsFromUsedInOperatingActivities"])
     markets = json.dumps(["kospi", "kosdaq"])
-    task = GetStockCodeFilteringByVarientRank(date="20151123", markets=markets, targets=test_GetMarcap())
+    task = GetStockCodeFilteringByFactorRankAndMinMax(date=date,
+        factors=factors,
+        factorIds=factorIds, 
+        markets=markets, 
+        isAscending=False, 
+        # limit=50, 
+        targetPath=test_GetMarcap())
     luigi.build([task], workers=1, detailed_summary=True)
+    resultDf = pd.read_hdf(task.output().path)
+    result = resultDf["code"].to_list()
+    print(resultDf)
+    print(result)
+    print(len(result))
 
 
 

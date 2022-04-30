@@ -78,16 +78,18 @@ class SeibroStockNumScraper(WebDriverScraper):
         WebDriverWait(driver, timeout=20, poll_frequency=1).until(EC.invisibility_of_element((By.ID, "___processbar2")))
         for index in range(1, size):
             await sleepNonBlock(0.5)
-            data = await self.crawlingNextPage(driver)
+            data = await self.crawlingNextPage(driver, code)
             print(data)
             resultArr.append(data)
             driver.execute_script(f"$(\"*[alt='다음 페이지'],*[alt='next page']\").click()")
             WebDriverWait(driver, timeout=20, poll_frequency=1).until(EC.invisibility_of_element((By.ID, "___processbar2")))
         return resultArr
     
-    async def crawlingNextPage(self, driver: WebDriver):
+    async def crawlingNextPage(self, driver: WebDriver, code: str):
         html = driver.execute_script('return $("#grid1_body_table")[0].outerHTML')
         df: pd.DataFrame = pd.read_html(html)[0]
         df["발행일"] = df["발행일"].apply(lambda v : str(v).replace("/",""))
         df["상장일"] = df["상장일"].apply(lambda v : str(v).replace("/",""))
+        df["code"] = code
+
         return df.to_dict("records")
