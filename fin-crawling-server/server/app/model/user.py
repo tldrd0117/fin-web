@@ -19,7 +19,7 @@ class User(BaseModel):
 class JoinUser(BaseModel):
     username: str
     email: str
-    hashedPassword: Optional[str] = None
+    password: Optional[str] = None
     salt: Optional[str] = None
 
 

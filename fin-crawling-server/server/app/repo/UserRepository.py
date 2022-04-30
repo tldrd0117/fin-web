@@ -94,7 +94,7 @@ class UserRepository(BaseComponent):
         user = User(**{
             "username": joinUser.username,
             "email": joinUser.email,
-            "hashedJwtPassword": self.getPasswordHash(joinUser.hashedPassword),
+            "hashedJwtPassword": self.getPasswordHash(joinUser.password),
             "disabled": False,
             "salt": joinUser.salt
         })

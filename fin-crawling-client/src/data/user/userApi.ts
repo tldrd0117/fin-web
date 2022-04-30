@@ -44,7 +44,7 @@ export const getToken = async (username: string, password: string) => {
     }
 }
 
-export const join = async (username: string, hashedPassword: string, email: string, salt: string) => {
+export const join = async (username: string, password: string, email: string, salt: string) => {
     // const formData = new FormData()
     // formData.append("username", username);
     // formData.append("password", password);
@@ -53,7 +53,7 @@ export const join = async (username: string, hashedPassword: string, email: stri
         const response: Response = await fetch(`${BASEURL}join`, {
             method: "POST",
             body: JSON.stringify({
-                username, hashedPassword, email, salt
+                username, password, email, salt
             })
         })
         const json = await response.json()

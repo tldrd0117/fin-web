@@ -44,7 +44,7 @@ const userSlice = createSlice({
             const { payload } = action;
             const encrypt = new JSEncrypt();
             encrypt.setPublicKey(state.publicKey);
-            payload.password = encrypt.encrypt(payload.password);
+            payload.encPassword = encrypt.encrypt(payload.password);
             console.log(payload)
           
         },

@@ -18,8 +18,8 @@ export function* watchOnFetchToken(action){
 }
 
 export function* watchOnJoin(action){
-    const {username, hashedPassword, email, salt} = action.payload
-    const {response, error} = yield call(join, username, hashedPassword, email, salt)
+    const {username, encPassword, email, salt} = action.payload
+    const {response, error} = yield call(join, username, encPassword, email, salt)
     console.log(response, error)
     if(response && !response.detail){
         yield put(joinSuccess({

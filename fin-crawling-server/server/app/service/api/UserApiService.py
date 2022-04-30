@@ -110,6 +110,17 @@ class UserApiService(BaseComponent):
     
 
     async def joinUser(self, joinUser: JoinUser):
+        isDup = await self.isDupUser(User(**{
+            "username": joinUser.username,
+            "email": joinUser.email
+        }))
+        if isDup:
+            return HTTPException(
+                status_code=status.HTTP_409_CONFLICT,
+                detail="중복된 이메일 입니다",
+                headers={"WWW-Authenticate": "Bearer"},
+            )
+        joinUser.password = self.userRepository.decryptRSA(joinUser.password)
         return self.userRepository.joinUser(joinUser)
     
 
