@@ -186,7 +186,8 @@ class GetStockRangeTask(BaseTask):
                 }, 
                 {
                     "$or": list(map(lambda market: {"market": market}, markets))
-                }
+                },
+                
             ]
         })
         df = pd.DataFrame(list(cursor))
