@@ -29,16 +29,6 @@ async def login_for_access_token(form_data: OAuth2PasswordRequestForm = Depends(
 @router.post("/join")
 async def join(user: JoinUser):
     logger.info("join", user.dict())
-    isDup = await userService.isDupUser(User(**{
-        "username": user.username,
-        "email": user.email
-    }))
-    if isDup:
-        return HTTPException(
-            status_code=status.HTTP_409_CONFLICT,
-            detail="중복된 이메일 입니다",
-            headers={"WWW-Authenticate": "Bearer"},
-        )
     return await userService.joinUser(user)
 
 

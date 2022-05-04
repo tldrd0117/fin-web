@@ -30,6 +30,7 @@ class SeibroStockNumDataSource(MongoDataSource):
             self.logger.info(one)
             one["updatedAt"] = getNow()
             self.seibroStockNum.update_one({
+                "code": one["code"],
                 "발행일": one["발행일"],
                 "기업명": one["기업명"],
                 "주식종류": one["주식종류"],
