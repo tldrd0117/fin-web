@@ -76,8 +76,7 @@ class SeibroStockNumScrapService(ScrapService):
         async def insertTask() -> None:
             await self.factorRepository.insertFactorSeibroStockNum(data)
             self.tasksRepository.completeTask(task, "")
-        if data is not None:
-            await asyncio.create_task(insertTask())
+        await asyncio.create_task(insertTask())
 
 
     # 크롤링 중 웹드라이버와 연결되었을 때 이벤트

@@ -58,7 +58,7 @@ class SeibroStockNumScraper(WebDriverScraper):
         isNone = driver.execute_script("return document.getElementById('P_isinList_none').style.display == 'none'")
         self.logger.info(isNone)
         if not isNone:
-            return None
+            return []
         WebDriverWait(driver, timeout=20, poll_frequency=1).until(EC.element_to_be_clickable((By.ID, "P_isinList_0_P_ISIN_ROW")))
         driver.execute_script('document.getElementById("P_isinList_0_P_ISIN_ROW").click()')
         driver.switch_to.default_content()
@@ -71,7 +71,7 @@ class SeibroStockNumScraper(WebDriverScraper):
         WebDriverWait(driver, timeout=20, poll_frequency=1).until(EC.invisibility_of_element((By.ID, "___processbar2")))
         size = driver.execute_script('return $(".w2pageList_label_selected").text()')
         if size == "":
-            return None
+            return []
         size = int(size)
         self.logger.info(f"changed! size:{str(size)}")
         driver.execute_script(f"$(\"*[alt='첫 페이지'],*[alt='first page']\").click()")
