@@ -40,7 +40,7 @@ class SeibroStockNumScrapService(ScrapService):
 
     async def convertRunDto(self, runDict: Dict ) -> SeibroStockNumRunScrap:
         self.logger.info("convertRunDto", str(runDict))
-        codes = await self.stockRepository.getMarcapCodes(runDict["startDate"], runDict["endDate"])
+        codes = await asyncio.create_task(self.stockRepository.getMarcapCodes(runDict["startDate"], runDict["endDate"]))
         taskUniqueId = runDict["taskId"]+runDict["startDate"]+runDict["endDate"]+str(uuid.uuid4())
         runDto = SeibroStockNumRunScrap(**{
             "driverAddr": "http://fin-crawling-webdriver:4444",
