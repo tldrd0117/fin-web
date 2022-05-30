@@ -55,10 +55,10 @@ class ScrapService(TaskService):
         if isinstance(dto, RunScrap):
             runScrap = dto
         else:
-            data = await self.convertRunDto(dto)
+            data = await asyncio.create_task(self.convertRunDto(dto))
             if isinstance(data, list):
                 for runScrap in data:
-                    await self.addTask(runScrap)
+                    await asyncio.create_task(self.addTask(runScrap))
                 return
             elif isinstance(data, RunScrap):
                 runScrap = data
