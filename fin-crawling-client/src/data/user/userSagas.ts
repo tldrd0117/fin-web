@@ -1,11 +1,20 @@
 import { call, put, select, takeEvery } from '@redux-saga/core/effects'
 import { push } from 'connected-react-router'
+import { show } from '../modal/modalSlice'
 import { getToken, getMe, join, getPublicKey } from './userApi'
 import { fetchTokenSuccess, fetchTokenFail, fetchToken, joinSuccess, joinFail, submitJoin, fetchPublicKeySuccess, fetchPublicKeyFail, fetchPublicKey } from './userSlice'
 
 export function* watchOnFetchToken(action){
+    yield put(show({
+        modalName: "LoadingModal",
+        isShow: true
+    }))
     const {username, encPassword} = action.payload
     const {response, error} = yield call(getToken, username, encPassword)
+    yield put(show({
+        modalName: "LoadingModal",
+        isShow: false
+    }))
     console.log(response, error)
     if(response && response.accessToken && !response.detail){
         yield put(fetchTokenSuccess({
@@ -32,8 +41,16 @@ export function* watchOnJoin(action){
 }
 
 export function* watchOnPublicKey(action){
+    yield put(show({
+        modalName: "LoadingModal",
+        isShow: true
+    }))
     const {response, error} = yield call(getPublicKey)
     console.log(response, error)
+    yield put(show({
+        modalName: "LoadingModal",
+        isShow: false
+    }))
     if(response && !response.detail){
         yield put(fetchPublicKeySuccess(response))
     } else {

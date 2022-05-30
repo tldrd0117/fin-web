@@ -6,6 +6,7 @@ import { connect, disconnect, endConnection, startConnection, destory, create } 
 import { RootState } from '../root/rootReducer'
 import { data } from 'autoprefixer'
 import { push } from 'connected-react-router'
+import { show } from '../modal/modalSlice'
 
 // const socket = io("ws://localhost:8000/ws/"+Date.now(),{
 //     transports: ["websocket"]
@@ -93,9 +94,17 @@ export function* watchOnConnect() {
 
 export function* watchOnSocketConnect(socketConnection) {
     let isDoing = true;
+    put(show({
+        modalName: "LoadingModal",
+        isShow: true
+    }))
     while(isDoing){
         const channel = yield take(socketConnection)
         if(channel.eventType == "onopen"){
+            put(show({
+                modalName: "LoadingModal",
+                isShow: false
+            }))
             while(channel.data.readyState !== 1){
                 yield delay(1000)
             }

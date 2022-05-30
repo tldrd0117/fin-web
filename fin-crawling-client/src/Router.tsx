@@ -17,9 +17,12 @@ import CrawlingBoard from './containers/CrawlingBoard';
 import FactorBoard from './containers/FactorBoard';
 import SeibroBoard from './containers/SeibroBoard';
 import { fetchPublicKey } from './data/user/userSlice';
+import Modal from './containers/Modal'
+import LoadingModal from './components/LoadingModal';
 
 export default () => {
     const dispatch = useDispatch()
+    const modal = useSelector((state: RootState) => state.modal)
     useEffect(()=>{
         dispatch(fetchPublicKey({}))
     },[])
@@ -44,6 +47,10 @@ export default () => {
 
                 <Redirect path={"/"} to={"/marcap"}/>
             </Switch>
+            {
+                modal.LoadingModal?<LoadingModal/>:""
+            }
+            
         </ConnectedRouter>
     </>
 }

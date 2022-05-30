@@ -7,6 +7,7 @@ import taskScheduleReducer from '../task/taskScheduleSlice'
 import taskProgressReducer from '../task/taskProgressSlice'
 import taskPoolInfoReducer from '../task/taskPoolInfoSlice'
 import taskHistoryReducer from '../task/taskHistorySlice'
+import modalReducer from '../modal/modalSlice'
 import { connectRouter } from 'connected-react-router'
 import { createBrowserHistory } from 'history'
 
@@ -17,7 +18,7 @@ const task = combineReducers({
     poolInfo: taskPoolInfoReducer,
     schedule: taskScheduleReducer,
     progress: taskProgressReducer,
-    history: taskHistoryReducer
+    history: taskHistoryReducer,
 })
 
 const rootReducer = combineReducers({
@@ -25,7 +26,9 @@ const rootReducer = combineReducers({
     socket: socketReducer,
     user: userReducer,
     router: connectRouter(history),
-    task
+    task,
+    modal: modalReducer
+
 })
 
 
