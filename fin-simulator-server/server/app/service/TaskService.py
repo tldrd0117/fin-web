@@ -1,6 +1,7 @@
 import luigi
 from app.tasks.stockTasks import GetStockCodeFilteringAltmanZScore, GetMarcapCodes,\
-    GetStockCodeFilteringByVarientRank, GetStockCodeFilteringByFactorRankAndMinMax
+    GetStockCodeFilteringByVarientRank, GetStockCodeFilteringByFactorRankAndMinMax,\
+    GetStockCodeFilteringMarcapPerFactorRankMinMax, GetStockCodeFilteringFactorPerStockNumRankMinMax
 import json
 import pandas as pd
 
@@ -78,6 +79,72 @@ class TaskService:
             limit=1000,
             isAscending=True,
             markets=markets, 
+            targetPath=targetPath)
+        luigi.build([task], workers=1, detailed_summary=True)
+        targets = task.outputOfList()
+        targetPath = task.outputOfPath()
+        print(targets)
+        print(len(targets))
+
+        factors = json.dumps(["당기순이익"])
+        factorIds = json.dumps(["ifrs-full_ProfitLoss"])
+        markets = json.dumps(["kospi", "kosdaq"])
+        task = GetStockCodeFilteringMarcapPerFactorRankMinMax(date=date,
+            factors=factors,
+            factorIds=factorIds, 
+            markets=markets, 
+            isAscending=True,
+            limit=len(targets)/2,
+            minValue=0,
+            targetPath=targetPath)
+        luigi.build([task], workers=1, detailed_summary=True)
+        targets = task.outputOfList()
+        targetPath = task.outputOfPath()
+
+        factors = json.dumps(["영업활동으로인한현금흐름"])
+        factorIds = json.dumps(["ifrs-full_CashFlowsFromUsedInOperatingActivities"])
+        markets = json.dumps(["kospi", "kosdaq"])
+        task = GetStockCodeFilteringMarcapPerFactorRankMinMax(date=date,
+            factors=factors,
+            factorIds=factorIds, 
+            markets=markets, 
+            isAscending=True,
+            limit=50,
+            minValue=0,
+            targetPath=targetPath)
+        luigi.build([task], workers=1, detailed_summary=True)
+        targets = task.outputOfList()
+        targetPath = task.outputOfPath()
+        print(targets)
+
+        factors = json.dumps(["영업활동으로인한현금흐름"])
+        factorIds = json.dumps(["ifrs-full_CashFlowsFromUsedInOperatingActivities"])
+        markets = json.dumps(["kospi", "kosdaq"])
+        task = GetStockCodeFilteringFactorPerStockNumRankMinMax(date=date,
+            factors=factors,
+            factorIds=factorIds, 
+            markets=markets, 
+            isAscending=True,
+            limit=30,
+            minValue=0,
+            targetPath=targetPath)
+        luigi.build([task], workers=1, detailed_summary=True)
+        targets = task.outputOfList()
+        targetPath = task.outputOfPath()
+        print(targets)
+        print(len(targets))
+
+
+        factors = json.dumps(["영업활동으로인한현금흐름"])
+        factorIds = json.dumps(["ifrs-full_CashFlowsFromUsedInOperatingActivities"])
+        markets = json.dumps(["kospi", "kosdaq"])
+        task = GetStockCodeFilteringByFactorRankAndMinMax(date=date,
+            factors=factors,
+            factorIds=factorIds, 
+            markets=markets, 
+            isAscending=False,
+            limit=30,
+            minValue=0,
             targetPath=targetPath)
         luigi.build([task], workers=1, detailed_summary=True)
         targets = task.outputOfList()

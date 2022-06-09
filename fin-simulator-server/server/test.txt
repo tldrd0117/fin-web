@@ -1,0 +1,314 @@
+============================= test session starts ==============================
+platform darwin -- Python 3.9.7, pytest-7.0.1, pluggy-1.0.0
+rootdir: /Users/iseongjae/Documents/projects/fin-web/fin-simulator-server/server
+plugins: anyio-3.5.0
+collected 1 item
+
+tests/test_taskService.py data/stock/range/GetStockRangeTask-19700101-20220525-2477d197a5be7b7c4924b3d4d44ecc18
+1970
+1971
+1972
+1973
+1974
+1975
+1976
+1977
+1978
+1979
+1980
+1981
+1982
+1983
+1984
+1985
+1986
+1987
+1988
+1989
+1990
+1991
+1992
+1993
+1994
+1995
+1996
+1997
+1998
+1999
+2000
+2001
+2002
+2003
+2004
+2005
+2006
+2007
+2008
+2009
+2010
+2011
+2012
+2013
+2014
+2015
+2016
+2017
+2018
+2019
+2020
+2021
+2022
+                           _id    code  ...               updatedAt  volume
+0     61c2e5ef74ad76ca3dee5ffa  000010  ... 2021-12-22 08:46:39.481   58210
+1     61c2e5ee74ad76ca3dee5c4c  000020  ... 2021-12-22 08:46:38.618     940
+2     61c2e5ee74ad76ca3dee5c4e  000021  ... 2021-12-22 08:46:38.620       0
+3     61c2e5ee74ad76ca3dee5dc2  000030  ... 2021-12-22 08:46:38.971  197730
+4     61c2e5ee74ad76ca3dee5b5e  000040  ... 2021-12-22 08:46:38.358   12780
+...                        ...     ...  ...                     ...     ...
+2493  6288921f74ad76ca3d64887f  950170  ... 2022-05-21 07:18:14.991        
+2494  6288922474ad76ca3d648b82  950190  ... 2022-05-21 07:18:21.706        
+2495  6288922974ad76ca3d648cd8  950200  ... 2022-05-21 07:18:23.108        
+2496  628891f074ad76ca3d6482ea  950210  ... 2022-05-21 07:17:40.984        
+2497  6288922074ad76ca3d648989  950220  ... 2022-05-21 07:18:17.301        
+
+[17829804 rows x 17 columns]
+
+
+=============================== warnings summary ===============================
+../../../../../.pyenv/versions/3.9.7/envs/fin-web/lib/python3.9/site-packages/luigi/__init__.py:78
+  /Users/iseongjae/.pyenv/versions/3.9.7/envs/fin-web/lib/python3.9/site-packages/luigi/__init__.py:78: DeprecationWarning: 
+          Autoloading range tasks by default has been deprecated and will be removed in a future version.
+          To get the behavior now add an option to luigi.cfg:
+  
+            [core]
+              autoload_range: false
+  
+          Alternately set the option to true to continue with existing behaviour and suppress this warning.
+      
+    warnings.warn(warning_message, DeprecationWarning)
+
+../../../../../.pyenv/versions/3.9.7/envs/fin-web/lib/python3.9/site-packages/pandas/compat/__init__.py:124
+  /Users/iseongjae/.pyenv/versions/3.9.7/envs/fin-web/lib/python3.9/site-packages/pandas/compat/__init__.py:124: UserWarning: Could not import the lzma module. Your installed Python is incomplete. Attempting to use lzma compression will result in a RuntimeError.
+    warnings.warn(msg)
+
+tests/test_taskService.py: 59 warnings
+  /Users/iseongjae/.pyenv/versions/3.9.7/envs/fin-web/lib/python3.9/site-packages/luigi/task.py:225: DeprecationWarning: Use of `disable_window_seconds` has been deprecated, use `disable_window` instead
+    warnings.warn("Use of `disable_window_seconds` has been deprecated, use `disable_window` instead", DeprecationWarning)
+
+tests/test_taskService.py::test_walletService
+  /Users/iseongjae/.pyenv/versions/3.9.7/envs/fin-web/lib/python3.9/site-packages/luigi/parameter.py:342: UserWarning: OptionalParameter "year" with value "1970" is not of type string or None.
+    warnings.warn('OptionalParameter "{}" with value "{}" is not of type string or None.'.format(
+
+tests/test_taskService.py::test_walletService
+  /Users/iseongjae/.pyenv/versions/3.9.7/envs/fin-web/lib/python3.9/site-packages/luigi/parameter.py:342: UserWarning: OptionalParameter "year" with value "1971" is not of type string or None.
+    warnings.warn('OptionalParameter "{}" with value "{}" is not of type string or None.'.format(
+
+tests/test_taskService.py::test_walletService
+  /Users/iseongjae/.pyenv/versions/3.9.7/envs/fin-web/lib/python3.9/site-packages/luigi/parameter.py:342: UserWarning: OptionalParameter "year" with value "1972" is not of type string or None.
+    warnings.warn('OptionalParameter "{}" with value "{}" is not of type string or None.'.format(
+
+tests/test_taskService.py::test_walletService
+  /Users/iseongjae/.pyenv/versions/3.9.7/envs/fin-web/lib/python3.9/site-packages/luigi/parameter.py:342: UserWarning: OptionalParameter "year" with value "1973" is not of type string or None.
+    warnings.warn('OptionalParameter "{}" with value "{}" is not of type string or None.'.format(
+
+tests/test_taskService.py::test_walletService
+  /Users/iseongjae/.pyenv/versions/3.9.7/envs/fin-web/lib/python3.9/site-packages/luigi/parameter.py:342: UserWarning: OptionalParameter "year" with value "1974" is not of type string or None.
+    warnings.warn('OptionalParameter "{}" with value "{}" is not of type string or None.'.format(
+
+tests/test_taskService.py::test_walletService
+  /Users/iseongjae/.pyenv/versions/3.9.7/envs/fin-web/lib/python3.9/site-packages/luigi/parameter.py:342: UserWarning: OptionalParameter "year" with value "1975" is not of type string or None.
+    warnings.warn('OptionalParameter "{}" with value "{}" is not of type string or None.'.format(
+
+tests/test_taskService.py::test_walletService
+  /Users/iseongjae/.pyenv/versions/3.9.7/envs/fin-web/lib/python3.9/site-packages/luigi/parameter.py:342: UserWarning: OptionalParameter "year" with value "1976" is not of type string or None.
+    warnings.warn('OptionalParameter "{}" with value "{}" is not of type string or None.'.format(
+
+tests/test_taskService.py::test_walletService
+  /Users/iseongjae/.pyenv/versions/3.9.7/envs/fin-web/lib/python3.9/site-packages/luigi/parameter.py:342: UserWarning: OptionalParameter "year" with value "1977" is not of type string or None.
+    warnings.warn('OptionalParameter "{}" with value "{}" is not of type string or None.'.format(
+
+tests/test_taskService.py::test_walletService
+  /Users/iseongjae/.pyenv/versions/3.9.7/envs/fin-web/lib/python3.9/site-packages/luigi/parameter.py:342: UserWarning: OptionalParameter "year" with value "1978" is not of type string or None.
+    warnings.warn('OptionalParameter "{}" with value "{}" is not of type string or None.'.format(
+
+tests/test_taskService.py::test_walletService
+  /Users/iseongjae/.pyenv/versions/3.9.7/envs/fin-web/lib/python3.9/site-packages/luigi/parameter.py:342: UserWarning: OptionalParameter "year" with value "1979" is not of type string or None.
+    warnings.warn('OptionalParameter "{}" with value "{}" is not of type string or None.'.format(
+
+tests/test_taskService.py::test_walletService
+  /Users/iseongjae/.pyenv/versions/3.9.7/envs/fin-web/lib/python3.9/site-packages/luigi/parameter.py:342: UserWarning: OptionalParameter "year" with value "1980" is not of type string or None.
+    warnings.warn('OptionalParameter "{}" with value "{}" is not of type string or None.'.format(
+
+tests/test_taskService.py::test_walletService
+  /Users/iseongjae/.pyenv/versions/3.9.7/envs/fin-web/lib/python3.9/site-packages/luigi/parameter.py:342: UserWarning: OptionalParameter "year" with value "1981" is not of type string or None.
+    warnings.warn('OptionalParameter "{}" with value "{}" is not of type string or None.'.format(
+
+tests/test_taskService.py::test_walletService
+  /Users/iseongjae/.pyenv/versions/3.9.7/envs/fin-web/lib/python3.9/site-packages/luigi/parameter.py:342: UserWarning: OptionalParameter "year" with value "1982" is not of type string or None.
+    warnings.warn('OptionalParameter "{}" with value "{}" is not of type string or None.'.format(
+
+tests/test_taskService.py::test_walletService
+  /Users/iseongjae/.pyenv/versions/3.9.7/envs/fin-web/lib/python3.9/site-packages/luigi/parameter.py:342: UserWarning: OptionalParameter "year" with value "1983" is not of type string or None.
+    warnings.warn('OptionalParameter "{}" with value "{}" is not of type string or None.'.format(
+
+tests/test_taskService.py::test_walletService
+  /Users/iseongjae/.pyenv/versions/3.9.7/envs/fin-web/lib/python3.9/site-packages/luigi/parameter.py:342: UserWarning: OptionalParameter "year" with value "1984" is not of type string or None.
+    warnings.warn('OptionalParameter "{}" with value "{}" is not of type string or None.'.format(
+
+tests/test_taskService.py::test_walletService
+  /Users/iseongjae/.pyenv/versions/3.9.7/envs/fin-web/lib/python3.9/site-packages/luigi/parameter.py:342: UserWarning: OptionalParameter "year" with value "1985" is not of type string or None.
+    warnings.warn('OptionalParameter "{}" with value "{}" is not of type string or None.'.format(
+
+tests/test_taskService.py::test_walletService
+  /Users/iseongjae/.pyenv/versions/3.9.7/envs/fin-web/lib/python3.9/site-packages/luigi/parameter.py:342: UserWarning: OptionalParameter "year" with value "1986" is not of type string or None.
+    warnings.warn('OptionalParameter "{}" with value "{}" is not of type string or None.'.format(
+
+tests/test_taskService.py::test_walletService
+  /Users/iseongjae/.pyenv/versions/3.9.7/envs/fin-web/lib/python3.9/site-packages/luigi/parameter.py:342: UserWarning: OptionalParameter "year" with value "1987" is not of type string or None.
+    warnings.warn('OptionalParameter "{}" with value "{}" is not of type string or None.'.format(
+
+tests/test_taskService.py::test_walletService
+  /Users/iseongjae/.pyenv/versions/3.9.7/envs/fin-web/lib/python3.9/site-packages/luigi/parameter.py:342: UserWarning: OptionalParameter "year" with value "1988" is not of type string or None.
+    warnings.warn('OptionalParameter "{}" with value "{}" is not of type string or None.'.format(
+
+tests/test_taskService.py::test_walletService
+  /Users/iseongjae/.pyenv/versions/3.9.7/envs/fin-web/lib/python3.9/site-packages/luigi/parameter.py:342: UserWarning: OptionalParameter "year" with value "1989" is not of type string or None.
+    warnings.warn('OptionalParameter "{}" with value "{}" is not of type string or None.'.format(
+
+tests/test_taskService.py::test_walletService
+  /Users/iseongjae/.pyenv/versions/3.9.7/envs/fin-web/lib/python3.9/site-packages/luigi/parameter.py:342: UserWarning: OptionalParameter "year" with value "1990" is not of type string or None.
+    warnings.warn('OptionalParameter "{}" with value "{}" is not of type string or None.'.format(
+
+tests/test_taskService.py::test_walletService
+  /Users/iseongjae/.pyenv/versions/3.9.7/envs/fin-web/lib/python3.9/site-packages/luigi/parameter.py:342: UserWarning: OptionalParameter "year" with value "1991" is not of type string or None.
+    warnings.warn('OptionalParameter "{}" with value "{}" is not of type string or None.'.format(
+
+tests/test_taskService.py::test_walletService
+  /Users/iseongjae/.pyenv/versions/3.9.7/envs/fin-web/lib/python3.9/site-packages/luigi/parameter.py:342: UserWarning: OptionalParameter "year" with value "1992" is not of type string or None.
+    warnings.warn('OptionalParameter "{}" with value "{}" is not of type string or None.'.format(
+
+tests/test_taskService.py::test_walletService
+  /Users/iseongjae/.pyenv/versions/3.9.7/envs/fin-web/lib/python3.9/site-packages/luigi/parameter.py:342: UserWarning: OptionalParameter "year" with value "1993" is not of type string or None.
+    warnings.warn('OptionalParameter "{}" with value "{}" is not of type string or None.'.format(
+
+tests/test_taskService.py::test_walletService
+  /Users/iseongjae/.pyenv/versions/3.9.7/envs/fin-web/lib/python3.9/site-packages/luigi/parameter.py:342: UserWarning: OptionalParameter "year" with value "1994" is not of type string or None.
+    warnings.warn('OptionalParameter "{}" with value "{}" is not of type string or None.'.format(
+
+tests/test_taskService.py::test_walletService
+  /Users/iseongjae/.pyenv/versions/3.9.7/envs/fin-web/lib/python3.9/site-packages/luigi/parameter.py:342: UserWarning: OptionalParameter "year" with value "1995" is not of type string or None.
+    warnings.warn('OptionalParameter "{}" with value "{}" is not of type string or None.'.format(
+
+tests/test_taskService.py::test_walletService
+  /Users/iseongjae/.pyenv/versions/3.9.7/envs/fin-web/lib/python3.9/site-packages/luigi/parameter.py:342: UserWarning: OptionalParameter "year" with value "1996" is not of type string or None.
+    warnings.warn('OptionalParameter "{}" with value "{}" is not of type string or None.'.format(
+
+tests/test_taskService.py::test_walletService
+  /Users/iseongjae/.pyenv/versions/3.9.7/envs/fin-web/lib/python3.9/site-packages/luigi/parameter.py:342: UserWarning: OptionalParameter "year" with value "1997" is not of type string or None.
+    warnings.warn('OptionalParameter "{}" with value "{}" is not of type string or None.'.format(
+
+tests/test_taskService.py::test_walletService
+  /Users/iseongjae/.pyenv/versions/3.9.7/envs/fin-web/lib/python3.9/site-packages/luigi/parameter.py:342: UserWarning: OptionalParameter "year" with value "1998" is not of type string or None.
+    warnings.warn('OptionalParameter "{}" with value "{}" is not of type string or None.'.format(
+
+tests/test_taskService.py::test_walletService
+  /Users/iseongjae/.pyenv/versions/3.9.7/envs/fin-web/lib/python3.9/site-packages/luigi/parameter.py:342: UserWarning: OptionalParameter "year" with value "1999" is not of type string or None.
+    warnings.warn('OptionalParameter "{}" with value "{}" is not of type string or None.'.format(
+
+tests/test_taskService.py::test_walletService
+  /Users/iseongjae/.pyenv/versions/3.9.7/envs/fin-web/lib/python3.9/site-packages/luigi/parameter.py:342: UserWarning: OptionalParameter "year" with value "2000" is not of type string or None.
+    warnings.warn('OptionalParameter "{}" with value "{}" is not of type string or None.'.format(
+
+tests/test_taskService.py::test_walletService
+  /Users/iseongjae/.pyenv/versions/3.9.7/envs/fin-web/lib/python3.9/site-packages/luigi/parameter.py:342: UserWarning: OptionalParameter "year" with value "2001" is not of type string or None.
+    warnings.warn('OptionalParameter "{}" with value "{}" is not of type string or None.'.format(
+
+tests/test_taskService.py::test_walletService
+  /Users/iseongjae/.pyenv/versions/3.9.7/envs/fin-web/lib/python3.9/site-packages/luigi/parameter.py:342: UserWarning: OptionalParameter "year" with value "2002" is not of type string or None.
+    warnings.warn('OptionalParameter "{}" with value "{}" is not of type string or None.'.format(
+
+tests/test_taskService.py::test_walletService
+  /Users/iseongjae/.pyenv/versions/3.9.7/envs/fin-web/lib/python3.9/site-packages/luigi/parameter.py:342: UserWarning: OptionalParameter "year" with value "2003" is not of type string or None.
+    warnings.warn('OptionalParameter "{}" with value "{}" is not of type string or None.'.format(
+
+tests/test_taskService.py::test_walletService
+  /Users/iseongjae/.pyenv/versions/3.9.7/envs/fin-web/lib/python3.9/site-packages/luigi/parameter.py:342: UserWarning: OptionalParameter "year" with value "2004" is not of type string or None.
+    warnings.warn('OptionalParameter "{}" with value "{}" is not of type string or None.'.format(
+
+tests/test_taskService.py::test_walletService
+  /Users/iseongjae/.pyenv/versions/3.9.7/envs/fin-web/lib/python3.9/site-packages/luigi/parameter.py:342: UserWarning: OptionalParameter "year" with value "2005" is not of type string or None.
+    warnings.warn('OptionalParameter "{}" with value "{}" is not of type string or None.'.format(
+
+tests/test_taskService.py::test_walletService
+  /Users/iseongjae/.pyenv/versions/3.9.7/envs/fin-web/lib/python3.9/site-packages/luigi/parameter.py:342: UserWarning: OptionalParameter "year" with value "2006" is not of type string or None.
+    warnings.warn('OptionalParameter "{}" with value "{}" is not of type string or None.'.format(
+
+tests/test_taskService.py::test_walletService
+  /Users/iseongjae/.pyenv/versions/3.9.7/envs/fin-web/lib/python3.9/site-packages/luigi/parameter.py:342: UserWarning: OptionalParameter "year" with value "2007" is not of type string or None.
+    warnings.warn('OptionalParameter "{}" with value "{}" is not of type string or None.'.format(
+
+tests/test_taskService.py::test_walletService
+  /Users/iseongjae/.pyenv/versions/3.9.7/envs/fin-web/lib/python3.9/site-packages/luigi/parameter.py:342: UserWarning: OptionalParameter "year" with value "2008" is not of type string or None.
+    warnings.warn('OptionalParameter "{}" with value "{}" is not of type string or None.'.format(
+
+tests/test_taskService.py::test_walletService
+  /Users/iseongjae/.pyenv/versions/3.9.7/envs/fin-web/lib/python3.9/site-packages/luigi/parameter.py:342: UserWarning: OptionalParameter "year" with value "2009" is not of type string or None.
+    warnings.warn('OptionalParameter "{}" with value "{}" is not of type string or None.'.format(
+
+tests/test_taskService.py::test_walletService
+  /Users/iseongjae/.pyenv/versions/3.9.7/envs/fin-web/lib/python3.9/site-packages/luigi/parameter.py:342: UserWarning: OptionalParameter "year" with value "2010" is not of type string or None.
+    warnings.warn('OptionalParameter "{}" with value "{}" is not of type string or None.'.format(
+
+tests/test_taskService.py::test_walletService
+  /Users/iseongjae/.pyenv/versions/3.9.7/envs/fin-web/lib/python3.9/site-packages/luigi/parameter.py:342: UserWarning: OptionalParameter "year" with value "2011" is not of type string or None.
+    warnings.warn('OptionalParameter "{}" with value "{}" is not of type string or None.'.format(
+
+tests/test_taskService.py::test_walletService
+  /Users/iseongjae/.pyenv/versions/3.9.7/envs/fin-web/lib/python3.9/site-packages/luigi/parameter.py:342: UserWarning: OptionalParameter "year" with value "2012" is not of type string or None.
+    warnings.warn('OptionalParameter "{}" with value "{}" is not of type string or None.'.format(
+
+tests/test_taskService.py::test_walletService
+  /Users/iseongjae/.pyenv/versions/3.9.7/envs/fin-web/lib/python3.9/site-packages/luigi/parameter.py:342: UserWarning: OptionalParameter "year" with value "2013" is not of type string or None.
+    warnings.warn('OptionalParameter "{}" with value "{}" is not of type string or None.'.format(
+
+tests/test_taskService.py::test_walletService
+  /Users/iseongjae/.pyenv/versions/3.9.7/envs/fin-web/lib/python3.9/site-packages/luigi/parameter.py:342: UserWarning: OptionalParameter "year" with value "2014" is not of type string or None.
+    warnings.warn('OptionalParameter "{}" with value "{}" is not of type string or None.'.format(
+
+tests/test_taskService.py::test_walletService
+  /Users/iseongjae/.pyenv/versions/3.9.7/envs/fin-web/lib/python3.9/site-packages/luigi/parameter.py:342: UserWarning: OptionalParameter "year" with value "2015" is not of type string or None.
+    warnings.warn('OptionalParameter "{}" with value "{}" is not of type string or None.'.format(
+
+tests/test_taskService.py::test_walletService
+  /Users/iseongjae/.pyenv/versions/3.9.7/envs/fin-web/lib/python3.9/site-packages/luigi/parameter.py:342: UserWarning: OptionalParameter "year" with value "2016" is not of type string or None.
+    warnings.warn('OptionalParameter "{}" with value "{}" is not of type string or None.'.format(
+
+tests/test_taskService.py::test_walletService
+  /Users/iseongjae/.pyenv/versions/3.9.7/envs/fin-web/lib/python3.9/site-packages/luigi/parameter.py:342: UserWarning: OptionalParameter "year" with value "2017" is not of type string or None.
+    warnings.warn('OptionalParameter "{}" with value "{}" is not of type string or None.'.format(
+
+tests/test_taskService.py::test_walletService
+  /Users/iseongjae/.pyenv/versions/3.9.7/envs/fin-web/lib/python3.9/site-packages/luigi/parameter.py:342: UserWarning: OptionalParameter "year" with value "2018" is not of type string or None.
+    warnings.warn('OptionalParameter "{}" with value "{}" is not of type string or None.'.format(
+
+tests/test_taskService.py::test_walletService
+  /Users/iseongjae/.pyenv/versions/3.9.7/envs/fin-web/lib/python3.9/site-packages/luigi/parameter.py:342: UserWarning: OptionalParameter "year" with value "2019" is not of type string or None.
+    warnings.warn('OptionalParameter "{}" with value "{}" is not of type string or None.'.format(
+
+tests/test_taskService.py::test_walletService
+  /Users/iseongjae/.pyenv/versions/3.9.7/envs/fin-web/lib/python3.9/site-packages/luigi/parameter.py:342: UserWarning: OptionalParameter "year" with value "2020" is not of type string or None.
+    warnings.warn('OptionalParameter "{}" with value "{}" is not of type string or None.'.format(
+
+tests/test_taskService.py::test_walletService
+  /Users/iseongjae/.pyenv/versions/3.9.7/envs/fin-web/lib/python3.9/site-packages/luigi/parameter.py:342: UserWarning: OptionalParameter "year" with value "2021" is not of type string or None.
+    warnings.warn('OptionalParameter "{}" with value "{}" is not of type string or None.'.format(
+
+tests/test_taskService.py::test_walletService
+  /Users/iseongjae/.pyenv/versions/3.9.7/envs/fin-web/lib/python3.9/site-packages/luigi/parameter.py:342: UserWarning: OptionalParameter "year" with value "2022" is not of type string or None.
+    warnings.warn('OptionalParameter "{}" with value "{}" is not of type string or None.'.format(
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! KeyboardInterrupt !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+/Users/iseongjae/.pyenv/versions/3.9.7/lib/python3.9/selectors.py:416: KeyboardInterrupt
+(to show a full traceback on KeyboardInterrupt use --full-trace)
+===================== 114 warnings in 13502.65s (3:45:02) ======================
