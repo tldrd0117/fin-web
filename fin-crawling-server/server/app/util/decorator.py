@@ -1,5 +1,6 @@
 
 from typing import Any, Awaitable, Callable
+
 from .events import eventManage
 
 def makeRegisteringDecorator(foreignDecorator):
@@ -8,6 +9,7 @@ def makeRegisteringDecorator(foreignDecorator):
         # Exactly like old decorator, but output keeps track of what decorated it
         R = foreignDecorator(func) # apply foreignDecorator, like call to foreignDecorator(method) would have done
         R.decorator = newDecorator # keep track of decorator
+        R.ID_DECO = id(newDecorator)
         #R.original = func         # might as well keep track of everything!
         return R
 
@@ -32,10 +34,26 @@ def methodsWithDecorator(cls, decorator):
             if maybeDecorated.decorator == decorator:
                 return maybeDecorated
 
+class EventEmitter(object):
+    def __init__(self, instance, em) -> None:
+        self.instance: Any = instance
+        self.em: eventManage = em
+    
+    def on(self, key, func):
+        self.em.on(key, func)
+    
+    async def emit(self, key, *args, **kwargs ):
+        if self.instance.__class__ is None or self.instance.__class__.__name__ is None:
+            return
+        eventKey = str(id(self.instance)) + str(id(self))
+        await self.em.emit(eventKey+key, *args, **kwargs)
+
+
 
 class eventsDecorator:
     events = {}
     classes = set()
+    eventManages = {}
     @staticmethod
     def on(eventName: str):
         def decorator(func: Awaitable):
@@ -43,12 +61,25 @@ class eventsDecorator:
         newDeco = makeRegisteringDecorator(decorator)
         eventsDecorator.events[eventName] = newDeco
         return newDeco
-
+    
     @staticmethod
-    def register(instance: Any, ee: eventManage):
+    async def emit(instance: Any, ee: eventManage, key, *args, **kwargs ):
         if instance.__class__ is None or instance.__class__.__name__ is None:
             return
         eventKey = str(id(instance)) + str(id(ee))
+        await ee.emit(eventKey+key, *args, **kwargs)
+    
+    @staticmethod
+    def makeEmitter(instance: Any):
+        return EventEmitter(instance, eventManage())
+
+
+    @staticmethod
+    def register(instance: Any, ee: EventEmitter):
+        if instance.__class__ is None or instance.__class__.__name__ is None:
+            return
+        eventKey = str(id(instance)) + str(id(ee))
+        
         if eventKey not in eventsDecorator.classes:
             eventsDecorator.classes.add(eventKey)
         else:
@@ -56,16 +87,17 @@ class eventsDecorator:
         keys = eventsDecorator.events.keys()
         for key in keys:
             func = methodsWithDecorator(instance.__class__, eventsDecorator.events[key])
+            print(func)
             if func is None:
                 continue
             func = getattr(instance, func.__name__)
-            
-            print("onEvent:"+key+" func:"+str(func))
-            ee.on(key, func)
+            print("onEvent:"+eventKey+key+" func:"+str(func))
+            ee.on(eventKey + key, func)
         return keys
     
+    
     @staticmethod
-    def unregist(instance: Any, ee: eventManage):
+    def unregist(instance: Any, ee: EventEmitter):
         eventKey = str(id(instance)) + str(id(ee))
         if eventKey in eventsDecorator.classes:
             eventsDecorator.classes.remove(eventKey)
@@ -75,5 +107,5 @@ class eventsDecorator:
             if func is None:
                 continue
             func = getattr(instance, func.__name__)
-            ee.off(key)
+            ee.off(eventKey + key)
     

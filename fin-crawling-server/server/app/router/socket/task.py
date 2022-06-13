@@ -5,8 +5,8 @@ from app.model.dto import StockRunCrawling, StockTaskSchedule, ListLimitData
 from app.service.api.TaskApiService import TaskApiService
 from app.module.socket.manager import ConnectionManager
 from app.base.BaseComponent import BaseComponent
-from pymitter import EventEmitter
 from app.util.decorator import eventsDecorator as ed
+from app.util.events import eventManage
 
 
 class TaskSocketRouter(BaseComponent):
@@ -14,8 +14,8 @@ class TaskSocketRouter(BaseComponent):
     def onComponentResisted(self) -> None:
         self.taskApiService = self.get(TaskApiService)
         self.manager = self.get(ConnectionManager)
-        self.ee: EventEmitter = self.manager.ee
-        ed.register(self, self.ee)
+        self.manager.setEventEmitter(self)
+        ed.register(self, self.manager.ee)
         return super().onComponentResisted()
     
     

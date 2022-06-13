@@ -35,7 +35,7 @@ class SeibroDividendScrapService(ScrapService):
 
     
     def createScraper(self) -> Scraper:
-        return SeibroDividendScraper()
+        return SeibroDividendScraper(self)
     
 
     async def convertRunDto(self, runDict: Dict ) -> SeibroDividendRunScrap:

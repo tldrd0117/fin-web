@@ -34,7 +34,7 @@ class MarcapScrapService(ScrapService):
     
 
     def createScraper(self) -> Scraper:
-        return MarcapScraper()
+        return MarcapScraper(eventTarget=self)
     
 
     async def convertRunDto(self, runDto: dict) -> List[RunScrap]:

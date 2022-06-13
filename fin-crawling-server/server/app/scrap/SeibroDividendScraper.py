@@ -22,8 +22,8 @@ class SeibroDividendScraper(WebDriverScraper):
     EVENT_SEIBRO_DIVIDEND_ON_START_CRAWLING: Final = "SeibroDividendScraper/onStartCrawling"
     EVENT_SEIBRO_DIVIDEND_ON_END_CRAWLING: Final = "SeibroDividendScraper/onEndCrawling"
     EVENT_SEIBRO_DIVIDEND_ON_RESULT_OF_DATA: Final = "SeibroDividendScraper/onResultOfData"
-    def __init__(self) -> None:
-        super().__init__()
+    def __init__(self, eventTarget) -> None:
+        super().__init__(eventTarget)
         self.logger = Logger("SeibroDividendScraper")
     
 

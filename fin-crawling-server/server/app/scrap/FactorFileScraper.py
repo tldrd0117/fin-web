@@ -37,10 +37,10 @@ class FactorFileScraper(Scraper):
     EVENT_FACTOR_FILE_ON_MAKE_FACTOR_DATA: Final ="FactorFileCrawler/makeFactorData"
     EVENT_FACTOR_FILE_ON_RESULT_OF_FACTOR: Final ="FactorFileCrawler/onResultOfFactor"
 
-    def __init__(self, service: FactorFileScrapService) -> None:
-        super().__init__()
+    def __init__(self, eventTarget) -> None:
+        super().__init__(eventTarget)
         self.logger = Logger("FactorFileScraper")
-        self.service: FactorFileScrapService = service
+        self.service: FactorFileScrapService = eventTarget
     
 
     async def crawling(self, runCrawling: DartApiCrawling) -> None:

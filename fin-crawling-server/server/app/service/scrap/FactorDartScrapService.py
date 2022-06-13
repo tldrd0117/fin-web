@@ -36,7 +36,7 @@ class FactorDartScrapService(ScrapService):
     
 
     def createScraper(self) -> Scraper:
-        return FactorDartScraper()
+        return FactorDartScraper(self)
     
 
     async def convertRunDto(self, runDto: Dict) -> RunScrap:

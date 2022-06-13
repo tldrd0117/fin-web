@@ -1,17 +1,23 @@
 from fastapi import WebSocket
 from typing import List
+
 from app.model.dto import SocketResponse
 import asyncio
 from uvicorn.config import logger
 from app.util.events import eventManage
+from app.util.decorator import eventsDecorator as ed, EventEmitter
 
 
 class ConnectionManager:
+    ee = None
     def __init__(self) -> None:
-        self.ee = eventManage()
         self.loop = asyncio.get_running_loop()
         self.active_connections: List[WebSocket] = []
         # self.threadExcutor = ThreadPoolExecutor(max_workers=10)
+    
+    def setEventEmitter(self, instance):
+        print("setEventEmitter")
+        self.ee = EventEmitter(instance, eventManage())
 
     async def connect(self, websocket: WebSocket) -> None:
         await websocket.accept()

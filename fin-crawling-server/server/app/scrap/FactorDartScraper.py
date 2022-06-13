@@ -39,8 +39,8 @@ class FactorDartScraper(Scraper):
     FACTOR_DART_CRAWLER_ON_COMPLETE_YEAR: Final ="FactorDartCrawler/onCompleteYear"
     FACTOR_DART_CRAWLER_ON_RESULT_OF_FACTOR: Final ="FactorDartCrawler/onResultOfFactor"
 
-    def __init__(self) -> None:
-        super().__init__()
+    def __init__(self, eventTarget) -> None:
+        super().__init__(eventTarget)
         self.isLock = False
         self.isCancelled = False
         self.logger = Logger("DartApiCrawler")

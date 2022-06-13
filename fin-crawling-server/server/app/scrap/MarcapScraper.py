@@ -18,6 +18,7 @@ from app.observer.DownloadObserver import DownloadObserver
 from app.observer.CmdFileSystemEventHandler import FILE_SYSTEM_HANDLER
 from app.module.logger import Logger
 from app.util.AsyncUtil import asyncRetry, asyncRetryNonBlock, sleepNonBlock
+from app.util.decorator import eventsDecorator
 from app.scrap.base.WebDriverScraper import WebDriverScraper
 
 # from pathlib import Path
@@ -34,8 +35,8 @@ class MarcapScraper(WebDriverScraper):
     EVENT_MARCAP_CRAWLING_ON_PARSING_COMPLETE: Final ="MarcapScraper/onParsingComplete"
     EVENT_MARCAP_CRAWLING_ON_RESULT_OF_STOCK_DATA: Final ="MarcapScraper/onResultOfStockData"
     
-    def __init__(self) -> None:
-        super().__init__()
+    def __init__(self, eventTarget) -> None:
+        super().__init__(eventTarget)
         self.logger = Logger("MarcapScraper")
 
 

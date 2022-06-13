@@ -35,7 +35,7 @@ class SeibroStockNumScrapService(ScrapService):
 
     
     def createScraper(self) -> Scraper:
-        return SeibroStockNumScraper()
+        return SeibroStockNumScraper(eventTarget=self)
     
 
     async def convertRunDto(self, runDict: Dict ) -> SeibroStockNumRunScrap:

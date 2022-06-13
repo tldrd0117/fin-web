@@ -23,8 +23,8 @@ class SeibroStockNumScraper(WebDriverScraper):
     EVENT_SEIBRO_STOCK_NUM_ON_END_CRAWLING: Final = "SeibroStockNumScraper/onEndCrawling"
     EVENT_SEIBRO_STOCK_NUM_ON_RESULT_OF_DATA: Final = "SeibroStockNumScraper/onResultOfData"
 
-    def __init__(self) -> None:
-        super().__init__()
+    def __init__(self, eventTarget) -> None:
+        super().__init__(eventTarget)
         self.logger = Logger("SeibroStockNumScraper")
 
     async def crawling(self, dto: SeibroStockNumRunScrap) -> None:
