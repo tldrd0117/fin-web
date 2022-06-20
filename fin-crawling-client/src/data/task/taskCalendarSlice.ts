@@ -90,5 +90,5 @@ export interface FetchTaskPayload{
 }
 
 export const fetchTaskState = createAction<FetchTaskPayload>("task/calendar/fetchTaskState");
-export const { fetchTaskStateRes} = actions
+export const { fetchTaskStateRes, updateTaskStateRes} = actions
 export default reducer
